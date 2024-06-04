@@ -1,0 +1,336 @@
+.icon-breadcrumb {
+  @include icon(20px, 20px, "icon_breadcrumb.png");
+  margin-right: 12px;
+}
+.icon-show-more {
+  @include icon(10px, 10px, "icon_show_more.png");
+  margin-top: -1px;
+  margin-left: 6px;
+  &.less {
+    transform: rotate(180deg);
+    margin-top: -2px;
+  }
+}
+// 面包屑
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  font-family: "Poppins-SemiBold";
+  font-size: 14px;
+  margin: 8px 0 30px;
+  a {
+    color: #898e97;
+    transition: color 0.3s;
+    &:hover {
+      color: #000000;
+    }
+    &.active {
+      pointer-events: none;
+      color: #000000;
+    }
+  }
+  span {
+    color: #898e97;
+    margin: 0 10px;
+  }
+}
+.show-more-desc {
+  font-size: 14px;
+  color: #898e97;
+  line-height: 20px;
+  margin-top: 10px;
+  max-height: 40px;
+  overflow: hidden;
+  &.big {
+    max-height: 2000px;
+  }
+}
+.show-more {
+  width: 180px;
+  margin: 10px auto 0;
+  color: #171e27;
+  font-size: 14px;
+  @include center;
+  cursor: pointer;
+}
+.box-related-game {
+  height: 654px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
+  gap: 26px;
+  background: #f5f6f7;
+  border-radius: 18px;
+  padding: 26px;
+  margin-bottom: 24px;
+  .item:hover {
+    .img {
+      transform: scale(1.08);
+    }
+  }
+  .img {
+    width: 128px;
+    height: 128px;
+    border-radius: 18px;
+    margin: 0 auto 10px;
+    transition: transform 0.3s;
+  }
+  .name {
+    width: 128px;
+    color: #171e27;
+    font-size: 16px;
+    line-height: 24px;
+    @include ellipsis;
+    text-align: center;
+  }
+  .date {
+    font-size: 14px;
+    color: #898e97;
+    line-height: 16px;
+    margin-top: 6px;
+    text-align: center;
+  }
+}
+.box-recommend-game {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(158px, 1fr));
+  gap: 26px;
+  .item {
+    width: 158px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    &:hover {
+      .info {
+        background: linear-gradient(0deg, #d762ff, #790eff);
+      }
+      .name,
+      .date {
+        color: #ffffff;
+      }
+      .img {
+        transform: scale(1.1);
+      }
+    }
+  }
+  .img {
+    position: absolute;
+    width: 92px;
+    height: 92px;
+    border-radius: 14px;
+    transition: 0.2s linear;
+  }
+  .info {
+    width: 158px;
+    height: 158px;
+    background: #f5f6f7;
+    border-radius: 18px;
+    margin-top: 25px;
+    text-align: center;
+    padding-top: 78px;
+  }
+  .name {
+    color: #171e27;
+    font-size: 16px;
+    line-height: 22px;
+    @include ellipsis;
+    padding: 0 10px;
+  }
+  .date {
+    font-size: 14px;
+    color: #898e97;
+    line-height: 16px;
+    margin-top: 6px;
+  }
+}
+.aside {
+  position: absolute;
+  right: 24px;
+  top: 132px;
+  width: 334px;
+  .a-title {
+    font-family: "Poppins-BlackItalic";
+    font-size: 20px;
+    margin-top: 32px;
+    margin-bottom: 16px;
+  }
+  .item {
+    display: block;
+    width: 334px;
+    height: 96px;
+    background: #f5f6f7;
+    border-radius: 14px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    transition: transform 0.3s;
+    &:hover {
+      transform: scale(1.08);
+      .name {
+        color: #780dff;
+      }
+      .date::before {
+        background: #c13dfe;
+      }
+      .download {
+        color: #ffffff;
+        @include bg("btn_download_aside.png");
+      }
+    }
+  }
+  .img {
+    width: 72px;
+    height: 96px;
+    border-radius: 14px;
+    margin-right: 16px;
+  }
+  .info {
+    width: 156px;
+  }
+  .name {
+    @include ellipsis;
+    font-size: 14px;
+    color: #171e27;
+    line-height: 24px;
+  }
+  .category {
+    font-size: 13px;
+    color: #898e97;
+    line-height: 16px;
+    margin: 4px 0 4px;
+  }
+  .date {
+    font-size: 12px;
+    color: #898e97;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+    &::before {
+      content: "";
+      display: block;
+      width: 8px;
+      height: 8px;
+      background: #780dff;
+      border-radius: 50%;
+      margin-top: -2px;
+      margin-right: 10px;
+    }
+  }
+  .download {
+    width: 86px;
+    height: 30px;
+    background: #ffffff;
+    border-radius: 15px;
+    @include center;
+    font-size: 12px;
+    color: #171e27;
+    font-family: "Poppins-SemiBold";
+    margin-left: -12px;
+  }
+}
+
+@media screen and (max-width: 879px) {
+  .aside,
+  .breadcrumb {
+    display: none;
+  }
+  .show-more-desc {
+    font-size: vw(28);
+    line-height: vw(35);
+    margin-top: vw(20);
+    max-height: vw(70);
+  }
+  .show-more {
+    width: vw(300);
+    margin: vw(16) auto 0;
+    font-size: vw(28);
+  }
+  .icon-show-more {
+    width: vw(20);
+    height: vw(20);
+    margin-top: vw(-4);
+    margin-left: vw(12);
+    &.less {
+      margin-top: vw(-6);
+    }
+  }
+
+  .box-related-game {
+    height: vw(728);
+    grid-template-columns: repeat(auto-fit, vw(154));
+    gap: vw(32) vw(60);
+    border-radius: vw(32);
+    padding: vw(32);
+    margin: 0 vw(46) vw(16);
+    .item:hover {
+      .img {
+        transform: scale(1);
+      }
+    }
+    .img {
+      width: vw(154);
+      height: vw(154);
+      border-radius: vw(24);
+      margin: 0 auto vw(16);
+    }
+    .name {
+      width: vw(154);
+      font-size: vw(24);
+      line-height: vw(32);
+    }
+    .date {
+      display: none;
+    }
+  }
+  .box-recommend-game {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, vw(204));
+    gap: vw(23);
+    padding: 0 vw(46);
+    .item {
+      width: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      &:hover {
+        .info {
+          background: linear-gradient(0deg, #d762ff, #790eff);
+        }
+        .name,
+        .date {
+          color: #ffffff;
+        }
+        .img {
+          transform: scale(1.1);
+        }
+      }
+    }
+    .img {
+      position: absolute;
+      width: vw(138);
+      height: vw(138);
+      border-radius: vw(24);
+    }
+    .info {
+      display: block;
+      width: vw(204);
+      height: vw(154);
+      border-radius: vw(38);
+      margin-top: vw(46);
+      padding-top: 0;
+    }
+    .name {
+      color: #171e27;
+      font-size: vw(24);
+      line-height: vw(32);
+      text-align: center;
+      @include ellipsis;
+      padding: vw(108) vw(24) 0;
+    }
+    .date {
+      display: none;
+    }
+  }
+}

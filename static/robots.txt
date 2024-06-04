@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://alltools1.com/sitemap.xml

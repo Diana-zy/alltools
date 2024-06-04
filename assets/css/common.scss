@@ -1,0 +1,87 @@
+.page {
+  position: relative;
+  max-width: 1920px;
+  margin: 0 auto;
+}
+main {
+  position: relative;
+  padding-top: 72px;
+  padding-left: 208px;
+  padding-right: 24px;
+}
+.title-h2 {
+  font-family: "Poppins-BlackItalic";
+  color: #171e27;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  height: 20px;
+  margin-top: 40px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  .see-more {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    font-size: 16px;
+    font-style: italic;
+  }
+}
+.icon-see-more {
+  @include icon(20px, 20px, "icon_see_more.png");
+}
+.icon-best {
+  @include icon(20px, 20px, "icon_t_best.png");
+  margin-right: 4px;
+}
+.icon-latest {
+  @include icon(20px, 20px, "icon_t_latest.png");
+  margin-right: 4px;
+}
+.icon-popular {
+  @include icon(20px, 20px, "icon_t_popular.png");
+  margin-right: 4px;
+}
+.icon-related {
+  @include icon(20px, 20px, "icon_t_related.png");
+  margin-right: 4px;
+}
+.icon-top {
+  @include icon(20px, 20px, "icon_t_top.png");
+  margin-right: 4px;
+}
+@media screen and (max-width: 879px) {
+  .page {
+    padding-bottom: vw(104);
+  }
+  main {
+    position: relative;
+    padding-top: vw(150);
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .title-h2 {
+    font-size: vw(35);
+    height: vw(38);
+    margin-top: vw(46);
+    margin-bottom: vw(32);
+    padding: 0 vw(46);
+    .see-more {
+      font-size: vw(28);
+    }
+  }
+  .icon-see-more,
+  .icon-best,
+  .icon-related,
+  .icon-latest,
+  .icon-popular,
+  .icon-top {
+    width: vw(38);
+    height: vw(38);
+    margin-right: vw(8);
+  }
+}
+.pc-hidden {
+  display: none;
+}
