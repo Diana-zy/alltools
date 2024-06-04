@@ -3,49 +3,63 @@
     <Loading />
   </div>
 </template>
+
 <script>
 export default {
   data() {
     return {
       loading: true,
-      timer: null
+      timer: null,
+      mutationObserver: null
     };
   },
   mounted() {
-    const _this = this;
-
-    _this.timer = setTimeout(() => {
-      _this.loading = false;
-      mutationObserver.disconnect();
-    }, 2600);
-
-    const mutationObserver = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.type === "attributes") {
+    console.log("mounted");
+    this.startLoadingTimeout();
+    this.observeMutations();
+  },
+  methods: {
+    startLoadingTimeout() {
+      this.timer = setTimeout(() => {
+        this.loading = false;
+        this.cleanUp();
+      }, 2600);
+    },
+    observeMutations() {
+      this.mutationObserver = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
           if (
+            mutation.type === "attributes" &&
             mutation.target.matches("ins.adsbygoogle") &&
             mutation.attributeName === "data-vignette-loaded"
           ) {
-            const value = mutation.target.getAttribute("data-vignette-loaded");
-            if (value === "true") {
-              _this.loading = false;
-              mutationObserver.disconnect();
-              clearTimeout(_this.timer);
-            }
+            this.loading = false;
+            this.cleanUp();
           }
-        }
+        });
       });
-    });
 
-    mutationObserver.observe(document.documentElement, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ["data-vignette-loaded"]
-    });
+      this.mutationObserver.observe(document.documentElement, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ["data-vignette-loaded"]
+      });
+    },
+    cleanUp() {
+      if (this.timer) {
+        clearTimeout(this.timer);
+        this.timer = null;
+      }
+      if (this.mutationObserver) {
+        this.mutationObserver.disconnect();
+        this.mutationObserver = null;
+      }
+    }
   }
 };
 </script>
+
 <style lang="scss" scoped>
 .mask-loading {
   width: 100%;
