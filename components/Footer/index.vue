@@ -59,8 +59,6 @@ export default {
   methods: {
     async submitEmail() {
       if (validateEmail(this.input)) {
-        // eslint-disable-next-line no-undef
-        dataLayer.push({ event: "sgjhfliadkgusd" });
         await this.$axios.$post("/api/game/subscribe", {
           site_id: process.env.SITE_ID,
           email: this.input

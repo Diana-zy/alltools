@@ -57,8 +57,6 @@ export default {
         });
         return;
       }
-      // eslint-disable-next-line no-undef
-      dataLayer.push({ event: "dfhgsakdljfdslf" });
       simulateSearch(this.input);
     },
     installPWA() {

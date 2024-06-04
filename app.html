@@ -102,18 +102,18 @@
         // 根据条件执行不同逻辑
         if (1 === window.i_like_it) {
           // 点击穿插广告
-          dataLayer.push({ event: "bodmpqbesfqfdu" });
-        } else {
-          dataLayer.push({ event: "vtfbdljdsfqdu" });
+          dataLayer.push({ event: "D_AL" });
         }
+        // 用户点击跳转
+        dataLayer.push({ event: "D_RE" });
         window.isPageUnloading = true;
       });
       // 监听 hash 变化事件 --- 判断穿插全屏广告出现
       window.addEventListener("hashchange", () => {
         if ("#google_vignette" == window.location.hash) {
           window.i_like_it = 1;
-          // 打点穿插广告出现 - 触发穿插
-          dataLayer.push({ event: "usfhhiqwjohuufbe" });
+          // 触发穿插
+          dataLayer.push({ event: "C_AL" });
         }
       });
       // 监听消息事件
@@ -125,13 +125,14 @@
         ) {
           window.i_like_it = 0;
           // 关闭穿插广告
-          dataLayer.push({ event: "dmpdfwjohuufbe" });
+          dataLayer.push({ event: "G_AL" });
         }
       });
       // 监听失去焦点事件
       window.addEventListener("blur", () => {
         const activeElement = document.activeElement,
           sourceAttribute = activeElement.getAttribute("src");
+        console.log("blur", activeElement, sourceAttribute);
         if (
           sourceAttribute &&
           -1 !== sourceAttribute.indexOf("googleads.g.doubleclick.net/pagead/ads?")
@@ -143,7 +144,7 @@
           }
           if ("filled" == adStatus) {
             // 点击页内广告
-            dataLayer.push({ event: "dlikodbsplueb" });
+            dataLayer.push({ event: "D_IP" });
           }
         } else if (
           sourceAttribute &&
@@ -151,7 +152,7 @@
         ) {
           if (-1 !== sourceAttribute.indexOf("btvi=")) {
             // 点击锚定广告
-            dataLayer.push({ event: "cbosdobdliko" });
+            dataLayer.push({ event: "D_FI" });
           }
         }
       });
