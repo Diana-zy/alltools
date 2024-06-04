@@ -44,7 +44,7 @@ export default {
 
 <style lang="scss" scoped>
 .title {
-  background: #780dff;
+  background: $color1;
   font-size: 20px;
   line-height: 30px;
   color: #ffffff;

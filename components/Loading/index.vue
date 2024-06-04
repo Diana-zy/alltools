@@ -23,7 +23,7 @@ export default {};
 .loading-bars div {
   width: 5px;
   height: 14px;
-  background: #780dff;
+  background: $color1;
   transform-origin: center center;
   animation: grow-shrink 1s infinite ease-in-out;
 }

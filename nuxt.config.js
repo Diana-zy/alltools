@@ -92,8 +92,8 @@ export default {
         "Alltools1 is a platform that gathers countless young gamers with the best free online games. All of our games are designed to provide young people with a better way to relax and have fun, with healthy gameplay and a wide range of styles waiting for your selection. When you are looking for fun through games, Alltools1 will be your faithful choice, offering you a more comprehensive range of games, the most diverse selection and as many new surprises as possible!",
       icons: [
         {
-          src: "/icons/36.png",
-          sizes: "36x36",
+          src: "/icons/32.png",
+          sizes: "32x32",
           type: "image/png"
         },
         {

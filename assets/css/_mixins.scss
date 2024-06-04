@@ -1,3 +1,6 @@
+$color1: #5bad6d;
+$color2: #e6a526;
+
 @function vw($size) {
   @return calc($size/750) * 100vw;
 }
@@ -6,13 +9,6 @@
   @return calc($size/1024) * 100vw;
 }
 
-@mixin clearfix() {
-  &::after {
-    content: "";
-    display: table;
-    clear: both;
-  }
-}
 @mixin icon($w, $h, $url) {
   display: inline-block;
   width: $w;
@@ -26,27 +22,6 @@
   background-size: 100% 100%;
 }
 
-@mixin ellipsis() {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-// 定义 mixin 来实现多行文本超出隐藏效果
-@mixin ellipsis-row($lineCount: 1) {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: $lineCount;
-  -webkit-box-orient: vertical;
-  text-overflow: ellipsis;
-}
-
-@mixin center() {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 @mixin btn-img($width, $height, $url) {
   width: $width;
   height: $height;
@@ -54,7 +29,25 @@
   background-image: url("~/assets/images/" + $url);
   background-size: 100% 100%;
   @include center;
-  font-family: "Poppins-SemiBold";
   color: #ffffff;
-  padding-top: 0.1em;
+}
+
+@mixin ellipsis($lineCount: 1) {
+  @if $lineCount == 1 {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  } @else {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: $lineCount;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+  }
+}
+
+@mixin center() {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

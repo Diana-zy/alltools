@@ -34,7 +34,7 @@ export default {
   bottom: 40px;
   left: 20px;
   padding: 24px;
-  background: #eecf02;
+  background: $color2;
   box-shadow: 0px 2px 3px 0px rgba(5, 31, 98, 0.55);
   border-radius: 10px;
   color: #ffffff;
@@ -44,10 +44,9 @@ export default {
   transition: transform 0.5s ease; /* 添加过渡效果 */
   z-index: 999;
   &.success {
-    background: #780dff;
+    background: $color1;
   }
 }
-
 .slide-leave-to {
   transform: translateX(-130%); /* 进入时从左侧滑入，离开时向左侧滑出 */
 }
