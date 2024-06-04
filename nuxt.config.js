@@ -69,7 +69,13 @@ export default {
     "~/plugins/global-data"
   ],
   components: true,
-  buildModules: ["@nuxtjs/style-resources", "@nuxt/image", "@nuxtjs/pwa", "@nuxtjs/sitemap"],
+  buildModules: [
+    "@nuxtjs/style-resources",
+    "@nuxt/image",
+    "@nuxtjs/pwa",
+    "@nuxtjs/sitemap",
+    "nuxt-purgecss"
+  ],
   css: ["@/assets/css/fonts.css", "@/assets/css/reset.css", "@/assets/css/common.scss"],
   styleResources: {
     scss: ["~/assets/css/_mixins.scss"]
