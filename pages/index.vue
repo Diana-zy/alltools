@@ -1,9 +1,18 @@
 <template>
   <div class="page">
     <Header />
-    <main>
-      <section></section>
-      <h2 class="title-h2">Best Apps </h2>
+    <main class="main">
+      <nav class="nav">
+        <CustomLink to="/app/" class="nav-item nav-app">
+          <h3 class="title">Popular Apps</h3>
+          <div class="btn">Download Now</div>
+        </CustomLink>
+        <CustomLink to="/game/" class="nav-item nav-game">
+          <h3 class="title">Popular Games</h3>
+          <div class="btn">Download Now</div>
+        </CustomLink>
+      </nav>
+      <h2 class="title-h2">Best Apps</h2>
       <section class="box-scroll">
         <CustomLink
           v-for="(item, i) in bestGames"
@@ -14,73 +23,97 @@
           <NuxtImg
             format="auto"
             fit="cover"
-            width="314"
-            height="182"
-            :src="item.pc_img || item.icon"
-            :alt="item.name"
-            class="img"
-            loading="lazy"
-          />
-          <NuxtImg
-            format="auto"
-            fit="cover"
-            width="180"
-            height="180"
+            width="100"
+            height="100"
             :src="item.icon"
             :alt="item.name"
             class="icon"
             :loading="i < 5 ? 'eager' : 'lazy'"
           />
-          <p class="name">{{ item.name }}</p>
-          <div class="btn-view">VIEW</div>
+          <div class="info">
+            <p class="name">{{ item.name }}</p>
+            <p class="category">{{ item.category_name }}</p>
+            <p class="rating">{{ item.rating || 4.6 }}<i class="icon-rating"></i></p>
+          </div>
+          <p class="arrow"></p>
         </CustomLink>
       </section>
       <h2 class="title-h2">Best Games</h2>
       <section class="box-scroll">
-        <CustomLink v-for="(item, i) in newGames" :key="i" :to="`/game/${item.path}/`" class="item">
+        <CustomLink
+          v-for="(item, i) in bestGames"
+          :key="i"
+          :to="`/game/${item.path}/`"
+          class="item"
+        >
           <NuxtImg
             format="auto"
             fit="cover"
-            width="180"
-            height="180"
+            width="100"
+            height="100"
             :src="item.icon"
             :alt="item.name"
-            class="img"
-            :loading="i < 5 ? 'eager' : 'lazy'"
+            class="icon"
+            loading="lazy"
           />
-          <p class="name">{{ item.name }}</p>
+          <div class="info">
+            <p class="name">{{ item.name }}</p>
+            <p class="category">{{ item.category_name }}</p>
+            <p class="rating">{{ item.rating || 4.6 }}<i class="icon-rating"></i></p>
+          </div>
+          <p class="arrow"></p>
         </CustomLink>
       </section>
       <h2 class="title-h2">Hot Apps</h2>
       <section class="box-scroll">
-        <CustomLink v-for="(item, i) in newGames" :key="i" :to="`/game/${item.path}/`" class="item">
+        <CustomLink
+          v-for="(item, i) in bestGames"
+          :key="i"
+          :to="`/game/${item.path}/`"
+          class="item"
+        >
           <NuxtImg
             format="auto"
             fit="cover"
-            width="180"
-            height="180"
+            width="100"
+            height="100"
             :src="item.icon"
             :alt="item.name"
-            class="img"
-            :loading="i < 5 ? 'eager' : 'lazy'"
+            class="icon"
+            loading="lazy"
           />
-          <p class="name">{{ item.name }}</p>
+          <div class="info">
+            <p class="name">{{ item.name }}</p>
+            <p class="category">{{ item.category_name }}</p>
+            <p class="rating">{{ item.rating || 4.6 }}<i class="icon-rating"></i></p>
+          </div>
+          <p class="arrow"></p>
         </CustomLink>
       </section>
       <h2 class="title-h2">Hot Games</h2>
       <section class="box-scroll">
-        <CustomLink v-for="(item, i) in newGames" :key="i" :to="`/game/${item.path}/`" class="item">
+        <CustomLink
+          v-for="(item, i) in bestGames"
+          :key="i"
+          :to="`/game/${item.path}/`"
+          class="item"
+        >
           <NuxtImg
             format="auto"
             fit="cover"
-            width="180"
-            height="180"
+            width="100"
+            height="100"
             :src="item.icon"
             :alt="item.name"
-            class="img"
-            :loading="i < 5 ? 'eager' : 'lazy'"
+            class="icon"
+            loading="lazy"
           />
-          <p class="name">{{ item.name }}</p>
+          <div class="info">
+            <p class="name">{{ item.name }}</p>
+            <p class="category">{{ item.category_name }}</p>
+            <p class="rating">{{ item.rating || 4.6 }}<i class="icon-rating"></i></p>
+          </div>
+          <p class="arrow"></p>
         </CustomLink>
       </section>
     </main>
@@ -151,4 +184,47 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+  .nav-item {
+    width: 592px;
+    height: 187px;
+    border-radius: 16px;
+    color: #fff;
+    padding-left: 34px;
+  }
+  .nav-app {
+    @include bg("app.webp");
+    .btn {
+      color: #008055;
+    }
+  }
+  .nav-game {
+    @include bg("game.webp");
+    .btn {
+      color: #5e0c98;
+    }
+  }
+  .title {
+    font-size: 28px;
+    font-family: "seb";
+    margin-top: 46px;
+    margin-bottom: 18px;
+  }
+  .btn {
+    width: 147px;
+    height: 40px;
+    background: #ffffff;
+    border-radius: 8px;
+    font-family: "sesb";
+    @include center;
+  }
+}
+</style>

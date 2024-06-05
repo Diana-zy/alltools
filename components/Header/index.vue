@@ -78,8 +78,6 @@ export default {
   align-items: center;
   height: 64px;
   position: relative;
-  max-width: 1200px;
-  margin: 0 auto;
   z-index: 1;
   &:before {
     content: "";
@@ -98,7 +96,7 @@ export default {
   height: 100%;
   font-size: 22px;
   color: $font1;
-  @include btn-img(163px, 34px, "logo_text.png");
+  @include btn-img(163px, 34px, "logo-text.png");
   background-size: 121px 22px;
   background-position: right center;
   background-repeat: no-repeat;
@@ -118,7 +116,7 @@ export default {
   cursor: pointer;
 }
 .icon-pwa {
-  @include icon(24px, 24px, "icon_pwa.png");
+  @include icon(24px, 24px, "icon-pwa.png");
   margin-right: 4px;
 }
 .pc-search {
@@ -133,12 +131,12 @@ export default {
   margin-left: auto;
   .search {
     &::placeholder {
-      color: rgba($color: $font1, $alpha: 0.4);
+      color: rgba($font1, 0.4);
     }
   }
 }
 .icon-search {
-  @include icon(24px, 24px, "icon_search.png");
+  @include icon(24px, 24px, "icon-search.png");
   cursor: pointer;
 }
 </style>
