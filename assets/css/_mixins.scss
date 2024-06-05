@@ -1,5 +1,6 @@
 $color1: #5bad6d;
 $color2: #e6a526;
+$font1: #41414c;
 
 @function vw($size) {
   @return calc($size/750) * 100vw;

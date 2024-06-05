@@ -1,20 +1,15 @@
 <template>
   <header class="header">
+    <!-- logo -->
+    <CustomLink to="/" class="logo"><i class="icon-logo"></i></CustomLink>
     <!-- 下载到桌面 -->
-    <div class="header-menu">
-      <div v-if="showInstallButton" class="pwa-download" @click="installPWA">
-        <span>TO DESKTOP</span>
-      </div>
-      <!-- 随机详情 -->
-      <div class="random-detail" @click="randomGame"><i></i>RANDOM</div>
+    <div v-if="showInstallButton" class="pwa-download" @click="installPWA">
+      <i class="icon-pwa"></i><span>TO DESKTOP</span>
     </div>
 
-    <!-- logo -->
-    <CustomLink to="/" class="logo"><i class="icon-logo"></i>Alltools1</CustomLink>
-
     <!-- pc 搜索 -->
-    <div class="pc-search-box">
-      <input v-model="input" placeholder="SEARCH" class="search" @keyup.enter="search" />
+    <div class="pc-search">
+      <input v-model="input" placeholder="SEARCH" class="search m-hidden" @keyup.enter="search" />
       <i class="icon-search" @click="search"></i>
     </div>
     <!-- 移动 搜索 -->
@@ -77,4 +72,73 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.header {
+  display: flex;
+  align-items: center;
+  height: 64px;
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  z-index: 1;
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    height: 100%;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.16);
+    z-index: -1;
+  }
+}
+.logo {
+  display: flex;
+  height: 100%;
+  font-size: 22px;
+  color: $font1;
+  @include btn-img(163px, 34px, "logo_text.png");
+  background-size: 121px 22px;
+  background-position: right center;
+  background-repeat: no-repeat;
+}
+.icon-logo {
+  @include icon(34px, 34px, "logo.png");
+  margin-right: auto;
+}
+.pwa-download {
+  @include center;
+  width: 132px;
+  height: 32px;
+  background: #5bad6d;
+  border-radius: 8px;
+  color: #fff;
+  margin-left: 24px;
+  cursor: pointer;
+}
+.icon-pwa {
+  @include icon(24px, 24px, "icon_pwa.png");
+  margin-right: 4px;
+}
+.pc-search {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  width: 320px;
+  height: 40px;
+  background: #f5f5f5;
+  border-radius: 100px;
+  margin-left: auto;
+  .search {
+    &::placeholder {
+      color: rgba($color: $font1, $alpha: 0.4);
+    }
+  }
+}
+.icon-search {
+  @include icon(24px, 24px, "icon_search.png");
+  cursor: pointer;
+}
+</style>
