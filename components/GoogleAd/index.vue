@@ -45,8 +45,7 @@ export default {
 <style lang="scss" scoped>
 .title {
   background: $color1;
-  font-size: 20px;
-  line-height: 30px;
+  line-height: 24px;
   color: #ffffff;
   text-align: center;
 }

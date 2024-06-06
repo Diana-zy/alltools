@@ -14,107 +14,44 @@
       </nav>
       <h2 class="title-h2">Best Apps</h2>
       <section class="box-scroll">
-        <CustomLink
-          v-for="(item, i) in bestGames"
-          :key="i"
+        <ContentItemRow
+          v-for="(item, index) in bestGames"
+          :key="index"
+          :item="item"
+          :index="index"
+          :eager="3"
           :to="`/game/${item.path}/`"
-          class="item"
-        >
-          <NuxtImg
-            format="auto"
-            fit="cover"
-            width="100"
-            height="100"
-            :src="item.icon"
-            :alt="item.name"
-            class="icon"
-            :loading="i < 5 ? 'eager' : 'lazy'"
-          />
-          <div class="info">
-            <p class="name">{{ item.name }}</p>
-            <p class="category">{{ item.category_name }}</p>
-            <p class="rating">{{ item.rating || 4.6 }}<i class="icon-rating"></i></p>
-          </div>
-          <p class="arrow"></p>
-        </CustomLink>
+        />
       </section>
       <h2 class="title-h2">Best Games</h2>
       <section class="box-scroll">
-        <CustomLink
-          v-for="(item, i) in bestGames"
-          :key="i"
+        <ContentItemRow
+          v-for="(item, index) in bestGames"
+          :key="index"
+          :item="item"
+          :index="index"
           :to="`/game/${item.path}/`"
-          class="item"
-        >
-          <NuxtImg
-            format="auto"
-            fit="cover"
-            width="100"
-            height="100"
-            :src="item.icon"
-            :alt="item.name"
-            class="icon"
-            loading="lazy"
-          />
-          <div class="info">
-            <p class="name">{{ item.name }}</p>
-            <p class="category">{{ item.category_name }}</p>
-            <p class="rating">{{ item.rating || 4.6 }}<i class="icon-rating"></i></p>
-          </div>
-          <p class="arrow"></p>
-        </CustomLink>
+        />
       </section>
       <h2 class="title-h2">Hot Apps</h2>
       <section class="box-scroll">
-        <CustomLink
-          v-for="(item, i) in bestGames"
-          :key="i"
+        <ContentItemRow
+          v-for="(item, index) in bestGames"
+          :key="index"
+          :item="item"
+          :index="index"
           :to="`/game/${item.path}/`"
-          class="item"
-        >
-          <NuxtImg
-            format="auto"
-            fit="cover"
-            width="100"
-            height="100"
-            :src="item.icon"
-            :alt="item.name"
-            class="icon"
-            loading="lazy"
-          />
-          <div class="info">
-            <p class="name">{{ item.name }}</p>
-            <p class="category">{{ item.category_name }}</p>
-            <p class="rating">{{ item.rating || 4.6 }}<i class="icon-rating"></i></p>
-          </div>
-          <p class="arrow"></p>
-        </CustomLink>
+        />
       </section>
       <h2 class="title-h2">Hot Games</h2>
       <section class="box-scroll">
-        <CustomLink
-          v-for="(item, i) in bestGames"
-          :key="i"
+        <ContentItemRow
+          v-for="(item, index) in bestGames"
+          :key="index"
+          :item="item"
+          :index="index"
           :to="`/game/${item.path}/`"
-          class="item"
-        >
-          <NuxtImg
-            format="auto"
-            fit="cover"
-            width="100"
-            height="100"
-            :src="item.icon"
-            :alt="item.name"
-            class="icon"
-            loading="lazy"
-          />
-          <div class="info">
-            <p class="name">{{ item.name }}</p>
-            <p class="category">{{ item.category_name }}</p>
-            <p class="rating">{{ item.rating || 4.6 }}<i class="icon-rating"></i></p>
-          </div>
-          <p class="arrow"></p>
-        </CustomLink>
+        />
       </section>
     </main>
     <Footer />
@@ -226,5 +163,11 @@ export default {
     font-family: "sesb";
     @include center;
   }
+}
+
+.box-scroll {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: -16px;
 }
 </style>

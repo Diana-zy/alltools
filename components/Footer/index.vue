@@ -2,9 +2,17 @@
   <footer class="footer">
     <div class="subscription">
       <div class="subscription-content">
-        <p class="text">Subscription</p>
-        <input v-model="input" class="email" placeholder="Email address" />
-        <div class="submit" @click="submitEmail">Submit</div>
+        <p class="text">SUBSCRIPTION</p>
+        <div class="box-submit">
+          <input
+            v-model="input"
+            class="email"
+            placeholder="Email address"
+            name="email"
+            @keyup.enter="submitEmail"
+          />
+          <div class="submit" @click="submitEmail">SUBMIT</div>
+        </div>
       </div>
 
       <div class="introduction">
@@ -78,4 +86,106 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.footer {
+  position: relative;
+  border-top: 1px solid rgba(65, 65, 76, 0.1);
+  margin-top: 32px;
+}
+.subscription {
+  display: flex;
+  justify-content: space-between;
+  flex-flow: row-reverse;
+  padding-top: 32px;
+  padding-bottom: 16px;
+}
+.introduction {
+  color: rgba($font1, 0.6);
+  line-height: 16px;
+  a {
+    font-family: "sesb";
+    color: $font1;
+  }
+}
+.subscription-content {
+  min-width: 390px;
+  margin-left: 40px;
+  .text {
+    color: $font1;
+    font-family: "sesb";
+    font-size: 20px;
+    line-height: 20px;
+    margin-bottom: 16px;
+  }
+  .box-submit {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 40px;
+    background: #f5f5f5;
+    border-radius: 8px;
+  }
+  .email {
+    width: 240px;
+    padding-left: 16px;
+    color: $font1;
+    &::placeholder {
+      color: rgba($font1, 0.4);
+    }
+  }
+  .submit {
+    width: 122px;
+    height: 40px;
+    background: #5bad6d;
+    border-radius: 8px;
+    @include center;
+    font-size: 16px;
+    color: #fff;
+    font-family: "sesb";
+    cursor: pointer;
+  }
+}
+
+.copyright {
+  display: flex;
+  align-items: center;
+  height: 56px;
+  position: relative;
+  z-index: 1;
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    height: 100%;
+    background: #f5f5f5;
+    z-index: -1;
+  }
+  .copyright-content {
+    width: 100%;
+    height: 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: $font1;
+
+    a {
+      color: $font1;
+      flex-shrink: 0;
+      &::after {
+        content: "|";
+        margin-left: 9px;
+        margin-right: 9px;
+        opacity: 0.4;
+      }
+      &:last-child {
+        &::after {
+          content: "";
+        }
+      }
+    }
+  }
+}
+</style>

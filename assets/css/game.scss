@@ -1,0 +1,74 @@
+.icon-breadcrumb {
+  @include icon(24px, 24px, "icon-breadcrumb.png");
+  margin-right: 8px;
+}
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  color: rgba($font1, 0.6);
+  margin-top: 32px;
+  margin-bottom: 32px;
+  span {
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+  .active {
+    color: $font1;
+    font-family: "sesb";
+  }
+}
+.main {
+  width: 770px;
+}
+.application-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 32px;
+  .info {
+    flex-grow: 1;
+  }
+  .icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    margin-right: 16px;
+  }
+  .name {
+    font-family: "sesb";
+    font-size: 20px;
+    color: $font1;
+  }
+  .category {
+    color: rgba($font1, 0.6);
+    margin-top: 7px;
+    margin-bottom: 9px;
+  }
+  .rating {
+    color: rgba($font1, 0.6);
+    display: flex;
+  }
+  .rating-star {
+    width: 60px;
+    height: 12px;
+    @include bg("icon-rating2.png");
+    background-size: 12px 12px;
+    p {
+      height: 12px;
+      @include bg("icon-rating.png");
+      background-size: 12px 12px;
+    }
+  }
+  .get-it-now {
+    width: 120px;
+    height: 40px;
+    background: $color1;
+    border-radius: 8px;
+    color: #ffffff;
+    @include center;
+    cursor: pointer;
+  }
+  .icon-get-it-now {
+    @include icon(24px, 24px, "icon-get-it-now.png");
+    margin-right: 8px;
+  }
+}

@@ -9,7 +9,13 @@
 
     <!-- pc 搜索 -->
     <div class="pc-search">
-      <input v-model="input" placeholder="SEARCH" class="search m-hidden" @keyup.enter="search" />
+      <input
+        v-model="input"
+        placeholder="SEARCH"
+        class="search m-hidden"
+        name="search"
+        @keyup.enter="search"
+      />
       <i class="icon-search" @click="search"></i>
     </div>
     <!-- 移动 搜索 -->
