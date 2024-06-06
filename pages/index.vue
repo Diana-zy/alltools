@@ -13,7 +13,7 @@
         </CustomLink>
       </nav>
       <h2 class="title-h2">Best Apps</h2>
-      <section class="box-scroll">
+      <section class="box-row-scroll">
         <ContentItemRow
           v-for="(item, index) in bestGames"
           :key="index"
@@ -24,7 +24,7 @@
         />
       </section>
       <h2 class="title-h2">Best Games</h2>
-      <section class="box-scroll">
+      <section class="box-row-scroll">
         <ContentItemRow
           v-for="(item, index) in bestGames"
           :key="index"
@@ -34,7 +34,7 @@
         />
       </section>
       <h2 class="title-h2">Hot Apps</h2>
-      <section class="box-scroll">
+      <section class="box-row-scroll">
         <ContentItemRow
           v-for="(item, index) in bestGames"
           :key="index"
@@ -44,7 +44,7 @@
         />
       </section>
       <h2 class="title-h2">Hot Games</h2>
-      <section class="box-scroll">
+      <section class="box-row-scroll">
         <ContentItemRow
           v-for="(item, index) in bestGames"
           :key="index"
@@ -165,7 +165,7 @@ export default {
   }
 }
 
-.box-scroll {
+.box-row-scroll {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   margin-bottom: -16px;

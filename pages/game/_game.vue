@@ -21,7 +21,7 @@
             <div class="rating-star">
               <p :style="{ width: (((currentGame.rating || 4.6) / 5) * 100).toFixed(0) + '%' }"></p>
             </div>
-            {{ currentGame.rating || 4.6 }}
+            {{ currentGame.score || 4.6 }}
           </div>
         </div>
         <div
@@ -109,56 +109,30 @@
         </div>
       </section>
 
-      <h2 class="title-h2"><i class="icon-related"></i>Related Games</h2>
+      <h2 class="title-h2">Related Games</h2>
 
       <!-- Related Games 模块 -->
-      <section class="box-related-game">
-        <CustomLink
-          v-for="(item, i) in relatedGames"
-          :key="i"
+      <section class="box-small-bg">
+        <ContentItemSmall
+          v-for="(item, index) in relatedGames"
+          :key="index"
+          :index="index"
+          :item="item"
           :to="`/game/${item.path}/`"
-          class="item"
-        >
-          <NuxtImg
-            format="auto"
-            fit="cover"
-            width="166"
-            height="166"
-            :src="item.icon"
-            :alt="item.name"
-            loading="lazy"
-            class="img"
-          />
-          <p class="name">{{ item.name }}</p>
-          <p class="date">{{ item.pub_time }}</p>
-        </CustomLink>
+        />
       </section>
 
-      <h2 class="title-h2"><i class="icon-related"></i>RECOMMEND GAMES</h2>
+      <h2 class="title-h2">Recommend Games</h2>
 
       <!-- Recommend Games 模块 -->
-      <section class="box-recommend-game">
-        <CustomLink
-          v-for="(item, i) in recommendGames"
-          :key="i"
+      <section class="box-common">
+        <ContentItemCommon
+          v-for="(item, index) in recommendGames"
+          :key="index"
+          :index="index"
+          :item="item"
           :to="`/game/${item.path}/`"
-          class="item"
-        >
-          <NuxtImg
-            format="auto"
-            fit="cover"
-            width="120"
-            height="120"
-            :src="item.icon"
-            :alt="item.name"
-            loading="lazy"
-            class="img"
-          />
-          <div class="info">
-            <p class="name">{{ item.name }}</p>
-            <p class="date">{{ item.pub_time }}</p>
-          </div>
-        </CustomLink>
+        />
       </section>
 
       <!-- aside - Best Games -->

@@ -10,12 +10,8 @@
       class="icon"
       :loading="index < eager ? 'eager' : 'lazy'"
     />
-    <div class="info">
-      <p class="name">{{ item.name }}</p>
-      <p class="category">{{ item.category_name }}</p>
-      <p class="rating">{{ item.score || 4.6 }}<i class="icon-rating"></i></p>
-    </div>
-    <p class="arrow"></p>
+    <p class="name">{{ item.name }}</p>
+    <p class="rating">{{ item.score || 4.6 }}<i class="icon-rating"></i></p>
   </CustomLink>
 </template>
 
@@ -44,50 +40,32 @@ export default {
 
 <style lang="scss" scoped>
 .item {
-  height: 80px;
-  display: flex;
-  align-items: center;
-  margin-right: 16px;
-  margin-bottom: 16px;
-  padding-left: 6px;
-  padding-right: 8px;
-  border-radius: 16px;
-  transition: background 0.2s;
-}
-.info {
-  flex-grow: 1;
+  display: block;
+  width: 141px;
+  height: 173px;
+  border-radius: 24px;
 }
 .icon {
-  width: 68px;
-  height: 68px;
-  border-radius: 17px;
-  border: 1px solid rgba(65, 65, 76, 0.1);
-  padding: 2px;
-  margin-right: 6px;
+  width: 109px;
+  height: 109px;
+  border-radius: 8px;
+  margin: 16px auto 6px;
 }
 .name {
+  width: 109px;
   color: $font1;
   font-family: "sesb";
-  overflow: hidden;
-  word-break: break-all;
   height: 18px;
   line-height: 18px;
+  @include ellipsis;
+  text-align: center;
   transition: color 0.2s;
-}
-.category {
-  font-size: 12px;
-  color: rgba($font1, 0.6);
-  margin-top: 6px;
-  margin-bottom: 8px;
+  margin-bottom: 2px;
+  margin: 0 auto;
 }
 .rating {
-  display: flex;
-  align-items: center;
-  font-size: 12px;
+  @include center;
   color: rgba($font1, 0.6);
-}
-.arrow {
-  @include icon(24px, 24px, "icon-arrow-right.png");
 }
 .item:hover {
   background: rgba(91, 173, 109, 0.1);
