@@ -140,32 +140,16 @@
         <!-- game-r1: Google Ad 占位 -->
         <GoogleAd ad-slot="8635386842" />
 
-        <div class="a-title">BEST GAMES</div>
+        <h2 class="title-h2">Hot Games</h2>
 
         <section class="box-aside">
-          <CustomLink
-            v-for="(item, i) in bestGames"
-            :key="i"
+          <ContentItemRow
+            v-for="(item, index) in bestGames"
+            :key="index"
+            :item="item"
+            :index="index"
             :to="`/game/${item.path}/`"
-            class="item"
-          >
-            <NuxtImg
-              format="auto"
-              fit="cover"
-              width="94"
-              height="124"
-              :src="item.icon"
-              :alt="item.name"
-              loading="lazy"
-              class="img"
-            />
-            <div class="info">
-              <p class="name">{{ item.name }}</p>
-              <p class="category">{{ item.category_name }}</p>
-              <p class="date">{{ item.pub_time }}</p>
-            </div>
-            <div class="download">Download</div>
-          </CustomLink>
+          />
         </section>
       </aside>
     </main>
@@ -276,128 +260,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "~/assets/css/game.scss";
-.table-info {
-  margin-top: 32px;
-  display: flex;
-  flex-direction: column;
-  border-collapse: collapse;
-  width: 100%;
-  margin: 20px 0;
-  border: 1px solid #d9d9db;
-  font-family: "sesb";
-  color: $font1;
-}
-
-$categories: category, os, size, version, updated;
-@each $category in $categories {
-  .icon-#{$category} {
-    @include icon(20px, 20px, "icon-#{$category}.png");
-    margin-right: 8px;
-  }
-}
-.icon-android {
-  @include icon(16px, 16px, "icon-android.png");
-  margin-right: 8px;
-}
-.icon-ios {
-  @include icon(16px, 16px, "icon-ios.png");
-}
-.link-category {
-  color: $color1;
-  text-decoration-line: underline;
-}
-.table-row {
-  display: flex;
-  border-bottom: 1px solid #d9d9db;
-}
-.table-cell {
-  display: flex;
-  align-items: center;
-  width: 184px;
-  height: 32px;
-  border-right: 1px solid #d9d9db;
-  padding-left: 18px;
-}
-.table-cell:last-child {
-  width: auto;
-  padding-left: 32px;
-  border-right: none;
-}
-.table-row:last-child {
-  border-bottom: none;
-}
-.application-desc {
-  background: #f5f5f5;
-  border-radius: 24px;
-  padding: 24px;
-  margin-bottom: 32px;
-  .img {
-    border-radius: 16px;
-  }
-}
-.swiper-box {
-  height: 352px;
-}
-.swiper-wrapper {
-  height: 288px;
-}
-.swiper-slide {
-  width: auto;
-  height: 288px;
-  margin-right: 16px;
-}
-.swiper-pagination {
-  height: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 8px;
-  position: unset;
-}
-.swiper-tool {
-  height: 32px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 16px;
-}
-.swiper-button-prev,
-.swiper-button-next {
-  position: unset;
-  width: 32px;
-  height: 32px;
-  background: $color1;
-  border-radius: 0px 0px 0px 0px;
-  border-radius: 50%;
-  margin: 0;
-  &::after {
-    color: #fff;
-    font-size: 14px;
-    font-weight: bold;
-  }
-}
-.get-the-game {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 32px;
-  .download {
-    @include center;
-    width: 121px;
-    height: 40px;
-    background: $color1;
-    border-radius: 8px;
-    color: #fff;
-    margin-bottom: 16px;
-  }
-  .icon-download {
-    @include icon(24px, 24px, "icon-download.png");
-    margin-right: 8px;
-  }
-  .tip {
-    color: rgba($font1, 0.6);
-  }
-}
 </style>
 <style>
 @import "swiper/css/swiper.min.css";
