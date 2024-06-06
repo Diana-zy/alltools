@@ -9,6 +9,7 @@
         <span>></span>
         <CustomLink to="/" class="active">{{ currentGame.name }}</CustomLink>
       </nav>
+
       <section class="application-info">
         <NuxtImg
           format="auto"
@@ -351,6 +352,7 @@ $categories: category, os, size, version, updated;
   padding-left: 18px;
 }
 .table-cell:last-child {
+  width: auto;
   padding-left: 32px;
   border-right: none;
 }
