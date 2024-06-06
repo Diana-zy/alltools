@@ -2,14 +2,7 @@
   <div class="page">
     <Header />
     <main class="main">
-      <!-- 面包屑导航 -->
-      <nav class="breadcrumb">
-        <i class="icon-breadcrumb"></i>
-        <CustomLink to="/">Home</CustomLink>
-        <span>></span>
-        <CustomLink to="/" class="active">{{ currentGame.name }}</CustomLink>
-      </nav>
-
+      <Breadcrumb :name="currentGame.name" />
       <section class="application-info">
         <NuxtImg
           format="auto"
