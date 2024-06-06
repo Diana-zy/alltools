@@ -3,11 +3,11 @@
     <Header />
     <main class="main">
       <nav class="nav">
-        <CustomLink to="/app/" class="nav-item nav-app">
+        <CustomLink to="/apps/" class="nav-item nav-app">
           <h3 class="title">Popular Apps</h3>
           <div class="btn">Download Now</div>
         </CustomLink>
-        <CustomLink to="/game/" class="nav-item nav-game">
+        <CustomLink to="/games/" class="nav-item nav-game">
           <h3 class="title">Popular Games</h3>
           <div class="btn">Download Now</div>
         </CustomLink>
