@@ -70,7 +70,7 @@
       </section>
 
       <section class="application-desc">
-        <div class="swiper-bg">
+        <div v-if="currentGame.banner_list.length > 0" class="swiper-bg">
           <div v-swiper:mySwiper="swiperOption" class="swiper-box">
             <div class="swiper-wrapper">
               <div v-for="(banner, i) in currentGame.banner_list" :key="i" class="swiper-slide">
@@ -135,22 +135,16 @@
         />
       </section>
 
-      <!-- aside - Best Games -->
-      <aside class="aside">
-        <!-- game-r1: Google Ad 占位 -->
+      <aside class="box-aside">
         <GoogleAd ad-slot="8635386842" />
-
         <h2 class="title-h2">Hot Games</h2>
-
-        <section class="box-aside">
-          <ContentItemRow
-            v-for="(item, index) in bestGames"
-            :key="index"
-            :item="item"
-            :index="index"
-            :to="`/game/${item.path}/`"
-          />
-        </section>
+        <ContentItemRow
+          v-for="(item, index) in bestGames"
+          :key="index"
+          :item="item"
+          :index="index"
+          :to="`/game/${item.path}/`"
+        />
       </aside>
     </main>
     <Footer />
@@ -261,7 +255,7 @@ export default {
 <style lang="scss" scoped>
 @import "~/assets/css/game.scss";
 </style>
-<style>
+<style lang="scss">
 @import "swiper/css/swiper.min.css";
 
 .swiper-pagination-bullet {

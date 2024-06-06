@@ -29,9 +29,17 @@ body {
   grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
   gap: 24px 16px;
   padding: 24px 22px;
+  margin-bottom: 32px;
 }
 .box-common {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(141px, 1fr));
   gap: 16px;
+}
+
+.box-aside {
+  position: absolute;
+  width: 390px;
+  top: 152px;
+  right: 0;
 }
