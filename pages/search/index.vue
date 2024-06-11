@@ -25,7 +25,10 @@
         {{ matchGameData.count }} Search Results
       </h2>
 
-      <section v-if="!searchLoading && matchGameData.count > 0" class="search-result box-small-bg">
+      <section
+        v-if="!searchLoading && matchGameData.count > 0"
+        class="search-result box-small-bg box-small-bg-search"
+      >
         <div class="number">
           <span>"{{ matchGameData.name }}"</span>, {{ matchGameData.totalCount }} results found
         </div>
@@ -47,20 +50,19 @@
         />
       </section>
 
-      <!-- More Games 模块 -->
-      <h2 class="title-h2">More Games</h2>
+      <h2 class="title-h2">More Apps</h2>
       <section
         v-infinite-scroll="loadMore"
-        class="box-common"
         infinite-scroll-disabled="loading"
         infinite-scroll-distance="0"
+        class="box-common box-common-search"
       >
         <ContentItemCommon
-          v-for="(item, index) in moreGames"
+          v-for="(item, index) in moreApps"
           :key="index"
           :index="index"
           :item="item"
-          :to="`/game/${item.path}/`"
+          :to="`/app/${item.path}/`"
         />
       </section>
       <Loading v-if="loading"></Loading>
@@ -74,23 +76,17 @@
 export default {
   async asyncData({ $axios, env }) {
     try {
-      const [moreGameResponse, allCategoriesResponse] = await Promise.all([
-        $axios.$get("/api/game/all_game", {
+      const [moreAppsResponse] = await Promise.all([
+        $axios.$get("/api/game/all_app", {
           params: {
             site_id: env.SITE_ID,
             page: 1,
-            size: 30
-          }
-        }),
-        $axios.$get("/api/game/get_all_category", {
-          params: {
-            site_id: env.SITE_ID
+            size: 21
           }
         })
       ]);
       return {
-        moreGames: moreGameResponse.list,
-        navCategories: allCategoriesResponse.list.slice(0, 8)
+        moreApps: moreAppsResponse.list
       };
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -115,15 +111,15 @@ export default {
     async loadMore() {
       if (this.loading || this.endOfList) return;
       this.loading = true;
-      const newData = await this.$axios.$get("/api/game/all_game", {
+      const newData = await this.$axios.$get("/api/game/all_app", {
         params: {
           site_id: process.env.SITE_ID,
           page: this.currentPage,
-          size: 36
+          size: 21
         }
       });
 
-      this.moreGames = this.moreGames.concat(newData.list);
+      this.moreApps = this.moreApps.concat(newData.list);
 
       if (newData.list.length === 0 || newData.list.length < 12) {
         this.endOfList = true;
@@ -186,5 +182,12 @@ export default {
       margin-top: 12px;
     }
   }
+}
+.box-small-bg-search {
+  grid-template-columns: repeat(auto-fit, 122px);
+  grid-gap: 24px;
+}
+.box-common-search {
+  grid-template-columns: repeat(auto-fit, 157px);
 }
 </style>

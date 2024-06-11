@@ -41,7 +41,6 @@ export default {
 <style lang="scss" scoped>
 .item {
   display: block;
-  width: 141px;
   height: 173px;
   border-radius: 24px;
 }

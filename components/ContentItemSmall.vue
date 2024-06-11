@@ -41,7 +41,6 @@ export default {
 <style lang="scss" scoped>
 .item {
   display: block;
-  width: 90px;
 }
 .icon {
   width: 68px;
