@@ -32,7 +32,7 @@
         <div class="number">
           <span>"{{ matchGameData.name }}"</span>, {{ matchGameData.totalCount }} results found
         </div>
-        <h3>Apps</h3>
+        <h3 v-if="matchGameData.app_list.length > 0">Apps</h3>
         <ContentItemSmall
           v-for="(item, index) in matchGameData.app_list"
           :key="index"
@@ -40,7 +40,7 @@
           :item="item"
           :to="`/app/${item.path}/`"
         />
-        <h3>Games</h3>
+        <h3 v-if="matchGameData.list.length > 0">Games</h3>
         <ContentItemSmall
           v-for="(item, index) in matchGameData.list"
           :key="index"
