@@ -4,10 +4,15 @@
     <main class="main">
       <h2 class="title-h2">All Apps</h2>
       <GoogleAd ad-slot="4887713525" class="ad1" />
-      <section class="box-common">
+      <section
+        v-infinite-scroll="loadMore"
+        infinite-scroll-disabled="loading"
+        infinite-scroll-distance="0"
+        class="box-common"
+      >
         <GoogleAd ad-slot="9948468514" class="ad2" />
         <ContentItemCommon
-          v-for="(item, index) in allGames"
+          v-for="(item, index) in allApps"
           :key="index"
           :index="index"
           :item="item"
@@ -19,7 +24,7 @@
         <GoogleAd ad-slot="8635386842" />
         <h2 class="title-h2">Hot Apps</h2>
         <ContentItemRow
-          v-for="(item, index) in recommendGames"
+          v-for="(item, index) in hotApps"
           :key="index"
           :item="item"
           :index="index"
@@ -36,8 +41,8 @@
 export default {
   async asyncData({ $axios, env }) {
     try {
-      const [allGamesResponse, recommendGamesResponse] = await Promise.all([
-        $axios.$get("/api/game/all_game", {
+      const [allAppsResponse, hotAppsResponse] = await Promise.all([
+        $axios.$get("/api/game/all_app", {
           params: {
             site_id: env.SITE_ID,
             page: 1,
@@ -47,34 +52,39 @@ export default {
         $axios.$get("/api/game/menu", {
           params: {
             site_id: env.SITE_ID,
-            mod_id: "subrec-games",
+            mod_id: "hot-apps",
             size: 12
           }
         })
       ]);
 
       return {
-        allGames: allGamesResponse.list,
-        recommendGames: recommendGamesResponse.list
+        allApps: allAppsResponse.list,
+        hotApps: hotAppsResponse.list
       };
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   },
+  data() {
+    return {
+      loading: false,
+      endOfList: false,
+      currentPage: 2
+    };
+  },
   methods: {
     async loadMore() {
       if (this.loading || this.endOfList) return;
       this.loading = true;
-      const newData = await this.$axios.$get("/api/game/all_game", {
+      const newData = await this.$axios.$get("/api/game/all_app", {
         params: {
           site_id: process.env.SITE_ID,
           page: this.currentPage,
           size: 30
         }
       });
-
-      this.allGames = this.allGames.concat(newData.list);
-
+      this.allApps = this.allApps.concat(newData.list);
       if (newData.list.length === 0 || newData.list.length < 30) {
         this.endOfList = true;
       }
