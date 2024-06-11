@@ -18,6 +18,7 @@ export default {};
   height: 40px;
   gap: 6px;
   margin-top: 40px;
+  margin-bottom: 40px;
 }
 
 .loading-bars div {

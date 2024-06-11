@@ -1,0 +1,190 @@
+<template>
+  <div class="page">
+    <Header />
+    <main>
+      <Breadcrumb name="Search" />
+
+      <!-- 移动端独占 -->
+      <section class="m-search-box pc-hidden">
+        <input v-model="input" class="text" type="text" placeholder="Search" />
+        <p class="m-search" @click="searchGame"><i class="icon-search"></i></p>
+      </section>
+
+      <!-- 搜索中 -->
+      <section v-if="searchLoading" class="searching">
+        <Loading />
+      </section>
+
+      <!-- 搜索无结果 -->
+      <section v-if="!searchLoading && matchGameData.count == 0" class="search-null">
+        Sorry, No <span>&nbsp;"{{ matchGameData.name }}"&nbsp;</span> found
+      </section>
+
+      <!-- 搜索有结果 -->
+      <h2 v-if="!searchLoading && matchGameData.count > 0" class="title-h2 pc-hidden">
+        {{ matchGameData.count }} Search Results
+      </h2>
+
+      <section v-if="!searchLoading && matchGameData.count > 0" class="search-result box-small-bg">
+        <div class="number">
+          <span>"{{ matchGameData.name }}"</span>, {{ matchGameData.totalCount }} results found
+        </div>
+        <h3>Apps</h3>
+        <ContentItemSmall
+          v-for="(item, index) in matchGameData.app_list"
+          :key="index"
+          :index="index"
+          :item="item"
+          :to="`/app/${item.path}/`"
+        />
+        <h3>Games</h3>
+        <ContentItemSmall
+          v-for="(item, index) in matchGameData.list"
+          :key="index"
+          :index="index"
+          :item="item"
+          :to="`/game/${item.path}/`"
+        />
+      </section>
+
+      <!-- More Games 模块 -->
+      <h2 class="title-h2">More Games</h2>
+      <section
+        v-infinite-scroll="loadMore"
+        class="box-common"
+        infinite-scroll-disabled="loading"
+        infinite-scroll-distance="0"
+      >
+        <ContentItemCommon
+          v-for="(item, index) in moreGames"
+          :key="index"
+          :index="index"
+          :item="item"
+          :to="`/game/${item.path}/`"
+        />
+      </section>
+      <Loading v-if="loading"></Loading>
+    </main>
+    <Footer />
+    <BackTop />
+  </div>
+</template>
+
+<script>
+export default {
+  async asyncData({ $axios, env }) {
+    try {
+      const [moreGameResponse, allCategoriesResponse] = await Promise.all([
+        $axios.$get("/api/game/all_game", {
+          params: {
+            site_id: env.SITE_ID,
+            page: 1,
+            size: 30
+          }
+        }),
+        $axios.$get("/api/game/get_all_category", {
+          params: {
+            site_id: env.SITE_ID
+          }
+        })
+      ]);
+      return {
+        moreGames: moreGameResponse.list,
+        navCategories: allCategoriesResponse.list.slice(0, 8)
+      };
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  },
+  data() {
+    return {
+      searchLoading: false,
+      loading: false,
+      endOfList: false,
+      currentPage: 2,
+      collapsed: true,
+      matchGameData: {},
+      input: ""
+    };
+  },
+  mounted() {
+    this.input = this.$route.query.text || "";
+    this.input && this.searchGame();
+  },
+  methods: {
+    async loadMore() {
+      if (this.loading || this.endOfList) return;
+      this.loading = true;
+      const newData = await this.$axios.$get("/api/game/all_game", {
+        params: {
+          site_id: process.env.SITE_ID,
+          page: this.currentPage,
+          size: 36
+        }
+      });
+
+      this.moreGames = this.moreGames.concat(newData.list);
+
+      if (newData.list.length === 0 || newData.list.length < 12) {
+        this.endOfList = true;
+      }
+      this.loading = false;
+      this.currentPage++;
+    },
+    async searchGame() {
+      if (this.input.length < 2) {
+        this.$globalMethod.showNotification({
+          message: "Please enter at least 2 characters",
+          type: "warning"
+        });
+        return;
+      }
+      this.searchLoading = true;
+
+      const matchGamesResponse = await this.$axios.$post("/api/game/search", {
+        site_id: process.env.SITE_ID,
+        name: this.input
+      });
+
+      this.searchLoading = false;
+      this.matchGameData = matchGamesResponse;
+      this.matchGameData.totalCount = matchGamesResponse.count + matchGamesResponse.app_count;
+    }
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+.searching,
+.search-null {
+  width: 100%;
+  height: 120px;
+  background: #f5f5f5;
+  border-radius: 24px 24px 24px 24px;
+  @include center;
+}
+.search-null,
+.search-result .number {
+  font-size: 20px;
+  font-family: "sesb";
+  color: rgba($font1, 0.6);
+  span {
+    color: $color1;
+  }
+}
+.search-result {
+  .number {
+    grid-column: 1 / -1;
+    text-align: center;
+  }
+  h3 {
+    grid-column: 1 / -1;
+    color: $font1;
+    font-size: 24px;
+    font-family: "sesb";
+    &:last-of-type {
+      margin-top: 12px;
+    }
+  }
+}
+</style>
