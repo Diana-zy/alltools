@@ -18,9 +18,9 @@
 
       <section
         v-infinite-scroll="loadMore"
-        class="box-common"
         infinite-scroll-disabled="loading"
         infinite-scroll-distance="0"
+        class="box-common"
       >
         <ContentItemCommon
           v-for="(item, index) in allGames"

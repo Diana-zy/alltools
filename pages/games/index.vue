@@ -4,7 +4,12 @@
     <main class="main">
       <h2 class="title-h2">All Games</h2>
       <GoogleAd ad-slot="4887713525" class="ad1" />
-      <section class="box-common">
+      <section
+        v-infinite-scroll="loadMore"
+        infinite-scroll-disabled="loading"
+        infinite-scroll-distance="0"
+        class="box-common"
+      >
         <GoogleAd ad-slot="9948468514" class="ad2" />
         <ContentItemCommon
           v-for="(item, index) in allGames"
@@ -14,12 +19,13 @@
           :to="`/game/${item.path}/`"
         />
       </section>
+      <Loading v-if="loading"></Loading>
 
       <aside class="box-aside">
         <GoogleAd ad-slot="8635386842" />
         <h2 class="title-h2">Hot Games</h2>
         <ContentItemRow
-          v-for="(item, index) in recommendGames"
+          v-for="(item, index) in HotGames"
           :key="index"
           :item="item"
           :index="index"
@@ -36,7 +42,7 @@
 export default {
   async asyncData({ $axios, env }) {
     try {
-      const [allGamesResponse, recommendGamesResponse] = await Promise.all([
+      const [allGamesResponse, HotGamesResponse] = await Promise.all([
         $axios.$get("/api/game/all_game", {
           params: {
             site_id: env.SITE_ID,
@@ -47,7 +53,7 @@ export default {
         $axios.$get("/api/game/menu", {
           params: {
             site_id: env.SITE_ID,
-            mod_id: "subrec-games",
+            mod_id: "hot-games",
             size: 12
           }
         })
@@ -55,11 +61,18 @@ export default {
 
       return {
         allGames: allGamesResponse.list,
-        recommendGames: recommendGamesResponse.list
+        HotGames: HotGamesResponse.list
       };
     } catch (error) {
       console.error("Error fetching data:", error);
     }
+  },
+  data() {
+    return {
+      loading: false,
+      endOfList: false,
+      currentPage: 2
+    };
   },
   methods: {
     async loadMore() {
