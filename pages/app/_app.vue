@@ -2,26 +2,26 @@
   <div class="page">
     <Header />
     <main class="main">
-      <Breadcrumb :name="currentGame.name" />
+      <Breadcrumb :name="currentApp.name" />
       <section class="application-info">
         <NuxtImg
           format="auto"
           fit="cover"
           width="120"
           height="120"
-          :src="currentGame.icon"
-          :alt="currentGame.name"
+          :src="currentApp.icon"
+          :alt="currentApp.name"
           loading="lazy"
           class="icon"
         ></NuxtImg>
         <div class="info">
-          <div class="name">{{ currentGame.name }}</div>
-          <div class="category">{{ currentGame.category_name }}</div>
+          <div class="name">{{ currentApp.name }}</div>
+          <div class="category">{{ currentApp.category_name }}</div>
           <div class="rating">
             <div class="rating-star">
-              <p :style="{ width: (((currentGame.score || 4.6) / 5) * 100).toFixed(0) + '%' }"></p>
+              <p :style="{ width: (((currentApp.score || 4.6) / 5) * 100).toFixed(0) + '%' }"></p>
             </div>
-            {{ currentGame.score || 4.6 }}
+            {{ currentApp.score || 4.6 }}
           </div>
         </div>
         <div
@@ -43,43 +43,43 @@
         <div class="table-row">
           <div class="table-cell"><i class="icon-category"></i>Category</div>
           <div class="table-cell">
-            <CustomLink :to="`/category/${currentGame.category_path}/`" class="link-category">{{
-              currentGame.category_name
+            <CustomLink :to="`/category/${currentApp.category_path}/`" class="link-category">{{
+              currentApp.category_name
             }}</CustomLink>
           </div>
         </div>
         <div class="table-row">
           <div class="table-cell"><i class="icon-os"></i>OS</div>
           <div class="table-cell"
-            ><i v-if="currentGame.android" class="icon-android"></i
-            ><i v-if="currentGame.ios" class="icon-ios"></i
+            ><i v-if="currentApp.android" class="icon-android"></i
+            ><i v-if="currentApp.ios" class="icon-ios"></i
           ></div>
         </div>
         <div class="table-row">
           <div class="table-cell"><i class="icon-size"></i>Size</div>
-          <div class="table-cell">{{ currentGame.apk_size }}</div>
+          <div class="table-cell">{{ currentApp.apk_size }}</div>
         </div>
         <div class="table-row">
           <div class="table-cell"><i class="icon-version"></i>Version</div>
-          <div class="table-cell">{{ currentGame.version }}</div>
+          <div class="table-cell">{{ currentApp.version }}</div>
         </div>
         <div class="table-row">
           <div class="table-cell"><i class="icon-updated"></i>Updated</div>
-          <div class="table-cell">{{ currentGame.updated_time }}</div>
+          <div class="table-cell">{{ currentApp.updated_time }}</div>
         </div>
       </section>
 
       <section class="application-desc">
-        <div v-if="currentGame.banner_list.length > 0" class="swiper-bg">
+        <div v-if="currentApp.banner_list.length > 0" class="swiper-bg">
           <div v-swiper:mySwiper="swiperOption" class="swiper-box">
             <div class="swiper-wrapper">
-              <div v-for="(banner, i) in currentGame.banner_list" :key="i" class="swiper-slide">
+              <div v-for="(banner, i) in currentApp.banner_list" :key="i" class="swiper-slide">
                 <NuxtImg
                   format="auto"
                   fit="cover"
                   height="288"
                   :src="banner"
-                  :alt="currentGame.name"
+                  :alt="currentApp.name"
                   loading="lazy"
                   class="img"
                 />
@@ -92,7 +92,7 @@
             </div>
           </div>
         </div>
-        <ExpandableText :text="currentGame.desc" />
+        <ExpandableText :text="currentApp.desc" />
       </section>
 
       <div ref="targetElement">
@@ -100,50 +100,48 @@
       </div>
 
       <section class="get-the-game">
-        <CustomLink class="download" :to="`/download/${currentGame.path}/`"
+        <CustomLink class="download" :to="`/download/${currentApp.path}/`"
           ><i class="icon-download"></i>Download
         </CustomLink>
         <div class="tip">
-          * For reference, The {{ currentGame.name }} game websites are all approved, there are no
+          * For reference, The {{ currentApp.name }} game websites are all approved, there are no
           viruses and malware.
         </div>
       </section>
 
-      <h2 class="title-h2">Related Games</h2>
+      <h2 class="title-h2">Related Apps</h2>
 
-      <!-- Related Games 模块 -->
       <section class="box-small-bg">
         <ContentItemSmall
-          v-for="(item, index) in relatedGames"
+          v-for="(item, index) in relatedApps"
           :key="index"
           :index="index"
           :item="item"
-          :to="`/game/${item.path}/`"
+          :to="`/app/${item.path}/`"
         />
       </section>
 
-      <h2 class="title-h2">Recommend Games</h2>
+      <h2 class="title-h2">Recommend App</h2>
 
-      <!-- Recommend Games 模块 -->
       <section class="box-common">
         <ContentItemCommon
-          v-for="(item, index) in recommendGames"
+          v-for="(item, index) in recommendApps"
           :key="index"
           :index="index"
           :item="item"
-          :to="`/game/${item.path}/`"
+          :to="`/app/${item.path}/`"
         />
       </section>
 
       <aside class="box-aside">
         <GoogleAd ad-slot="8635386842" />
-        <h2 class="title-h2">Hot Games</h2>
+        <h2 class="title-h2">Hot Apps</h2>
         <ContentItemRow
-          v-for="(item, index) in bestGames"
+          v-for="(item, index) in hotApps"
           :key="index"
           :item="item"
           :index="index"
-          :to="`/game/${item.path}/`"
+          :to="`/app/${item.path}/`"
         />
       </aside>
     </main>
@@ -165,7 +163,7 @@ export default {
       const lastDashIndex = path.lastIndexOf("-");
       const id = path.substring(lastDashIndex + 1, path.length);
 
-      const [currentGameResponse, relatedGamesResponse, recommendGamesResponse, bestGamesResponse] =
+      const [currentAppResponse, relatedAppsResponse, recommendAppsResponse, hotAppsResponse] =
         await Promise.all([
           $axios.$get("/api/game/detail", {
             params: {
@@ -177,20 +175,21 @@ export default {
             params: {
               site_id: env.SITE_ID,
               game_id: id,
-              size: 24
+              size: 14
             }
           }),
           $axios.$get("/api/game/rec", {
             params: {
               site_id: env.SITE_ID,
-              size: 21,
-              page: 1
+              size: 10,
+              page: 1,
+              type: 3
             }
           }),
           $axios.$get("/api/game/menu", {
             params: {
               site_id: env.SITE_ID,
-              mod_id: "best-games",
+              mod_id: "hot-apps",
               size: 10,
               page: 1
             }
@@ -205,10 +204,10 @@ export default {
       }
 
       return {
-        currentGame: currentGameResponse,
-        relatedGames: relatedGamesResponse.list,
-        recommendGames: recommendGamesResponse.list,
-        bestGames: shuffleArray(bestGamesResponse.list)
+        currentApp: currentAppResponse,
+        relatedApps: relatedAppsResponse.list,
+        recommendApps: recommendAppsResponse.list,
+        hotApps: shuffleArray(hotAppsResponse.list)
       };
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -235,7 +234,7 @@ export default {
   head() {
     return {
       title: `Letsgame9 － dedicated to the dreams and wonders of the young crowd, play with your own colors in the ${
-        this.currentGame.name || "game"
+        this.currentApp.name || "game"
       }!`
     };
   }
