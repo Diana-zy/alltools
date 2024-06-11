@@ -111,7 +111,6 @@
 
       <h2 class="title-h2">Related Games</h2>
 
-      <!-- Related Games 模块 -->
       <section class="box-small-bg">
         <ContentItemSmall
           v-for="(item, index) in relatedGames"
@@ -124,7 +123,6 @@
 
       <h2 class="title-h2">Recommend Games</h2>
 
-      <!-- Recommend Games 模块 -->
       <section class="box-common">
         <ContentItemCommon
           v-for="(item, index) in recommendGames"
@@ -165,47 +163,37 @@ export default {
       const lastDashIndex = path.lastIndexOf("-");
       const id = path.substring(lastDashIndex + 1, path.length);
 
-      const [
-        currentGameResponse,
-        relatedGamesResponse,
-        recommendGamesResponse,
-        bestGamesResponse,
-        allCategoriesResponse
-      ] = await Promise.all([
-        $axios.$get("/api/game/detail", {
-          params: {
-            site_id: env.SITE_ID,
-            game_id: id
-          }
-        }),
-        $axios.$get("/api/game/get_related", {
-          params: {
-            site_id: env.SITE_ID,
-            game_id: id,
-            size: 24
-          }
-        }),
-        $axios.$get("/api/game/rec", {
-          params: {
-            site_id: env.SITE_ID,
-            size: 21,
-            page: 1
-          }
-        }),
-        $axios.$get("/api/game/menu", {
-          params: {
-            site_id: env.SITE_ID,
-            mod_id: "best-games",
-            size: 10,
-            page: 1
-          }
-        }),
-        $axios.$get("/api/game/get_all_category", {
-          params: {
-            site_id: env.SITE_ID
-          }
-        })
-      ]);
+      const [currentGameResponse, relatedGamesResponse, recommendGamesResponse, bestGamesResponse] =
+        await Promise.all([
+          $axios.$get("/api/game/detail", {
+            params: {
+              site_id: env.SITE_ID,
+              game_id: id
+            }
+          }),
+          $axios.$get("/api/game/get_related", {
+            params: {
+              site_id: env.SITE_ID,
+              game_id: id,
+              size: 14
+            }
+          }),
+          $axios.$get("/api/game/rec", {
+            params: {
+              site_id: env.SITE_ID,
+              size: 15,
+              page: 1
+            }
+          }),
+          $axios.$get("/api/game/menu", {
+            params: {
+              site_id: env.SITE_ID,
+              mod_id: "best-games",
+              size: 10,
+              page: 1
+            }
+          })
+        ]);
       function shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1)); // 生成一个随机索引，范围是 [0, i]
@@ -218,8 +206,7 @@ export default {
         currentGame: currentGameResponse,
         relatedGames: relatedGamesResponse.list,
         recommendGames: recommendGamesResponse.list,
-        bestGames: shuffleArray(bestGamesResponse.list),
-        navCategories: allCategoriesResponse.list.slice(0, 8)
+        bestGames: shuffleArray(bestGamesResponse.list)
       };
     } catch (error) {
       console.error("Error fetching data:", error);
