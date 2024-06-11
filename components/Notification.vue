@@ -33,10 +33,9 @@ export default {
   max-width: 400px;
   bottom: 40px;
   left: 20px;
-  padding: 24px;
-  background: $color2;
-  box-shadow: 0px 2px 3px 0px rgba(5, 31, 98, 0.55);
-  border-radius: 10px;
+  padding: 14px 24px;
+  background: rgba($color2, 0.6);
+  border-radius: 8px;
   color: #ffffff;
   line-height: 24px;
   display: flex;
@@ -44,7 +43,7 @@ export default {
   transition: transform 0.5s ease; /* 添加过渡效果 */
   z-index: 999;
   &.success {
-    background: $color1;
+    background: rgba($color1, 0.6);
   }
 }
 .slide-leave-to {
