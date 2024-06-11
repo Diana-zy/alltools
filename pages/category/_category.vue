@@ -2,7 +2,7 @@
   <div class="page">
     <Header />
     <main class="main">
-      <h2 class="title-h2">{{ currentCategoryName }}</h2>
+      <h2 class="title-h2"> {{ currentCategoryName }}</h2>
       <GoogleAd ad-slot="4887713525" class="ad1" />
       <section class="box-common box-category">
         <ContentItemCommon
@@ -10,12 +10,12 @@
           :key="index"
           :index="index"
           :item="item"
-          :to="`/game/${item.path}/`"
+          :to="`/${isApp ? 'app' : 'game'}/${item.path}/`"
         />
       </section>
-      <GoogleAd ad-slot="9948468514" class="ad2" />
-      <h2 class="title-h2">All Games</h2>
 
+      <GoogleAd ad-slot="9948468514" class="ad2" />
+      <h2 class="title-h2">All {{ isApp ? "Apps" : "Games" }}</h2>
       <section
         v-infinite-scroll="loadMore"
         infinite-scroll-disabled="loading"
@@ -23,28 +23,27 @@
         class="box-common"
       >
         <ContentItemCommon
-          v-for="(item, index) in allGames"
+          v-for="(item, index) in allSoftwares"
           :key="index"
           :index="index"
           :item="item"
-          :to="`/game/${item.path}/`"
+          :to="`/${isApp ? 'app' : 'game'}/${item.path}/`"
         />
       </section>
       <Loading v-if="loading"></Loading>
 
       <aside class="box-aside">
         <GoogleAd ad-slot="8635386842" />
-        <h2 class="title-h2">Hot Games</h2>
+        <h2 class="title-h2">Hot {{ isApp ? "Apps" : "Games" }}</h2>
         <ContentItemRow
-          v-for="(item, index) in recommendGames"
+          v-for="(item, index) in hotSoftwares"
           :key="index"
           :item="item"
           :index="index"
-          :to="`/game/${item.path}/`"
+          :to="`/${isApp ? 'app' : 'game'}/${item.path}/`"
         />
       </aside>
     </main>
-
     <Footer />
     <BackTop />
     <AdLoading />
@@ -58,25 +57,16 @@ export default {
       const path = params.category;
       const lastDashIndex = path.lastIndexOf("-");
       const id = path.substring(lastDashIndex + 1, path.length);
+      const currentCategoryResponse = await $axios.$get("/api/game/get_category_game", {
+        params: {
+          site_id: env.SITE_ID,
+          category_id: id
+        }
+      });
+      const isApp = currentCategoryResponse.category.kind === 2;
 
-      const [
-        allCategoriesResponse,
-        currentCategoryResponse,
-        allGamesResponse,
-        recommendGamesResponse
-      ] = await Promise.all([
-        $axios.$get("/api/game/get_all_category", {
-          params: {
-            site_id: env.SITE_ID
-          }
-        }),
-        $axios.$get("/api/game/get_category_game", {
-          params: {
-            site_id: env.SITE_ID,
-            category_id: id
-          }
-        }),
-        $axios.$get("/api/game/all_game", {
+      const [allSoftwaresResponse, hotSoftwaresResponse] = await Promise.all([
+        $axios.$get(`/api/game/${isApp ? "all_app" : "all_game"}`, {
           params: {
             site_id: env.SITE_ID,
             page: 1,
@@ -86,17 +76,19 @@ export default {
         $axios.$get("/api/game/menu", {
           params: {
             site_id: env.SITE_ID,
-            mod_id: "subrec-games",
+            mod_id: isApp ? "hot-apps" : "hot-games",
             size: 12
           }
         })
       ]);
+
       return {
-        navCategories: allCategoriesResponse.list.slice(0, 8),
+        isApp,
         currentCategory: currentCategoryResponse.list,
         currentCategoryName: currentCategoryResponse.category_name,
-        allGames: allGamesResponse.list,
-        recommendGames: recommendGamesResponse.list
+        currentCategoryInfo: currentCategoryResponse.category,
+        allSoftwares: allSoftwaresResponse.list,
+        hotSoftwares: hotSoftwaresResponse.list
       };
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -113,7 +105,7 @@ export default {
     async loadMore() {
       if (this.loading || this.endOfList) return;
       this.loading = true;
-      const newData = await this.$axios.$get("/api/game/all_game", {
+      const newData = await this.$axios.$get(`/api/game/${this.isApp ? "all_app" : "all_game"}`, {
         params: {
           site_id: process.env.SITE_ID,
           page: this.currentPage,
@@ -121,8 +113,7 @@ export default {
         }
       });
 
-      this.allGames = this.allGames.concat(newData.list);
-
+      this.allSoftwares = this.allSoftwares.concat(newData.list);
       if (newData.list.length === 0 || newData.list.length < 30) {
         this.endOfList = true;
       }
