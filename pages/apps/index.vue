@@ -16,7 +16,7 @@
           :key="index"
           :index="index"
           :item="item"
-          :to="`/game/${item.path}/`"
+          :to="`/app/${item.path}/`"
         />
       </section>
 
@@ -28,7 +28,7 @@
           :key="index"
           :item="item"
           :index="index"
-          :to="`/game/${item.path}/`"
+          :to="`/app/${item.path}/`"
         />
       </aside>
     </main>

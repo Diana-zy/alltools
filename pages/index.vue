@@ -20,7 +20,7 @@
           :item="item"
           :index="index"
           :eager="3"
-          :to="`/game/${item.path}/`"
+          :to="`/app/${item.path}/`"
         />
       </section>
       <h2 class="title-h2">Best Games</h2>
@@ -40,7 +40,7 @@
           :key="index"
           :item="item"
           :index="index"
-          :to="`/game/${item.path}/`"
+          :to="`/app/${item.path}/`"
         />
       </section>
       <h2 class="title-h2">Hot Games</h2>
