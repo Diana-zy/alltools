@@ -95,6 +95,7 @@
 
 <script>
 import QRCode from "qrcode";
+import { shuffleArray } from "~/utils/utils";
 
 export default {
   async asyncData({ $axios, params, env }) {
@@ -144,13 +145,6 @@ export default {
           }
         })
       ]);
-      function shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1)); // 生成一个随机索引，范围是 [0, i]
-          [array[i], array[j]] = [array[j], array[i]]; // 交换当前位置和随机位置的元素
-        }
-        return array;
-      }
       return {
         currentGame: currentGameResponse,
         relatedGames: relatedGamesResponse.list,
