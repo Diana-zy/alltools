@@ -46,10 +46,14 @@ body {
   }
 }
 @media screen and (max-width: 750px) {
+  .page {
+    padding: 0;
+  }
   .title-h2 {
     font-size: vw(36);
     margin-top: vw(54);
     margin-bottom: vw(38);
+    padding: 0 vw(46);
   }
   .icon-rating {
     width: vw(24);

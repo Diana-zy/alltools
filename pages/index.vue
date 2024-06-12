@@ -166,6 +166,7 @@ export default {
 }
 @media screen and (max-width: 750px) {
   .nav {
+    padding: 0 vw(46);
     margin-top: vw(48);
     @include scroll;
     .nav-item {
@@ -191,6 +192,7 @@ export default {
     }
   }
   .box-row-scroll {
+    padding: 0 vw(46);
     grid-template-columns: repeat(4, vw(374));
     gap: vw(32);
     @include scroll;

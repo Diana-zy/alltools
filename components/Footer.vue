@@ -136,7 +136,7 @@ export default {
   .submit {
     width: 122px;
     height: 40px;
-    background: #5bad6d;
+    background: $color1;
     border-radius: 8px;
     @include center;
     font-size: 16px;

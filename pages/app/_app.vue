@@ -249,7 +249,7 @@ export default {
   margin: 0 4px;
 }
 .swiper-pagination-bullet-active {
-  border: 2px solid #5bad6d;
+  border: 2px solid $color1;
   background: #ffffff;
 }
 </style>

@@ -1,5 +1,7 @@
 <template>
   <header class="header">
+    <CustomLink class="pc-hidden m-menu" to="/menu/"></CustomLink>
+
     <!-- logo -->
     <CustomLink to="/" class="logo"><i class="icon-logo"></i></CustomLink>
     <!-- 下载到桌面 -->
@@ -100,8 +102,6 @@ export default {
 .logo {
   display: flex;
   height: 100%;
-  font-size: 22px;
-  color: $font1;
   @include btn-img(163px, 34px, "logo-text.png");
   background-size: 121px 22px;
   background-position: right center;
@@ -115,7 +115,7 @@ export default {
   @include center;
   width: 132px;
   height: 32px;
-  background: #5bad6d;
+  background: $color1;
   border-radius: 8px;
   color: #fff;
   margin-left: 24px;
@@ -144,5 +144,56 @@ export default {
 .icon-search {
   @include icon(24px, 24px, "icon-search.png");
   cursor: pointer;
+}
+@media screen and (max-width: 750px) {
+  .header {
+    height: vw(96);
+    padding: 0 vw(46);
+    &:before {
+      box-shadow: 0 vw(8) vw(8) 0 rgba(0, 0, 0, 0.16);
+    }
+  }
+  .m-menu {
+    display: block;
+    @include icon(vw(48), vw(48), "icon-menu.png");
+    margin-right: vw(106);
+  }
+  .logo {
+    @include btn-img(vw(260), vw(55), "logo-text.png");
+    background-size: vw(195) vw(36);
+  }
+  .icon-logo {
+    width: vw(55);
+    height: vw(55);
+    margin-right: auto;
+  }
+  .pwa-download {
+    @include center;
+    width: vw(64);
+    height: vw(64);
+    background: rgba($color1, 0.5);
+    border-radius: 50%;
+    margin-left: vw(22);
+    span {
+      display: none;
+    }
+  }
+  .icon-pwa {
+    @include icon(vw(48), vw(48), "icon-pwa.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: vw(32) vw(32);
+    margin-right: 0;
+    background-color: $color1;
+    border-radius: 50%;
+  }
+  .pc-search {
+    display: none;
+  }
+  .m-search {
+    display: block;
+    @include icon(vw(48), vw(48), "icon-search-m.png");
+    margin-left: auto;
+  }
 }
 </style>
