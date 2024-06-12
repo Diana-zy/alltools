@@ -1,10 +1,10 @@
 <template>
-  <div class="expandable-text">
-    <div :class="{ 'is-expanded': expanded }" class="text-content">
+  <div class="expandable-text" :class="{ 'is-expanded': expanded }">
+    <div class="text-content">
       {{ text }}
     </div>
     <button class="toggle-button" @click="toggleExpand">
-      {{ expanded ? "Show Less" : "Show More" }}
+      {{ expanded ? "Show Less" : "Show More" }}<i class="icon-more"></i>
     </button>
   </div>
 </template>
@@ -51,13 +51,6 @@ export default {
   text-align: left;
 }
 
-.text-content.is-expanded {
-  height: auto;
-  -webkit-line-clamp: unset;
-  line-clamp: unset;
-  box-orient: unset;
-}
-
 .toggle-button {
   background: none;
   border: none;
@@ -66,5 +59,44 @@ export default {
   color: rgba($font1, 0.6);
   font-family: "sesb";
   margin-top: 1em;
+}
+.icon-more {
+  @include icon(14px, 14px, "icon-more.png");
+  margin-left: 8px;
+  transform: translateY(2px);
+}
+.is-expanded {
+  .text-content {
+    height: auto;
+    -webkit-line-clamp: unset;
+    line-clamp: unset;
+    box-orient: unset;
+  }
+  .icon-more {
+    transform: translateY(3px) rotate(180deg);
+  }
+}
+@media screen and (max-width: 750px) {
+  .expandable-text {
+    width: vw(658);
+    padding: vw(32);
+    margin: 0 auto;
+    background: #f5f5f5;
+    border-radius: vw(16);
+    font-size: vw(24);
+  }
+  .toggle-button {
+    font-size: vw(24);
+  }
+  .icon-more {
+    width: vw(28);
+    height: vw(28);
+    transform: translateY(vw(4));
+  }
+  .is-expanded {
+    .icon-more {
+      transform: translateY(vw(6)) rotate(180deg);
+    }
+  }
 }
 </style>

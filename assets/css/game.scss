@@ -54,7 +54,6 @@
   }
 }
 .table-info {
-  margin-top: 32px;
   display: flex;
   flex-direction: column;
   border-collapse: collapse;
@@ -64,7 +63,6 @@
   font-family: "sesb";
   color: $font1;
 }
-
 $categories: category, os, size, version, updated;
 @each $category in $categories {
   .icon-#{$category} {
@@ -173,5 +171,155 @@ $categories: category, os, size, version, updated;
   }
   .tip {
     color: rgba($font1, 0.6);
+  }
+}
+@media screen and (max-width: 1200px) {
+  .main {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 750px) {
+  .application-info {
+    padding: 0 0 0 vw(46);
+    margin-bottom: vw(48);
+    position: relative;
+    .icon {
+      width: vw(120);
+      height: vw(120);
+      border-radius: vw(12);
+      margin-right: vw(16);
+    }
+    .name {
+      width: vw(522);
+      font-size: vw(28);
+      line-height: vw(36);
+      @include ellipsis;
+    }
+    .category {
+      width: vw(320);
+      color: rgba($font1, 0.6);
+      font-size: vw(24);
+      line-height: vw(36);
+      margin-top: vw(18);
+      margin-bottom: vw(6);
+      @include ellipsis;
+    }
+    .rating {
+      font-size: vw(24);
+    }
+    .rating-star {
+      width: vw(120);
+      height: vw(24);
+      background-size: vw(24) vw(24);
+      p {
+        height: vw(24);
+        background-size: vw(24) vw(24);
+      }
+    }
+    .get-it-now {
+      position: absolute;
+      right: vw(46);
+      bottom: 0;
+      width: vw(190);
+      height: vw(64);
+      border-radius: vw(16);
+      font-size: vw(24);
+    }
+    .icon-get-it-now {
+      @include icon(vw(40), vw(40), "icon-get-it-now.png");
+      margin-right: vw(8);
+    }
+  }
+  .table-info {
+    margin: vw(48) 0 vw(24);
+    border: none;
+    font-size: vw(24);
+  }
+
+  $categories: category, os, size, version, updated;
+  @each $category in $categories {
+    .icon-#{$category} {
+      width: vw(40);
+      height: vw(40);
+      margin-right: vw(16);
+    }
+  }
+
+  .icon-android {
+    width: vw(32);
+    height: vw(32);
+    margin-right: vw(16);
+  }
+  .icon-ios {
+    width: vw(32);
+    height: vw(32);
+  }
+  .link-category {
+    font-size: vw(24);
+  }
+  .table-row {
+    border-bottom: none;
+    margin-bottom: vw(24);
+  }
+  .table-cell {
+    width: vw(298);
+    height: vw(40);
+    border-right: none;
+    padding-left: vw(46);
+  }
+  .table-cell:last-child {
+    width: vw(390);
+    @include ellipsis;
+    padding-left: 0;
+  }
+  .application-desc {
+    background: none;
+    border-radius: 0;
+    padding: 0;
+    margin-bottom: vw(48);
+    .img {
+      border-radius: vw(16);
+    }
+  }
+  .swiper-tool {
+    display: none;
+  }
+  .swiper-box {
+    height: vw(320);
+  }
+  .swiper-wrapper {
+    height: vw(320);
+  }
+  .swiper-slide {
+    width: auto;
+    height: vw(320);
+    margin: 0 0 0 vw(16);
+  }
+
+  .get-the-game {
+    margin-top: vw(48);
+    .download {
+      width: vw(210);
+      height: vw(64);
+      border-radius: vw(16);
+      margin-bottom: vw(16);
+      font-size: vw(24);
+    }
+    .icon-download {
+      width: vw(40);
+      height: vw(40);
+      margin-right: vw(8);
+    }
+    .tip {
+      font-size: vw(24);
+      line-height: vw(28);
+      padding: 0 vw(46);
+      text-align: center;
+    }
+  }
+  .box-small-bg {
+    .item:nth-child(n + 10) {
+      display: none;
+    }
   }
 }

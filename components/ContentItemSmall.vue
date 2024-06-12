@@ -71,4 +71,27 @@ export default {
     color: $color1;
   }
 }
+@media screen and (max-width: 750px) {
+  .icon {
+    width: vw(156);
+    height: vw(156);
+    border-radius: vw(24);
+    margin: 0 auto vw(8);
+  }
+  .name {
+    width: vw(156);
+    margin: 0 auto;
+    text-align: center;
+    font-size: vw(24);
+    height: vw(32);
+    line-height: vw(32);
+    @include ellipsis;
+    text-align: center;
+    transition: color 0.2s;
+    margin-bottom: vw(4);
+  }
+  .rating {
+    font-size: vw(24);
+  }
+}
 </style>

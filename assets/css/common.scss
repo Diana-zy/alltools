@@ -45,9 +45,22 @@ body {
     margin-bottom: 16px;
   }
 }
+
+@media screen and (max-width: 1200px) {
+  .box-aside {
+    display: none;
+  }
+  .box-small-bg {
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  }
+  .box-common {
+    grid-template-columns: repeat(auto-fit, minmax(141px, 1fr));
+  }
+}
+
 @media screen and (max-width: 750px) {
   .page {
-    padding: 0;
+    padding: vw(144) 0 0;
   }
   .title-h2 {
     font-size: vw(36);
@@ -58,5 +71,16 @@ body {
   .icon-rating {
     width: vw(24);
     height: vw(24);
+  }
+  .box-small-bg {
+    padding: vw(32) 0;
+    grid-template-columns: repeat(3, vw(200));
+    gap: vw(36) vw(30);
+    margin: 0 vw(46);
+  }
+  .box-common {
+    grid-template-columns: repeat(3, vw(200));
+    gap: vw(32) vw(30);
+    margin: 0 vw(46);
   }
 }

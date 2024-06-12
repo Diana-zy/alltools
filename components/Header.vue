@@ -147,6 +147,10 @@ export default {
 }
 @media screen and (max-width: 750px) {
   .header {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    background: #fff;
     height: vw(96);
     padding: 0 vw(46);
     &:before {
