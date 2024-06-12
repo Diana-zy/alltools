@@ -47,8 +47,6 @@ export default {
   height: 80px;
   display: flex;
   align-items: center;
-  margin-right: 16px;
-  margin-bottom: 16px;
   padding-left: 6px;
   padding-right: 8px;
   border-radius: 16px;
@@ -93,6 +91,46 @@ export default {
   background: rgba(91, 173, 109, 0.1);
   .name {
     color: $color1;
+  }
+}
+@media screen and (max-width: 750px) {
+  .item {
+    height: vw(148);
+    padding-left: vw(18);
+    padding-right: vw(18);
+    border-radius: vw(16);
+  }
+  .icon {
+    width: vw(116);
+    height: vw(116);
+    border-radius: vw(18);
+    border: vw(2) solid rgba(65, 65, 76, 0.1);
+    padding: vw(2);
+    margin-right: vw(12);
+  }
+  .name {
+    width: vw(210);
+    font-size: vw(24);
+    height: vw(36);
+    line-height: vw(36);
+    @include ellipsis;
+  }
+  .category {
+    width: vw(210);
+    font-size: vw(24);
+    height: vw(36);
+    line-height: vw(36);
+    margin-top: 0;
+    margin-bottom: 0;
+    @include ellipsis;
+  }
+  .rating {
+    font-size: vw(24);
+    height: vw(36);
+    line-height: vw(36);
+  }
+  .arrow {
+    display: none;
   }
 }
 </style>

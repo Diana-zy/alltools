@@ -36,10 +36,23 @@ body {
   grid-template-columns: repeat(auto-fit, 141px);
   gap: 16px;
 }
-
 .box-aside {
   position: absolute;
   width: 390px;
   top: 152px;
   right: 0;
+  .item {
+    margin-bottom: 16px;
+  }
+}
+@media screen and (max-width: 750px) {
+  .title-h2 {
+    font-size: vw(36);
+    margin-top: vw(54);
+    margin-bottom: vw(38);
+  }
+  .icon-rating {
+    width: vw(24);
+    height: vw(24);
+  }
 }

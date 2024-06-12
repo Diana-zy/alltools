@@ -125,15 +125,19 @@ export default {
     border-radius: 16px;
     color: #fff;
     padding-left: 34px;
+    background-position: right;
   }
   .nav-app {
     @include bg("app.webp");
+    background-size: cover;
+    margin-right: 16px;
     .btn {
       color: #008055;
     }
   }
   .nav-game {
     @include bg("game.webp");
+    background-size: cover;
     .btn {
       color: #5e0c98;
     }
@@ -158,5 +162,38 @@ export default {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   margin-bottom: -16px;
+  gap: 16px;
+}
+@media screen and (max-width: 750px) {
+  .nav {
+    margin-top: vw(48);
+    @include scroll;
+    .nav-item {
+      width: vw(658);
+      height: vw(208);
+      border-radius: vw(16);
+      padding-left: vw(32);
+      flex-shrink: 0;
+    }
+    .nav-app {
+      margin-right: vw(16);
+    }
+    .title {
+      font-size: vw(36);
+      margin-top: vw(54);
+      margin-bottom: vw(22);
+    }
+    .btn {
+      width: vw(202);
+      height: vw(40);
+      border-radius: vw(8);
+      font-size: vw(24);
+    }
+  }
+  .box-row-scroll {
+    grid-template-columns: repeat(4, vw(374));
+    gap: vw(32);
+    @include scroll;
+  }
 }
 </style>

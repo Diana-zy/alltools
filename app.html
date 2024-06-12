@@ -96,15 +96,14 @@
         if (-1 === elementUrlIndex || window.isUnloaded) {
           return;
         }
-        // 获取 gtm.linkClick 事件的元素 URL
-        // var elementUrl = window.dataLayer[elementUrlIndex]["gtm.elementUrl"];
         // 根据条件执行不同逻辑
         if (1 === window.clickOpen) {
           // 点击穿插广告
           dataLayer.push({ event: "D_AL" });
+        } else {
+          // 用户点击跳转
+          dataLayer.push({ event: "D_RE" });
         }
-        // 用户点击跳转
-        dataLayer.push({ event: "D_RE" });
         window.isUnloaded = true;
       });
       // 监听 hash 变化事件 --- 判断穿插全屏广告出现
