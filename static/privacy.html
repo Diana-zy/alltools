@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PRIVACY POLICY</title>
     <style>
+      :root {
+        --title-color: #5bad6d;
+        --background-color: #ffffff;
+        --text-color: #171e27;
+      }
       *,
       *:before,
       *:after {
@@ -12,16 +17,53 @@
         margin: 0;
         outline: none;
       }
-
       html {
         overscroll-behavior: contain;
         scrollbar-width: thin;
         touch-action: manipulation;
         width: 100%;
+        border-radius: 0px;
+      }
+      main {
+        background: var(--background-color);
+        min-height: 100vh;
+      }
+      .title {
+        color: var(--title-color);
+        display: block;
+        width: 100%;
+        font-weight: bold;
+        font-size: 38px;
+        line-height: 40px;
+        text-align: center;
+        padding-top: 108px;
+        margin-bottom: 64px;
+        unicode-bidi: isolate;
+      }
+      .text {
+        color: var(--text-color);
+        width: 66.666666666%;
+        font-weight: 400;
+        font-size: 30px;
+        line-height: 52px;
+        margin: 0 auto;
+        text-indent: 2em;
+      }
+      @media (max-width: 750px) {
+        .title {
+          font-size: 22px;
+          line-height: 28px;
+          padding-top: 36px;
+          margin-bottom: 36px;
+        }
+        .text {
+          width: 85.866%;
+          font-size: 18px;
+          line-height: 30px;
+        }
       }
     </style>
   </head>
-
   <body>
     <main>
       <p class="title">PRIVACY POLICY</p>
@@ -541,56 +583,5 @@
         </p>
       </div>
     </main>
-
-    <script></script>
-
-    <style>
-      html {
-        border-radius: 0px;
-      }
-
-      main {
-        background: #ffffff;
-        min-height: 100vh;
-      }
-
-      .title {
-        color: #5bad6d;
-        display: block;
-        width: 100%;
-        font-weight: bold;
-        font-size: 38px;
-        line-height: 40px;
-        text-align: center;
-        padding-top: 108px;
-        margin-bottom: 64px;
-        unicode-bidi: isolate;
-      }
-
-      .text {
-        color: #171e27;
-        width: 66.666666666%;
-        font-weight: 400;
-        font-size: 30px;
-        line-height: 52px;
-        margin: 0 auto;
-        text-indent: 2em;
-      }
-
-      @media (max-width: 750px) {
-        .title {
-          font-size: 22px;
-          line-height: 28px;
-          padding-top: 36px;
-          margin-bottom: 36px;
-        }
-
-        .text {
-          width: 85.866%;
-          font-size: 18px;
-          line-height: 30px;
-        }
-      }
-    </style>
   </body>
 </html>
