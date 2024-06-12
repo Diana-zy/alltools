@@ -51,21 +51,23 @@
       </section>
 
       <h2 class="title-h2">More Apps</h2>
-      <section
-        v-infinite-scroll="loadMore"
-        infinite-scroll-disabled="loading"
-        infinite-scroll-distance="0"
-        class="box-common box-common-search"
+      <InfiniteScrollList
+        class="box-common-search"
+        api-endpoint="/api/game/all_app"
+        :initial-page="2"
+        :page-size="21"
+        :initial-items="moreApps"
       >
-        <ContentItemCommon
-          v-for="(item, index) in moreApps"
-          :key="index"
-          :index="index"
-          :item="item"
-          :to="`/app/${item.path}/`"
-        />
-      </section>
-      <Loading v-if="loading"></Loading>
+        <template #default="{ items }">
+          <ContentItemCommon
+            v-for="(item, index) in items"
+            :key="index"
+            :index="index"
+            :item="item"
+            :to="`/app/${item.path}/`"
+          />
+        </template>
+      </InfiniteScrollList>
     </main>
     <Footer />
     <BackTop />
@@ -95,9 +97,6 @@ export default {
   data() {
     return {
       searchLoading: false,
-      loading: false,
-      endOfList: false,
-      currentPage: 2,
       collapsed: true,
       matchGameData: {},
       input: ""
@@ -108,25 +107,6 @@ export default {
     this.input && this.searchGame();
   },
   methods: {
-    async loadMore() {
-      if (this.loading || this.endOfList) return;
-      this.loading = true;
-      const newData = await this.$axios.$get("/api/game/all_app", {
-        params: {
-          site_id: process.env.SITE_ID,
-          page: this.currentPage,
-          size: 21
-        }
-      });
-
-      this.moreApps = this.moreApps.concat(newData.list);
-
-      if (newData.list.length === 0 || newData.list.length < 12) {
-        this.endOfList = true;
-      }
-      this.loading = false;
-      this.currentPage++;
-    },
     async searchGame() {
       if (this.input.length < 2) {
         this.$globalMethod.showNotification({

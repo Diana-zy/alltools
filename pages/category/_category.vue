@@ -16,21 +16,23 @@
 
       <GoogleAd ad-slot="9948468514" class="ad2" />
       <h2 class="title-h2">All {{ isApp ? "Apps" : "Games" }}</h2>
-      <section
-        v-infinite-scroll="loadMore"
-        infinite-scroll-disabled="loading"
-        infinite-scroll-distance="0"
-        class="box-common"
+
+      <InfiniteScrollList
+        :api-endpoint="`/api/game/${isApp ? 'all_app' : 'all_game'}`"
+        :initial-page="2"
+        :page-size="30"
+        :initial-items="allSoftwares"
       >
-        <ContentItemCommon
-          v-for="(item, index) in allSoftwares"
-          :key="index"
-          :index="index"
-          :item="item"
-          :to="`/${isApp ? 'app' : 'game'}/${item.path}/`"
-        />
-      </section>
-      <Loading v-if="loading"></Loading>
+        <template #default="{ items }">
+          <ContentItemCommon
+            v-for="(item, index) in items"
+            :key="index"
+            :index="index"
+            :item="item"
+            :to="`/${isApp ? 'app' : 'game'}/${item.path}/`"
+          />
+        </template>
+      </InfiniteScrollList>
 
       <aside class="box-aside">
         <GoogleAd ad-slot="8635386842" />
@@ -92,33 +94,6 @@ export default {
       };
     } catch (error) {
       console.error("Error fetching data:", error);
-    }
-  },
-  data() {
-    return {
-      loading: false,
-      endOfList: false,
-      currentPage: 2
-    };
-  },
-  methods: {
-    async loadMore() {
-      if (this.loading || this.endOfList) return;
-      this.loading = true;
-      const newData = await this.$axios.$get(`/api/game/${this.isApp ? "all_app" : "all_game"}`, {
-        params: {
-          site_id: process.env.SITE_ID,
-          page: this.currentPage,
-          size: 30
-        }
-      });
-
-      this.allSoftwares = this.allSoftwares.concat(newData.list);
-      if (newData.list.length === 0 || newData.list.length < 30) {
-        this.endOfList = true;
-      }
-      this.loading = false;
-      this.currentPage++;
     }
   }
 };
