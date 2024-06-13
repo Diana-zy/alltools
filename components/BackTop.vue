@@ -77,15 +77,21 @@ export default {
   right: 158px;
   cursor: pointer;
   @include center;
-  .icon-back-top {
-    @include icon(24px, 24px, "icon-back-top.png");
-  }
+}
+.icon-back-top {
+  @include icon(24px, 24px, "icon-back-top.png");
 }
 
-@media screen and (max-width: 879px) {
+@media screen and (max-width: 750px) {
   .btn-back-top {
+    width: vw(80);
+    height: vw(80);
     right: vw(66);
     bottom: vw(105);
+  }
+  .icon-back-top {
+    width: vw(48);
+    height: vw(48);
   }
 }
 .overlapping-ad {
