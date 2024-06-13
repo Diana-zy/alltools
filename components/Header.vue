@@ -153,6 +153,7 @@ export default {
     background: #fff;
     height: vw(96);
     padding: 0 vw(46);
+    z-index: 10;
     &:before {
       box-shadow: 0 vw(8) vw(8) 0 rgba(0, 0, 0, 0.16);
     }
@@ -160,7 +161,7 @@ export default {
   .m-menu {
     display: block;
     @include icon(vw(48), vw(48), "icon-menu.png");
-    margin-right: vw(106);
+    margin-right: auto;
   }
   .logo {
     @include btn-img(vw(260), vw(55), "logo-text.png");

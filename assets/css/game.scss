@@ -295,6 +295,9 @@ $categories: category, os, size, version, updated;
     width: auto;
     height: vw(320);
     margin: 0 0 0 vw(16);
+    img {
+      height: 100%;
+    }
   }
 
   .get-the-game {
