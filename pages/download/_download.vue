@@ -2,7 +2,7 @@
   <div class="page">
     <Header />
     <main class="main">
-      <Breadcrumb :name="currentGame.name" />
+      <Breadcrumb :name="currentSoftware.name" />
 
       <section class="download-info">
         <div class="base-info">
@@ -12,49 +12,49 @@
             width="210"
             height="210"
             class="icon"
-            :src="currentGame.icon"
-            :alt="currentGame.name"
+            :src="currentSoftware.icon"
+            :alt="currentSoftware.name"
           />
           <div class="base-info-content">
             <div class="name">
-              {{ currentGame.name }}
+              {{ currentSoftware.name }}
             </div>
             <div class="version">
-              <p><b>Version:</b> {{ currentGame.version }}</p>
-              <p><b>Size:</b> {{ currentGame.apk_size }}</p>
-              <p><b>Updated:</b> {{ currentGame.updated_time }}</p>
+              <p><b>Version:</b> {{ currentSoftware.version }}</p>
+              <p><b>Size:</b> {{ currentSoftware.apk_size }}</p>
+              <p><b>Updated:</b> {{ currentSoftware.updated_time }}</p>
             </div>
             <div class="platform">
-              <div v-if="currentGame.android" class="android">
+              <div v-if="currentSoftware.android" class="android">
                 <i class="icon-android"></i>Android
                 <div class="qrcode">
                   Android
                   <img :src="qrCodeGoogle" alt="qrcode" />
                 </div>
-                <a :href="currentGame.android_web_url"></a>
+                <a :href="currentSoftware.android_web_url"></a>
               </div>
 
-              <div v-if="currentGame.ios" class="ios">
+              <div v-if="currentSoftware.ios" class="ios">
                 <i class="icon-ios"></i>iOS
                 <div class="qrcode">
                   iOS
                   <img :src="qrCodeIos" alt="qrcode" />
                 </div>
-                <a :href="currentGame.ios_web_url"></a>
+                <a :href="currentSoftware.ios_web_url"></a>
               </div>
             </div>
           </div>
         </div>
 
-        <ExpandableText :text="currentGame.desc" />
+        <ExpandableText :text="currentSoftware.desc" />
       </section>
 
       <GoogleAd ad-slot="4960785586" />
 
-      <h2 class="title-h2">Related Games</h2>
+      <h2 class="title-h2">Related {{ isApp ? "Apps" : "Games" }}</h2>
       <section class="box-small-bg">
         <ContentItemSmall
-          v-for="(item, index) in relatedGames"
+          v-for="(item, index) in relatedSoftwares"
           :key="index"
           :index="index"
           :item="item"
@@ -64,10 +64,10 @@
 
       <GoogleAd ad-slot="5542405363" />
 
-      <h2 class="title-h2">Recommend Games</h2>
+      <h2 class="title-h2">Recommend {{ isApp ? "Apps" : "Games" }}</h2>
       <section class="box-common">
         <ContentItemCommon
-          v-for="(item, index) in recommendGames"
+          v-for="(item, index) in allSoftwares"
           :key="index"
           :index="index"
           :item="item"
@@ -77,9 +77,9 @@
 
       <aside class="box-aside">
         <GoogleAd ad-slot="8635386842" />
-        <h2 class="title-h2">Hot Games</h2>
+        <h2 class="title-h2">Hot {{ isApp ? "Apps" : "Games" }}</h2>
         <ContentItemRow
-          v-for="(item, index) in bestGames"
+          v-for="(item, index) in hotSoftwares"
           :key="index"
           :item="item"
           :index="index"
@@ -104,42 +104,45 @@ export default {
       const lastDashIndex = path.lastIndexOf("-");
       const id = path.substring(lastDashIndex + 1, path.length);
 
-      const [currentGameResponse, relatedGamesResponse, recommendGamesResponse, bestGamesResponse] =
-        await Promise.all([
-          $axios.$get("/api/game/detail", {
-            params: {
-              site_id: env.SITE_ID,
-              game_id: id
-            }
-          }),
-          $axios.$get("/api/game/get_related", {
-            params: {
-              site_id: env.SITE_ID,
-              game_id: id,
-              size: 24
-            }
-          }),
-          $axios.$get("/api/game/rec", {
-            params: {
-              site_id: env.SITE_ID,
-              size: 21,
-              page: 1
-            }
-          }),
-          $axios.$get("/api/game/menu", {
-            params: {
-              site_id: env.SITE_ID,
-              mod_id: "best-games",
-              size: 10,
-              page: 1
-            }
-          })
-        ]);
+      const [currentSoftwareResponse, relatedSoftwaresResponse] = await Promise.all([
+        $axios.$get("/api/game/detail", {
+          params: {
+            site_id: env.SITE_ID,
+            game_id: id
+          }
+        }),
+        $axios.$get("/api/game/get_related", {
+          params: {
+            site_id: env.SITE_ID,
+            game_id: id,
+            size: 24
+          }
+        })
+      ]);
+      const isApp = currentSoftwareResponse.type === 3;
+
+      const [allSoftwaresResponse, hotSoftwaresResponse] = await Promise.all([
+        $axios.$get(`/api/game/${isApp ? "all_app" : "all_game"}`, {
+          params: {
+            site_id: env.SITE_ID,
+            page: 1,
+            size: 30
+          }
+        }),
+        $axios.$get("/api/game/menu", {
+          params: {
+            site_id: env.SITE_ID,
+            mod_id: isApp ? "hot-apps" : "hot-games",
+            size: 12
+          }
+        })
+      ]);
       return {
-        currentGame: currentGameResponse,
-        relatedGames: relatedGamesResponse.list,
-        recommendGames: recommendGamesResponse.list,
-        bestGames: shuffleArray(bestGamesResponse.list)
+        isApp,
+        currentSoftware: currentSoftwareResponse,
+        relatedSoftwares: relatedSoftwaresResponse.list,
+        allSoftwares: allSoftwaresResponse.list,
+        hotSoftwares: shuffleArray(hotSoftwaresResponse.list)
       };
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -147,20 +150,18 @@ export default {
   },
   data() {
     return {
-      collapsed: true,
       qrCodeGoogle: "",
       qrCodeIos: ""
     };
   },
   mounted() {
-    if (this.currentGame.ios_web_url) {
-      this.generateQRCode(this.currentGame.ios_web_url).then((data) => {
+    if (this.currentSoftware.ios_web_url) {
+      this.generateQRCode(this.currentSoftware.ios_web_url).then((data) => {
         this.qrCodeIos = data;
       });
     }
-
-    if (this.currentGame.android_web_url) {
-      this.generateQRCode(this.currentGame.android_web_url).then((data) => {
+    if (this.currentSoftware.android_web_url) {
+      this.generateQRCode(this.currentSoftware.android_web_url).then((data) => {
         this.qrCodeGoogle = data;
       });
     }
