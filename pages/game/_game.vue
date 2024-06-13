@@ -7,8 +7,8 @@
         <NuxtImg
           format="auto"
           fit="cover"
-          width="120"
-          height="120"
+          width="156"
+          height="156"
           :src="currentGame.icon"
           :alt="currentGame.name"
           loading="lazy"

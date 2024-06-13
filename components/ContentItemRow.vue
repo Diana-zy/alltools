@@ -3,8 +3,8 @@
     <NuxtImg
       format="auto"
       fit="cover"
-      width="100"
-      height="100"
+      width="148"
+      height="148"
       :src="item.icon"
       :alt="item.name"
       class="icon"
