@@ -19,7 +19,7 @@
           :key="index"
           :item="item"
           :index="index"
-          :eager="3"
+          :eager="10"
           :to="`/app/${item.path}/`"
         />
       </section>
@@ -30,6 +30,7 @@
           :key="index"
           :item="item"
           :index="index"
+          :eager="10"
           :to="`/game/${item.path}/`"
         />
       </section>
