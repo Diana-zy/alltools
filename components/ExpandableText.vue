@@ -78,9 +78,7 @@ export default {
 }
 @media screen and (max-width: 750px) {
   .expandable-text {
-    width: vw(658);
     padding: vw(32);
-    margin: 0 auto;
     background: #f5f5f5;
     border-radius: vw(16);
     font-size: vw(24);

@@ -92,7 +92,7 @@
             </div>
           </div>
         </div>
-        <ExpandableText :text="currentGame.desc" />
+        <ExpandableText class="expand" :text="currentGame.desc" />
       </section>
 
       <div ref="targetElement">

@@ -180,7 +180,7 @@ $categories: category, os, size, version, updated;
 }
 @media screen and (max-width: 750px) {
   .application-info {
-    padding: 0 0 0 vw(46);
+    padding: vw(48) 0 0 vw(46);
     margin-bottom: vw(48);
     position: relative;
     .icon {
@@ -280,6 +280,9 @@ $categories: category, os, size, version, updated;
     .img {
       border-radius: vw(16);
     }
+  }
+  .expand {
+    margin: 0 vw(46);
   }
   .swiper-tool {
     display: none;

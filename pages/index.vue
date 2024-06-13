@@ -167,7 +167,7 @@ export default {
 @media screen and (max-width: 750px) {
   .nav {
     padding: 0 vw(46);
-    margin-top: 0;
+    margin-top: vw(48);
     @include scroll;
     .nav-item {
       width: vw(658);
