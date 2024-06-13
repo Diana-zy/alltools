@@ -59,6 +59,9 @@ body {
 }
 
 @media screen and (max-width: 750px) {
+  .pc-hidden {
+    display: block;
+  }
   .page {
     padding: vw(96) 0 0;
   }

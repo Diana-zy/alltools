@@ -6,7 +6,13 @@
 
       <!-- 移动端独占 -->
       <section class="m-search-box pc-hidden">
-        <input v-model="input" class="text" type="text" placeholder="Search" />
+        <input
+          v-model="input"
+          class="text"
+          type="text"
+          placeholder="Search"
+          @keyup.enter="searchGame"
+        />
         <p class="m-search" @click="searchGame"><i class="icon-search"></i></p>
       </section>
 
@@ -19,11 +25,6 @@
       <section v-if="!searchLoading && matchGameData.count == 0" class="search-null">
         Sorry, No <span>&nbsp;"{{ matchGameData.name }}"&nbsp;</span> found
       </section>
-
-      <!-- 搜索有结果 -->
-      <h2 v-if="!searchLoading && matchGameData.count > 0" class="title-h2 pc-hidden">
-        {{ matchGameData.count }} Search Results
-      </h2>
 
       <section
         v-if="!searchLoading && matchGameData.count > 0"
@@ -43,7 +44,7 @@
         <h3 v-if="matchGameData.list.length > 0">Games</h3>
         <ContentItemSmall
           v-for="(item, index) in matchGameData.list"
-          :key="index"
+          :key="index + 10000"
           :index="index"
           :item="item"
           :to="`/game/${item.path}/`"
@@ -169,5 +170,72 @@ export default {
 }
 .box-common-search {
   grid-template-columns: repeat(auto-fit, 157px);
+}
+@media screen and (max-width: 1235px) {
+  .box-small-bg-search {
+    grid-template-columns: repeat(auto-fit, minmax(122px, 1fr));
+  }
+  .box-common-search {
+    grid-template-columns: repeat(auto-fit, minmax(157px, 1fr));
+  }
+}
+@media screen and (max-width: 750px) {
+  .m-search-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: vw(48) vw(46);
+    height: vw(96);
+    background: #e4e4e4;
+    border-radius: vw(60);
+    padding-right: vw(6);
+    .text {
+      width: vw(476);
+      padding-left: vw(32);
+      font-size: vw(32);
+      color: $font1;
+      &::placeholder {
+        color: rgba($font1, 0.6);
+      }
+    }
+    .m-search {
+      width: vw(144);
+      height: vw(84);
+      background: $color1;
+      border-radius: vw(120);
+      @include center;
+    }
+    .icon-search {
+      @include icon(vw(48), vw(48), "icon-search2.png");
+    }
+  }
+  .searching,
+  .search-null {
+    width: auto;
+    height: vw(240);
+    border-radius: vw(16);
+    margin: 0 vw(46);
+  }
+  .search-null,
+  .search-result .number {
+    font-size: vw(28);
+  }
+  .search-result {
+    h3 {
+      font-size: vw(36);
+      padding-left: vw(32);
+      &:last-of-type {
+        margin-top: vw(22);
+      }
+    }
+  }
+  .box-small-bg-search {
+    grid-template-columns: repeat(3, vw(200));
+    gap: vw(32) vw(30);
+  }
+  .box-common-search {
+    grid-template-columns: repeat(3, vw(200));
+    gap: vw(32) vw(30);
+  }
 }
 </style>
