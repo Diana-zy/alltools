@@ -9,6 +9,16 @@
         :to="`/category/${item.path}/`"
         class="category-item"
       >
+        <NuxtImg
+          v-if="item.icon_dark"
+          format="auto"
+          fit="cover"
+          width="100"
+          height="100"
+          :src="item.icon_dark"
+          :alt="item.name"
+          class="icon"
+        />
         <span>{{ item.name }}</span>
       </CustomLink>
     </div>
@@ -20,6 +30,16 @@
         :to="`/category/${item.path}/`"
         class="category-item"
       >
+        <NuxtImg
+          v-if="item.icon_dark"
+          format="auto"
+          fit="cover"
+          width="100"
+          height="100"
+          :src="item.icon_dark || ''"
+          :alt="item.name"
+          class="icon"
+        />
         <span>{{ item.name }}</span>
       </CustomLink>
     </div>
@@ -54,13 +74,19 @@ export default {
   display: flex;
   flex-wrap: wrap;
   padding: 0 vw(46);
+  font-size: vw(28);
 }
 .category-item {
-  display: block;
+  display: flex;
   align-items: center;
   padding: 0 vw(16);
   width: vw(328);
   height: vw(80);
   @include ellipsis;
+  .icon {
+    width: vw(48);
+    height: vw(48);
+    margin-right: vw(16);
+  }
 }
 </style>

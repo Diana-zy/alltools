@@ -2,7 +2,18 @@
   <div class="page">
     <Header />
     <main class="main">
-      <h2 class="title-h2"> {{ currentCategoryName }}</h2>
+      <h2 class="title-h2">
+        <NuxtImg
+          v-if="currentCategoryInfo.icon_dark"
+          format="auto"
+          fit="cover"
+          width="100"
+          height="100"
+          :src="currentCategoryInfo.icon_dark || ''"
+          :alt="currentCategoryName"
+          class="icon"
+        />{{ currentCategoryName }}</h2
+      >
       <GoogleAd ad-slot="4887713525" class="ad1" />
       <section class="box-common box-category">
         <ContentItemCommon
@@ -83,7 +94,6 @@ export default {
           }
         })
       ]);
-
       return {
         isApp,
         currentCategory: currentCategoryResponse.list,
@@ -106,5 +116,32 @@ export default {
 .box-category {
   margin-bottom: 32px;
   margin-top: 24px;
+}
+.title-h2 {
+  display: flex;
+  align-items: center;
+  .icon {
+    width: 48px;
+    height: 48px;
+    margin-right: 16px;
+  }
+}
+@media screen and (max-width: 1235px) {
+  .main {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 750px) {
+  .title-h2 {
+    .icon {
+      width: vw(48);
+      height: vw(48);
+      margin-right: vw(16);
+    }
+  }
+  .box-category {
+    margin-bottom: vw(48);
+    margin-top: vw(36);
+  }
 }
 </style>

@@ -78,4 +78,16 @@ export default {
   grid-row-end: 4;
   grid-column: 1/-1;
 }
+@media screen and (max-width: 1235px) {
+  .main {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 750px) {
+  .box-common {
+    grid-template-columns: repeat(3, vw(200));
+    margin: vw(36) 0 vw(48);
+    justify-content: center;
+  }
+}
 </style>
