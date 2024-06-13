@@ -14,6 +14,16 @@
       :to="`/category/${item.path}/`"
       class="menu-item"
     >
+      <NuxtImg
+        v-if="item.icon_dark"
+        format="auto"
+        fit="cover"
+        width="62"
+        height="62"
+        :src="item.icon_dark || ''"
+        :alt="item.name"
+        class="icon"
+      />
       {{ item.name }}
     </CustomLink>
   </div>
@@ -70,5 +80,10 @@ $items: home, games, apps, categories;
     @include icon(vw(48), vw(48), "icon-#{$item}.png");
     margin-right: 16px;
   }
+}
+.icon {
+  width: vw(48);
+  height: vw(48);
+  margin-right: vw(16);
 }
 </style>
