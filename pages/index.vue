@@ -37,7 +37,7 @@
       <h2 class="title-h2">Hot Apps</h2>
       <section class="box-row-scroll">
         <ContentItemRow
-          v-for="(item, index) in bestGames"
+          v-for="(item, index) in hotApps"
           :key="index"
           :item="item"
           :index="index"
@@ -47,7 +47,7 @@
       <h2 class="title-h2">Hot Games</h2>
       <section class="box-row-scroll">
         <ContentItemRow
-          v-for="(item, index) in bestGames"
+          v-for="(item, index) in hotGames"
           :key="index"
           :item="item"
           :index="index"

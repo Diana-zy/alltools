@@ -182,7 +182,8 @@ export default {
           $axios.$get("/api/game/rec", {
             params: {
               site_id: env.SITE_ID,
-              size: 15,
+              type: 1,
+              size: 14,
               page: 1
             }
           }),
