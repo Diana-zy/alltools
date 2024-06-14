@@ -76,7 +76,7 @@
       </section>
 
       <aside class="box-aside">
-        <GoogleAd ad-slot="8635386842" />
+        <GoogleAd ad-slot="2334622241" />
         <h2 class="title-h2">Hot {{ isApp ? "Apps" : "Games" }}</h2>
         <ContentItemRow
           v-for="(item, index) in hotSoftwares"

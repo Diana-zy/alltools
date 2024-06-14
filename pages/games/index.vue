@@ -3,7 +3,7 @@
     <Header />
     <main class="main">
       <h2 class="title-h2">All Games</h2>
-      <GoogleAd ad-slot="4887713525" class="ad1" />
+      <GoogleAd ad-slot="8763414748" class="ad1" />
       <InfiniteScrollList
         api-endpoint="/api/game/all_game"
         :initial-page="2"
@@ -11,7 +11,7 @@
         :initial-items="allGames"
       >
         <template #default="{ items }">
-          <GoogleAd ad-slot="9948468514" class="ad2" />
+          <GoogleAd ad-slot="2321634636" class="ad2" />
           <ContentItemCommon
             v-for="(item, index) in items"
             :key="index"
@@ -23,7 +23,7 @@
       </InfiniteScrollList>
 
       <aside class="box-aside">
-        <GoogleAd ad-slot="8635386842" />
+        <GoogleAd ad-slot="1008552965" />
         <h2 class="title-h2">Hot Games</h2>
         <ContentItemRow
           v-for="(item, index) in HotGames"

@@ -14,7 +14,7 @@
           class="icon"
         />{{ currentCategoryName }}</h2
       >
-      <GoogleAd ad-slot="4887713525" class="ad1" />
+      <GoogleAd ad-slot="4504570149" class="ad1" />
       <section class="box-common box-category">
         <ContentItemCommon
           v-for="(item, index) in currentCategory"
@@ -25,7 +25,7 @@
         />
       </section>
 
-      <GoogleAd ad-slot="9948468514" class="ad2" />
+      <GoogleAd ad-slot="1268068106" class="ad2" />
       <h2 class="title-h2">All {{ isApp ? "Apps" : "Games" }}</h2>
 
       <InfiniteScrollList
@@ -46,7 +46,7 @@
       </InfiniteScrollList>
 
       <aside class="box-aside">
-        <GoogleAd ad-slot="8635386842" />
+        <GoogleAd ad-slot="1391696348" />
         <h2 class="title-h2">Hot {{ isApp ? "Apps" : "Games" }}</h2>
         <ContentItemRow
           v-for="(item, index) in hotSoftwares"

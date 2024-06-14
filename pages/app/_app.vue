@@ -37,7 +37,7 @@
         </div>
       </section>
 
-      <GoogleAd ad-slot="4887713525" />
+      <GoogleAd ad-slot="5973599876" />
 
       <section class="table-info">
         <div class="table-row">
@@ -96,7 +96,7 @@
       </section>
 
       <div ref="targetElement">
-        <GoogleAd ad-slot="9948468514" />
+        <GoogleAd ad-slot="8408191527" />
       </div>
 
       <section class="get-the-game">
@@ -134,7 +134,7 @@
       </section>
 
       <aside class="box-aside">
-        <GoogleAd ad-slot="8635386842" />
+        <GoogleAd ad-slot="3079348389" />
         <h2 class="title-h2">Hot Apps</h2>
         <ContentItemRow
           v-for="(item, index) in hotApps"
