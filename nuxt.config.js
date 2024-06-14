@@ -3,7 +3,6 @@ import OptimizeCSSAssetsPlugin from "optimize-css-assets-webpack-plugin";
 
 export default {
   target: "static",
-  // debug: true,
   server: {
     host: "0.0.0.0"
   },
@@ -16,10 +15,23 @@ export default {
     interval: 100,
     async routes() {
       const postsData = await fetch(
-        `${process.env.PROD_API_URL}/api/game/get_all_path?site_id=${process.env.SITE_ID}`
+        `${process.env.PROD_API_URL}/api/game/get_all_path_v2?site_id=${process.env.SITE_ID}`
       );
       const posts = await postsData.json();
-      const urls = posts.data.category.concat(posts.data.detail).concat(posts.data.download);
+      const gameCategoryPaths = posts.data.game_category.map((item) => `/category/${item}`);
+      const appCategoryPaths = posts.data.app_category.map((item) => `/category/${item}`);
+      const gameDetailPaths = posts.data.game_detail.map((item) => `/game/${item}`);
+      const appDetailPaths = posts.data.app_detail.map((item) => `/app/${item}`);
+      const gameDownloadPaths = posts.data.app_detail.map((item) => `/download/${item}`);
+      const appDownloadPaths = posts.data.app_detail.map((item) => `/download/${item}`);
+      const urls = [
+        ...gameCategoryPaths,
+        ...appCategoryPaths,
+        ...gameDetailPaths,
+        ...appDetailPaths,
+        ...gameDownloadPaths,
+        ...appDownloadPaths
+      ];
       return urls;
     }
   },
