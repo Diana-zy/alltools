@@ -86,3 +86,17 @@ body {
     margin: 0 vw(46);
   }
 }
+
+.swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  background: #dadada;
+  border-radius: 50%;
+  opacity: 1;
+  box-sizing: content-box;
+  margin: 0 4px;
+}
+.swiper-pagination-bullet-active {
+  border: 2px solid #5bad6d;
+  background: #ffffff;
+}

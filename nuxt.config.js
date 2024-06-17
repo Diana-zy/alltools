@@ -199,5 +199,8 @@ export default {
         })
       ]
     }
+  },
+  purgeCSS: {
+    whitelistPatterns: [/^swiper-pagination-bullet/] // 忽略swiper样式
   }
 };
