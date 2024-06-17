@@ -34,7 +34,7 @@ export default {
   bottom: 40px;
   left: 20px;
   padding: 14px 24px;
-  background: rgba($color2, 0.6);
+  background: $color2;
   border-radius: 8px;
   color: #ffffff;
   line-height: 24px;
@@ -43,7 +43,7 @@ export default {
   transition: transform 0.5s ease; /* 添加过渡效果 */
   z-index: 999;
   &.success {
-    background: rgba($color1, 0.6);
+    background: $color1;
   }
 }
 .slide-leave-to {

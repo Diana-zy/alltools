@@ -47,7 +47,6 @@ export default {
   transition: height 0.3s ease;
   line-height: 1.2;
   color: rgba($font1, 0.6);
-  font-family: "sesb";
   text-align: left;
 }
 

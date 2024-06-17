@@ -83,6 +83,7 @@ export default {
   width: vw(328);
   height: vw(80);
   @include ellipsis;
+  font-family: "sesb";
   .icon {
     width: vw(48);
     height: vw(48);

@@ -181,4 +181,9 @@ export default {
 
 <style lang="scss" scoped>
 @import "~/assets/css/download.scss";
+@media screen and (max-width: 750px) {
+  .box-small-bg {
+    margin-bottom: vw(36);
+  }
+}
 </style>

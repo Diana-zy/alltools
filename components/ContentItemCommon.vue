@@ -90,6 +90,7 @@ export default {
     height: vw(32);
     line-height: vw(32);
     margin-bottom: vw(4);
+    padding: 0 vw(16);
   }
   .rating {
     font-size: vw(24);

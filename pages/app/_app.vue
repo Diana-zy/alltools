@@ -121,7 +121,7 @@
         />
       </section>
 
-      <h2 class="title-h2">Recommend App</h2>
+      <h2 class="title-h2">Recommend Apps</h2>
 
       <section class="box-common">
         <ContentItemCommon
@@ -153,6 +153,7 @@
 <script>
 import { directive } from "vue-awesome-swiper";
 import { shuffleArray } from "~/utils/utils";
+import "swiper/css/swiper.min.css";
 
 export default {
   directives: {
@@ -236,20 +237,4 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "~/assets/css/game.scss";
-</style>
-<style lang="scss">
-@import "swiper/css/swiper.min.css";
-.swiper-pagination-bullet {
-  width: 8px;
-  height: 8px;
-  background: #dadada;
-  border-radius: 50%;
-  opacity: 1;
-  box-sizing: content-box;
-  margin: 0 4px;
-}
-.swiper-pagination-bullet-active {
-  border: 2px solid $color1;
-  background: #ffffff;
-}
 </style>
