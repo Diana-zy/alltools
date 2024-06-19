@@ -6,10 +6,12 @@
         <CustomLink to="/apps/" class="nav-item nav-app">
           <h3 class="title">Popular Apps</h3>
           <div class="btn">Download Now</div>
+          <img src="/images/app.webp" alt="Popular Apps" />
         </CustomLink>
         <CustomLink to="/games/" class="nav-item nav-game">
           <h3 class="title">Popular Games</h3>
           <div class="btn">Download Now</div>
+          <img src="/images/game.webp" alt="Popular Games" />
         </CustomLink>
       </nav>
       <h2 class="title-h2">Best Apps</h2>
@@ -19,7 +21,7 @@
           :key="index"
           :item="item"
           :index="index"
-          :eager="10"
+          :eager="2"
           :to="`/app/${item.path}/`"
         />
       </section>
@@ -30,7 +32,7 @@
           :key="index"
           :item="item"
           :index="index"
-          :eager="10"
+          :eager="2"
           :to="`/game/${item.path}/`"
         />
       </section>
@@ -129,16 +131,34 @@ export default {
     background-position: right;
   }
   .nav-app {
-    @include bg("app.webp");
-    background-size: cover;
+    // background-image: url("/images/app.webp");
+    // background-size: cover;
     margin-right: 16px;
+    position: relative;
+    img {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
     .btn {
       color: #008055;
     }
   }
   .nav-game {
-    @include bg("game.webp");
-    background-size: cover;
+    // background-image: url("/images/game.webp");
+    // background-size: cover;
+    position: relative;
+    img {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
     .btn {
       color: #5e0c98;
     }

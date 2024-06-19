@@ -67,7 +67,19 @@ export default {
           "Role-playing games, entertainment games, puzzle games, strategy games, cute games, pet games, parkour games, synthesis games, dress up games, princess games, adventure games, casual games, healing games, horror games, music games, cooking games"
       }
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
+    link: [
+      { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+      {
+        rel: "preload",
+        href: "/images/app.webp",
+        as: "image"
+      },
+      {
+        rel: "preload",
+        href: "/images/game.webp",
+        as: "image"
+      }
+    ]
   },
   image: {
     provider: "cloudflare",
