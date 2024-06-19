@@ -131,8 +131,6 @@ export default {
     background-position: right;
   }
   .nav-app {
-    // background-image: url("/images/app.webp");
-    // background-size: cover;
     margin-right: 16px;
     position: relative;
     img {
@@ -142,14 +140,13 @@ export default {
       top: 0;
       left: 0;
       z-index: -1;
+      border-radius: 24px;
     }
     .btn {
       color: #008055;
     }
   }
   .nav-game {
-    // background-image: url("/images/game.webp");
-    // background-size: cover;
     position: relative;
     img {
       width: 100%;
@@ -158,6 +155,7 @@ export default {
       top: 0;
       left: 0;
       z-index: -1;
+      border-radius: 24px;
     }
     .btn {
       color: #5e0c98;
@@ -196,6 +194,9 @@ export default {
       border-radius: vw(16);
       padding-left: vw(32);
       flex-shrink: 0;
+      img {
+        border-radius: vw(16);
+      }
     }
     .nav-app {
       margin-right: vw(16);
