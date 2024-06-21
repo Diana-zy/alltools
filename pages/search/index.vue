@@ -22,12 +22,12 @@
       </section>
 
       <!-- 搜索无结果 -->
-      <section v-if="!searchLoading && matchGameData.count == 0" class="search-null">
+      <section v-if="!searchLoading && matchGameData.totalCount == 0" class="search-null">
         Sorry, No <span>&nbsp;"{{ matchGameData.name }}"&nbsp;</span> found
       </section>
 
       <section
-        v-if="!searchLoading && matchGameData.count > 0"
+        v-if="!searchLoading && matchGameData.totalCount > 0"
         class="search-result box-small-bg box-small-bg-search"
       >
         <div class="number">
