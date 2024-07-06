@@ -114,6 +114,11 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+@media screen and (max-width: 879px) {
+  .page .mask-loading {
+    height: 100% !important;
+  }
+}
 .main {
   max-width: 1200px;
   margin: 0 auto;

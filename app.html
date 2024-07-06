@@ -32,6 +32,14 @@
       })(window, document, "script", "dataLayer", "GTM-MM4V59GK");
     </script>
     <!-- End Google Tag Manager -->
+    <script>
+      window.bgdataLayer = window.bgdataLayer || [];
+      function bge() {
+        bgdataLayer.push(arguments);
+      }
+      bge("init", "904667036802257920");
+    </script>
+    <script async src="https://api.imotech.video/ad/events.js?pixel_id=904667036802257920"></script>
     <script
       async
       src="https://fundingchoicesmessages.google.com/i/pub-6612490456597819?ers=1"
@@ -100,6 +108,8 @@
         if (1 === window.clickOpen) {
           // 点击穿插广告
           dataLayer.push({ event: "D_AL" });
+          bge("event", "web_ad_watch", { configId: "904667036802257920" });
+          bge("event", "ec_detail_view", { configId: "904667036802257920" });
         } else {
           // 用户点击跳转
           dataLayer.push({ event: "D_RE" });
@@ -142,6 +152,8 @@
           if ("filled" == adStatus) {
             // 点击页内广告
             dataLayer.push({ event: "D_IP" });
+            bge("event", "ec_detail_view", { configId: "904667036802257920" });
+            bge("event", "button", { configId: "904667036802257920" });
           }
         } else if (
           sourceAttribute &&
