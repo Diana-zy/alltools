@@ -133,6 +133,10 @@
         } else {
           // 用户点击跳转
           dataLayer.push({ event: "D_RE" });
+          const isHome = window.location.pathname === "/";
+          if (isHome) {
+            bge("event", "form_button", { configId: "904667036802257920" });
+          }
         }
         window.isUnloaded = true;
       });
