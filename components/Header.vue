@@ -9,6 +9,10 @@
       <i class="icon-pwa"></i><span>TO DESKTOP</span>
     </div>
 
+    <CustomLink to="/topics/" class="btn-topics">
+      <i class="icon-topics"></i><span>TOPICS</span>
+    </CustomLink>
+
     <!-- pc 搜索 -->
     <div class="pc-search">
       <input
@@ -125,6 +129,21 @@ export default {
   @include icon(24px, 24px, "icon-pwa.png");
   margin-right: 4px;
 }
+.btn-topics {
+  display: inline-block;
+  @include center;
+  width: 97px;
+  height: 32px;
+  background: $color1;
+  border-radius: 8px;
+  color: #fff;
+  margin: 0 20px;
+  cursor: pointer;
+}
+.icon-topics {
+  @include icon(24px, 24px, "icon-topics-pc.png");
+  margin-right: 4px;
+}
 .pc-search {
   display: flex;
   justify-content: space-between;
@@ -191,6 +210,9 @@ export default {
     margin-right: 0;
     background-color: $color1;
     border-radius: 50%;
+  }
+  .btn-topics{
+    display: none;
   }
   .pc-search {
     display: none;
