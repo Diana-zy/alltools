@@ -9,9 +9,9 @@
       <i class="icon-pwa"></i><span>TO DESKTOP</span>
     </div>
 
-    <CustomLink to="/topics/" class="btn-topics">
+    <!-- <CustomLink to="/topics/" class="btn-topics">
       <i class="icon-topics"></i><span>TOPICS</span>
-    </CustomLink>
+    </CustomLink> -->
 
     <!-- pc 搜索 -->
     <div class="pc-search">
