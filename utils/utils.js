@@ -7,6 +7,7 @@ export function simulateSearch(value) {
   // 定义路径与类型的映射关系
   const pathTypeMappings = [
     { pattern: /^\/category\/[\w-]+\/$/, type: "category-detail" },
+    { pattern: /^\/topic\/[\w-]+\/$/, type: "topic-detail" },
     { pattern: /^\/category\/$/, type: "category" },
     { pattern: /^\/game\/.*/, type: "game" },
     { pattern: /^\/download\/.*/, type: "download" },

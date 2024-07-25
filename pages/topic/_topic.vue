@@ -6,14 +6,16 @@
       <NuxtImg
         format="auto"
         fit="cover"
-        width="658"
+        width="1136"
         :src="articleData.cover"
         :alt="articleData.name"
         class="banner"
         loading="lazy"
       />
       <GoogleAd ad-slot="2896349709" />
+      <!-- eslint-disable vue/no-v-html -->
       <div class="article-content" v-html="articleData.content"></div>
+      <!--eslint-enable-->
     </article>
     <Footer />
     <BackTop />
@@ -28,16 +30,18 @@ export default {
     const lastDashIndex = path.lastIndexOf("-");
     const id = path.substring(lastDashIndex + 1, path.length);
 
-    const data = await $axios.$get("/api/article/detail", {
+    const data = await $axios.$get("/api/game/topic_detail", {
       params: {
-        site_id: "yahonews7",
+        site_id: env.SITE_ID,
         article_id: id
       }
     });
     data.content = data.content.replace(/<\/h4><p><br><br>|<br><br><\/p><h4>/g, (match) => {
       return match.includes("</h4><p>") ? "</h4><p>" : "</p><h4>";
     });
-    return { articleData: data };
+    return {
+      articleData: data
+    };
   }
 };
 </script>
@@ -49,7 +53,7 @@ export default {
   border-radius: 16px;
 }
 .title {
-  padding: 16px 32px 50px;
+  padding: 16px 32px 60px;
   font-size: 26px;
   font-family: "seb";
   color: $font1;
@@ -84,6 +88,8 @@ export default {
   line-height: 26px;
   * {
     font-family: "sesb" !important;
+    color: rgba($font1, 0.6) !important;
+    background: none !important;
   }
   img {
     width: 70% !important;
@@ -97,7 +103,6 @@ export default {
   p {
     min-height: 1em;
     margin-bottom: 4px;
-    color: rgba($font1, 0.6);
   }
   strong {
     font-family: "seb" !important;

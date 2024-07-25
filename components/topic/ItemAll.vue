@@ -5,7 +5,7 @@
       fit="cover"
       width="280"
       height="156"
-      :src="item.icon"
+      :src="item.cover"
       :alt="item.name"
       class="cover"
       :loading="index < eager ? 'eager' : 'lazy'"
@@ -15,11 +15,11 @@
       <div class="info">
         <div>
           <i class="icon-clock"></i>
-          <span>June 20, 2024</span>
+          <span>{{ item.publish_time }}</span>
         </div>
         <div>
           <i class="icon-eye"></i>
-          <span>7798</span>
+          <span>{{ formatNumber(item.view) }}</span>
         </div>
       </div>
     </div>
@@ -44,6 +44,12 @@ export default {
     to: {
       type: String,
       required: true
+    }
+  },
+  methods: {
+    formatNumber(value) {
+      // 将数字转换为字符串并使用正则表达式添加逗号
+      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
   }
 };

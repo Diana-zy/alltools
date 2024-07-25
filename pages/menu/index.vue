@@ -3,7 +3,7 @@
     <Header />
     <CustomLink to="/" class="menu-item"><i class="icon-home"></i>Home</CustomLink>
     <CustomLink to="/games/" class="menu-item"><i class="icon-games"></i>All Games</CustomLink>
-    <!-- <CustomLink to="/topics/" class="menu-item"><i class="icon-topics"></i>Topics</CustomLink> -->
+    <CustomLink to="/topics/" class="menu-item"><i class="icon-topics"></i>Topics</CustomLink>
     <CustomLink to="/apps/" class="menu-item"><i class="icon-apps"></i>All Apps</CustomLink>
     <CustomLink to="/category/" class="menu-item"
       ><i class="icon-categories"></i>Category</CustomLink

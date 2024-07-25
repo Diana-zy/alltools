@@ -1,11 +1,11 @@
 <template>
-  <div class="page">
+  <div class="page topics-page">
     <Header />
     <main>
       <h2 class="title-h2">Topics</h2>
       <section class="topic-rec-box">
         <topic-item-rec
-          v-for="(item, index) in recApps"
+          v-for="(item, index) in allTopics.slice(0, 3)"
           :key="index"
           :item="item"
           :index="index"
@@ -16,10 +16,10 @@
       <GoogleAd ad-slot="2896349709" />
 
       <InfiniteScrollList
-        api-endpoint="/api/game/all_app"
+        api-endpoint="/api/game/all_topic"
         :initial-page="2"
         :page-size="20"
-        :initial-items="allApps"
+        :initial-items="allTopics.slice(3)"
       >
         <template #default="{ items }">
           <topic-item-all
@@ -43,26 +43,16 @@
 export default {
   async asyncData({ $axios, env }) {
     try {
-      const [allAppsResponse, recAppsResponse] = await Promise.all([
-        $axios.$get("/api/game/all_app", {
-          params: {
-            site_id: env.SITE_ID,
-            page: 1,
-            size: 20
-          }
-        }),
-        $axios.$get("/api/game/menu", {
-          params: {
-            site_id: env.SITE_ID,
-            mod_id: "rec-apps",
-            size: 3
-          }
-        })
-      ]);
+      const allTopicsResponse = await $axios.$get("/api/game/all_topic", {
+        params: {
+          site_id: env.SITE_ID,
+          page: 1,
+          size: 20
+        }
+      });
 
       return {
-        allApps: allAppsResponse.list,
-        recApps: recAppsResponse.list
+        allTopics: allTopicsResponse.list
       };
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -83,7 +73,7 @@ export default {
     flex-shrink: 0;
   }
 }
-::v-deep .box-common {
+.topics-page ::v-deep .box-common {
   grid-template-columns: repeat(1, minmax(700px, 1200px));
   margin-top: 32px;
   gap: 16px;
@@ -93,7 +83,7 @@ export default {
     margin: 0 0 vw(48) vw(46);
     gap: vw(32);
   }
-  ::v-deep .box-common {
+  .topics-page ::v-deep .box-common {
     grid-template-columns: vw(658);
     margin-top: vw(48);
     gap: vw(28);
