@@ -113,6 +113,8 @@
     <!-- End Google Tag Manager (noscript) -->
     {{ APP }}
     <script>
+      let startTime = Date.now();
+
       // 初始化标志变量
       window.isUnloaded = false;
       // 监听页面即将卸载事件
@@ -126,6 +128,10 @@
         }
         // 根据条件执行不同逻辑
         if (1 === window.clickOpen) {
+          const totalTime = (Date.now() - startTime) / 1000;
+          if (totalTime > 10) {
+            dataLayer.push({ event: "D_AL_10" });
+          }
           // 点击穿插广告
           dataLayer.push({ event: "D_AL" });
           bge("event", "web_ad_watch", { configId: "904667036802257920" });
