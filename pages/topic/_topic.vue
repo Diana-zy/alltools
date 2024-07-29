@@ -10,9 +10,9 @@
         :src="articleData.cover"
         :alt="articleData.name"
         class="banner"
-        loading="lazy"
+        loading="preload"
       />
-      <GoogleAd ad-slot="2896349709" />
+      <GoogleAd ad-slot="1969405138" />
       <!-- eslint-disable vue/no-v-html -->
       <div class="article-content" v-html="articleData.content"></div>
       <!--eslint-enable-->

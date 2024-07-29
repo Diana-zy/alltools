@@ -17,20 +17,27 @@ export default {
       const postsData = await fetch(
         `${process.env.PROD_API_URL}/api/game/get_all_path_v2?site_id=${process.env.SITE_ID}`
       );
+      const topicsData = await fetch(
+        `${process.env.PROD_API_URL}/api/game/get_topic_path?site_id=${process.env.SITE_ID}`
+      );
       const posts = await postsData.json();
+      const topics = await topicsData.json();
+
       const gameCategoryPaths = posts.data.game_category.map((item) => `/category/${item}`);
       const appCategoryPaths = posts.data.app_category.map((item) => `/category/${item}`);
       const gameDetailPaths = posts.data.game_detail.map((item) => `/game/${item}`);
       const appDetailPaths = posts.data.app_detail.map((item) => `/app/${item}`);
       const gameDownloadPaths = posts.data.app_detail.map((item) => `/download/${item}`);
       const appDownloadPaths = posts.data.app_detail.map((item) => `/download/${item}`);
+      const topicsPaths = topics.data.detail.map((item) => `/topic/${item}`);
       const urls = [
         ...gameCategoryPaths,
         ...appCategoryPaths,
         ...gameDetailPaths,
         ...appDetailPaths,
         ...gameDownloadPaths,
-        ...appDownloadPaths
+        ...appDownloadPaths,
+        ...topicsPaths
       ];
       return urls;
     }

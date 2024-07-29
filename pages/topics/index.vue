@@ -13,8 +13,7 @@
           :to="`/topic/${item.path}/`"
         />
       </section>
-      <GoogleAd ad-slot="2896349709" />
-
+      <GoogleAd ad-slot="1021540575" />
       <InfiniteScrollList
         api-endpoint="/api/game/all_topic"
         :initial-page="2"
@@ -22,6 +21,7 @@
         :initial-items="allTopics.slice(3)"
       >
         <template #default="{ items }">
+          <GoogleAd ad-slot="9756896824" class="ad-2" />
           <topic-item-all
             v-for="(item, index) in items"
             :key="index"
@@ -78,15 +78,22 @@ export default {
   margin-top: 32px;
   gap: 16px;
 }
+.ad-2 {
+  grid-row: 6;
+}
 @media screen and (max-width: 750px) {
   .topic-rec-box {
     margin: 0 0 vw(48) vw(46);
     gap: vw(32);
   }
   .topics-page ::v-deep .box-common {
-    grid-template-columns: vw(658);
-    margin-top: vw(48);
+    grid-template-columns: repeat(1, 1fr);
+    margin: vw(48) 0 0;
     gap: vw(28);
+    .item {
+      width: calc(100% - vw(92));
+      margin: 0 vw(46);
+    }
   }
 }
 </style>
