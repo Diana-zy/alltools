@@ -27,7 +27,7 @@ export default {
       const appCategoryPaths = posts.data.app_category.map((item) => `/category/${item}`);
       const gameDetailPaths = posts.data.game_detail.map((item) => `/game/${item}`);
       const appDetailPaths = posts.data.app_detail.map((item) => `/app/${item}`);
-      const gameDownloadPaths = posts.data.app_detail.map((item) => `/download/${item}`);
+      const gameDownloadPaths = posts.data.game_detail.map((item) => `/download/${item}`);
       const appDownloadPaths = posts.data.app_detail.map((item) => `/download/${item}`);
       const topicsPaths = topics.data.detail.map((item) => `/topic/${item}`);
       const urls = [
