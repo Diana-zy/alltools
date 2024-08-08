@@ -97,7 +97,8 @@ export default {
   plugins: [
     { src: "~/plugins/vue-infinite-scroll", ssr: false },
     "~/plugins/axios",
-    "~/plugins/global-data"
+    "~/plugins/global-data",
+    "~/plugins/report"
   ],
   components: true,
   buildModules: [
