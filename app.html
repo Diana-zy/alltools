@@ -113,7 +113,21 @@
     <!-- End Google Tag Manager (noscript) -->
     {{ APP }}
     <script>
-      let startTime = Date.now();
+      function getCookie(name) {
+        const cookieArr = document.cookie.split(";").map((cookie) => cookie.trim());
+        const cookie = cookieArr.find((cookie) => cookie.startsWith(`${name}=`));
+        return cookie ? cookie.split("=")[1] : null;
+      }
+
+      function setCookie(name, value, days) {
+        const expires = days
+          ? `; expires=${new Date(Date.now() + days * 86400000).toUTCString()}`
+          : "";
+        document.cookie = `${name}=${value || ""}${expires}; path=/`;
+      }
+
+      let startTime = getCookie("startTime") || Date.now();
+      setCookie("startTime", startTime, 1);
 
       // 初始化标志变量
       window.isUnloaded = false;
@@ -131,6 +145,15 @@
           const totalTime = (Date.now() - startTime) / 1000;
           if (totalTime > 10) {
             dataLayer.push({ event: "D_AL_10" });
+          }
+          if (totalTime > 8) {
+            dataLayer.push({ event: "D_AL_8" });
+          }
+          if (totalTime > 6) {
+            dataLayer.push({ event: "D_AL_6" });
+          }
+          if (totalTime > 4) {
+            dataLayer.push({ event: "D_AL_4" });
           }
           // 点击穿插广告
           dataLayer.push({ event: "D_AL" });
