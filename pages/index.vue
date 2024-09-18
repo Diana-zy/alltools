@@ -27,8 +27,9 @@
       </section>
       <h2 class="title-h2">Best Games</h2>
       <section class="box-row-scroll">
+        <link-outside :item="bestGames[0]" />
         <ContentItemRow
-          v-for="(item, index) in bestGames"
+          v-for="(item, index) in bestGames.slice(1)"
           :key="index"
           :item="item"
           :index="index"
@@ -68,42 +69,54 @@ export default {
   async asyncData({ $axios, env }) {
     try {
       // 并行处理多个异步请求
-      const [bestAppsResponse, bestGamesResponse, hotAppsResponse, hotGamesResponse] =
-        await Promise.all([
-          $axios.$get("/api/game/menu", {
-            params: {
-              site_id: env.SITE_ID,
-              mod_id: "best-apps",
-              size: 12
-            }
-          }),
-          $axios.$get("/api/game/menu", {
-            params: {
-              site_id: env.SITE_ID,
-              mod_id: "best-games",
-              size: 12
-            }
-          }),
-          $axios.$get("/api/game/menu", {
-            params: {
-              site_id: env.SITE_ID,
-              mod_id: "hot-apps",
-              size: 12
-            }
-          }),
-          $axios.$get("/api/game/menu", {
-            params: {
-              site_id: env.SITE_ID,
-              mod_id: "hot-games",
-              size: 12
-            }
-          })
-        ]);
+      const [
+        linkOutsideResponse,
+        bestAppsResponse,
+        bestGamesResponse,
+        hotAppsResponse,
+        hotGamesResponse
+      ] = await Promise.all([
+        $axios.$get("/api/game/natural_flow_config", {
+          params: {
+            site_id: env.SITE_ID
+          }
+        }),
+        $axios.$get("/api/game/menu", {
+          params: {
+            site_id: env.SITE_ID,
+            mod_id: "best-apps",
+            size: 12
+          }
+        }),
+        $axios.$get("/api/game/menu", {
+          params: {
+            site_id: env.SITE_ID,
+            mod_id: "best-games",
+            size: 11
+            // size: 12
+          }
+        }),
+        $axios.$get("/api/game/menu", {
+          params: {
+            site_id: env.SITE_ID,
+            mod_id: "hot-apps",
+            size: 12
+          }
+        }),
+        $axios.$get("/api/game/menu", {
+          params: {
+            site_id: env.SITE_ID,
+            mod_id: "hot-games",
+            size: 12
+          }
+        })
+      ]);
 
       // 返回多个接口的数据
       return {
         bestApps: bestAppsResponse.list,
-        bestGames: bestGamesResponse.list,
+        bestGames: [linkOutsideResponse, ...bestGamesResponse.list],
+        // bestGames: bestGamesResponse.list,
         hotApps: hotAppsResponse.list,
         hotGames: hotGamesResponse.list
       };
