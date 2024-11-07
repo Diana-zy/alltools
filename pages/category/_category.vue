@@ -14,7 +14,12 @@
           class="icon"
         />{{ currentCategoryName }}</h2
       >
-      <GoogleAd ad-slot="4504570149" class="ad1" />
+      <!-- <GoogleAd ad-slot="4504570149" class="ad1" /> -->
+      <adm-slot
+        adm-id="category-mid1"
+        adm-unit="/23197833490/alltools1/alltools1_module_1"
+        class="ad1"
+      />
       <section class="box-common box-category">
         <ContentItemCommon
           v-for="(item, index) in currentCategory"
@@ -25,7 +30,12 @@
         />
       </section>
 
-      <GoogleAd ad-slot="1268068106" class="ad2" />
+      <!-- <GoogleAd ad-slot="1268068106" class="ad2" /> -->
+      <adm-slot
+        adm-id="category-mid2"
+        adm-unit="/23197833490/alltools1/alltools1_module_2"
+        class="ad2"
+      />
       <h2 class="title-h2">All {{ isApp ? "Apps" : "Games" }}</h2>
 
       <InfiniteScrollList
@@ -46,7 +56,12 @@
       </InfiniteScrollList>
 
       <aside class="box-aside">
-        <GoogleAd ad-slot="1391696348" />
+        <!-- <GoogleAd ad-slot="1391696348" /> -->
+        <adm-slot
+          adm-id="category-mid3"
+          adm-unit="/23197833490/alltools1/alltools1_module_3"
+          class="ad2"
+        />
         <h2 class="title-h2">Hot {{ isApp ? "Apps" : "Games" }}</h2>
         <ContentItemRow
           v-for="(item, index) in hotSoftwares"

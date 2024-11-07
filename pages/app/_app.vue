@@ -37,7 +37,8 @@
         </div>
       </section>
 
-      <GoogleAd ad-slot="5973599876" />
+      <!-- <GoogleAd ad-slot="5973599876" /> -->
+      <adm-slot adm-id="app-mid1" adm-unit="/23197833490/alltools1/alltools1_detail_1" />
 
       <section class="table-info">
         <div class="table-row">
@@ -96,7 +97,8 @@
       </section>
 
       <div ref="targetElement">
-        <GoogleAd ad-slot="8408191527" />
+        <!-- <GoogleAd ad-slot="8408191527" /> -->
+        <adm-slot adm-id="app-mid2" adm-unit="/23197833490/alltools1/alltools1_detail_2" />
       </div>
 
       <section class="get-the-game">
@@ -134,7 +136,8 @@
       </section>
 
       <aside class="box-aside">
-        <GoogleAd ad-slot="3079348389" />
+        <!-- <GoogleAd ad-slot="3079348389" /> -->
+        <adm-slot adm-id="app-mid3" adm-unit="/23197833490/alltools1/alltools1_detail_3" />
         <h2 class="title-h2">Hot Apps</h2>
         <ContentItemRow
           v-for="(item, index) in hotApps"

@@ -2,11 +2,53 @@
 <html lang="en">
   <head {{ HEAD_ATTRS }}>
     <meta charset="UTF-8" />
-    <script
+    {{ HEAD }}
+
+    <link rel="preload" href="https://securepubads.g.doubleclick.net/tag/js/gpt.js" as="script" />
+    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+
+    <script>
+      window.googletag = window.googletag || { cmd: [] };
+      let interstitialSlot, anchorSlot;
+
+      googletag.cmd.push(function () {
+        interstitialSlot = googletag.defineOutOfPageSlot(
+          "/23197833490/alltools1/alltools1_interstitial",
+          googletag.enums.OutOfPageFormat.INTERSTITIAL
+        );
+
+        if (interstitialSlot) {
+          interstitialSlot.addService(googletag.pubads()).setConfig({
+            interstitial: {
+              triggers: {
+                navBar: true,
+                unhideWindow: true
+              }
+            }
+          });
+          googletag.pubads().addEventListener("slotOnload", (event) => {
+            if (interstitialSlot === event.slot) {
+              console.log("Interstitial is loaded.");
+            }
+          });
+        }
+        anchorSlot = googletag.defineOutOfPageSlot(
+          "/23197833490/alltools1/alltools1_anchor",
+          googletag.enums.OutOfPageFormat.BOTTOM_ANCHOR
+        );
+
+        if (anchorSlot) {
+          anchorSlot.addService(googletag.pubads());
+        }
+        googletag.enableServices();
+      });
+    </script>
+
+    <!-- <script
       async
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6612490456597819"
       crossorigin="anonymous"
-    ></script>
+    ></script> -->
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-HJ2731TT1W"></script>
     <script>
@@ -40,7 +82,7 @@
       bge("init", "905001526682426624");
     </script>
     <script async src="https://api.imotech.video/ad/events.js?pixel_id=905001526682426624"></script>
-    <script
+    <!-- <script
       async
       src="https://fundingchoicesmessages.google.com/i/pub-6612490456597819?ers=1"
       nonce="tjDRf2gCUu2F7XDJhnnz_Q"
@@ -63,7 +105,7 @@
         }
         signalGooglefcPresent();
       })();
-    </script>
+    </script> -->
     <!-- 345显示锚定 -->
     <!-- <script>
       (function () {
@@ -84,7 +126,7 @@
         }
       })();
     </script> -->
-    {{ HEAD }}
+
     <script>
       window.addEventListener("load", function () {
         if ("serviceWorker" in window.navigator) {
@@ -113,6 +155,11 @@
     <!-- End Google Tag Manager (noscript) -->
     {{ APP }}
     <script>
+      googletag.cmd.push(() => {
+        googletag.display(interstitialSlot);
+        googletag.display(anchorSlot);
+      });
+
       function getCookie(name) {
         const cookieArr = document.cookie.split(";").map((cookie) => cookie.trim());
         const cookie = cookieArr.find((cookie) => cookie.startsWith(`${name}=`));
