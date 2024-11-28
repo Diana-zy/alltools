@@ -3,17 +3,28 @@
     <Header />
     <main class="main">
       <nav class="nav">
-        <CustomLink to="/apps/" class="nav-item nav-app">
-          <h3 class="title">Popular Apps</h3>
-          <div class="btn">Download Now</div>
-          <img src="/images/app.webp" alt="Popular Apps" />
-        </CustomLink>
         <CustomLink to="/games/" class="nav-item nav-game">
           <h3 class="title">Popular Games</h3>
           <div class="btn">Download Now</div>
           <img src="/images/game.webp" alt="Popular Games" />
         </CustomLink>
+        <CustomLink to="/apps/" class="nav-item nav-app">
+          <h3 class="title">Popular Apps</h3>
+          <div class="btn">Download Now</div>
+          <img src="/images/app.webp" alt="Popular Apps" />
+        </CustomLink>
       </nav>
+      <h2 class="title-h2">Best Games</h2>
+      <section class="box-row-scroll">
+        <ContentItemRow
+          v-for="(item, index) in bestGames"
+          :key="index"
+          :item="item"
+          :index="index"
+          :eager="2"
+          :to="`/app/${item.path}/`"
+        />
+      </section>
       <h2 class="title-h2">Best Apps</h2>
       <section class="box-row-scroll">
         <ContentItemRow
@@ -22,35 +33,23 @@
           :item="item"
           :index="index"
           :eager="2"
-          :to="`/app/${item.path}/`"
-        />
-      </section>
-      <h2 class="title-h2">Best Games</h2>
-      <section class="box-row-scroll">
-        <link-outside :item="bestGames[0]" />
-        <ContentItemRow
-          v-for="(item, index) in bestGames.slice(1)"
-          :key="index"
-          :item="item"
-          :index="index"
-          :eager="2"
           :to="`/game/${item.path}/`"
-        />
-      </section>
-      <h2 class="title-h2">Hot Apps</h2>
-      <section class="box-row-scroll">
-        <ContentItemRow
-          v-for="(item, index) in hotApps"
-          :key="index"
-          :item="item"
-          :index="index"
-          :to="`/app/${item.path}/`"
         />
       </section>
       <h2 class="title-h2">Hot Games</h2>
       <section class="box-row-scroll">
         <ContentItemRow
           v-for="(item, index) in hotGames"
+          :key="index"
+          :item="item"
+          :index="index"
+          :to="`/app/${item.path}/`"
+        />
+      </section>
+      <h2 class="title-h2">Hot Apps</h2>
+      <section class="box-row-scroll">
+        <ContentItemRow
+          v-for="(item, index) in hotApps"
           :key="index"
           :item="item"
           :index="index"
@@ -144,7 +143,7 @@ export default {
     background-position: right;
   }
   .nav-app {
-    margin-right: 16px;
+    // margin-left: 16px;
     position: relative;
     img {
       width: 100%;
@@ -160,6 +159,7 @@ export default {
     }
   }
   .nav-game {
+    margin-right: 16px;
     position: relative;
     img {
       width: 100%;
