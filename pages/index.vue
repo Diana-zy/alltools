@@ -22,7 +22,7 @@
           :item="item"
           :index="index"
           :eager="2"
-          :to="`/app/${item.path}/`"
+          :to="`/game/${item.path}/`"
         />
       </section>
       <h2 class="title-h2">Best Apps</h2>
@@ -33,7 +33,7 @@
           :item="item"
           :index="index"
           :eager="2"
-          :to="`/game/${item.path}/`"
+          :to="`/app/${item.path}/`"
         />
       </section>
       <h2 class="title-h2">Hot Games</h2>
@@ -43,7 +43,7 @@
           :key="index"
           :item="item"
           :index="index"
-          :to="`/app/${item.path}/`"
+          :to="`/game/${item.path}/`"
         />
       </section>
       <h2 class="title-h2">Hot Apps</h2>
@@ -53,7 +53,7 @@
           :key="index"
           :item="item"
           :index="index"
-          :to="`/game/${item.path}/`"
+          :to="`/app/${item.path}/`"
         />
       </section>
     </main>
