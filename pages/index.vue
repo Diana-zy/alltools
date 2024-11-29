@@ -68,53 +68,43 @@ export default {
   async asyncData({ $axios, env }) {
     try {
       // 并行处理多个异步请求
-      const [
-        linkOutsideResponse,
-        bestAppsResponse,
-        bestGamesResponse,
-        hotAppsResponse,
-        hotGamesResponse
-      ] = await Promise.all([
-        $axios.$get("/api/game/natural_flow_config", {
-          params: {
-            site_id: env.SITE_ID
-          }
-        }),
-        $axios.$get("/api/game/menu", {
-          params: {
-            site_id: env.SITE_ID,
-            mod_id: "best-apps",
-            size: 12
-          }
-        }),
-        $axios.$get("/api/game/menu", {
-          params: {
-            site_id: env.SITE_ID,
-            mod_id: "best-games",
-            size: 11
-            // size: 12
-          }
-        }),
-        $axios.$get("/api/game/menu", {
-          params: {
-            site_id: env.SITE_ID,
-            mod_id: "hot-apps",
-            size: 12
-          }
-        }),
-        $axios.$get("/api/game/menu", {
-          params: {
-            site_id: env.SITE_ID,
-            mod_id: "hot-games",
-            size: 12
-          }
-        })
-      ]);
+      const [bestAppsResponse, bestGamesResponse, hotAppsResponse, hotGamesResponse] =
+        await Promise.all([
+          $axios.$get("/api/game/menu", {
+            params: {
+              site_id: env.SITE_ID,
+              mod_id: "best-apps",
+              size: 12
+            }
+          }),
+          $axios.$get("/api/game/menu", {
+            params: {
+              site_id: env.SITE_ID,
+              mod_id: "best-games",
+              size: 11
+              // size: 12
+            }
+          }),
+          $axios.$get("/api/game/menu", {
+            params: {
+              site_id: env.SITE_ID,
+              mod_id: "hot-apps",
+              size: 12
+            }
+          }),
+          $axios.$get("/api/game/menu", {
+            params: {
+              site_id: env.SITE_ID,
+              mod_id: "hot-games",
+              size: 12
+            }
+          })
+        ]);
 
       // 返回多个接口的数据
       return {
         bestApps: bestAppsResponse.list,
-        bestGames: [linkOutsideResponse, ...bestGamesResponse.list],
+        bestGames: bestGamesResponse.list,
         // bestGames: bestGamesResponse.list,
         hotApps: hotAppsResponse.list,
         hotGames: hotGamesResponse.list
