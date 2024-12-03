@@ -81,8 +81,7 @@ export default {
             params: {
               site_id: env.SITE_ID,
               mod_id: "best-games",
-              size: 11
-              // size: 12
+              size: 12
             }
           }),
           $axios.$get("/api/game/menu", {
