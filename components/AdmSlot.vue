@@ -47,7 +47,7 @@ export default {
 .adm-slot {
   margin: 0 auto;
   width: 100%;
-  height: 240px;
+  height: 280px;
 }
 .title {
   background: $color1;
