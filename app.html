@@ -255,19 +255,6 @@
         }
         // 根据条件执行不同逻辑
         if (1 === window.clickOpen) {
-          const totalTime = (Date.now() - startTime) / 1000;
-          if (totalTime > 10) {
-            dataLayer.push({ event: "D_AL_10" });
-          }
-          if (totalTime > 8) {
-            dataLayer.push({ event: "D_AL_8" });
-          }
-          if (totalTime > 6) {
-            dataLayer.push({ event: "D_AL_6" });
-          }
-          if (totalTime > 4) {
-            dataLayer.push({ event: "D_AL_4" });
-          }
           // 点击穿插广告
           dataLayer.push({ event: "D_AL" });
           bge("event", "button", { configId: "905001526682426624" });
