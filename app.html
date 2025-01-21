@@ -31,6 +31,18 @@
               console.log("Interstitial is loaded.");
             }
           });
+          googletag.pubads().addEventListener("slotRequested", (event) => {
+            const slot = event.slot;
+            if (slot.getSlotElementId() === "apps-mid1") {
+              console.log(
+                "Slot",
+                slot.getSlotElementId(),
+                "has been requested.",
+                performance.now()
+              );
+              dataLayer.push({ event: "IP_REQUESTED", iptime: performance.now().toFixed(2) });
+            }
+          });
         }
         anchorSlot = googletag.defineOutOfPageSlot(
           "/23197833490/alltools1/alltools1_anchor",
