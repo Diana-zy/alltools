@@ -38,7 +38,7 @@
       </section>
 
       <!-- <GoogleAd ad-slot="4887713525" /> -->
-      <adm-slot adm-id="apps-mid1" adm-unit="/23197833490/alltools1/alltools1_detail_1" />
+      <adm-slot adm-id="detail-mid1" adm-unit="/23197833490/alltools1/alltools1_detail_1" />
 
       <section class="table-info">
         <div class="table-row">
