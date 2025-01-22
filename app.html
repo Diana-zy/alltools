@@ -33,14 +33,9 @@
           });
           googletag.pubads().addEventListener("slotRequested", (event) => {
             const slot = event.slot;
-            if (slot.getSlotElementId() === "apps-mid1") {
-              console.log(
-                "Slot",
-                slot.getSlotElementId(),
-                "has been requested.",
-                performance.now()
-              );
-              dataLayer.push({ event: "IP_REQUESTED", iptime: performance.now().toFixed(2) });
+            console.log("Slot", slot.getSlotElementId(), "has been requested.", performance.now());
+            if (slot.getSlotElementId() === "detail-mid1") {
+              dataLayer.push({ event: "IP_REQUESTED_TEST", iptime: performance.now().toFixed(2) });
             }
           });
         }
