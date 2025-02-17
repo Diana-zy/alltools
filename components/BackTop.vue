@@ -69,7 +69,7 @@ export default {
 .btn-back-top {
   width: 40px;
   height: 40px;
-  background: linear-gradient(180deg, #70c296 0%, #49a071 100%);
+  background: linear-gradient(86deg, #0f80f8 0%, #45fff6 100%);
   border-radius: 50%;
   position: fixed;
   z-index: 500;
@@ -84,8 +84,8 @@ export default {
 
 @media screen and (max-width: 750px) {
   .btn-back-top {
-    width: vw(80);
-    height: vw(80);
+    width: vw(100);
+    height: vw(100);
     right: vw(66);
     bottom: vw(105);
   }

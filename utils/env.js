@@ -2,8 +2,9 @@ const fs = require("fs");
 
 const envFilePath = ".env";
 const envContent = fs.readFileSync(envFilePath, "utf8");
-
+console.log(envContent);
 const envLines = envContent.split("\n");
+console.log(envLines);
 let newEnvContent = "";
 
 envLines.forEach((line) => {

@@ -11,7 +11,7 @@
       :loading="index < eager ? 'eager' : 'lazy'"
     />
     <p class="name">{{ item.name }}</p>
-    <p class="rating">{{ item.score || 4.6 }}<i class="icon-rating"></i></p>
+    <p class="rating"><i class="icon-rating4"></i>{{ item.score || 4.6 }}</p>
   </CustomLink>
 </template>
 
@@ -41,17 +41,22 @@ export default {
 <style lang="scss" scoped>
 .item {
   display: block;
-  height: 173px;
+  height: 151px;
   border-radius: 24px;
+  box-shadow: 4px 4px 8px 0px #c7d2da, -4px -4px 8px 0px #ffffff, inset 0 0 0 0 #c7d2da,
+    inset 0 0 0 0 #ffffff;
+  border: 1px solid #ffffff;
+  position: relative;
+  transition: all 0.2s;
 }
 .icon {
-  width: 109px;
-  height: 109px;
-  border-radius: 8px;
+  width: 96px;
+  height: 96px;
+  border-radius: 12px;
   margin: 16px auto 6px;
 }
 .name {
-  width: 109px;
+  width: 80%;
   color: $font1;
   font-family: "sesb";
   height: 18px;
@@ -63,29 +68,42 @@ export default {
   margin: 0 auto;
 }
 .rating {
+  width: 47px;
+  height: 20px;
   @include center;
   color: rgba($font1, 0.6);
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(4px);
+  border-radius: 16px 0px 12px 0px;
+  position: absolute;
+  bottom: 37px;
+  right: 16px;
+  .icon-rating4 {
+    width: 16px;
+    height: 16px;
+  }
 }
 .item:hover {
-  background: rgba(91, 173, 109, 0.1);
-  .name {
-    color: $color1;
-  }
+  box-shadow: 0 0 0 0 #c7d2da, 0 0 0 0 #ffffff, inset 4px 4px 8px 0px #47d0ca,
+    inset -4px -4px 8px 0px rgba(255, 255, 255, 0.56);
+  background: #88f4ef;
 }
 @media screen and (max-width: 750px) {
   .item {
-    width: vw(200);
-    height: vw(272);
+    width: 100%;
+    height: vw(244);
+    background: $color1;
     border-radius: vw(32);
   }
   .icon {
-    width: vw(168);
-    height: vw(168);
+    width: vw(158);
+    height: vw(158);
     border-radius: vw(24);
-    margin: vw(16) auto vw(12);
+    margin: vw(20) auto vw(10);
   }
   .name {
     width: vw(200);
+
     font-size: vw(24);
     height: vw(32);
     line-height: vw(32);
@@ -93,7 +111,19 @@ export default {
     padding: 0 vw(16);
   }
   .rating {
+    width: vw(92);
+    height: vw(32);
+    backdrop-filter: blur(4px);
     font-size: vw(24);
+    bottom: vw(64);
+    right: vw(20);
+    border-radius: vw(20) 0px vw(24) 0px;
+    padding: vw(4) vw(8);
+    color: $font1;
+    .icon-rating4 {
+      width: vw(28);
+      height: vw(28);
+    }
   }
 }
 </style>

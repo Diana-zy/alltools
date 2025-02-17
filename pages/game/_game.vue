@@ -1,152 +1,202 @@
 <template>
   <div class="page">
-    <Header />
+    <div class="page-bg"></div>
+    <Header ref="headerElem" />
     <main class="main">
-      <Breadcrumb :name="currentGame.name" />
-      <section class="application-info">
-        <NuxtImg
-          format="auto"
-          fit="cover"
-          width="156"
-          height="156"
-          :src="currentGame.icon"
-          :alt="currentGame.name"
-          loading="lazy"
-          class="icon"
-        ></NuxtImg>
-        <div class="info">
-          <div class="name">{{ currentGame.name }}</div>
-          <div class="category">{{ currentGame.category_name }}</div>
-          <div class="rating">
-            <div class="rating-star">
-              <p :style="{ width: (((currentGame.score || 4.6) / 5) * 100).toFixed(0) + '%' }"></p>
+      <div class="main-left">
+        <Breadcrumb :name="currentGame.name" />
+        <section class="application-info">
+          <NuxtImg
+            format="auto"
+            fit="cover"
+            width="156"
+            height="156"
+            :src="currentGame.icon"
+            :alt="currentGame.name"
+            loading="lazy"
+            class="icon"
+          ></NuxtImg>
+          <div class="info">
+            <div class="name">{{ currentGame.name }}</div>
+            <!-- <div class="category">{{ currentGame.category_name }}</div> -->
+            <div class="rating">
+              <div class="rating-star">
+                <p
+                  :style="{ width: (((currentGame.score || 4.6) / 5) * 100).toFixed(0) + '%' }"
+                ></p>
+              </div>
+              <span>
+                {{ currentGame.score || 4.6 }}
+              </span>
             </div>
-            {{ currentGame.score || 4.6 }}
           </div>
-        </div>
-        <div
-          class="get-it-now"
-          @click="
-            $refs.targetElement.scrollIntoView({
-              behavior: 'smooth',
-              block: 'start'
-            })
-          "
-        >
-          <i class="icon-get-it-now"></i>Get Game</div
-        >
-      </section>
+          <div
+            class="get-it-now"
+            @click="
+              $refs.targetElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+              })
+            "
+          >
+            <i class="icon-get-it-now"></i>Get Game</div
+          >
+        </section>
 
-      <!-- <GoogleAd ad-slot="4887713525" /> -->
-      <adm-slot adm-id="detail-mid1" adm-unit="/23197833490/alltools1/alltools1_detail_1" />
+        <!-- <GoogleAd ad-slot="7045171250" class="ad-width" /> -->
+        <adm-slot
+          class="ad-width"
+          adm-id="game-mid1"
+          adm-unit="/23197833490/alltools1/alltools1_detail_1"
+        />
 
-      <section class="table-info">
-        <div class="table-row">
-          <div class="table-cell"><i class="icon-category"></i>Category</div>
-          <div class="table-cell">
-            <CustomLink :to="`/category/${currentGame.category_path}/`" class="link-category">{{
-              currentGame.category_name
-            }}</CustomLink>
-          </div>
-        </div>
-        <div class="table-row">
-          <div class="table-cell"><i class="icon-os"></i>OS</div>
-          <div class="table-cell"
-            ><i v-if="currentGame.android" class="icon-android"></i
-            ><i v-if="currentGame.ios" class="icon-ios"></i
-          ></div>
-        </div>
-        <div class="table-row">
-          <div class="table-cell"><i class="icon-size"></i>Size</div>
-          <div class="table-cell">{{ currentGame.apk_size }}</div>
-        </div>
-        <div class="table-row">
-          <div class="table-cell"><i class="icon-version"></i>Version</div>
-          <div class="table-cell">{{ currentGame.version }}</div>
-        </div>
-        <div class="table-row">
-          <div class="table-cell"><i class="icon-updated"></i>Updated</div>
-          <div class="table-cell">{{ currentGame.updated_time }}</div>
-        </div>
-      </section>
-
-      <section class="application-desc">
-        <div v-if="currentGame.banner_list.length > 0" class="swiper-bg">
-          <div v-swiper:mySwiper="swiperOption" class="swiper-box">
-            <div class="swiper-wrapper">
-              <div v-for="(banner, i) in currentGame.banner_list" :key="i" class="swiper-slide">
-                <NuxtImg
-                  format="auto"
-                  fit="cover"
-                  height="288"
-                  :src="banner"
-                  :alt="currentGame.name"
-                  loading="lazy"
-                  class="img"
-                />
+        <section>
+          <div v-if="currentGame.banner_list.length > 0" class="m-swiper">
+            <div v-swiper:mySwiper="swiperOption" class="m-swiper-box">
+              <div class="swiper-wrapper">
+                <div v-for="(banner, i) in currentGame.banner_list" :key="i" class="swiper-slide">
+                  <NuxtImg
+                    format="auto"
+                    fit="cover"
+                    height="288"
+                    :src="banner"
+                    :alt="currentGame.name"
+                    loading="lazy"
+                    class="img"
+                  />
+                </div>
+              </div>
+              <div class="m-swiper-tool">
+                <div class="swiper-button-prev shadow-hidden"></div>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-next shadow-hidden"></div>
               </div>
             </div>
-            <div class="swiper-tool">
-              <div class="swiper-button-prev"></div>
-              <div class="swiper-pagination"></div>
-              <div class="swiper-button-next"></div>
+          </div>
+        </section>
+
+        <section class="table-content">
+          <div class="table-info">
+            <div class="table-row">
+              <div class="table-cell"><i class="icon-category"></i>Category</div>
+              <div class="table-cell">
+                <CustomLink :to="`/category/${currentGame.category_path}/`" class="link-category">{{
+                  currentGame.category_name
+                }}</CustomLink>
+              </div>
+            </div>
+            <div class="table-row">
+              <div class="table-cell"><i class="icon-os"></i>OS</div>
+              <div class="table-cell"
+                ><i v-if="currentGame.android" class="icon-android"></i
+                ><i v-if="currentGame.ios" class="icon-ios"></i
+              ></div>
+            </div>
+            <div class="table-row">
+              <div class="table-cell"><i class="icon-size"></i>Size</div>
+              <div class="table-cell">{{ currentGame.apk_size }}</div>
+            </div>
+            <div class="table-row">
+              <div class="table-cell"><i class="icon-version"></i>Version</div>
+              <div class="table-cell">{{ currentGame.version }}</div>
+            </div>
+            <div class="table-row">
+              <div class="table-cell"><i class="icon-updated"></i>Updated</div>
+              <div class="table-cell">{{ currentGame.updated_time }}</div>
             </div>
           </div>
+        </section>
+
+        <section class="application-desc">
+          <div v-if="currentGame.banner_list.length > 0" class="swiper-bg">
+            <div v-swiper:Swiper="swiperOption" class="swiper-box">
+              <div class="swiper-wrapper">
+                <div v-for="(banner, i) in currentGame.banner_list" :key="i" class="swiper-slide">
+                  <NuxtImg
+                    format="auto"
+                    fit="cover"
+                    height="288"
+                    :src="banner"
+                    :alt="currentGame.name"
+                    loading="lazy"
+                    class="img"
+                  />
+                </div>
+              </div>
+              <div class="swiper-tool">
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-next"></div>
+              </div>
+            </div>
+          </div>
+          <ExpandableText class="expand" :text="currentGame.desc" />
+        </section>
+
+        <div ref="targetElement">
+          <!-- <GoogleAd ad-slot="8358252927" class="ad-width" /> -->
+          <adm-slot
+            class="ad-width"
+            adm-id="game-mid2"
+            adm-unit="/23197833490/alltools1/alltools1_detail_2"
+          />
         </div>
-        <ExpandableText class="expand" :text="currentGame.desc" />
-      </section>
 
-      <div ref="targetElement">
-        <!-- <GoogleAd ad-slot="9948468514" /> -->
-        <adm-slot adm-id="game-mid2" adm-unit="/23197833490/alltools1/alltools1_detail_2" />
-      </div>
+        <section class="get-the-game">
+          <CustomLink class="download" :to="`/download/${currentGame.path}/`"
+            ><i class="icon-download"></i>Download</CustomLink
+          >
+          <div class="tip">
+            * For reference, The {{ currentGame.name }} game websites are all approved, there are no
+            viruses and malware.
+          </div>
+        </section>
 
-      <section class="get-the-game">
-        <CustomLink class="download" :to="`/download/${currentGame.path}/`"
-          ><i class="icon-download"></i>Download</CustomLink
+        <h2 class="title-h2"> <i class="icon-recommend" />Related Games</h2>
+
+        <section class="box-small-bg">
+          <ContentItemSmall
+            v-for="(item, index) in relatedGames"
+            :key="index"
+            :index="index"
+            :item="item"
+            :to="`/game/${item.path}/`"
+          />
+        </section>
+
+        <h2 class="title-h2"> <i class="icon-recommend" />Recommend Games</h2>
+
+        <InfiniteScrollList
+          class="box-detail"
+          api-endpoint="/api/game/all_game"
+          :initial-page="2"
+          :page-size="21"
+          :initial-items="allGames"
         >
-        <div class="tip">
-          * For reference, The {{ currentGame.name }} game websites are all approved, there are no
-          viruses and malware.
-        </div>
-      </section>
+          <template #default="{ items }">
+            <ContentItemCommon1
+              v-for="(item, index) in items"
+              :key="index"
+              :index="index"
+              :item="item"
+              :to="`/game/${item.path}/`"
+            />
+          </template>
+        </InfiniteScrollList>
 
-      <h2 class="title-h2">Related Games</h2>
-
-      <section class="box-small-bg">
-        <ContentItemSmall
-          v-for="(item, index) in relatedGames"
-          :key="index"
-          :index="index"
-          :item="item"
-          :to="`/game/${item.path}/`"
-        />
-      </section>
-
-      <h2 class="title-h2">Recommend Games</h2>
-
-      <section class="box-common">
-        <ContentItemCommon
-          v-for="(item, index) in recommendGames"
-          :key="index"
-          :index="index"
-          :item="item"
-          :to="`/game/${item.path}/`"
-        />
-      </section>
-
-      <aside class="box-aside">
-        <!-- <GoogleAd ad-slot="8635386842" /> -->
-        <adm-slot adm-id="game-mid3" adm-unit="/23197833490/alltools1/alltools1_detail_3" />
-        <h2 class="title-h2">Hot Games</h2>
-        <ContentItemRow
-          v-for="(item, index) in bestGames"
-          :key="index"
-          :item="item"
-          :index="index"
-          :to="`/game/${item.path}/`"
-        />
-      </aside>
+        <aside class="box-aside">
+          <!-- <GoogleAd ad-slot="7793230426" /> -->
+          <adm-slot adm-id="game-mid3" adm-unit="/23197833490/alltools1/alltools1_detail_3" />
+          <h2 class="title-h2"><i class="icon-hot" /> Hot Games</h2>
+          <ContentItemRow
+            v-for="(item, index) in bestGames"
+            :key="index"
+            :item="item"
+            :index="index"
+            :to="`/game/${item.path}/`"
+          />
+        </aside>
+      </div>
     </main>
     <Footer />
     <BackTop />
@@ -168,7 +218,7 @@ export default {
       const lastDashIndex = path.lastIndexOf("-");
       const id = path.substring(lastDashIndex + 1, path.length);
 
-      const [currentGameResponse, relatedGamesResponse, recommendGamesResponse, bestGamesResponse] =
+      const [currentGameResponse, relatedGamesResponse, allGamesResponse, bestGamesResponse] =
         await Promise.all([
           $axios.$get("/api/game/detail", {
             params: {
@@ -183,18 +233,17 @@ export default {
               size: 14
             }
           }),
-          $axios.$get("/api/game/rec", {
+          $axios.$get("/api/game/all_game", {
             params: {
               site_id: env.SITE_ID,
-              type: 1,
-              size: 14,
-              page: 1
+              page: 1,
+              size: 21
             }
           }),
           $axios.$get("/api/game/menu", {
             params: {
               site_id: env.SITE_ID,
-              mod_id: "best-games",
+              mod_id: "fave-games",
               size: 10,
               page: 1
             }
@@ -203,7 +252,7 @@ export default {
       return {
         currentGame: currentGameResponse,
         relatedGames: relatedGamesResponse.list,
-        recommendGames: recommendGamesResponse.list,
+        allGames: allGamesResponse.list,
         bestGames: shuffleArray(bestGamesResponse.list)
       };
     } catch (error) {
@@ -230,7 +279,7 @@ export default {
   },
   head() {
     return {
-      title: `Alltools1 － dedicated to the dreams and wonders of the young crowd, play with your own colors in the ${
+      title: `Appsvault － dedicated to the dreams and wonders of the young crowd, play with your own colors in the ${
         this.currentGame.name || "game"
       }!`
     };
@@ -239,4 +288,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "~/assets/css/game.scss";
+@media screen and (max-width: 750px) {
+  .shadow-hidden {
+    box-shadow: none;
+  }
+}
 </style>

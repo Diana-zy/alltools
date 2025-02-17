@@ -1,16 +1,23 @@
-$color1: #5bad6d;
-$color2: #e6a526;
-$color3: #F5F5F5;
-$color4: #EFF7F1;
-$font1: #41414c;
-$font2: #8D8D94;
+$color1: #f0f4f5;
+$color2: #ffffff;
+$color3: #5fefec;
+$color4: #0f80f8;
+
+$font1: rgba(#28394b, 0.8);
+$font2: rgba(#28394b, 0.6);
+$font3: #0f80f8;
+$font4: #28394b;
 
 @function vw($size) {
   @return calc($size/750) * 100vw;
 }
 
 @function vw2($size) {
-  @return calc($size/1024) * 100vw;
+  @return calc($size/1220) * 100vw;
+}
+
+@function vw3($size) {
+  @return calc($size/879) * 100vw;
 }
 
 @mixin icon($w, $h, $url) {

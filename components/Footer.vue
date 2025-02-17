@@ -16,17 +16,17 @@
       </div>
 
       <div class="introduction">
-        Alltools1.com is a game aggregation platform. Through this platform, you can play games on
+        Appsvault.com is a game aggregation platform. Through this platform, you can play games on
         different devices that support Android and iOS. Our team goal is to enable all players to
         find a game they love.We offer many types of games. Including but not limited to puzzle
         games, action games, sports games, racing games, shooting games, arcade games, makeup games,
         matching games, cooking games, etc.<br />
-        Alltools1.com has collected the hottest, most classic and most fun mobile games, each of
-        which is handpicked by us. Alltools1.com is a website that supports genuine games. The
+        Appsvault.com has collected the hottest, most classic and most fun mobile games, each of
+        which is handpicked by us. Appsvault.com is a website that supports genuine games. The
         website does not provide game downloads, and our game download links will jump to formal
         platforms such as Google Play and Apple Store. Players can find the most suitable games in
-        Alltools1.com for the first time.<br />
-        Hope you can find the best game for you on Alltools1.com platform. If you have any feedback
+        Appsvault.com for the first time.<br />
+        Hope you can find the best game for you on Appsvault.com platform. If you have any feedback
         on us, please feel free to contact us by email:
         <a href="mailto:Service@alltools1.com">Service@alltools1.com</a>
       </div>
@@ -38,9 +38,9 @@
           <CustomLink to="/eula.html" target="_blank">Terms of Service</CustomLink>
           <CustomLink to="/privacy.html" target="_blank">Privacy Policy</CustomLink
           ><CustomLink to="/cookies.html" target="_blank">Cookies Policy</CustomLink>
-          <a href="mailto:Service@Alltools1.com">Contact</a>
+          <a href="mailto:Service@Appsvault.com">Contact</a>
         </div>
-        <span>Copyright ©&nbsp; 2024 Alltools1 &nbsp;All rights reserved.</span>
+        <span>Copyright ©&nbsp; 2024 Appsvault &nbsp;All rights reserved.</span>
       </div>
     </div>
     <Notification v-if="showNotification" :message="notificationMessage" />
@@ -88,11 +88,16 @@ export default {
 
 <style lang="scss" scoped>
 .footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: relative;
   border-top: 1px solid rgba(65, 65, 76, 0.1);
+
   margin-top: 32px;
 }
 .subscription {
+  max-width: 1200px;
   display: flex;
   justify-content: space-between;
   flex-flow: row-reverse;
@@ -104,14 +109,14 @@ export default {
   line-height: 16px;
   a {
     font-family: "sesb";
-    color: $font1;
+    color: $font3;
   }
 }
 .subscription-content {
   min-width: 390px;
   margin-left: 40px;
   .text {
-    color: $font1;
+    color: $font3;
     font-family: "sesb";
     font-size: 20px;
     line-height: 20px;
@@ -122,30 +127,36 @@ export default {
     align-items: center;
     justify-content: space-between;
     height: 40px;
-    background: #f5f5f5;
-    border-radius: 8px;
+    box-shadow: inset 4px 4px 8px 0px rgba(11, 41, 69, 0.2), inset -4px -4px 8px 0px #ffffff;
+    border-radius: 38px;
+    border: 1px solid #ffffff;
+    background: #e2f0f3;
   }
   .email {
-    width: 240px;
+    width: 390px;
+    height: 100%;
     padding-left: 16px;
+
     color: $font1;
     &::placeholder {
       color: rgba($font1, 0.4);
     }
   }
   .submit {
-    width: 122px;
-    height: 40px;
-    background: $color1;
-    border-radius: 8px;
+    width: 166px;
+    height: 32px;
+    background: $font3;
+    border-radius: 38px;
     @include center;
     font-size: 16px;
     color: #fff;
     font-family: "sesb";
     cursor: pointer;
+    margin-right: 4px;
   }
 }
 .copyright {
+  max-width: 1200px;
   display: flex;
   align-items: center;
   height: 56px;
@@ -159,7 +170,6 @@ export default {
     transform: translateX(-50%);
     width: 100vw;
     height: 100%;
-    background: #f5f5f5;
     z-index: -1;
   }
   .copyright-content {
@@ -190,7 +200,6 @@ export default {
   .footer {
     border-top: none;
     margin-top: vw(48);
-    background: #f5f5f5;
   }
   .subscription {
     display: block;
@@ -213,24 +222,27 @@ export default {
       margin-bottom: vw(32);
     }
     .box-submit {
-      display: block;
-      height: auto;
+      display: flex;
+      // box-shadow: none;
+      height: vw(80);
+      border-radius: vw(76);
     }
     .email {
-      width: 100%;
+      width: vw(440);
       padding-left: vw(32);
       font-size: vw(24);
-      border: vw(2) solid #5bad6d;
+      // border: vw(2) solid #5bad6d;
       height: vw(80);
-      background: #fff;
+      // background: #fff;
       border-radius: vw(80);
-      margin-bottom: vw(24);
+      // margin-bottom: ;
     }
     .submit {
-      width: vw(208);
-      height: vw(80);
-      border-radius: vw(16);
+      width: vw(200);
+      height: vw(72);
+      border-radius: vw(116);
       font-size: vw(28);
+      margin-right: vw(4);
     }
   }
   .copyright {

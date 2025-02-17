@@ -11,7 +11,7 @@
       :loading="index < eager ? 'eager' : 'lazy'"
     />
     <p class="name">{{ item.name }}</p>
-    <p class="rating">{{ item.score || 4.6 }}<i class="icon-rating"></i></p>
+    <p class="rating"> <i class="icon-rating"></i>{{ item.score || 4.6 }}</p>
   </CustomLink>
 </template>
 
@@ -40,16 +40,25 @@ export default {
 
 <style lang="scss" scoped>
 .item {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 4px 4px 8px 0px #c7d2da, -4px -4px 8px 0px #ffffff, inset 0 0 0 0 #c7d2da,
+    inset 0 0 0 0 #ffffff;
+  border-radius: 16px 16px 16px 16px;
+  border: 1px solid #ffffff;
+  height: 147px;
+  transition: all 0.2s;
 }
 .icon {
-  width: 68px;
-  height: 68px;
-  border-radius: 8px;
-  margin: 3px auto 8px;
+  width: 76px;
+  height: 76px;
+  border-radius: 12px;
+  margin: 16px auto 8px;
   transition: transform 0.2s;
 }
 .name {
+  width: 90%;
   color: $font1;
   font-family: "sesb";
   height: 18px;
@@ -62,21 +71,27 @@ export default {
 .rating {
   @include center;
   color: rgba($font1, 0.6);
+  .icon-rating {
+    width: 16px;
+    height: 16px;
+  }
 }
 .item:hover {
-  .icon {
-    transform: scale(1.1);
-  }
-  .name {
-    color: $color1;
-  }
+  box-shadow: 0 0 0 0 #c7d2da, 0 0 0 0 #ffffff, inset 4px 4px 8px 0px #47d0ca,
+    inset -4px -4px 8px 0px rgba(255, 255, 255, 0.56);
+  background: #88f4ef;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 @media screen and (max-width: 750px) {
+  .item {
+    height: vw(256);
+    border-radius: vw(32);
+  }
   .icon {
-    width: vw(156);
-    height: vw(156);
+    width: vw(144);
+    height: vw(144);
     border-radius: vw(24);
-    margin: 0 auto vw(8);
+    margin: vw(16) auto vw(12);
   }
   .name {
     width: vw(156);
@@ -91,7 +106,9 @@ export default {
     margin-bottom: vw(4);
   }
   .rating {
+    margin-top: vw(6);
     font-size: vw(24);
+    width: fit-content;
   }
 }
 </style>

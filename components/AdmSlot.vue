@@ -50,10 +50,11 @@ export default {
   height: 280px;
 }
 .title {
-  background: $color1;
-
+  font-family: sesb;
+  font-size: 14px;
+  background: $color2;
   line-height: 24px;
-  color: #ffffff;
+  color: $font2;
   text-align: center;
 }
 
