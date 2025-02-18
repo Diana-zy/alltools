@@ -17,11 +17,8 @@ export default {
       const postsData = await fetch(
         `${process.env.PROD_API_URL}/api/game/get_all_path_v2?site_id=${process.env.SITE_ID}`
       );
-      const topicsData = await fetch(
-        `${process.env.PROD_API_URL}/api/game/get_topic_path?site_id=${process.env.SITE_ID}`
-      );
+
       const posts = await postsData.json();
-      const topics = await topicsData.json();
 
       const gameCategoryPaths = posts.data.game_category.map((item) => `/category/${item}`);
       const appCategoryPaths = posts.data.app_category.map((item) => `/category/${item}`);
@@ -29,15 +26,14 @@ export default {
       const appDetailPaths = posts.data.app_detail.map((item) => `/app/${item}`);
       const gameDownloadPaths = posts.data.game_detail.map((item) => `/download/${item}`);
       const appDownloadPaths = posts.data.app_detail.map((item) => `/download/${item}`);
-      const topicsPaths = topics.data.detail.map((item) => `/topic/${item}`);
+
       const urls = [
         ...gameCategoryPaths,
         ...appCategoryPaths,
         ...gameDetailPaths,
         ...appDetailPaths,
         ...gameDownloadPaths,
-        ...appDownloadPaths,
-        ...topicsPaths
+        ...appDownloadPaths
       ];
       return urls;
     }
@@ -51,7 +47,7 @@ export default {
   },
   head: {
     title:
-      "Alltools1－dedicated to the dreams and wonders of the young crowd, play with your own colors in the game!",
+      "Gamekits1－dedicated to the dreams and wonders of the young crowd, play with your own colors in the game!",
     meta: [
       {
         name: "version",
@@ -65,7 +61,7 @@ export default {
         hid: "description",
         name: "description",
         content:
-          "Alltools1 is a platform that gathers countless young gamers with the best free online games. All of our games are designed to provide young people with a better way to relax and have fun, ≈ and a wide range of styles waiting for your selection. When you are looking for fun through games, Alltools1 will be your faithful choice, offering you a more comprehensive range of games, the most diverse selection and as many new surprises as possible!"
+          "Gamekits1 is a platform that gathers countless young gamers with the best free online games. All of our games are designed to provide young people with a better way to relax and have fun, ≈ and a wide range of styles waiting for your selection. When you are looking for fun through games, Gamekits1 will be your faithful choice, offering you a more comprehensive range of games, the most diverse selection and as many new surprises as possible!"
       },
       {
         hid: "keywords",
@@ -74,19 +70,7 @@ export default {
           "Role-playing games, entertainment games, puzzle games, strategy games, cute games, pet games, parkour games, synthesis games, dress up games, princess games, adventure games, casual games, healing games, horror games, music games, cooking games"
       }
     ],
-    link: [
-      { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
-      {
-        rel: "preload",
-        href: "/images/app.webp",
-        as: "image"
-      },
-      {
-        rel: "preload",
-        href: "/images/game.webp",
-        as: "image"
-      }
-    ]
+    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
   },
   image: {
     provider: "cloudflare",
@@ -97,8 +81,7 @@ export default {
   plugins: [
     { src: "~/plugins/vue-infinite-scroll", ssr: false },
     "~/plugins/axios",
-    "~/plugins/global-data",
-    "~/plugins/report"
+    "~/plugins/global-data"
   ],
   components: true,
   buildModules: [
@@ -114,14 +97,14 @@ export default {
   },
   modules: ["@nuxtjs/axios"],
   sitemap: {
-    hostname: "https://Alltools1.com/"
+    hostname: "https://Gamekits1.com/"
   },
   pwa: {
     manifest: {
-      name: "Alltools1",
-      short_name: "Alltools1",
+      name: "Gamekits1",
+      short_name: "Gamekits1",
       description:
-        "Alltools1 is a platform that gathers countless young gamers with the best free online games. All of our games are designed to provide young people with a better way to relax and have fun, with healthy gameplay and a wide range of styles waiting for your selection. When you are looking for fun through games, Alltools1 will be your faithful choice, offering you a more comprehensive range of games, the most diverse selection and as many new surprises as possible!",
+        "Gamekits1 is a platform that gathers countless young gamers with the best free online games. All of our games are designed to provide young people with a better way to relax and have fun, with healthy gameplay and a wide range of styles waiting for your selection. When you are looking for fun through games, Gamekits1 will be your faithful choice, offering you a more comprehensive range of games, the most diverse selection and as many new surprises as possible!",
       icons: [
         {
           src: "/icons/32.png",

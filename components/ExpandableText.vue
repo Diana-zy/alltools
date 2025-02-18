@@ -1,5 +1,8 @@
 <template>
-  <div class="expandable-text" :class="{ 'is-expanded': expanded }">
+  <div
+    class="expandable-text"
+    :class="{ 'is-expanded': expanded, 'shadow-hidden': currentPath === 'download' }"
+  >
     <div class="text-content">
       {{ text }}
     </div>
@@ -15,8 +18,12 @@ export default {
     text: {
       type: String,
       required: true
+    },
+    currentPath: {
+      type: String
     }
   },
+
   data() {
     return {
       expanded: false
@@ -43,7 +50,7 @@ export default {
   -webkit-box-orient: vertical;
   line-clamp: 2;
   box-orient: vertical;
-  height: 2.6em;
+  height: 2.5em;
   transition: height 0.3s ease;
   line-height: 1.2;
   color: rgba($font1, 0.6);
@@ -78,9 +85,12 @@ export default {
 @media screen and (max-width: 750px) {
   .expandable-text {
     padding: vw(32);
-    background: #f5f5f5;
-    border-radius: vw(16);
     font-size: vw(24);
+    box-shadow: inset 4px 4px 8px 0px rgba(99, 82, 101, 0.16), inset -4px -4px 8px 0px #ffffff;
+    border-radius: vw(32);
+  }
+  .shadow-hidden {
+    box-shadow: none;
   }
   .toggle-button {
     font-size: vw(24);

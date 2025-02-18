@@ -1,20 +1,17 @@
 <template>
-  <a id="link-outside" class="item" :href="item.target_url || ''">
+  <a id="link-outside" :href="item.target_url" class="swiper-slide m-hidden">
     <NuxtImg
+      class="img"
       format="auto"
       fit="cover"
-      width="148"
-      height="148"
-      :src="item.icon"
+      width="1200"
+      height="380"
+      :src="item.pc_img"
       :alt="item.name"
-      class="icon"
+      loading="eager"
+      preloader
     />
-    <div class="info">
-      <p class="name">{{ item.name }}</p>
-      <p class="category">{{ item.category_name }}</p>
-      <p class="rating">{{ item.score || 4.6 }}<i class="icon-rating"></i></p>
-    </div>
-    <p class="arrow"></p>
+    <div class="download-btn m-button-hidden">Play Now<i class="icon-rocket" /></div>
   </a>
 </template>
 
@@ -31,93 +28,70 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.item {
-  height: 80px;
+.download-btn {
+  width: 130px;
+  height: 36px;
+  background: linear-gradient(45deg, #d14fff 0%, #44d2ff 100%);
+  border-radius: 40px;
+  position: absolute;
+  bottom: 26px;
+  right: 50%;
+  transform: translateX(50%);
+  z-index: 2;
   display: flex;
   align-items: center;
-  padding-left: 6px;
-  padding-right: 8px;
-  border-radius: 16px;
-  transition: background 0.2s;
+  justify-content: center;
+  font-family: "Segoe bold";
+  color: #ffffff;
+  outline: 4px solid rgba(#ffffff, 0.4);
+  .icon-rocket {
+    @include icon(16px, 16px, "icon-rocket.png");
+    margin-left: 6px;
+  }
 }
-.info {
-  flex-grow: 1;
+.img {
+  width: 100%;
+  height: 100%;
+  border-radius: 24px;
 }
-.icon {
-  width: 68px;
-  height: 68px;
-  border-radius: 17px;
-  border: 1px solid rgba(65, 65, 76, 0.1);
-  padding: 2px;
-  margin-right: 6px;
-}
-.name {
-  color: $font1;
-  font-family: "sesb";
-  overflow: hidden;
-  word-break: break-all;
-  height: 18px;
-  line-height: 18px;
-  transition: color 0.2s;
-}
-.category {
-  font-size: 12px;
-  color: rgba($font1, 0.6);
-  margin-top: 6px;
-  margin-bottom: 8px;
-}
-.rating {
+.m-button-hidden {
   display: flex;
-  align-items: center;
-  font-size: 12px;
-  color: rgba($font1, 0.6);
 }
-.arrow {
-  @include icon(24px, 24px, "icon-arrow-right.png");
+.pc-hidden {
+  display: none;
 }
-.item:hover {
-  background: rgba(91, 173, 109, 0.1);
-  .name {
-    color: $color1;
-  }
+.m-hidden {
+  display: block;
 }
-@media screen and (max-width: 750px) {
-  .item {
-    height: vw(148);
-    padding-left: vw(18);
-    padding-right: vw(18);
-    border-radius: vw(16);
+
+@media screen and (max-width: 879px) {
+  .download-btn {
+    font-family: seb;
+    width: vw(134);
+    height: vw(48);
+    border-radius: vw(80);
+    bottom: vw(24);
+    background: linear-gradient(86deg, #d000ff 0%, #5b75ff 100%);
+    // right: vw(24);
+    // transform: translateX(0);
+    z-index: 2;
+    outline: 2px solid rgba(255, 255, 255, 0.6);
+    .icon-rocket {
+      @include icon(16px, 16px, "icon-rocket.png");
+      margin-left: 6px;
+    }
   }
-  .icon {
-    width: vw(116);
-    height: vw(116);
-    border-radius: vw(18);
-    border: vw(2) solid rgba(65, 65, 76, 0.1);
-    padding: vw(2);
-    margin-right: vw(12);
+
+  .pc-hidden {
+    display: block;
   }
-  .name {
-    width: vw(210);
-    font-size: vw(24);
-    height: vw(36);
-    line-height: vw(36);
-    @include ellipsis;
+  .m-hidden {
+    display: none;
   }
-  .category {
-    width: vw(210);
-    font-size: vw(24);
-    height: vw(36);
-    line-height: vw(36);
-    margin-top: 0;
-    margin-bottom: 0;
-    @include ellipsis;
+  .pc-button-hidden {
+    display: flex;
   }
-  .rating {
-    font-size: vw(24);
-    height: vw(36);
-    line-height: vw(36);
-  }
-  .arrow {
+  .m-button-hidden {
     display: none;
   }
 }

@@ -1,98 +1,103 @@
 <template>
   <div class="page">
-    <Header />
+    <div class="page-bg"></div>
+    <Header ref="headerElem" />
     <main class="main">
-      <Breadcrumb :name="currentSoftware.name" />
+      <div class="main-left">
+        <div class="fixed-bg"></div>
+        <div ref="shadowElem" class="bg-shadow"></div>
+        <Breadcrumb :name="currentSoftware.name" />
 
-      <section class="download-info">
-        <div class="base-info">
-          <NuxtImg
-            format="auto"
-            fit="cover"
-            width="210"
-            height="210"
-            class="icon"
-            :src="currentSoftware.icon"
-            :alt="currentSoftware.name"
-          />
-          <div class="base-info-content">
-            <div class="name">
-              {{ currentSoftware.name }}
-            </div>
-            <div class="version">
-              <p><b>Version:</b> {{ currentSoftware.version }}</p>
-              <p><b>Size:</b> {{ currentSoftware.apk_size }}</p>
-              <p><b>Updated:</b> {{ currentSoftware.updated_time }}</p>
-            </div>
-            <div class="platform">
-              <div v-if="currentSoftware.android" class="android">
-                <i class="icon-android"></i>Android
-                <div class="qrcode">
-                  Android
-                  <img :src="qrCodeGoogle" alt="qrcode" />
-                </div>
-                <a :href="currentSoftware.android_web_url"></a>
+        <section class="download-info">
+          <div class="base-info">
+            <NuxtImg
+              format="auto"
+              fit="cover"
+              width="210"
+              height="210"
+              class="icon"
+              :src="currentSoftware.icon"
+              :alt="currentSoftware.name"
+            />
+            <div class="base-info-content">
+              <div class="name">
+                {{ currentSoftware.name }}
               </div>
-
-              <div v-if="currentSoftware.ios" class="ios">
-                <i class="icon-ios"></i>iOS
-                <div class="qrcode">
-                  iOS
-                  <img :src="qrCodeIos" alt="qrcode" />
+              <div class="version">
+                <p><b>Version:</b> {{ currentSoftware.version }}</p>
+                <p><b>Size:</b> {{ currentSoftware.apk_size }}</p>
+                <p><b>Updated:</b> {{ currentSoftware.updated_time }}</p>
+              </div>
+              <div class="platform">
+                <div v-if="currentSoftware.android" class="android">
+                  <i class="icon-android"></i>Android
+                  <div class="qrcode">
+                    Android
+                    <img :src="qrCodeGoogle" alt="qrcode" />
+                  </div>
+                  <a :href="currentSoftware.android_web_url"></a>
                 </div>
-                <a :href="currentSoftware.ios_web_url"></a>
+
+                <div v-if="currentSoftware.ios" class="ios">
+                  <i class="icon-ios"></i>iOS
+                  <div class="qrcode">
+                    iOS
+                    <img :src="qrCodeIos" alt="qrcode" />
+                  </div>
+                  <a :href="currentSoftware.ios_web_url"></a>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <ExpandableText :text="currentSoftware.desc" />
-      </section>
+          <ExpandableText :text="currentSoftware.desc" current-path="download" />
+        </section>
 
-      <!-- <GoogleAd ad-slot="4960785586" /> -->
-      <adm-slot adm-id="download-mid1" adm-unit="/23197833490/alltools1/alltools1_detail_1" />
+        <GoogleAd ad-slot="4960785586" class="ad-width" />
 
-      <h2 class="title-h2">Related {{ isApp ? "Apps" : "Games" }}</h2>
-      <section class="box-small-bg">
-        <ContentItemSmall
-          v-for="(item, index) in relatedSoftwares"
-          :key="index"
-          :index="index"
-          :item="item"
-          :to="`/game/${item.path}/`"
-        />
-      </section>
+        <h2 class="title-h2"><i class="icon-relate" />Discover More</h2>
+        <section class="box-small-bg">
+          <ContentItemSmall
+            v-for="(item, index) in relatedSoftwares"
+            :key="index"
+            :index="index"
+            :item="item"
+            :to="`/game/${item.path}/`"
+          />
+        </section>
 
-      <!-- <GoogleAd ad-slot="5542405363" /> -->
-      <adm-slot adm-id="download-mid2" adm-unit="/23197833490/alltools1/alltools1_detail_2" />
+        <GoogleAd ad-slot="5542405363" class="ad-width" />
 
-      <h2 class="title-h2">Recommend {{ isApp ? "Apps" : "Games" }}</h2>
-      <section class="box-common">
-        <ContentItemCommon
-          v-for="(item, index) in allSoftwares"
-          :key="index"
-          :index="index"
-          :item="item"
-          :to="`/game/${item.path}/`"
-        />
-      </section>
+        <h2 class="title-h2"><i class="icon-recommend" /> Recommend</h2>
+        <section class="box-common">
+          <ContentItemCommon
+            v-for="(item, index) in allSoftwares"
+            :key="index"
+            :index="index"
+            :item="item"
+            :to="`/game/${item.path}/`"
+          />
+        </section>
 
-      <aside class="box-aside">
-        <!-- <GoogleAd ad-slot="2334622241" /> -->
-        <adm-slot adm-id="download-mid3" adm-unit="/23197833490/alltools1/alltools1_detail_3" />
-        <h2 class="title-h2">Hot {{ isApp ? "Apps" : "Games" }}</h2>
-        <ContentItemRow
-          v-for="(item, index) in hotSoftwares"
-          :key="index"
-          :item="item"
-          :index="index"
-          :to="`/game/${item.path}/`"
-        />
-      </aside>
+        <aside class="box-aside">
+          <GoogleAd ad-slot="2334622241" />
+          <h2 class="title-h2"
+            ><i :class="isApp ? 'icon-favorite-app' : 'icon-favorite-game'" /> Favorite
+            {{ isApp ? "Tools" : "Games" }}</h2
+          >
+          <ContentItemRow
+            v-for="(item, index) in hotSoftwares"
+            :key="index"
+            :item="item"
+            :index="index"
+            :to="`/game/${item.path}/`"
+          />
+        </aside>
+      </div>
     </main>
     <Footer />
     <BackTop />
-    <!-- <AdLoading /> -->
+    <AdLoading />
   </div>
 </template>
 
@@ -135,7 +140,7 @@ export default {
         $axios.$get("/api/game/menu", {
           params: {
             site_id: env.SITE_ID,
-            mod_id: isApp ? "hot-apps" : "hot-games",
+            mod_id: isApp ? "best-apps" : "best-games",
             size: 12
           }
         })
@@ -158,6 +163,7 @@ export default {
     };
   },
   mounted() {
+    this.getScroll();
     if (this.currentSoftware.ios_web_url) {
       this.generateQRCode(this.currentSoftware.ios_web_url).then((data) => {
         this.qrCodeIos = data;
@@ -170,6 +176,16 @@ export default {
     }
   },
   methods: {
+    getScroll() {
+      const headerElement = this.$refs.headerElem.$el;
+
+      if (headerElement && headerElement.getBoundingClientRect().height !== 0) {
+        this.headerHeight = headerElement.getBoundingClientRect().height;
+      }
+      if (this.$refs.shadowElem) {
+        this.$refs.shadowElem.style.top = this.headerHeight + "px";
+      }
+    },
     async generateQRCode(url) {
       try {
         const qrCodeDataURL = await QRCode.toDataURL(url);

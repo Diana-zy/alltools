@@ -2,63 +2,13 @@
 <html lang="en">
   <head {{ HEAD_ATTRS }}>
     <meta charset="UTF-8" />
-    {{ HEAD }}
-
-    <link rel="preload" href="https://securepubads.g.doubleclick.net/tag/js/gpt.js" as="script" />
-    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
-
-    <script>
-      window.googletag = window.googletag || { cmd: [] };
-      let interstitialSlot, anchorSlot;
-
-      googletag.cmd.push(function () {
-        interstitialSlot = googletag.defineOutOfPageSlot(
-          "/23197833490/alltools1/alltools1_interstitial",
-          googletag.enums.OutOfPageFormat.INTERSTITIAL
-        );
-
-        if (interstitialSlot) {
-          interstitialSlot.addService(googletag.pubads()).setConfig({
-            interstitial: {
-              triggers: {
-                navBar: true,
-                unhideWindow: true
-              }
-            }
-          });
-          googletag.pubads().addEventListener("slotOnload", (event) => {
-            if (interstitialSlot === event.slot) {
-              console.log("Interstitial is loaded.");
-            }
-          });
-          googletag.pubads().addEventListener("slotRequested", (event) => {
-            const slot = event.slot;
-            console.log("Slot", slot.getSlotElementId(), "has been requested.", performance.now());
-            if (slot.getSlotElementId() === "detail-mid1") {
-              dataLayer.push({ event: "IP_REQUESTED", iptime: performance.now().toFixed(2) });
-            }
-          });
-        }
-        anchorSlot = googletag.defineOutOfPageSlot(
-          "/23197833490/alltools1/alltools1_anchor",
-          googletag.enums.OutOfPageFormat.BOTTOM_ANCHOR
-        );
-
-        if (anchorSlot) {
-          anchorSlot.addService(googletag.pubads());
-        }
-        googletag.enableServices();
-      });
-    </script>
-
     <script
       async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1853000876464912"
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6612490456597819"
       crossorigin="anonymous"
     ></script>
-
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HJ2731TT1W"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SYFZM42Q5M"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
@@ -66,7 +16,7 @@
       }
       gtag("js", new Date());
 
-      gtag("config", "G-HJ2731TT1W");
+      gtag("config", "G-SYFZM42Q5M");
     </script>
     <!-- Google Tag Manager -->
     <script>
@@ -79,20 +29,24 @@
         j.async = true;
         j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
         f.parentNode.insertBefore(j, f);
-      })(window, document, "script", "dataLayer", "GTM-MM4V59GK");
+      })(window, document, "script", "dataLayer", "GTM-NDNQJTZX");
     </script>
     <!-- End Google Tag Manager -->
+
+    <!-- bigo start-->
     <script>
       window.bgdataLayer = window.bgdataLayer || [];
       function bge() {
         bgdataLayer.push(arguments);
       }
-      bge("init", "905001526682426624");
+      bge("init", "905001514387119360");
     </script>
-    <script async src="https://api.imotech.video/ad/events.js?pixel_id=905001526682426624"></script>
+    <script async src="https://api.imotech.video/ad/events.js?pixel_id=905001514387119360"></script>
+    <!-- bigo end -->
+
     <script
       async
-      src="https://fundingchoicesmessages.google.com/i/pub-1853000876464912?ers=1"
+      src="https://fundingchoicesmessages.google.com/i/pub-6612490456597819?ers=1"
     ></script>
     <script>
       (function () {
@@ -113,7 +67,6 @@
         signalGooglefcPresent();
       })();
     </script>
-
     <!-- 345显示锚定 -->
     <!-- <script>
       (function () {
@@ -134,7 +87,7 @@
         }
       })();
     </script> -->
-
+    {{ HEAD }}
     <script>
       window.addEventListener("load", function () {
         if ("serviceWorker" in window.navigator) {
@@ -154,7 +107,7 @@
     <!-- Google Tag Manager (noscript) -->
     <noscript
       ><iframe
-        src="https://www.googletagmanager.com/ns.html?id=GTM-MM4V59GK"
+        src="https://www.googletagmanager.com/ns.html?id=GTM-NDNQJTZX"
         height="0"
         width="0"
         style="display: none; visibility: hidden"
@@ -163,11 +116,6 @@
     <!-- End Google Tag Manager (noscript) -->
     {{ APP }}
     <script>
-      googletag.cmd.push(() => {
-        googletag.display(interstitialSlot);
-        googletag.display(anchorSlot);
-      });
-
       window.pv_total = 0;
       const domain = window.location.hostname.split(".").slice(-2).join("."); // 获取主域名
 
@@ -196,6 +144,7 @@
       function handlePvEvents(pvTotal) {
         // PV事件映射
         const PV_EVENTS = {
+          3: "PV_3",
           4: "PV_4",
           5: "PV_5",
           6: "PV_6"
@@ -265,7 +214,7 @@
         if (1 === window.clickOpen) {
           // 点击穿插广告
           dataLayer.push({ event: "D_AL" });
-          bge("event", "button", { configId: "905001526682426624" });
+          bge("event", "button", { configId: "905001514387119360" });
           const domain = window.location.hostname.split(".").slice(-2).join("."); // 获取主域名
           setCookie("clickAL", "done", 1, domain);
         } else {
@@ -285,7 +234,9 @@
       // 监听消息事件
       window.addEventListener("message", (event) => {
         if (
-          '{"eventType":"adClosed","result":{"status":1},"googMsgType":"fullscreen"}' === event.data
+          '{"eventType":"adClosed","result":{"status":1},"googMsgType":"fullscreen"}' ===
+            event.data &&
+          "https://googleads.g.doubleclick.net" === event.origin
         ) {
           window.clickOpen = 0;
           // 关闭穿插广告
@@ -295,26 +246,31 @@
       // 监听失去焦点事件
       window.addEventListener("blur", () => {
         const activeElement = document.activeElement,
-          sourceAttribute = activeElement.getAttribute("name");
+          sourceAttribute = activeElement.getAttribute("src");
         if (
           sourceAttribute &&
-          -1 !== sourceAttribute.indexOf("google_ads_iframe_/23197833490") &&
-          -1 === sourceAttribute.indexOf("anchor_0")
+          -1 !== sourceAttribute.indexOf("googleads.g.doubleclick.net/pagead/ads?")
         ) {
-          let adStatus = "false";
-          if (activeElement) {
-            adStatus = activeElement.getAttribute("data-load-complete") || adStatus;
+          const closestIns = activeElement.closest("ins");
+          let adStatus = "unfilled";
+          if (closestIns) {
+            adStatus = closestIns.getAttribute("data-ad-status") || adStatus;
           }
-          if ("true" == adStatus) {
+          if ("filled" == adStatus) {
             // 点击页内广告
             dataLayer.push({ event: "D_IP" });
-            bge("event", "button", { configId: "905001526682426624" });
+            bge("event", "button", { configId: "905001514387119360" });
             const domain = window.location.hostname.split(".").slice(-2).join("."); // 获取主域名
             setCookie("clickIP", "done", 1, domain);
           }
-        } else if (sourceAttribute && -1 !== sourceAttribute.indexOf("anchor_0")) {
-          // 点击锚定广告
-          dataLayer.push({ event: "D_FI" });
+        } else if (
+          sourceAttribute &&
+          -1 !== sourceAttribute.indexOf("googleads.g.doubleclick.net/pagead/html/")
+        ) {
+          if (-1 !== sourceAttribute.indexOf("btvi=")) {
+            // 点击锚定广告
+            dataLayer.push({ event: "D_FI" });
+          }
         }
       });
     </script>

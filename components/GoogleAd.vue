@@ -44,9 +44,9 @@ export default {
 
 <style lang="scss" scoped>
 .title {
-  background: $color1;
+  background: $color4;
   line-height: 24px;
-  color: #ffffff;
+  color: $font2;
   text-align: center;
 }
 @media screen and (max-width: 879px) {

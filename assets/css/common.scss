@@ -4,10 +4,8 @@ body {
 }
 .page {
   position: relative;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
   box-sizing: content-box;
+  background: $color1;
 }
 .pc-hidden {
   display: none;
@@ -18,39 +16,84 @@ body {
   color: $font1;
   margin-top: 36px;
   margin-bottom: 28px;
+  width: fit-content;
+  box-shadow: 4px 4px 8px 0px rgba(99, 82, 101, 0.16), -4px -4px 8px 0px #ffffff;
+  border-radius: 16px;
+  height: 36px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
 }
 .icon-rating {
   @include icon(12px, 12px, "icon-rating.png");
+  margin-right: 2px;
+}
+.icon-rating4 {
+  @include icon(12px, 12px, "icon-rating4.png");
+  margin-right: 2px;
 }
 .box-small-bg {
-  background: #f5f5f5;
+  box-shadow: inset 4px 4px 8px 0px rgba(99, 82, 101, 0.16), inset -4px -4px 8px 0px #ffffff;
   border-radius: 24px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, 90px);
-  gap: 24px 16px;
-  padding: 24px 22px;
+  grid-template-columns: repeat(auto-fit, minmax(124px, 1fr));
+  gap: 24px;
+  padding: 24px;
   margin-bottom: 32px;
 }
 .box-common {
   display: grid;
-  grid-template-columns: repeat(auto-fit, 141px);
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(129px, 1fr));
+  gap: 24px;
 }
 .box-aside {
   position: absolute;
   width: 390px;
-  top: 152px;
+  top: 55px;
   right: 0;
   .item {
     margin-bottom: 16px;
   }
 }
+.icon-favorite-app {
+  @include icon(32px, 32px, "icon-favorite-app.png");
+  margin-right: 8px;
+}
+.icon-favorite-game {
+  @include icon(32px, 32px, "icon-favorite-game.png");
+  margin-right: 8px;
+}
+.icon-fresh {
+  @include icon(32px, 32px, "icon-fresh.png");
+  margin-right: 8px;
+}
+.icon-recommend {
+  @include icon(32px, 32px, "icon-recommend.png");
+  margin-right: 8px;
+}
+.icon-relate {
+  @include icon(32px, 32px, "icon-relate.png");
+  margin-right: 8px;
+}
+.icon-arrow {
+  @include icon(24px, 24px, "icon-title-arrow.png");
+}
+
 @media screen and (max-width: 1200px) {
+  .main {
+    padding: 0 20px;
+  }
+  .header-main {
+    padding: 0 20px;
+  }
+  .footer {
+    padding: 0 20px;
+  }
   .box-aside {
     display: none;
   }
   .box-small-bg {
-    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(124px, 1fr));
   }
   .box-common {
     grid-template-columns: repeat(auto-fit, minmax(141px, 1fr));
@@ -64,20 +107,51 @@ body {
   .page {
     padding: vw(96) 0 0;
   }
+  .main {
+    padding: 0;
+  }
+  .footer {
+    padding: 0;
+  }
   .title-h2 {
     font-size: vw(36);
     margin-top: vw(54);
     margin-bottom: vw(38);
-    padding: 0 vw(46);
+    padding: 0 vw(16);
+    margin: vw(54) 0 vw(38) vw(46);
+    border-radius: vw(32);
+    height: vw(72);
   }
-  .icon-rating {
+  .icon-rating,
+  .icon-rating4 {
     width: vw(24);
     height: vw(24);
+    margin-right: vw(4);
+  }
+  .icon-favorite-app,
+  .icon-favorite-game,
+  .icon-fresh,
+  .icon-recommend,
+  .icon-relate {
+    width: vw(64);
+    height: vw(64);
+    margin-right: vw(8);
+  }
+  .icon-get {
+    @include icon(vw(44), vw(32), "icon-get.png");
+    margin-top: vw(2);
+  }
+  .icon-play {
+    @include icon(vw(60), vw(32), "icon-play.png");
+  }
+  .icon-arrow {
+    width: vw(48);
+    height: vw(48);
   }
   .box-small-bg {
-    padding: vw(32) 0;
-    grid-template-columns: repeat(3, vw(200));
-    gap: vw(36) vw(30);
+    padding: vw(32);
+    grid-template-columns: repeat(3, vw(176));
+    gap: vw(32);
     margin: 0 vw(46);
   }
   .box-common {
@@ -90,13 +164,14 @@ body {
 .swiper-pagination-bullet {
   width: 8px;
   height: 8px;
-  background: #dadada;
+  background: #e5eaf2;
+  box-shadow: inset 1px 1px 1px 0px rgba(0, 0, 0, 0.1);
   border-radius: 50%;
   opacity: 1;
   box-sizing: content-box;
-  margin: 0 4px;
+  margin: 0 6px;
 }
 .swiper-pagination-bullet-active {
-  border: 2px solid #5bad6d;
+  border: 2px solid $color3;
   background: #ffffff;
 }

@@ -69,7 +69,7 @@ export default {
 .btn-back-top {
   width: 40px;
   height: 40px;
-  background: linear-gradient(180deg, #70c296 0%, #49a071 100%);
+  background: $color3;
   border-radius: 50%;
   position: fixed;
   z-index: 500;
@@ -86,6 +86,7 @@ export default {
   .btn-back-top {
     width: vw(80);
     height: vw(80);
+    background: linear-gradient(45deg, #d14fff 0%, #449aff 100%);
     right: vw(66);
     bottom: vw(105);
   }

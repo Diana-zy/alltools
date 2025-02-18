@@ -1,9 +1,12 @@
 <template>
   <div class="page">
-    <Header />
-    <main>
+    <div class="page-bg"></div>
+    <Header ref="headerElem" />
+    <main class="main">
+      <div class="fixed-bg"></div>
+      <div ref="shadowElem" class="bg-shadow"></div>
       <Breadcrumb name="Search" />
-
+      <GoogleAd ad-slot="8298185356" class="ad-width" />
       <!-- 移动端独占 -->
       <section class="m-search-box pc-hidden">
         <input
@@ -33,7 +36,7 @@
         <div class="number">
           <span>"{{ matchGameData.name }}"</span>, {{ matchGameData.totalCount }} results found
         </div>
-        <h3 v-if="matchGameData.app_list.length > 0">Apps</h3>
+        <h3 class="title-padding" v-if="matchGameData.app_list.length > 0">Tools</h3>
         <ContentItemSmall
           v-for="(item, index) in matchGameData.app_list"
           :key="index"
@@ -41,7 +44,7 @@
           :item="item"
           :to="`/app/${item.path}/`"
         />
-        <h3 v-if="matchGameData.list.length > 0">Games</h3>
+        <h3 class="title-padding" v-if="matchGameData.list.length > 0">Games</h3>
         <ContentItemSmall
           v-for="(item, index) in matchGameData.list"
           :key="index + 10000"
@@ -51,7 +54,7 @@
         />
       </section>
 
-      <h2 class="title-h2">More Apps</h2>
+      <h2 class="title-h2"><i class="icon-recommend" />Recommend</h2>
       <InfiniteScrollList
         class="box-common-search"
         api-endpoint="/api/game/all_app"
@@ -97,6 +100,9 @@ export default {
   },
   data() {
     return {
+      lastButtonRect: null,
+      headerHeight: 0,
+      windowWidth: 0,
       searchLoading: false,
       collapsed: true,
       matchGameData: {},
@@ -104,10 +110,21 @@ export default {
     };
   },
   mounted() {
+    this.getScroll();
     this.input = this.$route.query.text || "";
     this.input && this.searchGame();
   },
   methods: {
+    getScroll() {
+      const headerElement = this.$refs.headerElem.$el;
+
+      if (headerElement && headerElement.getBoundingClientRect().height !== 0) {
+        this.headerHeight = headerElement.getBoundingClientRect().height;
+      }
+      if (this.$refs.shadowElem) {
+        this.$refs.shadowElem.style.top = this.headerHeight + "px";
+      }
+    },
     async searchGame() {
       if (this.input.length < 2) {
         this.$globalMethod.showNotification({
@@ -132,12 +149,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+}
 .searching,
 .search-null {
   width: 100%;
   height: 120px;
-  background: #f5f5f5;
-  border-radius: 24px 24px 24px 24px;
+  box-shadow: inset 4px 4px 8px 0px rgba(99, 82, 101, 0.16), inset -4px -4px 8px 0px #ffffff;
+  border-radius: 24px;
   @include center;
 }
 .search-null,
@@ -146,7 +167,7 @@ export default {
   font-family: "sesb";
   color: rgba($font1, 0.6);
   span {
-    color: $color1;
+    color: $color3;
   }
 }
 .search-result {
@@ -169,7 +190,7 @@ export default {
   grid-gap: 24px;
 }
 .box-common-search {
-  grid-template-columns: repeat(auto-fit, 157px);
+  grid-template-columns: repeat(auto-fit, 129px);
 }
 @media screen and (max-width: 1235px) {
   .box-small-bg-search {
@@ -180,17 +201,50 @@ export default {
   }
 }
 @media screen and (max-width: 750px) {
+  .page {
+    background: unset;
+  }
+  .page-bg {
+    width: 100%;
+    height: 100%;
+    background-color: $color1;
+    position: fixed;
+    top: 0;
+    z-index: -2;
+  }
+  .main {
+    padding: vw(48) 0 0 0;
+    margin-top: vw(8);
+  }
+  .fixed-bg {
+    background: $color2;
+    width: 100%;
+    height: vw(200);
+    position: fixed;
+    top: 0;
+    z-index: -1;
+  }
+  .bg-shadow {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    background: $color1;
+    border-radius: vw(48) vw(48) 0 0;
+    top: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
   .m-search-box {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: vw(48) vw(46);
+    box-shadow: inset 4px 4px 8px 0px rgba(99, 82, 101, 0.16), inset -4px -4px 8px 0px #ffffff;
+    margin: vw(48) vw(94);
     height: vw(96);
-    background: #e4e4e4;
     border-radius: vw(60);
     padding-right: vw(6);
     .text {
-      width: vw(476);
+      width: vw(420);
       padding-left: vw(32);
       font-size: vw(32);
       color: $font1;
@@ -201,7 +255,7 @@ export default {
     .m-search {
       width: vw(144);
       height: vw(84);
-      background: $color1;
+      background: $color3;
       border-radius: vw(120);
       @include center;
     }
@@ -213,7 +267,7 @@ export default {
   .search-null {
     width: auto;
     height: vw(240);
-    border-radius: vw(16);
+    border-radius: vw(48);
     margin: 0 vw(46);
   }
   .search-null,
@@ -221,21 +275,27 @@ export default {
     font-size: vw(28);
   }
   .search-result {
+    border-radius: vw(48);
     h3 {
       font-size: vw(36);
-      padding-left: vw(32);
+      // padding-left: vw(32);
       &:last-of-type {
         margin-top: vw(22);
       }
     }
   }
+
   .box-small-bg-search {
-    grid-template-columns: repeat(3, vw(200));
+    grid-template-columns: repeat(3, vw(178));
     gap: vw(32) vw(30);
   }
   .box-common-search {
     grid-template-columns: repeat(3, vw(200));
     gap: vw(32) vw(30);
+  }
+  .ad-width {
+    width: 87%;
+    margin: 0 auto;
   }
 }
 </style>

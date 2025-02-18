@@ -40,16 +40,25 @@ export default {
 
 <style lang="scss" scoped>
 .item {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 4px 4px 8px 0px rgba(99, 82, 101, 0.16), -4px -4px 8px 0px #ffffff,
+    inset 0 0 0 0 rgba(99, 82, 101, 0.16), inset 0 0 0 0 #ffffff;
+  border-radius: 16px 16px 16px 16px;
+  border: 1px solid #ffffff;
+  height: 147px;
+  transition: all 0.2s;
 }
 .icon {
-  width: 68px;
-  height: 68px;
-  border-radius: 8px;
-  margin: 3px auto 8px;
+  width: 76px;
+  height: 76px;
+  border-radius: 12px;
+  margin: 16px auto 8px;
   transition: transform 0.2s;
 }
 .name {
+  width: 90%;
   color: $font1;
   font-family: "sesb";
   height: 18px;
@@ -64,19 +73,22 @@ export default {
   color: rgba($font1, 0.6);
 }
 .item:hover {
-  .icon {
-    transform: scale(1.1);
-  }
+  box-shadow: 0 0 0 0 rgba(99, 82, 101, 0.16), 0 0 0 0 #ffffff,
+    inset 4px 4px 8px 0px rgba(99, 82, 101, 0.16), inset -4px -4px 8px 0px #ffffff;
   .name {
-    color: $color1;
+    color: $color3;
   }
 }
 @media screen and (max-width: 750px) {
+  .item {
+    height: vw(252);
+    border-radius: vw(32);
+  }
   .icon {
-    width: vw(156);
-    height: vw(156);
+    width: vw(144);
+    height: vw(144);
     border-radius: vw(24);
-    margin: 0 auto vw(8);
+    margin: vw(16) auto vw(10);
   }
   .name {
     width: vw(156);
@@ -91,7 +103,9 @@ export default {
     margin-bottom: vw(4);
   }
   .rating {
+    margin-top: vw(4);
     font-size: vw(24);
+    width: fit-content;
   }
 }
 </style>
