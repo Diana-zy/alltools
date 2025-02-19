@@ -1,15 +1,9 @@
 <template>
   <div class="page">
-    <div class="page-bg"></div>
-    <Header ref="headerElem" />
+    <Header />
     <main class="main">
       <Breadcrumb name="Search" />
-      <!-- <GoogleAd ad-slot="1454551777" class="ad-width" /> -->
-      <adm-slot
-        class="ad-width"
-        adm-id="search-mid1"
-        adm-unit="/23197833490/alltools1/alltools1_search_1"
-      />
+
       <!-- 移动端独占 -->
       <section class="m-search-box pc-hidden">
         <input
@@ -21,6 +15,13 @@
         />
         <p class="m-search" @click="searchGame"><i class="icon-search"></i></p>
       </section>
+
+      <!-- <GoogleAd ad-slot="1454551777" class="ad-width" /> -->
+      <adm-slot
+        adm-id="search-mid1"
+        adm-unit="/23197833490/alltools1/alltools1_search_1"
+        class="ad-width"
+      />
 
       <!-- 搜索中 -->
       <section v-if="searchLoading" class="searching">
@@ -57,7 +58,7 @@
         />
       </section>
 
-      <h2 class="title-h2"><i class="icon-recommend" />Recommend</h2>
+      <h2 class="title-h2">Recommend</h2>
       <InfiniteScrollList
         class="box-common-search"
         api-endpoint="/api/game/all_app"
@@ -142,13 +143,11 @@ export default {
   max-width: 1200px;
   margin: 0 auto;
 }
-
 .searching,
 .search-null {
   width: 100%;
   height: 120px;
-  background: #f0f2f5;
-  box-shadow: inset 4px 4px 6px 0px #c7d2da, inset -4px -4px 5px 0px rgba(255, 255, 255, 0.76);
+  box-shadow: inset 4px 4px 8px 0px rgba(99, 82, 101, 0.16), inset -4px -4px 8px 0px #ffffff;
   border-radius: 24px;
   @include center;
 }
@@ -156,9 +155,9 @@ export default {
 .search-result .number {
   font-size: 20px;
   font-family: "sesb";
-  color: $font4;
+  color: rgba($font1, 0.6);
   span {
-    color: $color4;
+    color: $color2;
   }
 }
 .search-result {
@@ -177,7 +176,7 @@ export default {
   }
 }
 .box-small-bg-search {
-  grid-template-columns: repeat(auto-fit, 172px);
+  grid-template-columns: repeat(auto-fit, minmax(172px, 1fr));
   grid-gap: 24px;
 }
 .box-common-search {
@@ -187,22 +186,11 @@ export default {
   .box-small-bg-search {
     grid-template-columns: repeat(auto-fit, minmax(172px, 1fr));
   }
-  // .box-common-search {
-  //   grid-template-columns: repeat(auto-fit, minmax(157px, 1fr));
-  // }
+  .box-common-search {
+    grid-template-columns: repeat(auto-fit, minmax(157px, 1fr));
+  }
 }
-@media screen and (max-width: 750px) {
-  .page {
-    background: unset;
-  }
-  .page-bg {
-    width: 100%;
-    height: 100%;
-    background-color: $color1;
-    position: fixed;
-    top: 0;
-    z-index: -2;
-  }
+@media screen and (max-width: 879px) {
   .main {
     padding: vw(48) 0 0 0;
     margin-top: vw(8);
@@ -212,24 +200,26 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: inset 4px 4px 8px 0px rgba(99, 82, 101, 0.16), inset -4px -4px 8px 0px #ffffff;
-    margin: vw(48) vw(94);
+    background: $color1;
+    box-shadow: inset 6px 6px 12px 0px rgba(114, 35, 10, 0.21), inset -6px -6px 12px 0px #ffffff;
+    border: 2px solid #ffffff;
+    margin: 0 vw(94) vw(48) vw(94);
     height: vw(96);
     border-radius: vw(60);
-    padding-right: vw(6);
+    padding-right: vw(4);
     .text {
-      width: vw(420);
+      width: vw(380);
       padding-left: vw(32);
       font-size: vw(32);
       color: $font1;
       &::placeholder {
-        color: rgba($font1, 0.6);
+        color: rgba($font1, 0.4);
       }
     }
     .m-search {
       width: vw(144);
       height: vw(84);
-      background: $color3;
+      background: $color2;
       border-radius: vw(120);
       @include center;
     }
@@ -260,16 +250,12 @@ export default {
   }
 
   .box-small-bg-search {
-    grid-template-columns: repeat(3, vw(176));
-    gap: vw(32);
+    grid-template-columns: repeat(3, vw(178));
+    gap: vw(32) vw(30);
   }
   .box-common-search {
     grid-template-columns: repeat(3, vw(200));
-    gap: vw(32);
-  }
-  .ad-width {
-    width: 87%;
-    margin: 0 auto;
+    gap: vw(32) vw(30);
   }
 }
 </style>

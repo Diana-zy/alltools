@@ -16,17 +16,17 @@
       </div>
 
       <div class="introduction">
-        Appsvault.com is a game aggregation platform. Through this platform, you can play games on
+        alltools1.com is a game aggregation platform. Through this platform, you can play games on
         different devices that support Android and iOS. Our team goal is to enable all players to
         find a game they love.We offer many types of games. Including but not limited to puzzle
         games, action games, sports games, racing games, shooting games, arcade games, makeup games,
         matching games, cooking games, etc.<br />
-        Appsvault.com has collected the hottest, most classic and most fun mobile games, each of
-        which is handpicked by us. Appsvault.com is a website that supports genuine games. The
+        alltools1.com has collected the hottest, most classic and most fun mobile games, each of
+        which is handpicked by us. alltools1.com is a website that supports genuine games. The
         website does not provide game downloads, and our game download links will jump to formal
         platforms such as Google Play and Apple Store. Players can find the most suitable games in
-        Appsvault.com for the first time.<br />
-        Hope you can find the best game for you on Appsvault.com platform. If you have any feedback
+        alltools1.com for the first time.<br />
+        Hope you can find the best game for you on alltools1.com platform. If you have any feedback
         on us, please feel free to contact us by email:
         <a href="mailto:Service@alltools1.com">Service@alltools1.com</a>
       </div>
@@ -38,9 +38,9 @@
           <CustomLink to="/eula.html" target="_blank">Terms of Service</CustomLink>
           <CustomLink to="/privacy.html" target="_blank">Privacy Policy</CustomLink
           ><CustomLink to="/cookies.html" target="_blank">Cookies Policy</CustomLink>
-          <a href="mailto:Service@Appsvault.com">Contact</a>
+          <a href="mailto:Service@alltools1.com">Contact</a>
         </div>
-        <span>Copyright ©&nbsp; 2024 Appsvault &nbsp;All rights reserved.</span>
+        <span>Copyright ©&nbsp; 2024 AllTools1 &nbsp;All rights reserved.</span>
       </div>
     </div>
     <Notification v-if="showNotification" :message="notificationMessage" />
@@ -109,14 +109,14 @@ export default {
   line-height: 16px;
   a {
     font-family: "sesb";
-    color: $font3;
+    color: $font1;
   }
 }
 .subscription-content {
   min-width: 390px;
   margin-left: 40px;
   .text {
-    color: $font3;
+    color: $font1;
     font-family: "sesb";
     font-size: 20px;
     line-height: 20px;
@@ -127,25 +127,23 @@ export default {
     align-items: center;
     justify-content: space-between;
     height: 40px;
-    box-shadow: inset 4px 4px 8px 0px rgba(11, 41, 69, 0.2), inset -4px -4px 8px 0px #ffffff;
-    border-radius: 38px;
+    box-shadow: inset 6px 6px 12px 0px rgba(114, 35, 10, 0.21), inset -6px -6px 12px 0px #ffffff;
     border: 1px solid #ffffff;
-    background: #e2f0f3;
+    border-radius: 28px;
   }
   .email {
     width: 390px;
     height: 100%;
     padding-left: 16px;
-
     color: $font1;
     &::placeholder {
       color: rgba($font1, 0.4);
     }
   }
   .submit {
-    width: 166px;
+    width: 122px;
     height: 32px;
-    background: $font3;
+    background: $color2;
     border-radius: 38px;
     @include center;
     font-size: 16px;
@@ -196,7 +194,7 @@ export default {
     }
   }
 }
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 879px) {
   .footer {
     border-top: none;
     margin-top: vw(48);

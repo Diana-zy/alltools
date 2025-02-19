@@ -1,7 +1,6 @@
 <template>
   <div class="page">
-    <div class="page-bg"></div>
-    <Header ref="headerElem" />
+    <Header />
     <main class="main">
       <div class="main-left">
         <Breadcrumb :name="currentGame.name" />
@@ -18,16 +17,13 @@
           ></NuxtImg>
           <div class="info">
             <div class="name">{{ currentGame.name }}</div>
-            <!-- <div class="category">{{ currentGame.category_name }}</div> -->
             <div class="rating">
               <div class="rating-star">
                 <p
                   :style="{ width: (((currentGame.score || 4.6) / 5) * 100).toFixed(0) + '%' }"
                 ></p>
               </div>
-              <span>
-                {{ currentGame.score || 4.6 }}
-              </span>
+              {{ currentGame.score || 4.6 }}
             </div>
           </div>
           <div
@@ -45,9 +41,9 @@
 
         <!-- <GoogleAd ad-slot="7045171250" class="ad-width" /> -->
         <adm-slot
-          class="ad-width"
-          adm-id="game-mid1"
+          adm-id="detail-mid1"
           adm-unit="/23197833490/alltools1/alltools1_detail_1"
+          class="ad-width"
         />
 
         <section>
@@ -136,9 +132,9 @@
         <div ref="targetElement">
           <!-- <GoogleAd ad-slot="8358252927" class="ad-width" /> -->
           <adm-slot
-            class="ad-width"
-            adm-id="game-mid2"
+            adm-id="detail-mid2"
             adm-unit="/23197833490/alltools1/alltools1_detail_2"
+            class="ad-width"
           />
         </div>
 
@@ -151,8 +147,50 @@
             viruses and malware.
           </div>
         </section>
+        <!-- <section class="download-info">
+          <div class="base-info">
+            <NuxtImg
+              format="auto"
+              fit="cover"
+              width="210"
+              height="210"
+              class="icon"
+              :src="currentGame.icon"
+              :alt="currentGame.name"
+            />
+            <div class="base-info-content">
+              <div class="name">
+                {{ currentGame.name }}
+              </div>
 
-        <h2 class="title-h2"> <i class="icon-recommend" />Related Games</h2>
+              <div class="platform">
+                <div v-if="currentGame.android" class="android">
+                  <i class="icon-android1"></i>Android
+                  <div class="qrcode">
+                    Android
+                    <img :src="qrCodeGoogle" alt="qrcode" />
+                  </div>
+                  <a :href="currentGame.android_web_url"></a>
+                </div>
+
+                <div v-if="currentGame.ios" class="ios">
+                  <i class="icon-ios1"></i>iOS
+                  <div class="qrcode">
+                    iOS
+                    <img :src="qrCodeIos" alt="qrcode" />
+                  </div>
+                  <a :href="currentGame.ios_web_url"></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tip">
+            * For reference, The {{ currentGame.name }} game websites are all approved, there are no
+            viruses and malware.
+          </div>
+        </section> -->
+
+        <h2 class="title-h2">Related Games</h2>
 
         <section class="box-small-bg">
           <ContentItemSmall
@@ -164,17 +202,25 @@
           />
         </section>
 
-        <h2 class="title-h2"> <i class="icon-recommend" />Recommend Games</h2>
+        <h2 class="title-h2">Recommend Games</h2>
 
+        <!-- <section class="box-common"> -->
+        <!-- <ContentItemCommon
+            v-for="(item, index) in recommendGames"
+            :key="index"
+            :index="index"
+            :item="item"
+            :to="`/game/${item.path}/`"
+          /> -->
         <InfiniteScrollList
-          class="box-detail"
+          class="box-common"
           api-endpoint="/api/game/all_game"
           :initial-page="2"
           :page-size="21"
           :initial-items="allGames"
         >
           <template #default="{ items }">
-            <ContentItemCommon1
+            <ContentItemDetail
               v-for="(item, index) in items"
               :key="index"
               :index="index"
@@ -183,11 +229,12 @@
             />
           </template>
         </InfiniteScrollList>
+        <!-- </section> -->
 
         <aside class="box-aside">
           <!-- <GoogleAd ad-slot="7793230426" /> -->
-          <adm-slot adm-id="game-mid3" adm-unit="/23197833490/alltools1/alltools1_detail_3" />
-          <h2 class="title-h2"><i class="icon-hot" /> Hot Games</h2>
+          <adm-slot adm-id="detail-mid3" adm-unit="/23197833490/alltools1/alltools1_detail_3" />
+          <h2 class="title-h2">Hot Games</h2>
           <ContentItemRow
             v-for="(item, index) in bestGames"
             :key="index"
@@ -204,6 +251,7 @@
   </div>
 </template>
 <script>
+// import QRCode from "qrcode";
 import { directive } from "vue-awesome-swiper";
 import { shuffleArray } from "~/utils/utils";
 import "swiper/css/swiper.min.css";
@@ -243,7 +291,7 @@ export default {
           $axios.$get("/api/game/menu", {
             params: {
               site_id: env.SITE_ID,
-              mod_id: "fave-games",
+              mod_id: "best-games",
               size: 10,
               page: 1
             }
@@ -261,6 +309,8 @@ export default {
   },
   data() {
     return {
+      // qrCodeGoogle: "",
+      // qrCodeIos: "",
       swiperOption: {
         slidesPerView: "auto",
         autoplay: {
@@ -277,9 +327,31 @@ export default {
       }
     };
   },
+  // mounted() {
+  //   if (this.currentGame.ios_web_url) {
+  //     this.generateQRCode(this.currentGame.ios_web_url).then((data) => {
+  //       this.qrCodeIos = data;
+  //     });
+  //   }
+  //   if (this.currentGame.android_web_url) {
+  //     this.generateQRCode(this.currentGame.android_web_url).then((data) => {
+  //       this.qrCodeGoogle = data;
+  //     });
+  //   }
+  // },
+  // methods: {
+  //   async generateQRCode(url) {
+  //     try {
+  //       const qrCodeDataURL = await QRCode.toDataURL(url);
+  //       return qrCodeDataURL;
+  //     } catch (error) {
+  //       console.error("Error generating QR code:", error);
+  //     }
+  //   }
+  // },
   head() {
     return {
-      title: `Appsvault － dedicated to the dreams and wonders of the young crowd, play with your own colors in the ${
+      title: `AllTools1 － dedicated to the dreams and wonders of the young crowd, play with your own colors in the ${
         this.currentGame.name || "game"
       }!`
     };
@@ -288,7 +360,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "~/assets/css/game.scss";
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 879px) {
   .shadow-hidden {
     box-shadow: none;
   }

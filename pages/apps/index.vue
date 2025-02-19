@@ -1,15 +1,14 @@
 <template>
   <div class="page">
-    <div class="page-bg"></div>
-    <Header ref="headerElem" />
+    <Header />
     <main class="main">
       <div class="main-left">
-        <h2 class="title-h2"><i class="icon-recommend" />All Apps</h2>
+        <h2 class="title-h2">All Apps</h2>
         <!-- <GoogleAd ad-slot="3617086157" class="ad1 ad-width" /> -->
         <adm-slot
-          class="ad1 ad-width"
           adm-id="apps-mid1"
           adm-unit="/23197833490/alltools1/alltools1_module_1"
+          class="box-common"
         />
 
         <InfiniteScrollList
@@ -21,11 +20,11 @@
           <template #default="{ items }">
             <!-- <GoogleAd ad-slot="1653435668" class="ad2" /> -->
             <adm-slot
-              class="ad2"
               adm-id="apps-mid2"
               adm-unit="/23197833490/alltools1/alltools1_module_2"
+              class="ad2"
             />
-            <ContentItemCommon
+            <ContentItemDetail
               v-for="(item, index) in items"
               :key="index"
               :index="index"
@@ -36,9 +35,9 @@
         </InfiniteScrollList>
 
         <aside class="box-aside">
-          <!-- <GoogleAd ad-slot="4629971226" /> -->
+          <!-- <GoogleAd ad-slot="2851633541" /> -->
           <adm-slot adm-id="apps-mid3" adm-unit="/23197833490/alltools1/alltools1_module_3" />
-          <h2 class="title-h2"><i class="icon-favorite-app" />Favorite Apps</h2>
+          <h2 class="title-h2">Favorite Tools</h2>
           <ContentItemRow
             v-for="(item, index) in hotApps"
             :key="index"
@@ -69,7 +68,7 @@ export default {
         $axios.$get("/api/game/menu", {
           params: {
             site_id: env.SITE_ID,
-            mod_id: "fave-apps",
+            mod_id: "best-apps",
             size: 12
           }
         })
@@ -108,18 +107,7 @@ export default {
     width: 100%;
   }
 }
-@media screen and (max-width: 750px) {
-  .page {
-    background: unset;
-  }
-  .page-bg {
-    width: 100%;
-    height: 100%;
-    background-color: $color1;
-    position: fixed;
-    top: 0;
-    z-index: -2;
-  }
+@media screen and (max-width: 879px) {
   .main {
     padding: 0;
   }
@@ -130,10 +118,6 @@ export default {
     grid-template-columns: repeat(3, vw(200));
     margin: vw(36) 0 vw(48);
     justify-content: center;
-  }
-  .ad-width {
-    width: 92%;
-    margin: 0 auto;
   }
 }
 </style>

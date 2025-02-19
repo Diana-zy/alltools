@@ -18,11 +18,11 @@ export default {
     },
     initialPage: {
       type: Number,
-      default: 1
+      default: 2
     },
     pageSize: {
       type: Number,
-      default: 40
+      default: 20
     },
     initialItems: {
       type: Array,

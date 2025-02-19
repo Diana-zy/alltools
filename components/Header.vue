@@ -1,17 +1,25 @@
 <template>
   <header class="header">
-    <div class="header-main">
-      <div class="list-left">
+    <div class="header-main" :class="{ 'home-header': currentPath === 'home' }">
+      <div class="m-list">
         <CustomLink class="pc-hidden m-menu" to="/menu/"></CustomLink>
 
         <!-- logo -->
-        <CustomLink to="/" class="logo" :class="{ 'shadow-hidden': currentPath === 'home' }"
+        <CustomLink
+          to="/"
+          class="logo"
+          :class="{ 'home-logo shadow-hidden': currentPath === 'home' }"
           ><i class="icon-logo"></i
         ></CustomLink>
       </div>
-      <div class="list-right">
-        <!-- 下载到桌面 -->
-        <div v-if="showInstallButton" class="pwa-download" @click="installPWA">
+      <!-- 下载到桌面 -->
+      <div class="menu">
+        <div
+          v-if="showInstallButton"
+          class="pwa-download"
+          :class="{ 'home-icon': currentPath === 'home' }"
+          @click="installPWA"
+        >
           <i class="icon-pwa"></i>
         </div>
 
@@ -24,14 +32,14 @@
             name="search"
             @keyup.enter="search"
           />
-          <div class="btn-search">
-            <i class="icon-search" @click="search"></i>
+          <div class="btn-search" @click="search">
+            <i class="icon-search"></i>
           </div>
         </div>
         <!-- 移动 搜索 -->
 
-        <CustomLink to="/search/" class="m-search">
-          <i class="icon-search-m" />
+        <CustomLink to="/search/" class="m-search" :class="{ 'home-icon': currentPath === 'home' }">
+          <i class="icon-search" />
         </CustomLink>
       </div>
     </div>
@@ -102,8 +110,9 @@ export default {
 .header {
   width: 100%;
   background: $color3;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.16);
+  box-shadow: 0px 6px 12px 0px rgba(132, 40, 0, 0.26);
 }
+
 .header-main {
   max-width: 1200px;
   height: 64px;
@@ -114,79 +123,90 @@ export default {
   justify-content: space-between;
   z-index: 1;
 }
-.list-right,
-.list-left {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
 
 .logo {
   display: flex;
-  @include btn-img(130px, 32px, "logo.png");
-  background-size: 130px 32px;
-  background-repeat: no-repeat;
+  height: 100%;
+  @include btn-img(141px, 38px, "logo.png");
+  width: 164px;
+  background-size: 116px 32px;
   background-position: center;
-  box-shadow: 4px 4px 8px 0px rgba(40, 11, 69, 0.2), -4px -4px 8px 0px rgba(255, 255, 255, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-repeat: no-repeat;
+  box-shadow: 6px 6px 12px 0px rgba(132, 40, 0, 0.27), -6px -6px 12px 0px rgba(255, 255, 255, 0.48);
+  border: 2px solid rgba(255, 255, 255, 0.1);
   border-radius: 38px;
-  width: 162px;
-  height: 40px;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .pwa-download {
   @include center;
   width: 40px;
   height: 40px;
-  box-shadow: 4px 4px 8px 0px rgba(11, 41, 69, 0.2), -4px -4px 8px 0px rgba(255, 255, 255, 0.52);
-  border-radius: 14px 14px 14px 14px;
+  box-shadow: 6px 6px 12px 0px rgba(132, 40, 0, 0.27), -6px -6px 12px 0px rgba(255, 255, 255, 0.48);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  background: $color2;
+  color: $font1;
+  font-family: seb;
   cursor: pointer;
 }
+
 .icon-pwa {
-  @include icon(24px, 24px, "icon-pwa.png");
+  @include icon(24px, 24px, "icon-pwa-pc.png");
 }
+
 .pc-search {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #eeffff;
-  padding: 0 3px 0 16px;
+  padding: 0 4px 0 16px;
   width: 320px;
   height: 40px;
-  box-shadow: inset 4px 4px 6px 0px rgba(11, 41, 69, 0.28),
-    inset -4px -4px 5px 0px rgba(255, 255, 255, 0.21);
-  border-radius: 16px 16px 16px 16px;
+  box-shadow: inset 6px 6px 12px 0px rgba(132, 40, 0, 0.27),
+    inset -6px -6px 12px 0px rgba(255, 255, 255, 0.48);
+  background: $color3;
+  border-radius: 100px;
   margin-left: 24px;
   .search {
-    font-family: se;
-    font-size: 14px;
-    line-height: 18px;
+    color: $font1;
     &::placeholder {
       color: rgba($font1, 0.4);
     }
   }
 }
+
 .btn-search {
   width: 83px;
   height: 32px;
-  background: #7cfdfa;
-  box-shadow: 4px 4px 8px 0px rgba(11, 41, 69, 0.2), -4px -4px 8px 0px rgba(255, 255, 255, 0.52);
-  border-radius: 14px 14px 14px 14px;
-  border: 1px solid rgba(255, 255, 255, 0.24);
+  background: $color2;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
+
 .shadow-hidden {
   box-shadow: none;
   border-radius: 0;
   border: none;
 }
+
 .icon-search {
   @include icon(24px, 24px, "icon-search.png");
-  cursor: pointer;
 }
-@media screen and (max-width: 750px) {
+
+.m-search {
+  display: none;
+}
+
+@media screen and (max-width: 879px) {
   .header {
     width: 100%;
     height: vw(96);
@@ -194,21 +214,23 @@ export default {
     top: 0;
     z-index: 10;
     box-shadow: none;
-    // position: fixed;
-    // top: 0;
-    // background: #fff;
-    // height: vw(96);
-    // padding: 0 vw(46);
-    // z-index: 10;
-    // &:before {
-    //   box-shadow: 0 vw(8) vw(8) 0 rgba(0, 0, 0, 0.16);
-    // }
   }
+
   .header-main {
     width: 100%;
-    background: $color3;
+    background: $color1;
     height: 100%;
     padding: 0 vw(46);
+    justify-content: space-between;
+  }
+
+  .home-header {
+    background: $color3;
+  }
+
+  .m-list {
+    display: flex;
+    align-items: center;
     justify-content: space-between;
   }
 
@@ -217,47 +239,65 @@ export default {
     @include icon(vw(48), vw(48), "icon-menu.png");
     margin-right: vw(36);
   }
-  .logo {
-    @include btn-img(vw(260), vw(64), "logo-text.png");
-    background-size: vw(260) vw(64);
-    border-radius: vw(32);
-    width: vw(324);
-    height: vw(80);
-  }
 
+  .logo {
+    @include btn-img(vw(280), vw(80), "logo.png");
+    width: vw(280);
+    background-color: $color4;
+    background-size: vw(232) vw(64);
+    box-shadow: 6px 6px 12px 0px rgba(114, 35, 10, 0.21);
+    border-radius: vw(60);
+  }
   .pwa-download {
     @include center;
     width: vw(80);
     height: vw(80);
-    border-radius: vw(32);
-    box-shadow: 4px 4px 8px 0px rgba(11, 41, 69, 0.2), -4px -4px 8px 0px rgba(255, 255, 255, 0.52);
-    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: vw(24);
+    background: $color4;
+    box-shadow: 6px 6px 12px 0px rgba(114, 35, 10, 0.21);
+    border: 2px solid #ffffff;
     margin-left: auto;
     span {
       display: none;
     }
   }
+
   .icon-pwa {
-    @include icon(vw(48), vw(48), "icon-pwa.png");
+    @include icon(vw(48), vw(48), "icon-pwa-m.png");
     background-repeat: no-repeat;
     background-position: center;
     margin-right: 0;
   }
+
   .pc-search {
     display: none;
   }
+
   .m-search {
+    display: block;
     @include center;
     width: vw(80);
     height: vw(80);
-    border-radius: vw(32);
-    box-shadow: 4px 4px 8px 0px rgba(11, 41, 69, 0.2), -4px -4px 8px 0px rgba(255, 255, 255, 0.52);
-    border: 1px solid rgba(255, 255, 255, 0.19);
+    border-radius: vw(24);
+    background: $color4;
+    box-shadow: 6px 6px 12px 0px rgba(114, 35, 10, 0.21);
+    border: 2px solid #ffffff;
     margin-left: vw(32);
   }
-  .icon-search-m {
-    @include icon(vw(48), vw(48), "icon-search.png");
-    background-repeat: no-repeat;
+
+  .icon-search {
+    @include icon(vw(48), vw(48), "icon-search3.png");
+  }
+
+  .home-icon {
+    background: $color3;
+    border: none;
+    box-shadow: none;
+  }
+
+  .shadow-hidden {
+    background-color: $color3;
+    box-shadow: none;
   }
 }
 </style>

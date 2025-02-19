@@ -26,8 +26,7 @@ export default function ({ $axios, redirect }) {
       const res = response.data;
       if (res.success === true) {
         return res;
-      } else {
-      }
+      }  
       return Promise.reject(new Error(res.msg || "Error"));
     },
     (error) => {
@@ -35,4 +34,6 @@ export default function ({ $axios, redirect }) {
       return Promise.reject(error);
     }
   );
+
+    
 }

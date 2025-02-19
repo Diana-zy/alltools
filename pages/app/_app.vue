@@ -1,7 +1,6 @@
 <template>
   <div class="page">
-    <div class="page-bg"></div>
-    <Header ref="headerElem" />
+    <Header />
     <main class="main">
       <div class="main-left">
         <Breadcrumb :name="currentApp.name" />
@@ -23,9 +22,7 @@
               <div class="rating-star">
                 <p :style="{ width: (((currentApp.score || 4.6) / 5) * 100).toFixed(0) + '%' }"></p>
               </div>
-              <span>
-                {{ currentApp.score || 4.6 }}
-              </span>
+              {{ currentApp.score || 4.6 }}
             </div>
           </div>
           <div
@@ -41,14 +38,10 @@
           </div>
         </section>
 
-        <!-- <GoogleAd ad-slot="7534582229" class="ad-width" /> -->
-        <adm-slot
-          class="ad-width"
-          adm-id="app-mid1"
-          adm-unit="/23197833490/alltools1/alltools1_detail_1"
-        />
+        <!-- <GoogleAd ad-slot="7534582229" /> -->
+        <adm-slot adm-id="app-mid1" adm-unit="/23197833490/alltools1/alltools1_detail_1" />
 
-        <section>
+        <!-- <section>
           <div v-if="currentApp.banner_list.length > 0" class="m-swiper">
             <div v-swiper:mySwiper="swiperOption" class="m-swiper-box">
               <div class="swiper-wrapper">
@@ -71,7 +64,7 @@
               </div>
             </div>
           </div>
-        </section>
+        </section> -->
 
         <section class="table-content">
           <div class="table-info">
@@ -134,9 +127,9 @@
         <div ref="targetElement">
           <!-- <GoogleAd ad-slot="8029406241" class="ad-width" /> -->
           <adm-slot
-            class="ad-width"
             adm-id="app-mid2"
             adm-unit="/23197833490/alltools1/alltools1_detail_2"
+            class="ad-width"
           />
         </div>
 
@@ -150,7 +143,50 @@
           </div>
         </section>
 
-        <h2 class="title-h2"><i class="icon-recommend" />Related Apps</h2>
+        <!-- <section class="download-info">
+          <div class="base-info">
+            <NuxtImg
+              format="auto"
+              fit="cover"
+              width="210"
+              height="210"
+              class="icon"
+              :src="currentApp.icon"
+              :alt="currentApp.name"
+            />
+            <div class="base-info-content">
+              <div class="name">
+                {{ currentApp.name }}
+              </div>
+
+              <div class="platform">
+                <div v-if="currentApp.android" class="android">
+                  <i class="icon-android1"></i>Android
+                  <div class="qrcode">
+                    Android
+                    <img :src="qrCodeGoogle" alt="qrcode" />
+                  </div>
+                  <a :href="currentApp.android_web_url"></a>
+                </div>
+
+                <div v-if="currentApp.ios" class="ios">
+                  <i class="icon-ios1"></i>iOS
+                  <div class="qrcode">
+                    iOS
+                    <img :src="qrCodeIos" alt="qrcode" />
+                  </div>
+                  <a :href="currentApp.ios_web_url"></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tip">
+            * For reference, The {{ currentApp.name }} game websites are all approved, there are no
+            viruses and malware.
+          </div>
+        </section> -->
+
+        <h2 class="title-h2">Related Apps</h2>
 
         <section class="box-small-bg">
           <ContentItemSmall
@@ -162,17 +198,17 @@
           />
         </section>
 
-        <h2 class="title-h2"><i class="icon-recommend" />Recommend</h2>
+        <h2 class="title-h2">Recommend</h2>
 
         <InfiniteScrollList
-          class="box-detail"
+          class="box-common"
           api-endpoint="/api/game/all_app"
           :initial-page="2"
           :page-size="21"
           :initial-items="allApps"
         >
           <template #default="{ items }">
-            <ContentItemCommon1
+            <ContentItemDetail
               v-for="(item, index) in items"
               :key="index"
               :index="index"
@@ -185,14 +221,13 @@
         <aside class="box-aside">
           <!-- <GoogleAd ad-slot="3595337216" /> -->
           <adm-slot adm-id="app-mid3" adm-unit="/23197833490/alltools1/alltools1_detail_3" />
-
-          <h2 class="title-h2"><i class="icon-hot" />Hot Apps</h2>
+          <h2 class="title-h2">Hot Tools</h2>
           <ContentItemRow
             v-for="(item, index) in hotApps"
             :key="index"
             :item="item"
             :index="index"
-            :to="`/app/${item.path}/`"
+            :to="item.type === 1 ? `/game/${item.path}/` : `/app/${item.path}/`"
           />
         </aside>
       </div>
@@ -203,6 +238,7 @@
   </div>
 </template>
 <script>
+// import QRCode from "qrcode";
 import { directive } from "vue-awesome-swiper";
 import { shuffleArray } from "~/utils/utils";
 import "swiper/css/swiper.min.css";
@@ -211,6 +247,7 @@ export default {
   directives: {
     swiper: directive
   },
+
   async asyncData({ $axios, params, env }) {
     try {
       const path = params.app;
@@ -242,7 +279,7 @@ export default {
           $axios.$get("/api/game/menu", {
             params: {
               site_id: env.SITE_ID,
-              mod_id: "fave-apps",
+              mod_id: "best-apps",
               size: 10,
               page: 1
             }
@@ -261,6 +298,8 @@ export default {
   },
   data() {
     return {
+      // qrCodeGoogle: "",
+      // qrCodeIos: "",
       swiperOption: {
         slidesPerView: "auto",
         autoplay: {
@@ -277,9 +316,31 @@ export default {
       }
     };
   },
+  // mounted() {
+  //   if (this.currentApp.ios_web_url) {
+  //     this.generateQRCode(this.currentApp.ios_web_url).then((data) => {
+  //       this.qrCodeIos = data;
+  //     });
+  //   }
+  //   if (this.currentApp.android_web_url) {
+  //     this.generateQRCode(this.currentApp.android_web_url).then((data) => {
+  //       this.qrCodeGoogle = data;
+  //     });
+  //   }
+  // },
+  // methods: {
+  //   async generateQRCode(url) {
+  //     try {
+  //       const qrCodeDataURL = await QRCode.toDataURL(url);
+  //       return qrCodeDataURL;
+  //     } catch (error) {
+  //       console.error("Error generating QR code:", error);
+  //     }
+  //   }
+  // },
   head() {
     return {
-      title: `Appsvault － dedicated to the dreams and wonders of the young crowd, play with your own colors in the ${
+      title: `AllTools1 － dedicated to the dreams and wonders of the young crowd, play with your own colors in the ${
         this.currentApp.name || "game"
       }!`
     };

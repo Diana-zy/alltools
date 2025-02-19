@@ -31,7 +31,7 @@ export default {
         console.log(width, height);
         const adScript = document.createElement("script");
         adScript.innerHTML = `googletag.cmd.push(function () {
-              googletag.defineSlot('${this.admUnit}', [336, 280], '${this.admId}').addService(googletag.pubads());
+              googletag.defineSlot('${this.admUnit}', ['fluid', [${width},${height}]], '${this.admId}').addService(googletag.pubads());
               googletag.enableServices();
               googletag.display('${this.admId}');
             });`;
@@ -47,12 +47,11 @@ export default {
 .adm-slot {
   margin: 0 auto;
   width: 100%;
-  height: 280px;
+  height: 240px;
 }
 .title {
-  font-family: sesb;
-  font-size: 14px;
-  background: $color2;
+  background: #ffffff;
+
   line-height: 24px;
   color: $font2;
   text-align: center;

@@ -3,15 +3,20 @@
     <NuxtImg
       format="auto"
       fit="cover"
-      width="192"
-      height="192"
+      width="218"
+      height="218"
       :src="item.icon"
       :alt="item.name"
       class="icon"
       :loading="index < eager ? 'eager' : 'lazy'"
     />
-    <p class="name">{{ item.name }}</p>
-    <p class="rating"> <i class="icon-rating"></i>{{ item.score || 4.6 }}</p>
+    <div class="info">
+      <p class="name">{{ item.name }}</p>
+      <div class="rating">
+        <div class="rating-star"> </div>
+        {{ item.score.length == 1 ? item.score + ".0" : item.score || 4.6 }}
+      </div>
+    </div>
   </CustomLink>
 </template>
 
@@ -41,25 +46,27 @@ export default {
 <style lang="scss" scoped>
 .item {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  background: #f0f2f5;
-  box-shadow: 4px 4px 8px 0px #c7d2da, -4px -4px 8px 0px #ffffff, inset 0 0 0 0 #c7d2da,
-    inset 0 0 0 0 #ffffff;
-  border-radius: 16px 16px 16px 16px;
-  border: 1px solid #ffffff;
+  flex-direction: column;
   height: 197px;
-  transition: all 0.2s;
+  border-radius: 16px;
+  background: $color1;
+  box-shadow: 6px 6px 12px 0px rgba(114, 35, 10, 0.21), 0 0 0 0 #ffffff,
+    inset 0 0 0 0 rgba(114, 35, 10, 0.21), inset 0 0 0 0 #ffffff;
+  border: 2px solid #ffffff;
+  transition: 0.1s;
 }
 .icon {
   width: 124px;
   height: 124px;
   border-radius: 12px;
-  margin: 16px auto 8px;
-  transition: transform 0.2s;
+  margin: 16px 0 10px;
+}
+.info {
+  width: calc(100% - 26px);
 }
 .name {
-  width: 90%;
+  width: 100%;
   color: $font1;
   font-family: "sesb";
   height: 18px;
@@ -70,50 +77,81 @@ export default {
   margin-bottom: 2px;
 }
 .rating {
-  @include center;
-  color: rgba($font1, 0.6);
-  .icon-rating {
-    width: 16px;
-    height: 16px;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: $font2;
+  margin-top: 3px;
+}
+.rating-star {
+  margin-right: 2px;
+  width: 16px;
+  height: 16px;
+  @include bg("icon-rating.png");
 }
 .item:hover {
-  box-shadow: 0 0 0 0 #c7d2da, 0 0 0 0 #ffffff, inset 4px 4px 8px 0px #47d0ca,
-    inset -4px -4px 8px 0px rgba(255, 255, 255, 0.56);
-  background: #88f4ef;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 0 0 rgba(114, 35, 10, 0.21), 0 0 0 0 #ffffff,
+    inset 6px 6px 12px 0px rgba(114, 35, 10, 0.21), inset -6px -6px 12px 0px #ffffff;
+  .name {
+    color: $color2;
+  }
 }
-@media screen and (max-width: 750px) {
+.pc-hidden {
+  display: none;
+}
+.m-hidden {
+  display: flex;
+}
+@media screen and (max-width: 879px) {
   .item {
-    height: vw(256);
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: vw(254);
     border-radius: vw(32);
   }
   .icon {
-    width: vw(144);
-    height: vw(144);
+    width: vw(142);
+    height: vw(142);
     border-radius: vw(24);
-    margin: vw(16) auto vw(12);
+    margin: vw(16) 0 0 0;
+  }
+  .info {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 0 0 0 vw(16);
   }
   .name {
-    width: vw(156);
-    margin: 0 auto;
+    width: 94%;
+    font-size: vw(28);
+    height: vw(38);
+    line-height: vw(38);
+    padding: 0;
     text-align: center;
-    font-size: vw(24);
-    height: vw(32);
-    line-height: vw(32);
-    @include ellipsis;
-    text-align: center;
-    transition: color 0.2s;
-    margin-bottom: vw(4);
+    margin: vw(7) 0 0 0;
   }
+
   .rating {
-    margin-top: vw(4);
-    font-size: vw(24);
-    width: fit-content;
-    .icon-rating {
-      width: vw(32);
-      height: vw(32);
-    }
+    margin-top: vw(0);
+    width: 98%;
+    height: vw(34);
+  }
+  .rating-star {
+    margin-right: vw(4);
+    width: vw(32);
+    height: vw(32);
+  }
+  // .item:hover {
+  //   box-shadow: none;
+  // }
+  .m-hidden {
+    display: none;
+  }
+  .pc-hidden {
+    display: flex;
   }
 }
 </style>

@@ -67,10 +67,11 @@ export default {
 
 <style lang="scss" scoped>
 .btn-back-top {
-  width: 40px;
-  height: 40px;
-  background: linear-gradient(86deg, #0f80f8 0%, #45fff6 100%);
+  width: 50px;
+  height: 50px;
+  background: $color2;
   border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.6);
   position: fixed;
   z-index: 500;
   bottom: 120px;
@@ -82,10 +83,10 @@ export default {
   @include icon(24px, 24px, "icon-back-top.png");
 }
 
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 879px) {
   .btn-back-top {
-    width: vw(100);
-    height: vw(100);
+    width: vw(80);
+    height: vw(80);
     right: vw(66);
     bottom: vw(105);
   }

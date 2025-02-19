@@ -10,8 +10,11 @@
       class="icon"
       :loading="index < eager ? 'eager' : 'lazy'"
     />
-    <p class="name">{{ item.name }}</p>
-    <p class="rating"> <i class="icon-rating"></i>{{ item.score || 4.6 }}</p>
+
+    <div class="info">
+      <p class="name">{{ item.name }}</p>
+      <div class="btn-play">Try it</div>
+    </div>
   </CustomLink>
 </template>
 
@@ -39,76 +42,78 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-shadow: 4px 4px 8px 0px #c7d2da, -4px -4px 8px 0px #ffffff, inset 0 0 0 0 #c7d2da,
-    inset 0 0 0 0 #ffffff;
-  border-radius: 24px;
-  border: 1px solid #ffffff;
-  height: 176px;
-  transition: all 0.2s;
-}
-.icon {
-  width: 109px;
-  height: 109px;
-  border-radius: 14px;
-  margin: 16px auto 8px;
-  transition: transform 0.2s;
-}
-.name {
-  width: 90%;
-  color: $font1;
-  font-family: "sesb";
-  height: 18px;
-  line-height: 18px;
-  @include ellipsis;
-  text-align: center;
-  transition: color 0.2s;
-  margin-bottom: 2px;
-}
-.rating {
-  @include center;
-  color: rgba($font1, 0.6);
-  .icon-rating {
-    width: 16px;
-    height: 16px;
-  }
-}
-.item:hover {
-  box-shadow: 0 0 0 0 #c7d2da, 0 0 0 0 #ffffff, inset 4px 4px 8px 0px #47d0ca,
-    inset -4px -4px 8px 0px rgba(255, 255, 255, 0.56);
-  background: #88f4ef;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 879px) {
   .item {
-    height: vw(256);
+    height: vw(198);
+    height: 100%;
+    padding: vw(16);
+    box-shadow: 6px 6px 12px 0px rgba(114, 35, 10, 0.21), 0 0 0 0 #ffffff,
+      inset 0 0 0 0 rgba(114, 35, 10, 0.21), inset 0 0 0 0 #ffffff;
     border-radius: vw(32);
+    position: relative;
+    &:nth-child(2) {
+      grid-row: 1 / 3;
+      grid-column: 2 / 4;
+
+      .info {
+        width: calc(100% - vw(32));
+        height: vw(136);
+      }
+
+      .name {
+        margin-top: vw(8);
+        font-size: vw(32);
+        line-height: vw(40);
+      }
+      .btn-play {
+        display: flex;
+        margin-top: vw(12);
+      }
+    }
   }
   .icon {
-    width: vw(144);
-    height: vw(144);
+    width: 100%;
+    height: 100%;
     border-radius: vw(24);
-    margin: vw(16) auto vw(12);
   }
+
+  .info {
+    position: absolute;
+    left: vw(16);
+    bottom: vw(16);
+    width: vw(166);
+    height: vw(56);
+    border-radius: 0 0 vw(24) vw(24);
+    background: linear-gradient(to top, #000000 0%, rgba(0, 0, 0, 0) 100%);
+    // background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   .name {
-    width: vw(156);
-    margin: 0 auto;
-    text-align: center;
+    width: 70%;
+    margin-top: vw(12);
+    color: #ffffff;
+    font-family: "sesb";
     font-size: vw(24);
-    height: vw(32);
     line-height: vw(32);
     @include ellipsis;
     text-align: center;
-    transition: color 0.2s;
-    margin-bottom: vw(4);
   }
-  .rating {
-    margin-top: vw(6);
+
+  .btn-play {
+    display: none;
+    width: vw(132);
+    height: vw(48);
+    background: linear-gradient(86deg, #1887fe 0%, #d458ff 100%);
+    border-radius: vw(80);
+    align-items: center;
+    justify-content: center;
+    font-family: sesb;
     font-size: vw(24);
-    width: fit-content;
+    color: #f2f7fa;
+    line-height: vw(32);
   }
 }
 </style>

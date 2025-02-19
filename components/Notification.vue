@@ -34,8 +34,8 @@ export default {
   bottom: 40px;
   left: 20px;
   padding: 14px 24px;
-  background: $color4;
-  border-radius: 8px;
+  background: $color2;
+  border-radius: 24px;
   color: #ffffff;
   line-height: 24px;
   display: flex;

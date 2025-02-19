@@ -11,7 +11,7 @@
       :loading="index < eager ? 'eager' : 'lazy'"
     />
     <p class="name">{{ item.name }}</p>
-    <p class="rating"> <i class="icon-rating"></i>{{ item.score || 4.6 }}</p>
+    <p class="rating"> <i class="icon-rating" />{{ item.score || 4.6 }}</p>
   </CustomLink>
 </template>
 
@@ -43,10 +43,10 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 4px 4px 8px 0px #c7d2da, -4px -4px 8px 0px #ffffff, inset 0 0 0 0 #c7d2da,
-    inset 0 0 0 0 #ffffff;
+  box-shadow: 6px 6px 12px 0px rgba(114, 35, 10, 0.21), 0 0 0 0 #ffffff,
+    inset 0 0 0 0 rgba(114, 35, 10, 0.21), inset 0 0 0 0 #ffffff;
   border-radius: 16px 16px 16px 16px;
-  border: 1px solid #ffffff;
+  border: 2px solid #ffffff;
   height: 147px;
   transition: all 0.2s;
 }
@@ -71,27 +71,24 @@ export default {
 .rating {
   @include center;
   color: rgba($font1, 0.6);
-  .icon-rating {
-    width: 16px;
-    height: 16px;
-  }
 }
 .item:hover {
-  box-shadow: 0 0 0 0 #c7d2da, 0 0 0 0 #ffffff, inset 4px 4px 8px 0px #47d0ca,
-    inset -4px -4px 8px 0px rgba(255, 255, 255, 0.56);
-  background: #88f4ef;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 0 0 rgba(114, 35, 10, 0.21), 0 0 0 0 #ffffff,
+    inset 6px 6px 12px 0px rgba(114, 35, 10, 0.21), inset -6px -6px 12px 0px #ffffff;
+  .name {
+    color: $color2;
+  }
 }
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 879px) {
   .item {
-    height: vw(256);
+    height: vw(252);
     border-radius: vw(32);
   }
   .icon {
     width: vw(144);
     height: vw(144);
     border-radius: vw(24);
-    margin: vw(16) auto vw(12);
+    margin: vw(16) auto vw(10);
   }
   .name {
     width: vw(156);
@@ -106,7 +103,7 @@ export default {
     margin-bottom: vw(4);
   }
   .rating {
-    margin-top: vw(6);
+    margin-top: vw(4);
     font-size: vw(24);
     width: fit-content;
   }

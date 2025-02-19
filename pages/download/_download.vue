@@ -1,10 +1,16 @@
 <template>
   <div class="page">
-    <div class="page-bg"></div>
-    <Header ref="headerElem" />
+    <Header />
     <main class="main">
       <div class="main-left">
         <Breadcrumb :name="currentSoftware.name" />
+
+        <!-- <GoogleAd ad-slot="3297497936" class="ad1 ad-width" /> -->
+        <adm-slot
+          adm-id="download-mid1"
+          adm-unit="/23197833490/alltools1/alltools1_detail_1"
+          class="ad1 ad-width"
+        />
 
         <section class="download-info">
           <div class="base-info">
@@ -51,55 +57,45 @@
           <ExpandableText :text="currentSoftware.desc" current-path="download" />
         </section>
 
-        <!-- <GoogleAd ad-slot="3297497936" class="ad-width" /> -->
-        <adm-slot
-          class="ad-width"
-          adm-id="download-mid1"
-          adm-unit="/23197833490/alltools1/alltools1_detail_1"
-        />
-
-        <h2 class="title-h2"><i class="icon-recommend" />Discover More</h2>
+        <h2 class="title-h2">Related {{ isApp ? "Apps" : "Games" }}</h2>
         <section class="box-small-bg">
           <ContentItemSmall
             v-for="(item, index) in relatedSoftwares"
             :key="index"
             :index="index"
             :item="item"
-            :to="`/game/${item.path}/`"
+            :to="item.type === 1 ? `/game/${item.path}/` : `/app/${item.path}/`"
           />
         </section>
 
         <!-- <GoogleAd ad-slot="2955836717" class="ad-width" /> -->
         <adm-slot
-          class="ad-width"
           adm-id="download-mid2"
           adm-unit="/23197833490/alltools1/alltools1_detail_2"
+          class="ad-width"
         />
 
-        <h2 class="title-h2"><i class="icon-recommend" /> Recommend</h2>
-        <section class="box-detail">
-          <ContentItemCommon1
+        <h2 class="title-h2"> Recommend</h2>
+        <section class="box-common">
+          <ContentItemDetail
             v-for="(item, index) in allSoftwares"
             :key="index"
             :index="index"
             :item="item"
-            :to="`/game/${item.path}/`"
+            :to="item.type === 1 ? `/game/${item.path}/` : `/app/${item.path}/`"
           />
         </section>
 
         <aside class="box-aside">
           <!-- <GoogleAd ad-slot="3489069628" /> -->
           <adm-slot adm-id="download-mid3" adm-unit="/23197833490/alltools1/alltools1_detail_3" />
-          <h2 class="title-h2"
-            ><i :class="isApp ? 'icon-favorite-app' : 'icon-favorite-game'" /> Hot
-            {{ isApp ? "Apps" : "Games" }}</h2
-          >
+          <h2 class="title-h2">Favorite {{ isApp ? "Tools" : "Games" }}</h2>
           <ContentItemRow
             v-for="(item, index) in hotSoftwares"
             :key="index"
             :item="item"
             :index="index"
-            :to="`/game/${item.path}/`"
+            :to="item.type === 1 ? `/game/${item.path}/` : `/app/${item.path}/`"
           />
         </aside>
       </div>
@@ -149,7 +145,7 @@ export default {
         $axios.$get("/api/game/menu", {
           params: {
             site_id: env.SITE_ID,
-            mod_id: isApp ? "fave-apps" : "fave-games",
+            mod_id: isApp ? "best-apps" : "best-games",
             size: 12
           }
         })
@@ -198,7 +194,14 @@ export default {
 
 <style lang="scss" scoped>
 @import "~/assets/css/download.scss";
-@media screen and (max-width: 750px) {
+
+.ad1 {
+  margin-bottom: 32px;
+}
+@media screen and (max-width: 879px) {
+  .ad1 {
+    margin-bottom: vw(48);
+  }
   .box-small-bg {
     margin-bottom: vw(36);
   }

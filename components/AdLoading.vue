@@ -25,25 +25,32 @@ export default {
       }, 2600);
     },
     observeMutations() {
-      this.mutationObserver = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-          if (
-            mutation.type === "attributes" &&
-            mutation.target.matches("ins.adsbygoogle") &&
-            mutation.attributeName === "data-vignette-loaded"
-          ) {
-            this.loading = false;
-            this.cleanUp();
-          }
+      const existingInsNodes = document.querySelector(
+        "ins#gpt_unit_\\/23197833490\\/alltools1\\/alltools1_interstitial_0"
+      );
+      if (existingInsNodes) {
+        this.loading = false;
+        this.cleanUp();
+      } else {
+        this.mutationObserver = new MutationObserver((mutations) => {
+          mutations.forEach((mutation) => {
+            if (
+              mutation.type === "attributes" &&
+              mutation.attributeName === "data-vignette-loaded"
+            ) {
+              this.loading = false;
+              this.cleanUp();
+            }
+          });
         });
-      });
 
-      this.mutationObserver.observe(document.documentElement, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        attributeFilter: ["data-vignette-loaded"]
-      });
+        this.mutationObserver.observe(document.documentElement, {
+          // childList: true,
+          subtree: true,
+          attributes: true,
+          attributeFilter: ["data-vignette-loaded"]
+        });
+      }
     },
     cleanUp() {
       if (this.timer) {

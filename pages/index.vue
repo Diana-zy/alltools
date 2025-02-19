@@ -1,323 +1,237 @@
 <template>
   <div class="page">
-    <Header ref="headerElem" current-path="home" />
+    <div class="fix-bg"></div>
+    <div class="fix-bg1"></div>
+    <Header current-path="home" />
     <main class="main">
-      <section class="rec m-hidden">
-        <div v-once v-swiper:pcSwiper="swiperOption" class="swiper-box">
-          <div class="swiper-wrapper">
-            <div
-              v-for="(item, index) in best"
-              :key="index"
-              :item="item"
-              class="swiper-slide m-hidden"
-            >
-              <CustomLink :to="item.type === 1 ? `/game/${item.path}/` : `/app/${item.path}/`">
+      <section class="rec">
+        <div class="rec-content">
+          <transition
+            v-for="(item, index) in bestGames.slice(0, 2)"
+            :key="index"
+            :item="item"
+            :index="index"
+            name="fade"
+          >
+            <div v-show="recIndex === index">
+              <CustomLink :to="`/game/${item.path}/`" class="img-box">
                 <NuxtImg
-                  class="img"
                   format="auto"
                   fit="cover"
-                  width="1200"
-                  height="380"
+                  width="592"
+                  height="400"
                   :src="item.pc_img || item.icon"
                   :alt="item.name"
                   :preloader="index === 0"
+                  class="img m-hidden"
                 />
                 <NuxtImg
-                  class="rec-icon"
                   format="auto"
                   fit="cover"
-                  width="80"
-                  height="80"
-                  :src="item.icon"
+                  width="332"
+                  height="416"
+                  :src="item.mobile_img || item.icon"
                   :alt="item.name"
+                  :preloader="index === 0"
+                  class="img pc-hidden"
                 />
+              </CustomLink>
+              <CustomLink :to="`/game/${item.path}/`" class="info">
                 <p class="name">{{ item.name }}</p>
                 <div class="rating">
                   <div class="rating-star">
                     <p :style="{ width: (((item.score || 4.6) / 5) * 100).toFixed(0) + '%' }"></p>
                   </div>
+                  {{ item.score.length == 1 ? item.score + ".0" : item.score || 4.6 }}
                 </div>
               </CustomLink>
-              <CustomLink to="/best/" class="download-btn m-button-hidden"
-                ><i class="icon-best" />Best Games</CustomLink
-              >
-              <CustomLink to="/best/" class="arrow"><i class="icon-arrow" /></CustomLink>
-            </div>
-          </div>
-          <div class="swiper-pagination"> </div>
-        </div>
-      </section>
-      <!-- <section class="m-rec pc-hidden">
-        <div class="rec1" :class="{ rec1Active: currentModule === 1 }">
-          <transition
-            v-for="(item, index) in best"
-            :key="index"
-            :item="item"
-            :index="index"
-            name="fade"
-          >
-            <CustomLink
-              v-show="currentIndex1 === index"
-              :to="item.type === 1 ? `/game/${item.path}/` : `/app/${item.path}/`"
-              class="item"
-            >
-              <NuxtImg
-                format="auto"
-                fit="cover"
-                width="340"
-                height="496"
-                :src="item.mobile_img || item.icon"
-                :alt="item.name"
-                class="img"
-              />
-              <p class="name">{{ item.name }}</p>
-              <div class="rating">
-                <div class="rating-star">
-                  <p :style="{ width: (((item.score || 4.6) / 5) * 100).toFixed(0) + '%' }"></p>
-                </div>
-              </div>
-            </CustomLink>
-          </transition>
-
-          <CustomLink to="/best/" class="module-btn"><i class="icon-best" />Best</CustomLink>
-          <CustomLink to="/best/" class="arrow"><i class="icon-arrow" /></CustomLink>
-
-          <div ref="swiper1" v-once v-swiper:mySwiper1="swiperOption1" class="swiper-box">
-            <div class="swiper-wrapper">
-              <CustomLink
-                v-for="(item, i) in best"
-                :key="i"
-                :to="item.type === 1 ? `/game/${item.path}/` : `/app/${item.path}/`"
-                class="swiper-slide"
-              >
+              <CustomLink :to="`/game/${item.path}/`" class="item-icon">
                 <NuxtImg
                   format="auto"
                   fit="cover"
-                  width="130"
-                  height="130"
+                  width="120"
+                  height="120"
                   :src="item.icon"
                   :alt="item.name"
-                  class="swiper-img"
+                  :preloader="index === 0"
+                  class="icon"
                 />
               </CustomLink>
             </div>
+          </transition>
+
+          <div
+            v-for="(item, index) in bestGames.slice(0, 2)"
+            :key="index"
+            :item="item"
+            :index="index"
+          >
+            <CustomLink
+              v-show="recIndex === index"
+              :to="`/game/${item.path}/`"
+              class="download-box"
+            >
+              <div class="download"><i class="icon-pc-pwa" /></div>
+            </CustomLink>
           </div>
-          <p class="background" v-show="currentModule != 1" @click="clickModule1"></p>
+
+          <CustomLink to="/best/" class="module-name"> Best Games ></CustomLink>
+          <div class="corner"></div>
         </div>
-        <div
-          class="rec2"
-          :class="{
-            rec2Active: currentModule === 2 || currentModule === 3,
-            rec2Active1: currentModule === 2
-          }"
+      </section>
+      <section class="new">
+        <div class="new-content">
+          <div class="item-content">
+            <transition
+              v-for="(item, index) in newGames.slice(0, 6)"
+              :key="index"
+              :item="item"
+              :index="index"
+              name="fade"
+            >
+              <CustomLink v-show="newIndex === index" :to="`/game/${item.path}/`" class="item">
+                <p class="name">{{ item.name }}</p>
+                <div class="score"
+                  ><i class="icon-star" />
+                  <span>
+                    {{ item.score.length == 1 ? item.score + ".0" : item.score || 4.6 }}</span
+                  ></div
+                >
+              </CustomLink>
+            </transition>
+
+            <transition
+              v-for="(item, index) in newGames.slice(0, 6)"
+              :key="index"
+              :item="item"
+              :index="index"
+              name="fade"
+            >
+              <CustomLink v-show="newIndex === index" :to="`/game/${item.path}/`" class="img-box">
+                <NuxtImg
+                  format="auto"
+                  fit="cover"
+                  width="448"
+                  height="469"
+                  :src="item.pc_img || item.icon"
+                  :alt="item.name"
+                  :preloader="index === 1"
+                  class="img m-hidden"
+                />
+                <NuxtImg
+                  format="auto"
+                  fit="cover"
+                  width="332"
+                  height="438"
+                  :src="item.mobile_img || item.icon"
+                  :alt="item.name"
+                  :preloader="index === 1"
+                  class="img pc-hidden"
+                />
+              </CustomLink>
+            </transition>
+
+            <CustomLink to="/new/" class="new-name"> New Games > </CustomLink>
+
+            <div v-once v-swiper:mySwiper="swiperOption" class="swiper-box">
+              <div class="swiper-wrapper">
+                <CustomLink
+                  v-for="(item, i) in newGames.slice(0, 6)"
+                  :key="i"
+                  :to="`/game/${item.path}/`"
+                  class="swiper-slide"
+                >
+                  <NuxtImg
+                    format="auto"
+                    fit="cover"
+                    width="130"
+                    height="130"
+                    :src="item.icon"
+                    :alt="item.name"
+                    class="swiper-img"
+                  />
+                  <div class="rating">
+                    <div class="rating-star"> </div>
+                    {{ item.score.length == 1 ? item.score + ".0" : item.score || 4.6 }}
+                  </div>
+                </CustomLink>
+              </div>
+            </div>
+            <div class="swiper-button">
+              <div class="swiper-button-prev"></div>
+              <div class="swiper-button-next"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <article class="article">
+        <CustomLink to="/bestools/" class="title-h2"
+          >Best Tools<div class="title-see-more"><span>More</span><i class="icon-arrow" /></div
+        ></CustomLink>
+        <section class="best-tools">
+          <div class="box-row-scroll box-scroll-hidden">
+            <ContentItemRow
+              v-for="(item, index) in bestApps.slice(0, 12)"
+              :key="index"
+              :item="item"
+              :index="index"
+              :eager="2"
+              :to="`/app/${item.path}/`"
+            />
+          </div>
+          <div class="box-list-section">
+            <ContentItemList
+              v-for="(item, index) in bestApps.slice(0, 12)"
+              :key="index"
+              :index="index"
+              :item="item"
+              :to="`/${'app'}/${item.path}/`"
+            />
+          </div>
+        </section>
+        <CustomLink to="/newtools/" class="title-h2">
+          New Tools <div class="title-see-more"><span>More</span><i class="icon-arrow" /></div
+        ></CustomLink>
+        <section class="new-tools">
+          <div class="box-row-scroll box-scroll-hidden">
+            <ContentItemRow
+              v-for="(item, index) in newApps.slice(0, 12)"
+              :key="index"
+              :item="item"
+              :index="index"
+              :to="`/app/${item.path}/`"
+            />
+          </div>
+          <div class="box-list-section">
+            <ContentItemList
+              v-for="(item, index) in newApps.slice(0, 12)"
+              :key="index"
+              :index="index"
+              :item="item"
+              :to="`/${'app'}/${item.path}/`"
+            />
+          </div>
+        </section>
+
+        <div class="title-h2">Recommend </div>
+        <InfiniteScrollList2
+          class="box-common module-background"
+          api-endpoint="/api/game/all_app"
+          :initial-page="2"
+          :page-size="20"
+          :initial-items="all"
         >
-          <transition
-            v-for="(item, index) in hot"
-            :key="index"
-            :item="item"
-            :index="index"
-            name="fade"
-          >
-            <CustomLink
-              v-show="currentIndex2 === index"
+          <template #default="{ items }">
+            <ContentItemCommon
+              v-for="(item, index) in items"
+              :key="index"
+              :index="index"
+              :item="item"
               :to="item.type === 1 ? `/game/${item.path}/` : `/app/${item.path}/`"
-              class="item"
-            >
-              <NuxtImg
-                format="auto"
-                fit="cover"
-                width="340"
-                height="496"
-                :src="item.mobile_img || item.icon"
-                :alt="item.name"
-                class="img"
-              />
-              <p class="name">{{ item.name }}</p>
-              <div class="rating">
-                <div class="rating-star">
-                  <p :style="{ width: (((item.score || 4.6) / 5) * 100).toFixed(0) + '%' }"></p>
-                </div>
-              </div>
-            </CustomLink>
-          </transition>
-
-          <CustomLink to="/hot/" class="module-btn"><i class="icon-hot" />Hot</CustomLink>
-          <CustomLink to="/hot/" class="arrow"><i class="icon-arrow" /></CustomLink>
-
-          <div ref="swiper2" v-once v-swiper:mySwiper2="swiperOption2" class="swiper-box">
-            <div class="swiper-wrapper">
-              <CustomLink
-                v-for="(item, i) in hot"
-                :key="i"
-                :to="item.type === 1 ? `/game/${item.path}/` : `/app/${item.path}/`"
-                class="swiper-slide"
-              >
-                <NuxtImg
-                  format="auto"
-                  fit="cover"
-                  width="130"
-                  height="130"
-                  :src="item.icon"
-                  :alt="item.name"
-                  class="swiper-img"
-                />
-              </CustomLink>
-            </div>
-          </div>
-          <p class="background" v-show="currentModule != 2" @click="clickModule2"></p>
-        </div>
-
-        <div class="rec3" :class="{ rec3Active: currentModule === 3 }">
-          <transition
-            v-for="(item, index) in news"
-            :key="index"
-            :item="item"
-            :index="index"
-            name="fade"
-          >
-            <CustomLink
-              v-show="currentIndex3 === index"
-              :to="item.type === 1 ? `/game/${item.path}/` : `/app/${item.path}/`"
-              class="item"
-            >
-              <NuxtImg
-                format="auto"
-                fit="cover"
-                width="340"
-                height="496"
-                :src="item.mobile_img || item.icon"
-                :alt="item.name"
-                class="img"
-              />
-              <p class="name">{{ item.name }}</p>
-              <div class="rating">
-                <div class="rating-star">
-                  <p :style="{ width: (((item.score || 4.6) / 5) * 100).toFixed(0) + '%' }"></p>
-                </div>
-              </div>
-            </CustomLink>
-          </transition>
-
-          <CustomLink to="/new/" class="module-btn"><i class="icon-latest" />Latest</CustomLink>
-          <CustomLink to="/new/" class="arrow"><i class="icon-arrow" /></CustomLink>
-
-          <div ref="swiper3" v-once v-swiper:mySwiper3="swiperOption3" class="swiper-box">
-            <div class="swiper-wrapper">
-              <CustomLink
-                v-for="(item, i) in news"
-                :key="i"
-                :to="item.type === 1 ? `/game/${item.path}/` : `/app/${item.path}/`"
-                class="swiper-slide"
-              >
-                <NuxtImg
-                  format="auto"
-                  fit="cover"
-                  width="130"
-                  height="130"
-                  :src="item.icon"
-                  :alt="item.name"
-                  class="swiper-img"
-                />
-              </CustomLink>
-            </div>
-          </div>
-          <p class="background" v-show="currentModule != 3" @click="clickModule3"></p>
-        </div>
-      </section> -->
-
-      <!-- <section class="m-module1">
-        <CustomLink to="/favoritetool/" class="title-h2 title-shadow title-shadow2 border-weak"
-          ><i class="icon-favorite-app" />Favorite Tools<i class="icon-arrow"
-        /></CustomLink>
-
-        <div class="box-row-scroll">
-          <ContentItemRow1
-            v-for="(item, index) in faveApps"
-            :key="index"
-            :item="item"
-            :index="index"
-            :eager="2"
-            :to="`/app/${item.path}/`"
-            :bg="1"
-          />
-        </div>
-      </section> -->
-      <section class="m-module2">
-        <CustomLink
-          :to="rec[0].type === 1 ? `/game/${rec[0].path}/` : `/app/${rec[0].path}/`"
-          class="rec-slide"
-        >
-          <NuxtImg
-            class="img"
-            format="auto"
-            fit="cover"
-            width="658"
-            height="312"
-            :src="rec[0].mobile_img || rec[0].icon"
-            :alt="rec[0].name"
-            loading="lazy"
-          />
-          <div class="download-btn pc-button-hidden">Play<i class="icon-rocket" /></div>
-        </CustomLink>
-        <div class="box-row-scroll2">
-          <ContentItemRow2
-            v-for="(item, index) in rec.slice(1, 4)"
-            :key="index"
-            :item="item"
-            :index="index"
-            :to="item.type === 1 ? `/game/${item.path}/` : `/app/${item.path}/`"
-          />
-        </div>
-      </section>
-      <section>
-        <!-- <CustomLink to="/favoritetool/" class="title-h2 title-shadow"
-          ><i class="icon-favorite-app" />Favorite Tools<i class="icon-arrow"
-        /></CustomLink> -->
-        <CustomLink to="/favoriteplay/" class="title-h2 title-shadow border-weak title-fav"
-          ><i class="icon-favorite-game" />Favorite Games<i class="icon-arrow"
-        /></CustomLink>
-        <div class="box-row-scroll">
-          <ContentItemRow3
-            v-for="(item, index) in faveGames"
-            :key="index"
-            :item="item"
-            :index="index"
-            :eager="2"
-            :to="`/game/${item.path}/`"
-          />
-        </div>
-      </section>
-      <!-- <CustomLink to="/freshtool/" class="title-h2 title-shadow title-hidden">
-          <i class="icon-fresh" />Fresh Tools <i class="icon-arrow"
-        /></CustomLink>
-        <section class="box-row-scroll module-hidden">
-          <ContentItemRow1
-            v-for="(item, index) in newApps"
-            :key="index"
-            :item="item"
-            :index="index"
-            :to="`/app/${item.path}/`"
-          />
-        </section> -->
-
-      <div class="title-h2"><i class="icon-recommend" />Recommend </div>
-      <InfiniteScrollList2
-        class="box-common"
-        api-endpoint="/api/game/all_app"
-        :initial-page="2"
-        :page-size="40"
-        :initial-items="all"
-      >
-        <template #default="{ items }">
-          <ContentItemCommon
-            v-for="(item, index) in items"
-            :key="index"
-            :index="index"
-            :item="item"
-            :to="item.type === 1 ? `/game/${item.path}/` : `/app/${item.path}/`"
-          />
-        </template>
-      </InfiniteScrollList2>
+            />
+          </template>
+        </InfiniteScrollList2>
+      </article>
     </main>
     <Footer />
     <BackTop />
@@ -335,55 +249,39 @@ export default {
     try {
       // 并行处理多个异步请求
       const [
-        recommendResponse,
-        bestResponse,
-        newResponse,
-        hotResponse,
-        faveAppResponse,
-        faveGameResponse,
+        bestGamesResponse,
+        bestAppsResponse,
+        newAppsResponse,
+        newGamesResponse,
         allGamesResponse,
         allAppsResponse
       ] = await Promise.all([
         $axios.$get("/api/game/menu", {
           params: {
             site_id: env.SITE_ID,
-            mod_id: "rec-games",
-            size: 4
+            mod_id: "best-games",
+            size: 15
           }
         }),
         $axios.$get("/api/game/menu", {
           params: {
             site_id: env.SITE_ID,
-            mod_id: "best",
-            size: 3
+            mod_id: "best-apps",
+            size: 15
           }
         }),
         $axios.$get("/api/game/menu", {
           params: {
             site_id: env.SITE_ID,
-            mod_id: "new",
-            size: 3
+            mod_id: "new-apps",
+            size: 15
           }
         }),
         $axios.$get("/api/game/menu", {
           params: {
             site_id: env.SITE_ID,
-            mod_id: "hot",
-            size: 3
-          }
-        }),
-        $axios.$get("/api/game/menu", {
-          params: {
-            site_id: env.SITE_ID,
-            mod_id: "fave-apps",
-            size: 12
-          }
-        }),
-        $axios.$get("/api/game/menu", {
-          params: {
-            site_id: env.SITE_ID,
-            mod_id: "fave-games",
-            size: 12
+            mod_id: "new-games",
+            size: 15
           }
         }),
         $axios.$get("/api/game/all_game", {
@@ -415,12 +313,11 @@ export default {
       // 返回多个接口的数据
       return {
         all: result,
-        rec: recommendResponse.list,
-        best: bestResponse.list,
-        news: newResponse.list,
-        hot: hotResponse.list,
-        faveApps: faveAppResponse.list,
-        faveGames: faveGameResponse.list
+        bestGames: bestGamesResponse.list,
+        bestApps: bestAppsResponse.list,
+        newApps: newAppsResponse.list,
+        newGames: newGamesResponse.list,
+        allGames: allGamesResponse.list
       };
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -428,201 +325,51 @@ export default {
   },
   data() {
     return {
-      timerId: null,
-      currentIndex1: 0,
-      currentIndex2: 0,
-      currentIndex3: 0,
-      currentModule: 1,
-      hasDev: false,
+      recIndex: 0,
+      newIndex: 0,
+      bannerApps: [],
+      deferredPrompt: null,
+      showInstallButton: false,
+      input: "",
       loading: false,
       endOfList: false,
       currentPage: 2,
       swiperOption: {
-        autoplay: {
-          delay: 5000,
-          disableOnInteraction: false // 用户操作后恢复自动轮播
-        },
-        pagination: {
-          el: ".swiper-pagination",
-          clickable: true
-        }
-      },
-      swiperOption1: {
         slidesPerView: "auto",
         loop: true,
         speed: 1000,
         grabCursor: true,
         direction: "horizontal",
         autoplay: {
-          delay: 2500,
+          delay: 3000,
           disableOnInteraction: false
+        },
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev"
         },
         on: {
           slideChange: this.onSlideChange
-        }
-      },
-      swiperOption1: {
-        slidesPerView: "auto",
-        loop: true,
-        speed: 1000,
-        grabCursor: true,
-        direction: "horizontal",
-        autoplay: {
-          delay: 2000,
-          disableOnInteraction: false
-        },
-        on: {
-          slideChange: this.onSlideChange1
-        }
-      },
-      swiperOption2: {
-        slidesPerView: "auto",
-        loop: true,
-        speed: 1000,
-        grabCursor: true,
-        direction: "horizontal",
-        autoplay: {
-          delay: 2000,
-          disableOnInteraction: false
-        },
-        on: {
-          slideChange: this.onSlideChange2
-        }
-      },
-      swiperOption3: {
-        slidesPerView: "auto",
-        loop: true,
-        speed: 1000,
-        grabCursor: true,
-        direction: "horizontal",
-        autoplay: {
-          delay: 2000,
-          disableOnInteraction: false
-        },
-        on: {
-          slideChange: this.onSlideChange3
         }
       }
     };
   },
   mounted() {
-    if (this.$refs.swiper2) {
-      this.mySwiper2 = this.$refs.swiper2.swiper;
-      this.mySwiper2.autoplay.stop();
-    }
-    if (this.$refs.swiper3) {
-      this.mySwiper3 = this.$refs.swiper3.swiper;
-      this.mySwiper3.autoplay.stop();
-    }
+    this.nextSlide();
     this.$nextTick(() => {
       this.scrollAnchor();
     });
   },
   methods: {
-    onSlideChange1() {
-      // if (this.currentModule === 1) {
-      this.currentIndex1 = (this.mySwiper1 && this.mySwiper1.realIndex) || 0;
-      console.log("currenrIndex1:" + this.currentIndex1);
-      if (this.currentModule === 1) {
-        if (this.currentIndex1 === 2) {
-          const swiper1 = this.mySwiper1;
-          if (swiper1.activeIndex > swiper1.previousIndex) {
-            this.mySwiper1.autoplay.stop();
-            console.log("stop");
-            if (!this.hasDev) {
-              this.hasDev = true;
-              this.timerId = setTimeout(() => {
-                this.currentModule = this.currentModule < 3 ? this.currentModule + 1 : 1;
-                this.$refs.swiper2.swiper.slideTo(0);
-                this.$refs.swiper2.swiper.autoplay.start();
-                this.hasDev = false;
-              }, 3000);
-            }
-          }
-        }
-      }
+    nextSlide() {
+      this.currentChangeTimer = setInterval(() => {
+        this.recIndex = (this.recIndex + 1) % 2;
+        console.log("recIndex" + this.recIndex);
+      }, 4000);
     },
-    onSlideChange2() {
-      // if (this.currentModule === 2) {
-      this.currentIndex2 = (this.mySwiper2 && this.mySwiper2.realIndex) || 0;
-      console.log("currenrIndex2:" + this.currentIndex2);
-      if (this.currentModule === 2) {
-        if (this.currentIndex2 === 2) {
-          const swiper2 = this.mySwiper2;
-          if (swiper2.activeIndex > swiper2.previousIndex) {
-            this.mySwiper2.autoplay.stop();
-            console.log("stop");
-            if (!this.hasDev) {
-              this.hasDev = true;
-              this.timerId = setTimeout(() => {
-                this.currentModule = this.currentModule < 3 ? this.currentModule + 1 : 1;
-                this.$refs.swiper3.swiper.slideTo(0);
-                this.$refs.swiper3.swiper.autoplay.start();
-                this.hasDev = false;
-              }, 3000);
-            }
-          }
-        }
-      }
-    },
-    onSlideChange3() {
-      // if (this.currentModule === 3) {
-      this.currentIndex3 = (this.mySwiper3 && this.mySwiper3.realIndex) || 0;
-      console.log("currenrIndex3:" + this.currentIndex3);
-      console.log("currenrModule:" + this.currentModule);
-      if (this.currentModule === 3) {
-        if (this.currentIndex3 === 2) {
-          const swiper3 = this.mySwiper3;
-          if (swiper3.activeIndex > swiper3.previousIndex) {
-            this.mySwiper3.autoplay.stop();
-            console.log("stop");
-            if (!this.hasDev) {
-              this.hasDev = true;
-              this.timerId = setTimeout(() => {
-                this.currentModule = this.currentModule < 3 ? this.currentModule + 1 : 1;
-                this.$refs.swiper1.swiper.slideTo(0);
-                this.$refs.swiper1.swiper.autoplay.start();
-                this.hasDev = false;
-              }, 3000);
-            }
-          }
-        }
-      }
-    },
-    clickModule1() {
-      if (this.timerId) {
-        clearTimeout(this.timerId);
-        console.log("如果存在,执行后的状态:" + this.timerId);
-      }
-      this.currentModule = 1;
-      this.$refs.swiper2.swiper.autoplay.stop();
-      this.$refs.swiper3.swiper.autoplay.stop();
-      this.$refs.swiper1.swiper.slideTo(0);
-      this.$refs.swiper1.swiper.autoplay.start();
-    },
-    clickModule2() {
-      if (this.timerId) {
-        console.log("如果存在,执行前的状态:" + this.timerId);
-        clearTimeout(this.timerId);
-        console.log("如果存在,执行后的状态:" + this.timerId);
-      }
-      this.currentModule = 2;
-      this.$refs.swiper1.swiper.autoplay.stop();
-      this.$refs.swiper3.swiper.autoplay.stop();
-      this.$refs.swiper2.swiper.slideTo(0);
-      this.$refs.swiper2.swiper.autoplay.start();
-    },
-    clickModule3() {
-      if (this.timerId) {
-        console.log("如果存在,执行前的状态:" + this.timerId);
-        clearTimeout(this.timerId);
-        console.log("如果存在,执行后的状态:" + this.timerId);
-      }
-      this.currentModule = 3;
-      this.$refs.swiper1.swiper.autoplay.stop();
-      this.$refs.swiper2.swiper.autoplay.stop();
-      this.$refs.swiper3.swiper.slideTo(0);
-      this.$refs.swiper3.swiper.autoplay.start();
+    onSlideChange() {
+      this.newIndex = (this.mySwiper && this.mySwiper.realIndex) || 0;
+      console.log(this.newIndex);
     },
     scrollAnchor() {
       const scrollDistance = 200; // 滚动距离，单位：像素
@@ -665,546 +412,215 @@ export default {
 
       requestAnimationFrame(scrollStep);
     }
-  },
-  beforeDestroy() {
-    if (this.timerId) {
-      clearTimeout(this.timerId);
-    }
   }
 };
 </script>
 <style lang="scss" scoped>
+.page {
+  position: relative;
+}
+.fix-bg {
+  width: 100%;
+  height: 400px;
+  position: absolute;
+  top: 64px;
+  left: 0;
+  background: $color3;
+}
+.fix-bg1 {
+  width: 100%;
+  height: 400px;
+  position: absolute;
+  top: 464px;
+  left: 0;
+  background: #fffcf0;
+}
 .main {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.article {
   max-width: 1200px;
   margin: 0 auto;
-  z-index: 3;
 }
+
 .rec {
+  position: relative;
   width: 100%;
-  height: 380px;
-  margin-top: 32px;
-  border-radius: 24px;
-  overflow: hidden;
+  height: 400px;
+
+  .rec-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: $color3;
+  }
+
+  .item {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .img-box {
+    position: absolute;
+    width: 592px;
+    height: 400px;
+    bottom: 0;
+    left: 120px;
+    z-index: 2;
+    // &::after {
+    //   content: "";
+    //   width: 100%;
+    //   height: 100%;
+    //   backdrop-filter: blur(7px);
+    //   border-left: 4px solid #ffffff;
+    //   display: flex;
+    //   float: right;
+    //   position: relative;
+    //   bottom: 400px;
+    //   animation: scan 3.2s;
+    //   animation-delay: 0.6s;
+    //   animation-fill-mode: forwards;
+    //   right: 0;
+    //   z-index: 2;
+    // }
+  }
 
   .img {
     width: 100%;
     height: 100%;
-    border-radius: 32px;
+  }
+
+  @keyframes scan {
+    0% {
+      width: 100%;
+    }
+    50% {
+      width: 0;
+    }
+    51% {
+      opacity: 1;
+    }
+    52% {
+      opacity: 0;
+    }
+    100% {
+      width: 0;
+      opacity: 0;
+    }
+  }
+
+  .corner {
+    width: 182px;
+    height: 66px;
+    position: absolute;
+    bottom: -65px;
+    right: 50%;
+    transform: translateX(50%);
+    @include bg("~/assets/images/icon-corner.png");
+    z-index: 1;
+  }
+
+  .download-box {
+    width: 106px;
+    height: 106px;
+    background: rgba(242, 242, 242, 0.4);
+    box-shadow: inset -4px -4px 5px 0px rgba(255, 255, 255, 0.97),
+      inset 4px 4px 5px 0px rgba(183, 102, 118, 0.32), -4px -4px 4px 0px rgba(255, 255, 255, 0.4),
+      4px 4px 4px 0px rgba(183, 102, 118, 0.25);
+    border-radius: 50%;
+    border: 2px solid #f2f2f2;
+    @include center;
+    position: absolute;
+    bottom: -53px;
+    right: 49.9%;
+    transform: translateX(50%);
+    z-index: 3;
+  }
+
+  .download {
+    width: 82px;
+    height: 82px;
+    background: #fff9e3;
+    box-shadow: -4px -4px 5px 0px rgba(255, 255, 255, 0.4),
+      4px 4px 5px 0px rgba(183, 102, 118, 0.25);
+    border-radius: 50%;
+    @include center;
+    .icon-pc-pwa {
+      @include icon(40px, 40px, "icon-pc-download.png");
+    }
+  }
+
+  .module-name {
+    width: 340px;
+    height: 64px;
+    font-family: sebi;
+    font-size: 48px;
+    color: #fd6b21;
+    line-height: 56px;
+    position: absolute;
+    top: 64px;
+    right: 360px;
+  }
+
+  .item-icon {
+    width: 120px;
+    height: 120px;
+    border-radius: 20px;
+    position: absolute;
+    bottom: 120px;
+    right: 580px;
+    border: 4px solid #ffffff;
+    .icon {
+      width: 100%;
+      height: 100%;
+      border-radius: 20px;
+    }
+  }
+
+  .info {
+    width: 378px;
+    height: 84px;
+    position: absolute;
+    bottom: 138px;
+    right: 190px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 2;
   }
 
   .name {
-    width: 493px;
-    height: 69px;
-    font-family: fm;
-    font-size: 52px;
-    color: #ffffff;
-    line-height: 69px;
-    position: absolute;
-    left: 40px;
-    top: 150px;
+    width: 100%;
+    font-family: seb;
+    font-size: 32px;
+    color: #fd6b21;
+    line-height: 44px;
+    text-align: left;
     @include ellipsis;
   }
+
   .rating {
-    display: flex;
-    position: absolute;
-    left: 40px;
-    top: 231px;
-  }
-  .rating-star {
-    width: 135px;
-    height: 27px;
-    @include bg("icon-rec-star1.png");
-    background-size: 27px 27px;
-    p {
-      height: 27px;
-      @include bg("icon-rec-star.png");
-      background-size: 27px 27px;
-    }
-  }
-}
-
-.swiper-box {
-  width: 100%;
-  height: 100%;
-}
-
-.swiper-slide {
-  position: relative;
-  border-radius: 32px;
-}
-
-.swiper-pagination {
-  display: flex;
-  align-items: center;
-  left: unset;
-  right: 24px;
-  bottom: 16px;
-  width: fit-content;
-}
-
-.rec-icon {
-  width: 80px;
-  height: 80px;
-  border-radius: 16px;
-  outline: 4px solid rgba(255, 255, 255, 0.4);
-  position: absolute;
-  left: 40px;
-  top: 59px;
-}
-
-.download-btn {
-  width: 182px;
-  height: 50px;
-  background: #f0ffff;
-  border-radius: 100px 100px 100px 100px;
-  position: absolute;
-  bottom: 46px;
-  left: 40px;
-  z-index: 2;
-  font-family: seb;
-  color: #0f80f8;
-  font-size: 22px;
-  line-height: 26px;
-  @include center;
-}
-
-.arrow {
-  width: 50px;
-  height: 50px;
-  @include center;
-  background: #f0ffff;
-  box-shadow: 4px 4px 8px 0px rgba(11, 41, 69, 0.2), -4px -4px 8px 0px rgba(255, 255, 255, 0.52);
-  border-radius: 50%;
-  position: absolute;
-  bottom: 46px;
-  left: 242px;
-  .icon-arrow {
-    @include icon(26px, 26px, "icon-rec-arrow1.png");
-  }
-}
-.m-module2 {
-  display: none;
-}
-
-.box-row-scroll {
-  padding: 4px 0;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-}
-.title-h2 {
-  display: flex;
-  height: 36px;
-  padding: 0 16px;
-}
-.title-shadow {
-  margin: 32px 0 24px 0;
-  box-shadow: 4px 4px 8px 0px #c7d2da, -4px -4px 8px 0px #ffffff, inset 0 0 0 0 #c7d2da,
-    inset 0 0 0 0 #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  transition: all 0.1s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  &:hover {
-    box-shadow: 0 0 0 0 rgba(40, 11, 69, 0.2), 0 0 0 0 rgba(255, 255, 255, 0.3),
-      inset 4px 4px 8px 0px rgba(40, 11, 69, 0.2), inset -4px -4px 8px 0px rgba(255, 255, 255, 0.3);
-  }
-}
-
-.rec-hidden {
-  display: none;
-}
-.module-hidden {
-  display: none;
-}
-.title-hidden {
-  display: none;
-}
-.pc-hidden {
-  display: none;
-}
-.m-hidden {
-  display: block;
-}
-.pc-button-hidden {
-  display: none;
-}
-.m-button-hidden {
-  display: flex;
-}
-@media screen and (max-width: 1220px) {
-  .box-row-scroll {
-    padding: vw2(4) 0;
-    gap: vw2(24);
-  }
-}
-@media screen and (max-width: 879px) {
-  .box-row-scroll {
-    padding: vw3(4) 0;
-    grid-template-columns: repeat(2, 1fr);
-    gap: vw3(24);
-  }
-}
-@media screen and (max-width: 750px) {
-  .page {
-    background: #f0f4f5;
-  }
-
-  .m-rec {
-    height: vw(1114);
-    overflow: hidden;
-    position: relative;
-
-    .img {
-      width: vw(340);
-      height: vw(496);
-      position: absolute;
-      left: 0;
-      bottom: 0;
-    }
-
-    .name {
-      width: vw(360);
-      font-family: seb;
-      font-size: vw(40);
-      color: #ffffff;
-      line-height: vw(56);
-      position: absolute;
-      left: vw(360);
-      top: vw(32);
-      @include ellipsis;
-    }
-
-    .rating {
-      display: flex;
-      position: absolute;
-      left: vw(360);
-      top: vw(104);
-    }
-
-    .rating-star {
-      width: vw(160);
-      height: vw(32);
-      @include bg("icon-rec-star1.png");
-      background-size: vw(32) vw(32);
-      p {
-        height: vw(32);
-        @include bg("icon-rec-star.png");
-        background-size: vw(32) vw(32);
-      }
-    }
-
-    .module-btn {
-      width: vw(158);
-      height: vw(48);
-      background: #f0ffff;
-      box-shadow: 4px 4px 8px 0px rgba(11, 41, 69, 0.2), -4px -4px 8px 0px rgba(255, 255, 255, 0.52);
-      border-radius: vw(32);
-      position: absolute;
-      left: vw(360);
-      top: vw(161);
-      @include center;
-      font-family: sesb;
-      font-size: vw(32);
-      color: #0f80f8;
-      line-height: vw(38);
-      .icon-best {
-        width: vw(40);
-        height: vw(40);
-      }
-    }
-
-    .arrow {
-      width: vw(48);
-      height: vw(48);
-      border-radius: 50%;
-      position: absolute;
-      left: vw(546);
-      top: vw(161);
-      @include center;
-      .icon-arrow {
-        @include icon(vw(36), vw(36), "icon-rec-arrow1.png");
-      }
-    }
-    .swiper-box {
-      position: absolute;
-      height: auto;
-      left: vw(360);
-      top: vw(238);
-      width: vw(460);
-      padding: 0;
-      margin: 0;
-      z-index: unset;
-      opacity: 0;
-    }
-    .swiper-slide {
-      background: #f0ffff;
-      width: vw(116);
-      height: vw(116);
-      border-radius: vw(20);
-      margin-right: vw(32);
-      @include center;
-      .swiper-img {
-        width: vw(104);
-        height: vw(104);
-        border-radius: vw(16);
-      }
-    }
-
-    .rec1 {
-      background: #5fefec;
-      position: absolute;
-      width: 100%;
-      height: vw(516);
-    }
-    .rec2 {
-      background: #fdcf76;
-      position: absolute;
-      top: vw(394);
-      width: 100%;
-      height: vw(516);
-      border-radius: vw(70) vw(70) 0px 0px;
-      z-index: 1;
-      transition: all 0.5s;
-      .swiper-box {
-        top: vw(256);
-      }
-
-      .img {
-        top: vw(38);
-      }
-
-      .name {
-        top: vw(48);
-      }
-
-      .rating {
-        top: vw(120);
-      }
-
-      .module-btn {
-        top: vw(180);
-        color: #ff9845;
-      }
-
-      .arrow {
-        top: vw(180);
-      }
-
-      .icon-hot {
-        @include icon(vw(40), vw(40), "icon-hot.png");
-      }
-
-      .icon-arrow {
-        @include icon(vw(36), vw(36), "icon-rec-arrow2.png");
-      }
-
-      .rating-star {
-        @include bg("icon-star22.png");
-        background-size: vw(32) vw(32);
-        p {
-          @include bg("icon-star2.png");
-          background-size: vw(32) vw(32);
-        }
-      }
-    }
-    .rec3 {
-      background: #a2f2c2;
-      position: absolute;
-      top: vw(670);
-      width: 100%;
-      height: vw(516);
-      border-radius: vw(70) vw(70) 0px 0px;
-      transition: all 0.5s;
-      z-index: 1;
-
-      .swiper-box {
-        top: vw(256);
-      }
-
-      .img {
-        top: vw(38);
-      }
-
-      .name {
-        top: vw(48);
-      }
-
-      .rating {
-        top: vw(120);
-      }
-
-      .module-btn {
-        top: vw(180);
-        color: #33bd78;
-      }
-
-      .arrow {
-        top: vw(180);
-      }
-
-      .icon-latest {
-        @include icon(vw(40), vw(40), "icon-latest.png");
-      }
-
-      .icon-arrow {
-        @include icon(vw(36), vw(36), "icon-rec-arrow3.png");
-      }
-
-      .rating-star {
-        @include bg("icon-star33.png");
-        background-size: vw(32) vw(32);
-        p {
-          @include bg("icon-star3.png");
-          background-size: vw(32) vw(32);
-        }
-      }
-    }
-
-    .rec1Active {
-      .swiper-box {
-        opacity: 1;
-      }
-    }
-
-    .rec2Active {
-      top: vw(258);
-    }
-
-    .rec2Active1 {
-      .swiper-box {
-        opacity: 1;
-      }
-    }
-
-    .rec3Active {
-      top: vw(534);
-      .swiper-box {
-        opacity: 1;
-      }
-    }
-    .background {
-      width: 100%;
-      height: 100%;
-      position: relative;
-      z-index: 1;
-    }
-  }
-
-  .m-module1 {
-    margin-top: vw(-168);
-    height: vw(766);
-    background: #d2ffff;
-    border-radius: vw(70) vw(70) 0px 0px;
-    box-shadow: 0px -4px 19px 0px rgba(71, 208, 202, 0.61);
-    position: relative;
-    z-index: 1;
-  }
-
-  .m-module2 {
-    display: block;
-    // margin-top: vw(-64);
-    margin-top: vw(-16);
-    padding: vw(1) 0 0;
-    // height: vw(600);
-    background: #f0f4f5;
-    border-radius: vw(70) vw(70) 0px 0px;
-    // box-shadow: 0px -4px 19px 0px rgba(71, 208, 202, 0.61);
-    // box-shadow: 0 vw(-20) vw(20) vw(-10) rgba(71, 208, 202, 0.61);
-
-    position: relative;
-    z-index: 1;
-  }
-
-  .rec-slide {
-    position: relative;
-    display: inline-block;
-    width: vw(658);
-    height: vw(340);
-    margin: vw(48) vw(46) 0;
-
-    .img {
-      width: 100%;
-      height: 100%;
-      border-radius: vw(32);
-    }
-  }
-
-  .box-row-scroll2 {
-    margin-top: vw(28);
-    display: grid;
-    padding: vw(0) vw(46) vw(24);
-    grid-template-columns: repeat(3, vw(288));
-    gap: vw(36);
-    @include scroll;
-    z-index: 2;
-    position: relative;
-  }
-
-  .box-mobile-background {
-    background: $color1;
-    border-radius: vw(48) vw(48) 0px 0px;
-  }
-
-  .box-row-scroll {
-    padding: vw(0) vw(46) vw(24);
-    grid-template-columns: repeat(4, vw(432));
-    gap: vw(32);
-    @include scroll;
-    z-index: 2;
-    position: relative;
-  }
-
-  .box-common {
-    margin: 0;
-    padding: 0 vw(46);
-  }
-
-  .title-h2 {
-    position: relative;
-    height: vw(72);
-    z-index: 2;
-  }
-
-  .title-shadow {
-    margin: vw(52) 0 vw(32) vw(46);
-    padding: 0 vw(16);
+    margin: 10px 0 0;
+    color: #fd6b21;
+    font-size: 18px;
+    line-height: 21px;
     display: flex;
     align-items: center;
   }
 
-  .title-shadow2 {
-    box-shadow: -4px -4px 8px 0px rgba(255, 255, 255, 0.74), 4px 4px 8px 0px #9ee1df;
-  }
-
-  .border-weak {
-    display: inline-flex;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .title-fav {
-    margin-top: vw(28);
-  }
-
-  .download-btn {
-    position: absolute;
-    font-family: seb;
-    font-size: vw(24);
-    line-height: vw(32);
-    width: vw(134);
-    height: vw(48);
-    border-radius: vw(80);
-    bottom: vw(28);
-    color: #ffffff;
-    background: linear-gradient(86deg, #0f80f8 0%, #45fff6 100%);
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2;
-    outline: 2px solid rgba(255, 255, 255, 0.6);
-    .icon-rocket {
-      @include icon(16px, 16px, "icon-rocket.png");
-      margin-left: 6px;
+  .rating-star {
+    margin-right: 4px;
+    width: 120px;
+    height: 24px;
+    @include bg("icon-star-rec1.png");
+    background-size: 24px 24px;
+    p {
+      height: 24px;
+      @include bg("icon-star-rec.png");
+      background-size: 24px 24px;
     }
   }
 
@@ -1220,26 +636,627 @@ export default {
   .fade-leave {
     opacity: 1;
   }
+}
+.new {
+  width: 100%;
+  height: 400px;
 
-  .rec-hidden {
-    display: block;
+  .new-content {
+    width: 100%;
+    height: 100%;
+    position: relative;
   }
-  .module-hidden {
+
+  .item-content {
+    width: 100%;
+    height: 100%;
+    background: #fffcf0;
+  }
+
+  .item {
+    position: absolute;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .img-box {
+    position: absolute;
+    width: 448px;
+    height: 469px;
+    bottom: 0;
+    right: 120px;
+    z-index: 3;
+  }
+
+  .img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .name {
+    width: 500px;
+    height: 44px;
+    font-family: seb;
+    font-size: 32px;
+    color: #fd6b21;
+    line-height: 44px;
+    text-align: left;
+    position: absolute;
+    bottom: 52px;
+    left: 186px;
+    @include ellipsis;
+  }
+
+  .new-name {
+    width: 340px;
+    height: 64px;
+    font-family: sebi;
+    font-size: 48px;
+    color: #fd6b21;
+    line-height: 56px;
+    position: absolute;
+    top: 64px;
+    left: 182px;
+  }
+
+  .rating {
+    width: 48px;
+    height: 20px;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #fd6b21;
+    line-height: 14px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 20px 20px 20px 20px;
+  }
+
+  .rating-star {
+    width: 16px;
+    height: 16px;
+    @include bg("icon-star-rec.png");
+  }
+
+  .score {
+    display: none;
+  }
+
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 1s;
+  }
+  .fade-enter,
+  .fade-leave-to {
+    opacity: 0;
+  }
+  .fade-enter-to,
+  .fade-leave {
+    opacity: 1;
+  }
+}
+
+.swiper-box {
+  width: 640px;
+  height: 150px;
+  position: absolute;
+  bottom: 108px;
+  left: 176px;
+  z-index: 1;
+}
+
+.swiper-slide {
+  width: 140px;
+  height: 140px;
+  background: #fff9e3;
+  box-shadow: inset 6px 6px 12px 0px rgba(114, 35, 10, 0.21), inset -6px -6px 12px 0px #ffffff;
+  border-radius: 24px 24px 24px 24px;
+  border: 2px solid #ffffff;
+  margin: 0 10px 0;
+  @include center;
+  .swiper-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 12px;
+  }
+}
+.swiper-slide-active {
+  border: 2px solid #fd6b21;
+}
+.swiper-button {
+  width: 752px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 164px;
+  left: 8%;
+}
+.swiper-button-prev,
+.swiper-button-next {
+  position: unset;
+  top: unset;
+  width: 46px;
+  height: 46px;
+  margin: 0;
+  &::after {
+    display: none;
+  }
+}
+.swiper-button-prev {
+  @include bg("icon-prev.png");
+}
+.swiper-button-next {
+  @include bg("icon-next.png");
+}
+.box-row-scroll {
+  padding: 4px 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.box-list-section {
+  display: none;
+}
+
+.box-scroll-hidden {
+  display: grid;
+}
+
+.pc-hidden {
+  display: none;
+}
+
+.m-hidden {
+  display: block;
+}
+
+@media screen and (min-width: 1200px) and (max-width: 1450px) {
+  .main {
+    max-width: 1210px;
+  }
+  .rec {
+    .img-box {
+      left: 10px;
+    }
+    .module-name {
+      right: 240px;
+    }
+    .item-icon {
+      right: 460px;
+    }
+    .info {
+      right: 64px;
+    }
+  }
+  .new {
+    .img-box {
+      right: 0;
+    }
+    .name {
+      left: 80px;
+    }
+    .new-name {
+      left: 80px;
+    }
+    .swiper-box {
+      left: 70px;
+    }
+    .swiper-button {
+      left: 1%;
+    }
+  }
+}
+@media screen and (min-width: 879px) and (max-width: 1240px) {
+  .fix-bg {
+    height: vw2(400);
+  }
+  .fix-bg1 {
+    height: vw2(400);
+    top: calc(64px + vw2(400));
+  }
+  .rec {
+    height: vw2(400);
+
+    .img-box {
+      width: vw2(592);
+      height: vw2(400);
+      left: vw2(10);
+    }
+    .corner {
+      width: vw2(182);
+      height: vw2(66);
+      bottom: vw2(-65);
+    }
+    .download-box {
+      width: vw2(106);
+      height: vw2(106);
+      box-shadow: inset vw2(-4) vw2(-4) vw2(5) 0px rgba(255, 255, 255, 0.97),
+        inset vw2(4) vw2(4) vw2(5) 0px rgba(183, 102, 118, 0.32),
+        vw2(-4) vw2(-4) vw2(4) 0px rgba(255, 255, 255, 0.4),
+        vw2(4) vw2(4) vw2(4) 0px rgba(183, 102, 118, 0.25);
+      border: vw2(2) solid #f2f2f2;
+      bottom: vw2(-53);
+    }
+    .download {
+      width: vw2(82);
+      height: vw2(82);
+      background: #fff9e3;
+      box-shadow: vw2(-4) vw2(-4) vw2(5) 0px rgba(255, 255, 255, 0.4),
+        vw2(4) vw2(4) vw2(5) 0px rgba(183, 102, 118, 0.25);
+      .icon-pc-pwa {
+        width: vw2(40);
+        height: vw2(40);
+      }
+    }
+    .module-name {
+      width: vw2(340);
+      height: vw2(64);
+      font-size: vw2(48);
+      line-height: vw2(56);
+      top: vw2(64);
+      right: vw2(240);
+    }
+    .item-icon {
+      width: vw2(120);
+      height: vw2(120);
+      border-radius: vw2(20);
+      bottom: vw2(120);
+      right: vw2(460);
+      border: vw2(4) solid #ffffff;
+      .icon {
+        border-radius: vw2(40);
+      }
+    }
+    .info {
+      width: vw2(378);
+      height: vw2(84);
+      bottom: vw2(138);
+      right: vw2(64);
+    }
+    .name {
+      font-size: vw2(32);
+      line-height: vw2(44);
+    }
+    .rating {
+      margin: vw2(10) 0 0;
+      font-size: vw2(18);
+      line-height: vw2(21);
+    }
+    .rating-star {
+      margin-right: vw2(4);
+      width: vw2(120);
+      height: vw2(24);
+      background-size: vw2(24) vw2(24);
+      p {
+        height: vw2(24);
+        background-size: vw2(24) vw2(24);
+      }
+    }
+  }
+  .new {
+    height: vw2(400);
+
+    .img-box {
+      width: vw2(448);
+      height: vw2(469);
+      right: vw2(0);
+    }
+    .name {
+      width: vw2(185);
+      height: vw2(44);
+      bottom: vw2(52);
+      left: vw2(80);
+      font-size: vw2(32);
+      line-height: vw2(44);
+    }
+    .new-name {
+      width: vw2(340);
+      height: vw2(64);
+      font-size: vw2(48);
+      line-height: vw2(56);
+      top: vw2(64);
+      left: vw2(80);
+    }
+    .rating {
+      width: vw2(48);
+      height: vw2(20);
+      bottom: vw2(10);
+      font-size: vw2(12);
+      line-height: vw2(14);
+      border-radius: vw2(20);
+    }
+    .rating-star {
+      width: vw2(16);
+      height: vw2(16);
+    }
+  }
+  .swiper-box {
+    width: vw2(640);
+    height: vw2(150);
+    bottom: vw2(108);
+    left: vw2(70);
+  }
+  .swiper-slide {
+    width: vw2(140);
+    height: vw2(140);
+    box-shadow: inset vw2(6) vw2(6) vw2(12) 0px rgba(114, 35, 10, 0.21),
+      inset vw2(-6) vw2(-6) vw2(12) 0px #ffffff;
+    border-radius: vw2(24);
+    border: vw2(2) solid #ffffff;
+    margin: 0 vw2(10) 0;
+    .swiper-img {
+      width: vw2(120);
+      height: vw2(120);
+      border-radius: vw2(12);
+    }
+  }
+  .swiper-slide-active {
+    border: vw2(2) solid #fd6b21;
+  }
+  .swiper-button {
+    display: none;
+    width: vw2(752);
+    height: vw2(46);
+    bottom: vw2(164);
+    left: 1%;
+  }
+  .swiper-button-prev,
+  .swiper-button-next {
+    width: vw2(46);
+    height: vw2(46);
+  }
+}
+@media screen and (max-width: 879px) {
+  .page {
+    background: $color1;
+  }
+  .fix-bg {
+    display: none;
+  }
+  .fix-bg1 {
+    display: none;
+  }
+  .main {
+    padding: 0;
+  }
+
+  .rec {
+    height: vw(416);
+
+    .img-box {
+      width: vw(332);
+      height: 100%;
+      bottom: 0;
+      left: 0;
+    }
+
+    .corner {
+      width: vw(246);
+      height: vw(72);
+      bottom: vw(-72);
+      right: 50%;
+      transform: translateX(50%);
+      @include bg("~/assets/images/icon-corner-m.png");
+    }
+    .download-box {
+      width: vw(126);
+      height: vw(126);
+      background: #ffd89d;
+      box-shadow: 3px 3px 6px 0px rgba(104, 28, 28, 0.35),
+        -3px -3px 6px 0px rgba(255, 255, 255, 0.4), inset 3px 3px 6px 0px rgba(104, 28, 28, 0.35),
+        inset -3px -3px 6px 0px rgba(255, 255, 255, 0.45);
+      border-radius: 50%;
+      border: 2px solid #fff9e3;
+      @include center;
+      bottom: vw(-63);
+      right: 50%;
+      transform: translateX(50%);
+    }
+    .download {
+      width: vw(98);
+      height: vw(98);
+      background: #fff9e3;
+      box-shadow: 3px 3px 6px 0px rgba(104, 28, 28, 0.35),
+        -3px -3px 6px 0px rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+      @include center;
+      .icon-pc-pwa {
+        @include icon(vw(48), vw(48), "icon-m-download.png");
+      }
+    }
+    .module-name {
+      width: vw(300);
+      height: vw(58);
+      font-size: vw(44);
+      line-height: vw(52);
+      top: vw(32);
+      right: vw(74);
+    }
+
+    .item-icon {
+      width: vw(96);
+      height: vw(96);
+      border-radius: vw(20);
+      top: vw(114);
+      right: vw(280);
+      border: vw(2) solid #ffffff;
+      .icon {
+        border-radius: vw(20);
+      }
+    }
+    .info {
+      width: vw(340);
+      height: vw(88);
+      bottom: vw(106);
+      right: vw(36);
+    }
+
+    .name {
+      font-size: vw(36);
+      line-height: vw(46);
+    }
+    .rating {
+      margin: 0;
+      font-size: vw(24);
+      line-height: vw(30);
+    }
+    .rating-star {
+      margin-right: vw(2);
+      width: vw(160);
+      height: vw(32);
+      @include bg("icon-star-rec1.png");
+      background-size: vw(32) vw(32);
+      p {
+        height: vw(32);
+        @include bg("icon-star-rec.png");
+        background-size: vw(32) vw(32);
+      }
+    }
+  }
+
+  .new {
+    height: vw(416);
+
+    .img-box {
+      position: absolute;
+      width: vw(320);
+      height: vw(438);
+      bottom: 0;
+      right: 0;
+    }
+
+    .name {
+      width: vw(362);
+      height: vw(48);
+      font-size: vw(36);
+      line-height: vw(44);
+      bottom: vw(95);
+      left: vw(46);
+    }
+
+    .new-name {
+      width: vw(380);
+      height: vw(58);
+      font-size: vw(44);
+      line-height: vw(56);
+      top: vw(64);
+      left: vw(46);
+    }
+    .rating {
+      width: vw(68);
+      height: vw(24);
+      bottom: vw(8);
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: vw(20);
+      color: $font1;
+      line-height: vw(28);
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: vw(32);
+    }
+
+    .rating-star {
+      width: vw(20);
+      height: vw(20);
+      @include bg("icon-star-rec.png");
+    }
+
+    .score {
+      width: vw(200);
+      display: flex;
+      position: absolute;
+      bottom: vw(56);
+      left: vw(46);
+
+      .icon-star {
+        @include icon(vw(32), vw(32), "icon-star-rec.png");
+      }
+
+      span {
+        margin: vw(2) 0 0 vw(4);
+        font-size: vw(24);
+        color: #fd6b21;
+        line-height: vw(30);
+      }
+    }
+  }
+  .swiper-box {
+    width: vw(390);
+    height: vw(130);
+    position: absolute;
+    bottom: vw(146);
+    left: vw(26);
+    z-index: 1;
+  }
+
+  .swiper-slide {
+    width: vw(112);
+    height: vw(112);
+    box-shadow: 4px 4px 8px 0px rgba(94, 58, 3, 0.16), -4px -4px 8px 0px #ffffff,
+      inset 0 0 0 0 rgba(94, 3, 3, 0.18), inset 0 0 0 0 rgba(255, 255, 255, 0.5);
+
+    border-radius: vw(24);
+    border: 1px solid #ffffff;
+    margin: 0 vw(8) 0;
+    @include center;
+    .swiper-img {
+      width: vw(96);
+      height: vw(96);
+      border-radius: vw(16);
+    }
+  }
+  .swiper-slide-active {
+    box-shadow: inset 4px 4px 8px 0px rgba(94, 3, 3, 0.18),
+      inset -4px -4px 8px 0px rgba(255, 255, 255, 0.5);
+    border: 1px solid #fd6b21;
+  }
+
+  .swiper-button {
+    display: none;
+  }
+
+  .box-row-scroll {
+    display: none;
+    // padding: vw(24) vw(46);
+    // grid-template-columns: repeat(4, vw(510));
+    // gap: vw(32);
+    // @include scroll;
+    // z-index: 2;
+    // position: relative;
+  }
+
+  .box-common {
+    margin: 0;
+    padding: 0 vw(46);
+  }
+
+  .box-list-section {
     display: grid;
   }
-  .title-hidden {
-    display: flex;
+
+  .title-h2 {
+    position: relative;
+    height: vw(72);
+    z-index: 2;
   }
+
+  .box-scroll-hidden {
+    display: none;
+  }
+
   .pc-hidden {
     display: block;
   }
+
   .m-hidden {
-    display: none;
-  }
-  .pc-button-hidden {
-    display: flex;
-  }
-  .m-button-hidden {
     display: none;
   }
 }

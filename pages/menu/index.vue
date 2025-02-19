@@ -78,7 +78,7 @@ export default {
   background: #eee;
   margin: vw(12) 0;
 }
-$items: home, games, topics, apps, categories;
+$items: home, games, apps, categories;
 @each $item in $items {
   .icon-#{$item} {
     @include icon(vw(48), vw(48), "icon-#{$item}.png");

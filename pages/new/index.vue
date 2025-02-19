@@ -1,62 +1,60 @@
 <template>
   <div class="page">
-    <div class="page-bg"></div>
-    <Header ref="headerElem" />
+    <Header />
     <main class="main">
       <div class="main-left">
-        <h2 class="title-h2"><i class="icon-new" />Latest</h2>
-        <!-- <GoogleAd ad-slot="4363167594" class="ad1 ad-width" /> -->
+        <h2 class="title-h2">Latest Games</h2>
+        <!-- <GoogleAd ad-slot="3610867204" class="ad1 ad-width" /> -->
         <adm-slot
-          class="ad1 ad-width"
           adm-id="new-mid1"
           adm-unit="/23197833490/alltools1/alltools1_module_1"
+          class="ad1 ad-width"
         />
-        <section class="box-module box-category">
-          <ContentItemCommon2
-            v-for="(item, index) in news"
+        <section class="box-common box-category">
+          <ContentItemSmall
+            v-for="(item, index) in newGames"
             :key="index"
             :index="index"
             :item="item"
-            :to="item.type === 1 ? `/game/${item.path}/` : `/app/${item.path}/`"
+            :to="`/game/${item.path}/`"
           />
         </section>
 
-        <!-- <GoogleAd ad-slot="5676249263" class="ad2 ad-width" /> -->
+        <!-- <GoogleAd ad-slot="6838895260" class="ad2 ad-width" /> -->
         <adm-slot
-          class="ad2 ad-width"
           adm-id="new-mid2"
           adm-unit="/23197833490/alltools1/alltools1_module_2"
+          class="ad2 ad-width"
         />
-        <h2 class="title-h2"><i class="icon-recommend" />All</h2>
+        <h2 class="title-h2">All Games</h2>
 
         <InfiniteScrollList
-          :api-endpoint="`/api/game/all_app`"
+          :api-endpoint="`/api/game/all_game`"
           :initial-page="2"
           :page-size="30"
           :initial-items="allGames"
-          class="box-module-common"
         >
           <template #default="{ items }">
-            <ContentItemCommon1
+            <ContentItemCommon
               v-for="(item, index) in items"
               :key="index"
               :index="index"
               :item="item"
-              :to="item.type === 1 ? `/game/${item.path}/` : `/app/${item.path}/`"
+              :to="`/game/${item.path}/`"
             />
           </template>
         </InfiniteScrollList>
 
         <aside class="box-aside">
-          <!-- <GoogleAd ad-slot="4746502868" /> -->
+          <!-- <GoogleAd ad-slot="4212731925" /> -->
           <adm-slot adm-id="new-mid3" adm-unit="/23197833490/alltools1/alltools1_module_3" />
-          <h2 class="title-h2"><i class="icon-hot" />Hot</h2>
+          <h2 class="title-h2">Hot Games</h2>
           <ContentItemRow
-            v-for="(item, index) in recGames"
+            v-for="(item, index) in bestGames.slice(0, 10)"
             :key="index"
             :item="item"
             :index="index"
-            :to="item.type === 1 ? `/game/${item.path}/` : `/app/${item.path}/`"
+            :to="`/game/${item.path}/`"
           />
         </aside>
       </div>
@@ -71,22 +69,22 @@
 export default {
   async asyncData({ $axios, env }) {
     try {
-      const [newsResponse, recGamesResponse, allGamesResponse] = await Promise.all([
+      const [newGamesResponse, bestGamesResponse, allGamesResponse] = await Promise.all([
         $axios.$get("/api/game/menu", {
           params: {
             site_id: env.SITE_ID,
-            mod_id: "new",
-            size: 30
-          }
-        }),
-        $axios.$get("/api/game/menu", {
-          params: {
-            site_id: env.SITE_ID,
-            mod_id: "best",
+            mod_id: "new-games",
             size: 10
           }
         }),
-        $axios.$get("/api/game/all_app", {
+        $axios.$get("/api/game/menu", {
+          params: {
+            site_id: env.SITE_ID,
+            mod_id: "best-games",
+            size: 30
+          }
+        }),
+        $axios.$get("/api/game/all_game", {
           params: {
             site_id: env.SITE_ID,
             page: 1,
@@ -95,8 +93,8 @@ export default {
         })
       ]);
       return {
-        news: newsResponse.list,
-        recGames: recGamesResponse.list,
+        newGames: newGamesResponse.list,
+        bestGames: bestGamesResponse.list,
         allGames: allGamesResponse.list
       };
     } catch (error) {
@@ -137,23 +135,12 @@ export default {
 .box-aside {
   top: 63px;
 }
-@media screen and (max-width: 1200px) {
-  .main-left {
+@media screen and (max-width: 1235px) {
+  .main {
     width: 100%;
   }
 }
-@media screen and (max-width: 750px) {
-  .page {
-    background: unset;
-  }
-  .page-bg {
-    width: 100%;
-    height: 100%;
-    background-color: $color1;
-    position: fixed;
-    top: 0;
-    z-index: -2;
-  }
+@media screen and (max-width: 879px) {
   .main {
     padding: 0;
   }
@@ -172,11 +159,6 @@ export default {
   .box-category {
     margin-bottom: vw(48);
     margin-top: vw(36);
-    justify-content: center;
-  }
-  .ad-width {
-    width: 87%;
-    margin: 0 auto;
   }
 }
 </style>

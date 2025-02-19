@@ -38,7 +38,7 @@ export default {
     font-family: "sesb";
   }
 }
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 879px) {
   .breadcrumb {
     display: none;
   }

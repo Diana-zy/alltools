@@ -47,7 +47,7 @@ export default {
   },
   head: {
     title:
-      "Appsvault－dedicated to the dreams and wonders of the young crowd, play with your own colors in the game!",
+      "AllTools1－dedicated to the dreams and wonders of the young crowd, play with your own colors in the game!",
     meta: [
       {
         name: "version",
@@ -61,7 +61,7 @@ export default {
         hid: "description",
         name: "description",
         content:
-          "Appsvault is a platform that gathers countless young gamers with the best free online games. All of our games are designed to provide young people with a better way to relax and have fun, ≈ and a wide range of styles waiting for your selection. When you are looking for fun through games, Appsvault will be your faithful choice, offering you a more comprehensive range of games, the most diverse selection and as many new surprises as possible!"
+          "AllTools1 is a platform that gathers countless young gamers with the best free online games. All of our games are designed to provide young people with a better way to relax and have fun, ≈ and a wide range of styles waiting for your selection. When you are looking for fun through games, AllTools1 will be your faithful choice, offering you a more comprehensive range of games, the most diverse selection and as many new surprises as possible!"
       },
       {
         hid: "keywords",
@@ -101,10 +101,10 @@ export default {
   },
   pwa: {
     manifest: {
-      name: "Appsvault",
-      short_name: "Appsvault",
+      name: "AllTools1",
+      short_name: "AllTools1",
       description:
-        "Appsvault is a platform that gathers countless young gamers with the best free online games. All of our games are designed to provide young people with a better way to relax and have fun, with healthy gameplay and a wide range of styles waiting for your selection. When you are looking for fun through games, Appsvault will be your faithful choice, offering you a more comprehensive range of games, the most diverse selection and as many new surprises as possible!",
+        "AllTools1 is a platform that gathers countless young gamers with the best free online games. All of our games are designed to provide young people with a better way to relax and have fun, with healthy gameplay and a wide range of styles waiting for your selection. When you are looking for fun through games, AllTools1 will be your faithful choice, offering you a more comprehensive range of games, the most diverse selection and as many new surprises as possible!",
       icons: [
         {
           src: "/icons/32.png",
@@ -204,6 +204,6 @@ export default {
     }
   },
   purgeCSS: {
-    whitelistPatterns: [/^swiper-pagination-bullet/, /^swiper-container/] // 忽略swiper样式
+    whitelistPatterns: [/^swiper-pagination-bullet/, /^swiper-container/, /^swiper-slide-active/] // 忽略swiper样式
   }
 };

@@ -6,7 +6,66 @@
 
     <link rel="preload" href="https://securepubads.g.doubleclick.net/tag/js/gpt.js" as="script" />
     <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+    <!-- <script>
+      (function () {
+        if ("PerformanceObserver" in window) {
+          const observer = new PerformanceObserver((list) => {
+            list.getEntries().forEach((entry) => {
+              if (entry.entryType === "resource" && entry.name.includes("interstitial")) {
+                dataLayer.push({ event: "AL_all_inter" });
+                if (entry.responseStatus === 200) {
+                  console.log(
+                    `Resource interstitial loaded: ${entry.name} with initiatorType: ${entry.initiatorType}`
+                  );
+                  dataLayer.push({ event: "AL_0" });
+                }
+              } else if (entry.entryType === "resource" && entry.name.includes("anchor")) {
+                dataLayer.push({ event: "AL_all_anchor" });
+                if (entry.responseStatus === 200) {
+                  console.log(
+                    `Resource anchor loaded: ${entry.name} with initiatorType: ${entry.initiatorType}`
+                  );
+                  dataLayer.push({ event: "AL_1" });
+                }
+              }
+            });
+          });
 
+          observer.observe({ entryTypes: ["resource"] });
+        }
+
+        const mutationObserver = new MutationObserver((mutations) => {
+          mutations.forEach((mutation) => {
+            // console.log(mutation);
+            if (mutation.type === "childList") {
+              if (
+                mutation.target.name &&
+                mutation.target.name.includes(
+                  "google_ads_iframe_/23197833490/alltools1/alltools1_interstitial_0__container__"
+                )
+              ) {
+                dataLayer.push({ event: "AL_2" });
+              }
+              if (
+                mutation.target.name &&
+                mutation.target.name.includes(
+                  "google_ads_iframe_/23197833490/alltools1/alltools1_anchor_0__container__"
+                )
+              ) {
+                dataLayer.push({ event: "AL_3" });
+              }
+            }
+          });
+        });
+
+        mutationObserver.observe(document.documentElement, {
+          childList: true,
+          subtree: true,
+          attributes: true,
+          attributeFilter: ["data-vignette-loaded"]
+        });
+      })();
+    </script> -->
     <script>
       window.googletag = window.googletag || { cmd: [] };
       let interstitialSlot, anchorSlot;
@@ -29,13 +88,6 @@
           googletag.pubads().addEventListener("slotOnload", (event) => {
             if (interstitialSlot === event.slot) {
               console.log("Interstitial is loaded.");
-            }
-          });
-          googletag.pubads().addEventListener("slotRequested", (event) => {
-            const slot = event.slot;
-            console.log("Slot", slot.getSlotElementId(), "has been requested.", performance.now());
-            if (slot.getSlotElementId() === "detail-mid1") {
-              dataLayer.push({ event: "IP_REQUESTED", iptime: performance.now().toFixed(2) });
             }
           });
         }
@@ -90,7 +142,6 @@
       bge("init", "905001526682426624");
     </script>
     <script async src="https://api.imotech.video/ad/events.js?pixel_id=905001526682426624"></script>
-
     <script
       async
       src="https://fundingchoicesmessages.google.com/i/pub-1853000876464912?ers=1"
@@ -114,7 +165,6 @@
         signalGooglefcPresent();
       })();
     </script>
-
     <!-- 345显示锚定 -->
     <!-- <script>
       (function () {
@@ -293,7 +343,7 @@
           dataLayer.push({ event: "G_AL" });
         }
       });
-
+      // 监听失去焦点事件
       window.addEventListener("blur", () => {
         const activeElement = document.activeElement,
           sourceAttribute = activeElement.getAttribute("name");

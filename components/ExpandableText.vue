@@ -82,12 +82,11 @@ export default {
     transform: translateY(3px) rotate(180deg);
   }
 }
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 879px) {
   .expandable-text {
     padding: vw(32);
     font-size: vw(24);
-    background: #f0f2f5;
-    box-shadow: inset 4px 4px 8px 0px rgba(99, 82, 101, 0.16), inset -4px -4px 8px 0px #ffffff;
+    box-shadow: inset 6px 6px 12px 0px rgba(114, 35, 10, 0.21), inset -6px -6px 12px 0px #ffffff;
     border-radius: vw(32);
   }
   .shadow-hidden {

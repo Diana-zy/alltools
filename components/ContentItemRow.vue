@@ -1,5 +1,5 @@
 <template>
-  <CustomLink :to="to" class="item" :class="{ 'background-purple': bg === 1 }">
+  <CustomLink :to="to" class="item">
     <NuxtImg
       format="auto"
       fit="cover"
@@ -12,14 +12,11 @@
     />
     <div class="info">
       <p class="name">{{ item.name }}</p>
-
       <div class="rating">
         <div class="rating-star">
           <p :style="{ width: (((item.score || 4.6) / 5) * 100).toFixed(0) + '%' }"></p>
         </div>
-        <span>
-          {{ item.score || 4.6 }}
-        </span>
+        {{ item.score.length == 1 ? item.score + ".0" : item.score || 4.6 }}
       </div>
     </div>
     <p class="arrow"></p>
@@ -57,22 +54,23 @@ export default {
   height: 80px;
   display: flex;
   align-items: center;
-  background: #f0f2f5;
-  box-shadow: 4px 4px 8px 0px #c7d2da, -4px -4px 8px 0px #ffffff, inset 0 0 0 0 #c7d2da,
-    inset 0 0 0 0 #ffffff;
-  border: 1px solid #ffffff;
+  box-shadow: 6px 6px 12px 0px rgba(114, 35, 10, 0.21), 0 0 0 0 #ffffff,
+    inset 0 0 0 0 rgba(114, 35, 10, 0.21), inset 0 0 0 0 #ffffff;
+  border: 2px solid #ffffff;
   padding-left: 8px;
   padding-right: 8px;
   border-radius: 16px;
   transition: all 0.2s;
 }
+
 .info {
-  flex-grow: 1;
+  width: calc(100% - 16px - 8px - 64px);
   height: 42px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
+
 .icon {
   width: 64px;
   height: 64px;
@@ -81,28 +79,26 @@ export default {
   margin-right: 8px;
 }
 .name {
+  width: 100%;
   color: $font1;
-  font-family: "sesb";
+  font-family: "seb";
   overflow: hidden;
   word-break: break-all;
   height: 18px;
   line-height: 18px;
   transition: color 0.2s;
 }
-.category {
-  font-size: 12px;
-  color: rgba($font1, 0.6);
-  margin-top: 6px;
-  margin-bottom: 8px;
-}
+
 .rating {
-  color: rgba($font1, 0.6);
+  color: $font2;
+  font-size: 12px;
+  line-height: 16px;
   display: flex;
-  span {
-    margin-top: 2px;
-  }
+  align-items: center;
 }
+
 .rating-star {
+  margin-right: 4px;
   width: 80px;
   height: 16px;
   @include bg("icon-rating2.png");
@@ -112,23 +108,23 @@ export default {
     @include bg("icon-rating.png");
     background-size: 16px 16px;
   }
-
-  margin-right: 4px;
 }
+
 .arrow {
   @include icon(24px, 24px, "icon-arrow-right.png");
 }
+
 .item:hover {
-  box-shadow: 0 0 0 0 #c7d2da, 0 0 0 0 #ffffff, inset 4px 4px 8px 0px #47d0ca,
-    inset -4px -4px 8px 0px rgba(255, 255, 255, 0.56);
-
-  background: #88f4ef;
-
+  box-shadow: 0 0 0 0 rgba(114, 35, 10, 0.21), 0 0 0 0 #ffffff,
+    inset 6px 6px 12px 0px rgba(114, 35, 10, 0.21), inset -6px -6px 12px 0px #ffffff;
+  .name {
+    color: $color2;
+  }
   .arrow {
     @include icon(24px, 24px, "icon-arrow-right2.png");
   }
 }
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 879px) {
   .item {
     height: vw(160);
     padding-left: vw(20);
@@ -137,42 +133,58 @@ export default {
     box-shadow: vw(8) vw(8) vw(16) 0px rgba(40, 11, 69, 0.2),
       vw(-8) vw(-8) vw(16) 0px rgba(255, 255, 255, 0.3), inset 0 0 0 0 rgba(40, 11, 69, 0.2),
       inset 0 0 0 0 rgba(255, 255, 255, 0.3);
-    background: $color1;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: $color3;
+    border: 2px solid rgba(255, 255, 255, 0.1);
   }
+
   .icon {
     width: vw(120);
     height: vw(120);
-    border-radius: vw(21);
-    margin-right: vw(12);
+    border-radius: vw(24);
+    margin-right: vw(18);
   }
+
+  .info {
+    width: calc(100% - vw(18) - vw(120));
+    height: vw(88);
+  }
+
   .name {
-    width: vw(210);
-    font-size: vw(24);
+    width: 96%;
+    font-size: vw(28);
     height: vw(36);
     line-height: vw(36);
+    color: #ffffff;
     @include ellipsis;
   }
-  .category {
-    width: vw(210);
-    font-size: vw(24);
-    height: vw(36);
-    line-height: vw(36);
-    margin-top: 0;
-    margin-bottom: 0;
-    @include ellipsis;
-  }
+
   .rating {
     font-size: vw(24);
-    height: vw(36);
-    line-height: vw(36);
+    line-height: vw(30);
+    color: #ffffff;
   }
+
+  .rating-star {
+    margin-right: vw(8);
+    width: vw(120);
+    height: vw(24);
+    @include bg("icon-star3.png");
+    background-size: vw(24) vw(24);
+
+    p {
+      height: vw(24);
+      background-size: vw(24) vw(24);
+    }
+  }
+
   .background-purple {
     background: $color2;
   }
+
   .arrow {
     display: none;
   }
+
   .item:hover {
     box-shadow: 0 0 0 0 rgba(40, 11, 69, 0.2), 0 0 0 0 rgba(255, 255, 255, 0.3),
       inset vw(8) vw(8) vw(16) 0px rgba(40, 11, 69, 0.2),
@@ -180,9 +192,9 @@ export default {
     .arrow {
       display: none;
     }
-  }
-  .icon-rating3 {
-    @include icon(vw(24), vw(24), "icon-rating3.png");
+    .name {
+      color: #ffffff;
+    }
   }
 }
 </style>

@@ -11,7 +11,7 @@
       :loading="index < eager ? 'eager' : 'lazy'"
     />
     <p class="name">{{ item.name }}</p>
-    <p class="rating"><i class="icon-rating4"></i>{{ item.score || 4.6 }}</p>
+    <p class="rating"><i class="icon-rating"></i>{{ item.score || 4.6 }}</p>
   </CustomLink>
 </template>
 
@@ -43,18 +43,19 @@ export default {
   display: block;
   height: 151px;
   border-radius: 24px;
-  box-shadow: 4px 4px 8px 0px #c7d2da, -4px -4px 8px 0px #ffffff, inset 0 0 0 0 #c7d2da,
-    inset 0 0 0 0 #ffffff;
-  border: 1px solid #ffffff;
+  box-shadow: 6px 6px 12px 0px rgba(114, 35, 10, 0.21), 0 0 0 0 #ffffff,
+    inset 0 0 0 0 rgba(114, 35, 10, 0.21), inset 0 0 0 0 #ffffff;
+  border: 2px solid #ffffff;
   position: relative;
   transition: all 0.2s;
 }
 .icon {
   width: 96px;
   height: 96px;
-  border-radius: 12px;
+  border-radius: 16px;
   margin: 16px auto 6px;
 }
+
 .name {
   width: 80%;
   color: $font1;
@@ -68,38 +69,39 @@ export default {
   margin: 0 auto;
 }
 .rating {
-  width: 47px;
-  height: 20px;
   @include center;
   color: rgba($font1, 0.6);
   background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(4px);
-  border-radius: 16px 0px 12px 0px;
+  border-radius: 100px;
   position: absolute;
+  padding: 0 4px;
   bottom: 37px;
-  right: 16px;
-  .icon-rating4 {
-    width: 16px;
-    height: 16px;
-  }
+  left: 50%;
+  transform: translateX(-50%);
+}
+.icon-rating {
+  width: 14px;
+  height: 14px;
 }
 .item:hover {
-  box-shadow: 0 0 0 0 #c7d2da, 0 0 0 0 #ffffff, inset 4px 4px 8px 0px #47d0ca,
-    inset -4px -4px 8px 0px rgba(255, 255, 255, 0.56);
-  background: #88f4ef;
+  box-shadow: 0 0 0 0 rgba(114, 35, 10, 0.21), 0 0 0 0 #ffffff,
+    inset 6px 6px 12px 0px rgba(114, 35, 10, 0.21), inset -6px -6px 12px 0px #ffffff;
+  .name {
+    color: $color2;
+  }
 }
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 879px) {
   .item {
     width: 100%;
-    height: vw(244);
+    height: vw(218);
     background: $color1;
     border-radius: vw(32);
   }
   .icon {
-    width: vw(158);
-    height: vw(158);
+    width: vw(128);
+    height: vw(128);
     border-radius: vw(24);
-    margin: vw(20) auto vw(10);
+    margin: vw(24) auto vw(10);
   }
   .name {
     width: vw(200);
@@ -111,19 +113,16 @@ export default {
     padding: 0 vw(16);
   }
   .rating {
-    width: vw(92);
-    height: vw(32);
     backdrop-filter: blur(4px);
     font-size: vw(24);
-    bottom: vw(64);
-    right: vw(20);
-    border-radius: vw(20) 0px vw(24) 0px;
+    bottom: vw(59.5);
+    border-radius: vw(32);
     padding: vw(4) vw(8);
     color: $font1;
-    .icon-rating4 {
-      width: vw(28);
-      height: vw(28);
-    }
+  }
+  .icon-rating {
+    width: vw(24);
+    height: vw(24);
   }
 }
 </style>

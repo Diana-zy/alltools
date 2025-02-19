@@ -1,18 +1,17 @@
 <template>
   <div class="page">
-    <div class="page-bg"></div>
-    <Header ref="headerElem" />
+    <Header />
     <main class="main">
       <div class="main-left">
-        <h2 class="title-h2"><i class="icon-favorite-game" />Favorite Tools</h2>
-        <!-- <GoogleAd ad-slot="8687934067" class="ad1 ad-width" /> -->
+        <h2 class="title-h2">Best Tools</h2>
+        <!-- <GoogleAd ad-slot="2858514230" class="ad1 ad-width" /> -->
         <adm-slot
-          class="ad1 ad-width"
-          adm-id="fav-app-mid1"
+          adm-id="best-app-mid1"
           adm-unit="/23197833490/alltools1/alltools1_module_1"
+          class="ad1 ad-width"
         />
-        <section class="box-module box-category">
-          <ContentItemCommon2
+        <section class="box-list-section box-category">
+          <ContentItemList
             v-for="(item, index) in bestApps"
             :key="index"
             :index="index"
@@ -21,23 +20,23 @@
           />
         </section>
 
-        <!-- <GoogleAd ad-slot="3091221944" class="ad2 ad-width" /> -->
+        <!-- <GoogleAd ad-slot="8110840910" class="ad2 ad-width" /> -->
         <adm-slot
-          class="ad2 ad-width"
-          adm-id="fav-app-mid2"
+          adm-id="best-app-mid2"
           adm-unit="/23197833490/alltools1/alltools1_module_2"
+          class="ad2 ad-width"
         />
-        <h2 class="title-h2"><i class="icon-recommend" />All Tools</h2>
+        <h2 class="title-h2">All Tools</h2>
 
         <InfiniteScrollList
           :api-endpoint="`/api/game/all_app`"
           :initial-page="2"
           :page-size="30"
           :initial-items="allApps"
-          class="box-module-common"
+          class="box-common1"
         >
           <template #default="{ items }">
-            <ContentItemCommon1
+            <ContentItemDetail
               v-for="(item, index) in items"
               :key="index"
               :index="index"
@@ -48,9 +47,9 @@
         </InfiniteScrollList>
 
         <aside class="box-aside">
-          <!-- <GoogleAd ad-slot="1778140279" /> -->
-          <adm-slot adm-id="fav-app-mid3" adm-unit="/23197833490/alltools1/alltools1_module_3" />
-          <h2 class="title-h2"><i class="icon-hot" />Hot Tools</h2>
+          <!-- <GoogleAd ad-slot="8135083535" /> -->
+          <adm-slot adm-id="best-app-mid3" adm-unit="/23197833490/alltools1/alltools1_module_3" />
+          <h2 class="title-h2">Hot Tools</h2>
           <ContentItemRow
             v-for="(item, index) in newApps"
             :key="index"
@@ -75,14 +74,14 @@ export default {
         $axios.$get("/api/game/menu", {
           params: {
             site_id: env.SITE_ID,
-            mod_id: "fave-apps",
+            mod_id: "best-apps",
             size: 30
           }
         }),
         $axios.$get("/api/game/menu", {
           params: {
             site_id: env.SITE_ID,
-            mod_id: "new",
+            mod_id: "new-apps",
             size: 12
           }
         }),
@@ -137,23 +136,16 @@ export default {
 .box-aside {
   top: 63px;
 }
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1235px) {
+  .main {
+    width: 100%;
+    box-sizing: border-box;
+  }
   .main-left {
     width: 100%;
   }
 }
-@media screen and (max-width: 750px) {
-  .page {
-    background: unset;
-  }
-  .page-bg {
-    width: 100%;
-    height: 100%;
-    background-color: $color1;
-    position: fixed;
-    top: 0;
-    z-index: -2;
-  }
+@media screen and (max-width: 879px) {
   .main {
     padding: 0;
   }
@@ -161,7 +153,6 @@ export default {
     width: 100%;
     margin-top: vw(14);
   }
-
   .title-h2 {
     .icon {
       width: vw(48);
@@ -172,11 +163,6 @@ export default {
   .box-category {
     margin-bottom: vw(48);
     margin-top: vw(36);
-    justify-content: center;
-  }
-  .ad-width {
-    width: 87%;
-    margin: 0 auto;
   }
 }
 </style>
