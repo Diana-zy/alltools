@@ -26,18 +26,6 @@
               }
             }
           });
-          googletag.pubads().addEventListener("slotOnload", (event) => {
-            if (interstitialSlot === event.slot) {
-              console.log("Interstitial is loaded.");
-            }
-          });
-          googletag.pubads().addEventListener("slotRequested", (event) => {
-            const slot = event.slot;
-            console.log("Slot", slot.getSlotElementId(), "has been requested.", performance.now());
-            if (slot.getSlotElementId() === "detail-mid1") {
-              dataLayer.push({ event: "IP_REQUESTED", iptime: performance.now().toFixed(2) });
-            }
-          });
         }
         anchorSlot = googletag.defineOutOfPageSlot(
           "/23197833490/alltools1/alltools1_anchor",
@@ -90,51 +78,6 @@
       bge("init", "905001526682426624");
     </script>
     <script async src="https://api.imotech.video/ad/events.js?pixel_id=905001526682426624"></script>
-    <script
-      async
-      src="https://fundingchoicesmessages.google.com/i/pub-1853000876464912?ers=1"
-    ></script>
-    <script>
-      (function () {
-        function signalGooglefcPresent() {
-          if (!window.frames["googlefcPresent"]) {
-            if (document.body) {
-              const iframe = document.createElement("iframe");
-              iframe.style =
-                "width: 0; height: 0; border: none; z-index: -1000; left: -1000px; top: -1000px;";
-              iframe.style.display = "none";
-              iframe.name = "googlefcPresent";
-              document.body.appendChild(iframe);
-            } else {
-              setTimeout(signalGooglefcPresent, 0);
-            }
-          }
-        }
-        signalGooglefcPresent();
-      })();
-    </script>
-
-    <!-- 345显示锚定 -->
-    <!-- <script>
-      (function () {
-        const currentDomain = window.location.hostname;
-        const domainPattern = /^(www[0-9]*|[0-9]*)\.?([^\.]+)\.([a-z]{2,})$/;
-        const match = currentDomain.match(domainPattern);
-        // 判断是否为首页
-        const isHomePage = window.location.pathname === "/";
-        if (match && isHomePage) {
-          const prefix = match[1];
-          if (!/[345]/.test(prefix)) {
-            const style = document.createElement("style");
-            style.type = "text/css";
-            style.innerHTML =
-              "@media screen and (max-width: 750px) {#ad-loading {height: 100% !important;}}";
-            document.head.appendChild(style);
-          }
-        }
-      })();
-    </script> -->
-
     <script>
       window.addEventListener("load", function () {
         if ("serviceWorker" in window.navigator) {
@@ -168,88 +111,6 @@
         googletag.display(anchorSlot);
       });
 
-      window.pv_total = 0;
-      const domain = window.location.hostname.split(".").slice(-2).join("."); // 获取主域名
-
-      const setCookie = (name, value, days, domain) => {
-        const date = new Date();
-        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-        const expires = `expires=${date.toUTCString()}`;
-        document.cookie = `${name}=${value};${expires};domain=${domain};path=/`;
-      };
-
-      const getCookie = (name) => {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(";").shift();
-        return null;
-      };
-
-      function trackPageView() {
-        let totalViews = parseInt(getCookie("pv_total") || "0");
-        totalViews += 1;
-        setCookie("pv_total", totalViews, 1, domain);
-
-        return totalViews;
-      }
-
-      function handlePvEvents(pvTotal) {
-        // PV事件映射
-        const PV_EVENTS = {
-          4: "PV_4",
-          5: "PV_5",
-          6: "PV_6"
-        };
-
-        // 处理特定PV值的事件
-        if (PV_EVENTS[pvTotal]) {
-          // 检查并触发AL事件
-          if (getCookie("clickAL") === "done") {
-            dataLayer.push({ event: `D_AL_${PV_EVENTS[pvTotal]}` });
-          }
-          // 检查并触发IP事件
-          if (getCookie("clickIP") === "done") {
-            dataLayer.push({ event: `D_IP_${PV_EVENTS[pvTotal]}` });
-          }
-          // 触发普通PV事件
-          dataLayer.push({ event: PV_EVENTS[pvTotal] });
-          return;
-        }
-
-        // 处理PV > 6的情况
-        if (pvTotal > 6) {
-          // 处理AL相关事件
-          if (getCookie("clickAL") === "done" && getCookie("pv_max_al") !== "done") {
-            setCookie("pv_max_al", "done", 1, domain);
-            dataLayer.push({ event: "D_AL_PV_6PLUS" });
-          }
-
-          // 处理IP相关事件
-          if (getCookie("clickIP") === "done" && getCookie("pv_max_ip") !== "done") {
-            setCookie("pv_max_ip", "done", 1, domain);
-            dataLayer.push({ event: "D_IP_PV_6PLUS" });
-          }
-          if (getCookie("pv_max") === "done") return;
-
-          dataLayer.push({ event: "PV_6PLUS" });
-          setCookie("pv_max", "done", 1, domain);
-        }
-      }
-
-      // 统一的事件处理函数
-      function updatePvCount() {
-        window.pv_total = trackPageView();
-        handlePvEvents(window.pv_total);
-      }
-
-      // 事件监听
-      document.addEventListener("DOMContentLoaded", updatePvCount);
-      document.addEventListener("visibilitychange", () => {
-        if (document.visibilityState === "visible") {
-          updatePvCount();
-        }
-      });
-
       // 初始化标志变量
       window.isUnloaded = false;
       // 监听页面即将卸载事件
@@ -266,8 +127,6 @@
           // 点击穿插广告
           dataLayer.push({ event: "D_AL" });
           bge("event", "button", { configId: "905001526682426624" });
-          const domain = window.location.hostname.split(".").slice(-2).join("."); // 获取主域名
-          setCookie("clickAL", "done", 1, domain);
         } else {
           // 用户点击跳转
           dataLayer.push({ event: "D_RE" });
@@ -309,8 +168,6 @@
             // 点击页内广告
             dataLayer.push({ event: "D_IP" });
             bge("event", "button", { configId: "905001526682426624" });
-            const domain = window.location.hostname.split(".").slice(-2).join("."); // 获取主域名
-            setCookie("clickIP", "done", 1, domain);
           }
         } else if (sourceAttribute && -1 !== sourceAttribute.indexOf("anchor_0")) {
           // 点击锚定广告
