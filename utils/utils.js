@@ -61,37 +61,38 @@ export function generateCustomLink(url) {
   if (currentPathname === "/search/") {
     currentParams.delete("text");
   }
+  function generateTargetDomain(currentDomain) {
+    // 正则表达式：匹配域名结构（兼容多级子域名、数字前缀）
+    const pattern = /^(www)?([a-z0-9]*)(?:\.([a-z0-9-]+))?\.([a-z0-9-]+)\.([a-z]{2,})$/i;
+    const match = currentDomain.match(pattern);
 
-  const currentDomain = window.location.host;
-
-  let targetDomain = "";
-
-  // 提取主域名和顶级域名部分的正则表达式
-  // eslint-disable-next-line no-useless-escape
-  const domainPattern = /^(www[0-9]*|[0-9]*)\.?([^\.]+)\.([a-z]{2,})$/;
-  const match = currentDomain.match(domainPattern);
-  if (match) {
-    const prefix = match[1]; // 提取前缀部分，如 "www", "www2", "2", ""
-
-    if (!prefix) {
-      // case: siteId.tld
-      targetDomain = `www.${currentDomain}`;
-    } else if (prefix.startsWith("www")) {
-      if (prefix === "www") {
-        // case: www.siteId.tld
-        targetDomain = currentDomain.substring(4);
-      } else {
-        // case: wwwx.siteId.tld
-        targetDomain = currentDomain.substring(3);
+    if (!match) {
+      // 处理基础域名（如 a.com 或 www.a.com）
+      const basePattern = /^(www\.)?([a-z0-9-]+)\.([a-z]{2,})$/i;
+      const baseMatch = currentDomain.match(basePattern);
+      if (baseMatch) {
+        return baseMatch[1] ? `${baseMatch[2]}.${baseMatch[3]}` : `www.${currentDomain}`;
       }
-    } else {
-      // case: x.siteId.tld
-      targetDomain = `www${currentDomain}`;
+      return currentDomain;
     }
-  } else {
-    // 如果不匹配期望的模式，保留当前域名
-    targetDomain = currentDomain;
+
+    // 解析匹配结果
+    // eslint-disable-next-line no-unused-vars
+    const [_, wwwPrefix, numberPrefix, middle, main, tld] = match;
+
+    if (wwwPrefix) {
+      // 移除 www 前缀
+      return `${numberPrefix || ""}${middle ? `.${middle}` : ""}.${main}.${tld}`.replace(/^\./, "");
+    } else {
+      // 添加 www 前缀
+      return `www${numberPrefix || ""}${middle ? `.${middle}` : ""}.${main}.${tld}`.replace(
+        /^\./,
+        ""
+      );
+    }
   }
+
+  const targetDomain = generateTargetDomain(window.location.host);
 
   const protocol = window.location.protocol;
 
