@@ -113,12 +113,17 @@ export default {
 
 .logo {
   display: flex;
-  height: 100%;
-  @include btn-img(132px, 34px, "logo.png");
+  width: 160px;
+  height: 40px;
+  @include center;
   background-size: 100% 100%;
   box-shadow: 4px 4px 8px 0px rgba(40, 11, 69, 0.2), -4px -4px 8px 0px rgba(255, 255, 255, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 38px;
+
+  .icon-logo {
+    @include btn-img(132px, 34px, "logo.png");
+  }
 }
 
 .pwa-download {
@@ -204,9 +209,13 @@ export default {
     margin-right: vw(36);
   }
   .logo {
-    @include btn-img(vw(264), vw(68), "logo-text.png");
+    width: vw(300);
+    height: vw(80);
+    border-radius: vw(48);
 
-    border-radius: vw(32);
+    .icon-logo {
+      @include btn-img(vw(264), vw(68), "logo-text.png");
+    }
   }
 
   .pwa-download {
