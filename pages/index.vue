@@ -356,9 +356,9 @@ export default {
   },
   mounted() {
     this.nextSlide();
-    this.$nextTick(() => {
-      this.scrollAnchor();
-    });
+    // this.$nextTick(() => {
+    //   this.scrollAnchor();
+    // });
   },
   methods: {
     nextSlide() {
@@ -370,48 +370,48 @@ export default {
     onSlideChange() {
       this.newIndex = (this.mySwiper && this.mySwiper.realIndex) || 0;
       console.log(this.newIndex);
-    },
-    scrollAnchor() {
-      const scrollDistance = 200; // 滚动距离，单位：像素
-      const duration = 2000; // 滚动持续时间，单位：毫秒
-
-      const startPosition = window.pageYOffset;
-      const targetPosition = startPosition + scrollDistance;
-      const startTime = performance.now();
-      let animationFrameId;
-
-      function scrollStep(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1); // 进度值，范围在 0 到 1 之间
-        const ease = easeInOutQuad(progress); // 使用缓动函数计算当前进度
-        const currentScroll = startPosition + (targetPosition - startPosition) * ease;
-
-        window.scrollTo(0, currentScroll);
-
-        if (elapsed < duration) {
-          animationFrameId = requestAnimationFrame(scrollStep);
-        }
-      }
-
-      function easeInOutQuad(t) {
-        return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-      }
-
-      function stopScrolling() {
-        if (animationFrameId) {
-          cancelAnimationFrame(animationFrameId);
-          animationFrameId = null;
-        }
-      }
-
-      // 监听用户交互事件
-      window.addEventListener("mousemove", stopScrolling);
-      window.addEventListener("mousedown", stopScrolling);
-      window.addEventListener("touchstart", stopScrolling);
-      window.addEventListener("touchmove", stopScrolling);
-
-      requestAnimationFrame(scrollStep);
     }
+    // scrollAnchor() {
+    //   const scrollDistance = 200; // 滚动距离，单位：像素
+    //   const duration = 2000; // 滚动持续时间，单位：毫秒
+
+    //   const startPosition = window.pageYOffset;
+    //   const targetPosition = startPosition + scrollDistance;
+    //   const startTime = performance.now();
+    //   let animationFrameId;
+
+    //   function scrollStep(currentTime) {
+    //     const elapsed = currentTime - startTime;
+    //     const progress = Math.min(elapsed / duration, 1); // 进度值，范围在 0 到 1 之间
+    //     const ease = easeInOutQuad(progress); // 使用缓动函数计算当前进度
+    //     const currentScroll = startPosition + (targetPosition - startPosition) * ease;
+
+    //     window.scrollTo(0, currentScroll);
+
+    //     if (elapsed < duration) {
+    //       animationFrameId = requestAnimationFrame(scrollStep);
+    //     }
+    //   }
+
+    //   function easeInOutQuad(t) {
+    //     return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+    //   }
+
+    //   function stopScrolling() {
+    //     if (animationFrameId) {
+    //       cancelAnimationFrame(animationFrameId);
+    //       animationFrameId = null;
+    //     }
+    //   }
+
+    //   // 监听用户交互事件
+    //   window.addEventListener("mousemove", stopScrolling);
+    //   window.addEventListener("mousedown", stopScrolling);
+    //   window.addEventListener("touchstart", stopScrolling);
+    //   window.addEventListener("touchmove", stopScrolling);
+
+    //   requestAnimationFrame(scrollStep);
+    // }
   }
 };
 </script>

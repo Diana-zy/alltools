@@ -127,7 +127,7 @@ export default {
 .logo {
   display: flex;
   height: 100%;
-  @include btn-img(141px, 38px, "logo.png");
+  @include btn-img(180px, 48px, "logo.png");
   width: 164px;
   background-size: 116px 32px;
   background-position: center;
@@ -242,7 +242,7 @@ export default {
 
   .logo {
     @include btn-img(vw(280), vw(80), "logo.png");
-    width: vw(280);
+    width: vw(320);
     background-color: $color4;
     background-size: vw(232) vw(64);
     box-shadow: 6px 6px 12px 0px rgba(114, 35, 10, 0.21);
