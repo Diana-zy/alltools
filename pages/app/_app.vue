@@ -286,7 +286,7 @@ export default {
   },
   head() {
     return {
-      title: `Gamekits1 － dedicated to the dreams and wonders of the young crowd, play with your own colors in the ${
+      title: `Alltools1 － dedicated to the dreams and wonders of the young crowd, play with your own colors in the ${
         this.currentApp.name || "game"
       }!`
     };

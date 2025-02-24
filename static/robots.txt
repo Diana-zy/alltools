@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://gamekits1.com/sitemap.xml
+Sitemap: https://alltools1.com/sitemap.xml

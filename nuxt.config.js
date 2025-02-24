@@ -47,7 +47,7 @@ export default {
   },
   head: {
     title:
-      "Gamekits1－dedicated to the dreams and wonders of the young crowd, play with your own colors in the game!",
+      "Alltools1－dedicated to the dreams and wonders of the young crowd, play with your own colors in the game!",
     meta: [
       {
         name: "version",
@@ -61,7 +61,7 @@ export default {
         hid: "description",
         name: "description",
         content:
-          "Gamekits1 is a platform that gathers countless young gamers with the best free online games. All of our games are designed to provide young people with a better way to relax and have fun, ≈ and a wide range of styles waiting for your selection. When you are looking for fun through games, Gamekits1 will be your faithful choice, offering you a more comprehensive range of games, the most diverse selection and as many new surprises as possible!"
+          "Alltools1 is a platform that gathers countless young gamers with the best free online games. All of our games are designed to provide young people with a better way to relax and have fun, ≈ and a wide range of styles waiting for your selection. When you are looking for fun through games, Alltools1 will be your faithful choice, offering you a more comprehensive range of games, the most diverse selection and as many new surprises as possible!"
       },
       {
         hid: "keywords",
@@ -97,14 +97,14 @@ export default {
   },
   modules: ["@nuxtjs/axios"],
   sitemap: {
-    hostname: "https://Gamekits1.com/"
+    hostname: "https://Alltools1.com/"
   },
   pwa: {
     manifest: {
-      name: "Gamekits1",
-      short_name: "Gamekits1",
+      name: "Alltools1",
+      short_name: "Alltools1",
       description:
-        "Gamekits1 is a platform that gathers countless young gamers with the best free online games. All of our games are designed to provide young people with a better way to relax and have fun, with healthy gameplay and a wide range of styles waiting for your selection. When you are looking for fun through games, Gamekits1 will be your faithful choice, offering you a more comprehensive range of games, the most diverse selection and as many new surprises as possible!",
+        "Alltools1 is a platform that gathers countless young gamers with the best free online games. All of our games are designed to provide young people with a better way to relax and have fun, with healthy gameplay and a wide range of styles waiting for your selection. When you are looking for fun through games, Alltools1 will be your faithful choice, offering you a more comprehensive range of games, the most diverse selection and as many new surprises as possible!",
       icons: [
         {
           src: "/icons/32.png",
