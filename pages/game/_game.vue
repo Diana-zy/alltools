@@ -279,7 +279,7 @@ export default {
   },
   head() {
     return {
-      title: `Appsvault － dedicated to the dreams and wonders of the young crowd, play with your own colors in the ${
+      title: `Alltools1 － dedicated to the dreams and wonders of the young crowd, play with your own colors in the ${
         this.currentGame.name || "game"
       }!`
     };
