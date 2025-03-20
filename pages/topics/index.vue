@@ -14,7 +14,11 @@
         />
       </section>
       <!-- <GoogleAd ad-slot="1021540575" /> -->
-      <adm-slot adm-id="topics-mid1" adm-unit="/23197833490/alltools1/alltools1_topics_1" />
+      <adm-slot
+        adm-id="topics-mid1"
+        adm-unit="/23197833490/alltools1/alltools1_topics_1"
+        ads-slot="1778140279"
+      />
       <InfiniteScrollList
         api-endpoint="/api/game/all_topic"
         :initial-page="2"
@@ -23,7 +27,11 @@
       >
         <template #default="{ items }">
           <!-- <GoogleAd ad-slot="9756896824" class="ad-2" /> -->
-          <adm-slot adm-id="topics-mid2" adm-unit="/23197833490/alltools1/alltools1_topics_2" />
+          <adm-slot
+            adm-id="topics-mid2"
+            adm-unit="/23197833490/alltools1/alltools1_topics_2"
+            ads-slot="3091221944"
+          />
           <topic-item-all
             v-for="(item, index) in items"
             :key="index"

@@ -7,6 +7,7 @@
       <adm-slot
         adm-id="games-mid1"
         adm-unit="/23197833490/alltools1/alltools1_module_1"
+        ads-slot="5592680679"
         class="ad1"
       />
       <InfiniteScrollList
@@ -20,6 +21,7 @@
           <adm-slot
             adm-id="games-mid2"
             adm-unit="/23197833490/alltools1/alltools1_module_2"
+            ads-slot="6905762344"
             class="ad2"
           />
           <ContentItemCommon
@@ -34,7 +36,11 @@
 
       <aside class="box-aside">
         <!-- <GoogleAd ad-slot="1008552965" /> -->
-        <adm-slot adm-id="games-mid3" adm-unit="/23197833490/alltools1/alltools1_module_3" />
+        <adm-slot
+          adm-id="games-mid3"
+          adm-unit="/23197833490/alltools1/alltools1_module_3"
+          ads-slot="5477796884"
+        />
         <h2 class="title-h2">Hot Games</h2>
         <ContentItemRow
           v-for="(item, index) in HotGames"

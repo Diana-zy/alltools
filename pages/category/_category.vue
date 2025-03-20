@@ -18,6 +18,7 @@
       <adm-slot
         adm-id="category-mid1"
         adm-unit="/23197833490/alltools1/alltools1_module_1"
+        ads-slot="2540903743"
         class="ad1"
       />
       <section class="box-common box-category">
@@ -34,6 +35,7 @@
       <adm-slot
         adm-id="category-mid2"
         adm-unit="/23197833490/alltools1/alltools1_module_2"
+        ads-slot="5790255714"
         class="ad2"
       />
       <h2 class="title-h2">All {{ isApp ? "Apps" : "Games" }}</h2>
@@ -60,6 +62,7 @@
         <adm-slot
           adm-id="category-mid3"
           adm-unit="/23197833490/alltools1/alltools1_module_3"
+          ads-slot="1851010709"
           class="ad2"
         />
         <h2 class="title-h2">Hot {{ isApp ? "Apps" : "Games" }}</h2>

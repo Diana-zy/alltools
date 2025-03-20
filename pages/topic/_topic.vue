@@ -13,7 +13,11 @@
         loading="preload"
       />
       <!-- <GoogleAd ad-slot="1969405138" /> -->
-      <adm-slot adm-id="topic-mid1" adm-unit="/23197833490/alltools1/alltools1_topic_1" />
+      <adm-slot
+        adm-id="topic-mid1"
+        adm-unit="/23197833490/alltools1/alltools1_topic_1"
+        ads-slot="1437640172"
+      />
       <!-- eslint-disable vue/no-v-html -->
       <div class="article-content" v-html="articleData.content"></div>
       <!--eslint-enable-->

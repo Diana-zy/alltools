@@ -50,7 +50,11 @@
       </section>
 
       <!-- <GoogleAd ad-slot="4960785586" /> -->
-      <adm-slot adm-id="download-mid1" adm-unit="/23197833490/alltools1/alltools1_detail_1" />
+      <adm-slot
+        adm-id="download-mid1"
+        adm-unit="/23197833490/alltools1/alltools1_detail_1"
+        ads-slot="3297497936"
+      />
 
       <h2 class="title-h2">Related {{ isApp ? "Apps" : "Games" }}</h2>
       <section class="box-small-bg">
@@ -64,7 +68,11 @@
       </section>
 
       <!-- <GoogleAd ad-slot="5542405363" /> -->
-      <adm-slot adm-id="download-mid2" adm-unit="/23197833490/alltools1/alltools1_detail_2" />
+      <adm-slot
+        adm-id="download-mid2"
+        adm-unit="/23197833490/alltools1/alltools1_detail_2"
+        ads-slot="2955836717"
+      />
 
       <h2 class="title-h2">Recommend {{ isApp ? "Apps" : "Games" }}</h2>
       <section class="box-common">
@@ -79,7 +87,11 @@
 
       <aside class="box-aside">
         <!-- <GoogleAd ad-slot="2334622241" /> -->
-        <adm-slot adm-id="download-mid3" adm-unit="/23197833490/alltools1/alltools1_detail_3" />
+        <adm-slot
+          adm-id="download-mid3"
+          adm-unit="/23197833490/alltools1/alltools1_detail_3"
+          ads-slot="3297497936"
+        />
         <h2 class="title-h2">Hot {{ isApp ? "Apps" : "Games" }}</h2>
         <ContentItemRow
           v-for="(item, index) in hotSoftwares"

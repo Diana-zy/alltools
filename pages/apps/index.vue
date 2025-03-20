@@ -7,6 +7,7 @@
       <adm-slot
         adm-id="apps-mid1"
         adm-unit="/23197833490/alltools1/alltools1_module_1"
+        ads-slot="3617086157"
         class="ad1"
       />
 
@@ -21,6 +22,7 @@
           <adm-slot
             adm-id="apps-mid2"
             adm-unit="/23197833490/alltools1/alltools1_module_2"
+            ads-slot="1653435668"
             class="ad2"
           />
           <ContentItemCommon
@@ -35,7 +37,11 @@
 
       <aside class="box-aside">
         <!-- <GoogleAd ad-slot="2896349709" /> -->
-        <adm-slot adm-id="apps-mid3" adm-unit="/23197833490/alltools1/alltools1_module_3" />
+        <adm-slot
+          adm-id="apps-mid3"
+          adm-unit="/23197833490/alltools1/alltools1_module_3"
+          ads-slot="2851633541"
+        />
         <h2 class="title-h2">Hot Apps</h2>
         <ContentItemRow
           v-for="(item, index) in hotApps"

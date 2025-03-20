@@ -14,6 +14,12 @@
           <img src="/images/app.webp" alt="Popular Apps" />
         </CustomLink>
       </nav>
+      <adm-slot
+        adm-id="home-1"
+        adm-unit="/23197833490/alltools1/alltools1_home_1"
+        ads-slot="6667048681"
+        class="ad-1"
+      />
       <h2 class="title-h2">Best Games</h2>
       <section class="box-row-scroll">
         <ContentItemRow
@@ -25,6 +31,12 @@
           :to="`/game/${item.path}/`"
         />
       </section>
+      <adm-slot
+        adm-id="home-2"
+        adm-unit="/23197833490/alltools1/alltools1_home_2"
+        ads-slot="6667048681"
+        class="ad-2"
+      />
       <h2 class="title-h2">Best Apps</h2>
       <section class="box-row-scroll">
         <ContentItemRow
@@ -185,6 +197,12 @@ export default {
   margin-bottom: -16px;
   gap: 16px;
 }
+.ad-1 {
+  margin-top: 26px;
+}
+.ad-2 {
+  margin-top: 32px;
+}
 @media screen and (max-width: 750px) {
   .nav {
     padding: 0 vw(46);
@@ -220,6 +238,12 @@ export default {
     grid-template-columns: repeat(4, vw(374));
     gap: vw(32);
     @include scroll;
+  }
+  .ad-1 {
+    margin-top: vw(40);
+  }
+  .ad-2 {
+    margin-top: vw(48);
   }
 }
 </style>
