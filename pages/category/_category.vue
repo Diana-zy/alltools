@@ -18,7 +18,14 @@
             class="icon"
           />{{ currentCategoryName }}</h2
         >
-        <GoogleAd ad-slot="4504570149" class="ad1 ad-width" />
+        <!-- < ad-slot="4504570149" class="ad1 ad-width" /> -->
+        <adm-slot-preload
+          adm-id="category-1"
+          adm-unit="/23197833490/alltools1/alltools1_module_1"
+          ads-slot="4504570149"
+          class="ad1 ad-width"
+        />
+
         <section class="box-common box-category">
           <ContentItemCommon
             v-for="(item, index) in currentCategory"
@@ -29,7 +36,13 @@
           />
         </section>
 
-        <GoogleAd ad-slot="1268068106" class="ad2 ad-width" />
+        <!-- < ad-slot="1268068106" class="ad2 ad-width" /> -->
+        <adm-slot
+          adm-id="category-2"
+          adm-unit="/23197833490/alltools1/alltools1_module_2"
+          ads-slot="1268068106"
+          class="ad2 ad-width"
+        />
         <h2 class="title-h2"><i class="icon-recommend" />All {{ isApp ? "Apps" : "Games" }}</h2>
 
         <InfiniteScrollList
@@ -50,7 +63,12 @@
         </InfiniteScrollList>
 
         <aside class="box-aside">
-          <GoogleAd ad-slot="1391696348" />
+          <!-- < ad-slot="1391696348" /> -->
+          <adm-slot
+            adm-id="category-3"
+            adm-unit="/23197833490/alltools1/alltools1_module_3"
+            ads-slot="1391696348"
+          />
           <h2 class="title-h2"
             ><i :class="isApp ? 'icon-favorite-app' : 'icon-favorite-game'" />Favorite
             {{ isApp ? "Apps" : "Games" }}</h2

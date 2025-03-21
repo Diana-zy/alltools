@@ -53,7 +53,13 @@
           <ExpandableText :text="currentSoftware.desc" current-path="download" />
         </section>
 
-        <GoogleAd ad-slot="4960785586" class="ad-width" />
+        <!-- <GoogleAd ad-slot="4960785586" class="ad-width" /> -->
+        <adm-slot-preload
+          adm-id="download-1"
+          adm-unit="/23197833490/alltools1/alltools1_detail_1"
+          ads-slot="4960785586"
+          class="ad-width"
+        />
 
         <h2 class="title-h2"><i class="icon-relate" />Discover More</h2>
         <section class="box-small-bg">
@@ -66,7 +72,13 @@
           />
         </section>
 
-        <GoogleAd ad-slot="5542405363" class="ad-width" />
+        <!-- <GoogleAd ad-slot="5542405363" class="ad-width" /> -->
+        <adm-slot
+          adm-id="download-2"
+          adm-unit="/23197833490/alltools1/alltools1_detail_2"
+          ads-slot="5542405363"
+          class="ad-width"
+        />
 
         <h2 class="title-h2"><i class="icon-recommend" /> Recommend</h2>
         <section class="box-common">
@@ -80,7 +92,13 @@
         </section>
 
         <aside class="box-aside">
-          <GoogleAd ad-slot="2334622241" />
+          <!-- <GoogleAd ad-slot="2334622241" /> -->
+          <adm-slot
+            adm-id="download-3"
+            adm-unit="/23197833490/alltools1/alltools1_detail_3"
+            ads-slot="2334622241"
+            class="ad-width"
+          />
           <h2 class="title-h2"
             ><i :class="isApp ? 'icon-favorite-app' : 'icon-favorite-game'" /> Favorite
             {{ isApp ? "Tools" : "Games" }}</h2

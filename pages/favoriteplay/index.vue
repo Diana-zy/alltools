@@ -7,7 +7,13 @@
         <div class="fixed-bg"></div>
         <div ref="shadowElem" class="bg-shadow"></div>
         <h2 class="title-h2"><i class="icon-favorite-game" />Favorite Games</h2>
-        <GoogleAd ad-slot="2708272746" class="ad1 ad-width" />
+        <!-- <GoogleAd ad-slot="2708272746" class="ad1 ad-width" /> -->
+        <adm-slot-preload
+          adm-id="fav-game-1"
+          adm-unit="/23197833490/alltools1/alltools1_module_1"
+          ads-slot="2708272746"
+          class="ad1 ad-width"
+        />
         <section class="box-common box-category">
           <ContentItemSmall
             v-for="(item, index) in bestGames"
@@ -18,7 +24,13 @@
           />
         </section>
 
-        <GoogleAd ad-slot="1395191079" class="ad2 ad-width" />
+        <!-- <GoogleAd ad-slot="1395191079" class="ad2 ad-width" /> -->
+        <adm-slot
+          adm-id="fav-game-2"
+          adm-unit="/23197833490/alltools1/alltools1_module_2"
+          ads-slot="1395191079"
+          class="ad2 ad-width"
+        />
         <h2 class="title-h2"><i class="icon-recommend" />All Games</h2>
 
         <InfiniteScrollList
@@ -39,7 +51,12 @@
         </InfiniteScrollList>
 
         <aside class="box-aside">
-          <GoogleAd ad-slot="4960842399" />
+          <!-- <GoogleAd ad-slot="4960842399" /> -->
+          <adm-slot
+            adm-id="fav-game-3"
+            adm-unit="/23197833490/alltools1/alltools1_module_3"
+            ads-slot="4960842399"
+          />
           <h2 class="title-h2"><i class="icon-relate" />Hot Games</h2>
           <ContentItemRow
             v-for="(item, index) in recGames"

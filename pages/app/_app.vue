@@ -41,8 +41,13 @@
           </div>
         </section>
 
-        <GoogleAd ad-slot="5973599876" class="ad-width" />
-
+        <!-- <GoogleAd ad-slot="5973599876" class="ad-width" /> -->
+        <adm-slot-preload
+          adm-id="app-1"
+          adm-unit="/23197833490/alltools1/alltools1_detail_1"
+          ads-slot="5973599876"
+          class="ad-width"
+        />
         <section>
           <div v-if="currentApp.banner_list.length > 0" class="m-swiper">
             <div v-swiper:mySwiper="swiperOption" class="m-swiper-box">
@@ -127,7 +132,13 @@
         </section>
 
         <div ref="targetElement">
-          <GoogleAd ad-slot="8408191527" class="ad-width" />
+          <!-- <GoogleAd ad-slot="8408191527" class="ad-width" /> -->
+          <adm-slot
+            adm-id="app-2"
+            adm-unit="/23197833490/alltools1/alltools1_detail_2"
+            ads-slot="5973599876"
+            class="ad-width"
+          />
         </div>
 
         <section class="get-the-game">
@@ -173,7 +184,12 @@
         </InfiniteScrollList>
 
         <aside class="box-aside">
-          <GoogleAd ad-slot="3079348389" />
+          <!-- <GoogleAd ad-slot="3079348389" /> -->
+          <adm-slot
+            adm-id="app-3"
+            adm-unit="/23197833490/alltools1/alltools1_detail_3"
+            ads-slot="3079348389"
+          />
           <h2 class="title-h2"><i class="icon-favorite-app" />Favorite Tools</h2>
           <ContentItemRow
             v-for="(item, index) in hotApps"

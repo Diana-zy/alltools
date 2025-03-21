@@ -7,7 +7,13 @@
         <div class="fixed-bg"></div>
         <div ref="shadowElem" class="bg-shadow"></div>
         <h2 class="title-h2"><i class="icon-recommend" />All Apps</h2>
-        <GoogleAd ad-slot="2772721462" class="ad1 ad-width" />
+        <!-- < ad-slot="2772721462" class="ad1 ad-width" /> -->
+        <adm-slot-preload
+          adm-id="apps-1"
+          adm-unit="/23197833490/alltools1/alltools1_module_1"
+          ads-slot="2772721462"
+          class="ad-width ad1"
+        />
 
         <InfiniteScrollList
           api-endpoint="/api/game/all_app"
@@ -16,7 +22,13 @@
           :initial-items="allApps"
         >
           <template #default="{ items }">
-            <GoogleAd ad-slot="1459639798" class="ad2" />
+            <!-- <GoogleAd ad-slot="1459639798" class="ad2" /> -->
+            <adm-slot-preload
+              adm-id="apps-2"
+              adm-unit="/23197833490/alltools1/alltools1_module_2"
+              ads-slot="1459639798"
+              class="ad2"
+            />
             <ContentItemCommon
               v-for="(item, index) in items"
               :key="index"
@@ -28,7 +40,12 @@
         </InfiniteScrollList>
 
         <aside class="box-aside">
-          <GoogleAd ad-slot="2896349709" />
+          <!-- <GoogleAd ad-slot="2896349709" /> -->
+          <adm-slot-preload
+            adm-id="apps-3"
+            adm-unit="/23197833490/alltools1/alltools1_module_2"
+            ads-slot="2896349709"
+          />
           <h2 class="title-h2"><i class="icon-favorite-app" />Favorite Apps</h2>
           <ContentItemRow
             v-for="(item, index) in hotApps"

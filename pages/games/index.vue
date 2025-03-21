@@ -7,7 +7,13 @@
         <div class="fixed-bg"></div>
         <div ref="shadowElem" class="bg-shadow"></div>
         <h2 class="title-h2"><i class="icon-recommend" />All Games</h2>
-        <GoogleAd ad-slot="8763414748" class="ad1 ad-width" />
+        <!-- <GoogleAd ad-slot="8763414748" class="ad1 ad-width" /> -->
+        <adm-slot-preload
+          adm-id="games-1"
+          adm-unit="/23197833490/alltools1/alltools1_module_1"
+          ads-slot="8763414748"
+          class="ad1 ad-width"
+        />
         <InfiniteScrollList
           api-endpoint="/api/game/all_game"
           :initial-page="2"
@@ -15,7 +21,13 @@
           :initial-items="allGames"
         >
           <template #default="{ items }">
-            <GoogleAd ad-slot="2321634636" class="ad2" />
+            <!-- <GoogleAd ad-slot="2321634636" class="ad2" /> -->
+            <adm-slot
+              adm-id="games-2"
+              adm-unit="/23197833490/alltools1/alltools1_module_2"
+              ads-slot="2321634636"
+              class="ad2"
+            />
             <ContentItemCommon
               v-for="(item, index) in items"
               :key="index"
@@ -27,7 +39,12 @@
         </InfiniteScrollList>
 
         <aside class="box-aside">
-          <GoogleAd ad-slot="1008552965" />
+          <!-- <GoogleAd ad-slot="1008552965" /> -->
+          <adm-slot
+            adm-id="games-3"
+            adm-unit="/23197833490/alltools1/alltools1_module_3"
+            ads-slot="1008552965"
+          />
           <h2 class="title-h2"><i class="icon-favorite-game" />Favorite Games</h2>
           <ContentItemRow
             v-for="(item, index) in HotGames"

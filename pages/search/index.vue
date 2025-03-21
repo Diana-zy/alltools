@@ -6,7 +6,13 @@
       <div class="fixed-bg"></div>
       <div ref="shadowElem" class="bg-shadow"></div>
       <Breadcrumb name="Search" />
-      <GoogleAd ad-slot="8298185356" class="ad-width" />
+      <!-- <GoogleAd ad-slot="8298185356" class="ad-width" /> -->
+      <adm-slot-preload
+        adm-id="search-1"
+        adm-unit="/23197833490/alltools1/alltools1_search_1"
+        ads-slot="8298185356"
+        class="ad-width"
+      />
       <!-- 移动端独占 -->
       <section class="m-search-box pc-hidden">
         <input

@@ -79,6 +79,12 @@
           </div>
           <div class="swiper-pagination"> </div> </div
       ></section>
+      <adm-slot-preload
+        adm-id="home-1"
+        adm-unit="/23197833490/alltools1/alltools1_home_1"
+        ads-slot="6667048681"
+        class="ad-1"
+      />
       <CustomLink to="/favoriteplay/" class="title-h2 title-shadow border-weak"
         ><i class="icon-favorite-game" />Favorite Games<i class="icon-arrow"
       /></CustomLink>
@@ -126,6 +132,12 @@
             </div>
             <div class="swiper-pagination"> </div> </div
         ></section>
+        <adm-slot
+          adm-id="home-2"
+          adm-unit="/23197833490/alltools1/alltools1_home_2"
+          ads-slot="4080715115"
+          class="ad-2"
+        />
         <CustomLink to="/favoritetool/" class="title-h2 title-shadow"
           ><i class="icon-favorite-app" />Favorite Tools<i class="icon-arrow"
         /></CustomLink>
@@ -401,6 +413,11 @@ export default {
   }
 }
 
+.ad-1,
+.ad-2 {
+  margin-top: 32px;
+}
+
 .rec-hidden {
   display: none;
 }
@@ -422,6 +439,7 @@ export default {
 .m-button-hidden {
   display: flex;
 }
+
 @media screen and (max-width: 750px) {
   .page {
     background: $color2;
@@ -524,6 +542,11 @@ export default {
       @include icon(16px, 16px, "icon-rocket.png");
       margin-left: 6px;
     }
+  }
+
+  .ad-1,
+  .ad-2 {
+    margin-top: vw(48);
   }
   .rec-hidden {
     display: block;
