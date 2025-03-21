@@ -8,6 +8,7 @@
         <adm-slot
           adm-id="best-mid1"
           adm-unit="/23197833490/alltools1/alltools1_module_1"
+          ads-slot="2858514230"
           class="ad1 ad-width"
         />
         <section class="box-common box-category">
@@ -24,6 +25,7 @@
         <adm-slot
           adm-id="best-mid2"
           adm-unit="/23197833490/alltools1/alltools1_module_2"
+          ads-slot="8110840910"
           class="ad2 ad-width"
         />
         <h2 class="title-h2">All Games</h2>
@@ -47,7 +49,11 @@
 
         <aside class="box-aside">
           <!-- <GoogleAd ad-slot="9448165209" /> -->
-          <adm-slot adm-id="best-mid3" adm-unit="/23197833490/alltools1/alltools1_module_3" />
+          <adm-slot
+            adm-id="best-mid3"
+            adm-unit="/23197833490/alltools1/alltools1_module_3"
+            ads-slot="8135083535"
+          />
           <h2 class="title-h2">Hot Games</h2>
           <ContentItemRow
             v-for="(item, index) in newGames.slice(0, 10)"

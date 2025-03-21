@@ -9,6 +9,7 @@
         <adm-slot
           adm-id="download-mid1"
           adm-unit="/23197833490/alltools1/alltools1_detail_1"
+          ads-slot="3297497936"
           class="ad1 ad-width"
         />
 
@@ -72,6 +73,7 @@
         <adm-slot
           adm-id="download-mid2"
           adm-unit="/23197833490/alltools1/alltools1_detail_2"
+          ads-slot="2955836717"
           class="ad-width"
         />
 
@@ -88,7 +90,11 @@
 
         <aside class="box-aside">
           <!-- <GoogleAd ad-slot="3489069628" /> -->
-          <adm-slot adm-id="download-mid3" adm-unit="/23197833490/alltools1/alltools1_detail_3" />
+          <adm-slot
+            adm-id="download-mid3"
+            adm-unit="/23197833490/alltools1/alltools1_detail_3"
+            ads-slot="3489069628"
+          />
           <h2 class="title-h2">Favorite {{ isApp ? "Tools" : "Games" }}</h2>
           <ContentItemRow
             v-for="(item, index) in hotSoftwares"

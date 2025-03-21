@@ -25,24 +25,20 @@ export default {
     }
   },
   mounted() {
-    this.observer = new IntersectionObserver(this.handleIntersection);
-    this.observer.observe(this.$refs.googleAdmSlot);
+    this.handleIntersection();
   },
   methods: {
-    handleIntersection(entries) {
-      if (entries[0].isIntersecting) {
-        const width = this.$refs.admSlot.clientWidth;
-        const height = this.$refs.admSlot.clientHeight - this.$refs.title.clientHeight;
-        console.log(width, height);
-        const adScript = document.createElement("script");
-        adScript.innerHTML = `googletag.cmd.push(function () {
+    handleIntersection() {
+      const width = this.$refs.admSlot.clientWidth;
+      const height = this.$refs.admSlot.clientHeight - this.$refs.title.clientHeight;
+      console.log(width, height);
+      const adScript = document.createElement("script");
+      adScript.innerHTML = `googletag.cmd.push(function () {
               googletag.defineSlot('${this.admUnit}', ['fluid', [${width},${height}]], '${this.admId}').addService(googletag.pubads());
               googletag.enableServices();
               googletag.display('${this.admId}');
             });`;
-        this.$refs.googleAdmSlot.appendChild(adScript);
-        this.observer.unobserve(this.$refs.googleAdmSlot);
-      }
+      this.$refs.googleAdmSlot.appendChild(adScript);
     }
   }
 };

@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     {{ HEAD }}
 
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1853000876464912"
+      crossorigin="anonymous"
+    ></script>
+
     <link rel="preload" href="https://securepubads.g.doubleclick.net/tag/js/gpt.js" as="script" />
     <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
     <!-- <script>
@@ -108,15 +114,37 @@
         if (anchorSlot) {
           anchorSlot.addService(googletag.pubads());
         }
+        googletag.pubads().enableSingleRequest();
+        googletag.cmd.push(function () {
+          googletag.pubads().addEventListener("slotRenderEnded", (event) => {
+            // 获取广告单元路径的最后一部分名称
+            if (event.isEmpty) {
+              const elementId = event.slot.getSlotId().getDomId();
+              const element = document.getElementById(elementId);
+              const dataSlotValue = element ? element.dataset.slot : "";
+              if (dataSlotValue) {
+                element.style.display = "none";
+                console.log("none", event, element);
+                const adsElement = document.getElementById(`${elementId}-ads`);
+                console.log(event, adsElement);
+                const adScript = document.createElement("script");
+                adScript.innerHTML = `(adsbygoogle = window.adsbygoogle || []).push({});`;
+                const ins = document.createElement("ins");
+                ins.className = "adsbygoogle";
+                ins.style.display = "block";
+                ins.setAttribute("data-ad-client", "ca-pub-1853000876464912");
+                ins.setAttribute("data-ad-slot", dataSlotValue);
+                ins.setAttribute("data-ad-format", "rectangle");
+                ins.setAttribute("data-full-width-responsive", "true");
+                adsElement.appendChild(ins);
+                adsElement.appendChild(adScript);
+              }
+            }
+          });
+        });
         googletag.enableServices();
       });
     </script>
-
-    <script
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1853000876464912"
-      crossorigin="anonymous"
-    ></script>
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-HJ2731TT1W"></script>
@@ -375,6 +403,20 @@
         } else if (sourceAttribute && -1 !== sourceAttribute.indexOf("anchor_0")) {
           // 点击锚定广告
           dataLayer.push({ event: "D_FI" });
+        } else if (
+          sourceAttributeSrc &&
+          -1 !== sourceAttributeSrc.indexOf("googleads.g.doubleclick.net/pagead/ads?")
+        ) {
+          const closestIns = activeElement.closest("ins");
+          let adStatus = "unfilled";
+          if (closestIns) {
+            adStatus = closestIns.getAttribute("data-ad-status") || adStatus;
+          }
+          if ("filled" == adStatus) {
+            // 点击页内广告
+            dataLayer.push({ event: "D_IP" });
+            dataLayer.push({ event: "D_IP_ADS" });
+          }
         }
       });
     </script>

@@ -39,7 +39,11 @@
         </section>
 
         <!-- <GoogleAd ad-slot="7534582229" /> -->
-        <adm-slot adm-id="app-mid1" adm-unit="/23197833490/alltools1/alltools1_detail_1" />
+        <adm-slot
+          adm-id="app-mid1"
+          adm-unit="/23197833490/alltools1/alltools1_detail_1"
+          ads-slot="7534582229"
+        />
 
         <!-- <section>
           <div v-if="currentApp.banner_list.length > 0" class="m-swiper">
@@ -129,6 +133,7 @@
           <adm-slot
             adm-id="app-mid2"
             adm-unit="/23197833490/alltools1/alltools1_detail_2"
+            ads-slot="8029406241"
             class="ad-width"
           />
         </div>
@@ -220,7 +225,11 @@
 
         <aside class="box-aside">
           <!-- <GoogleAd ad-slot="3595337216" /> -->
-          <adm-slot adm-id="app-mid3" adm-unit="/23197833490/alltools1/alltools1_detail_3" />
+          <adm-slot
+            adm-id="app-mid3"
+            adm-unit="/23197833490/alltools1/alltools1_detail_3"
+            ads-slot="3595337216"
+          />
           <h2 class="title-h2">Hot Tools</h2>
           <ContentItemRow
             v-for="(item, index) in hotApps"

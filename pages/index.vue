@@ -79,6 +79,7 @@
           <div class="corner"></div>
         </div>
       </section>
+
       <section class="new">
         <div class="new-content">
           <div class="item-content">
@@ -165,6 +166,13 @@
         </div>
       </section>
       <article class="article">
+        <adm-slot
+          adm-id="home-1"
+          adm-unit="/23197833490/alltools1/alltools1_home_1"
+          ads-slot="6667048681"
+          class="ad-1"
+        />
+
         <CustomLink to="/bestools/" class="title-h2"
           >Best Tools<div class="title-see-more"><span>More</span><i class="icon-arrow" /></div
         ></CustomLink>
@@ -189,6 +197,12 @@
             />
           </div>
         </section>
+        <adm-slot
+          adm-id="home-2"
+          adm-unit="/23197833490/alltools1/alltools1_home_2"
+          ads-slot="4080715115"
+          class="ad-2"
+        />
         <CustomLink to="/newtools/" class="title-h2">
           New Tools <div class="title-see-more"><span>More</span><i class="icon-arrow" /></div
         ></CustomLink>
@@ -818,6 +832,11 @@ export default {
   display: block;
 }
 
+.ad-1,
+.ad-2 {
+  margin-top: 32px;
+}
+
 @media screen and (min-width: 1200px) and (max-width: 1450px) {
   .main {
     max-width: 1210px;
@@ -1258,6 +1277,10 @@ export default {
 
   .m-hidden {
     display: none;
+  }
+  .ad-1,
+  .ad-2 {
+    margin-top: vw(48);
   }
 }
 </style>

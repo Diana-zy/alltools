@@ -20,6 +20,7 @@
         <adm-slot
           adm-id="category-mid1"
           adm-unit="/23197833490/alltools1/alltools1_module_1"
+          ads-slot="2540903743"
           class="ad1 ad-width"
         />
         <section class="box-list-section box-category">
@@ -36,6 +37,7 @@
         <adm-slot
           adm-id="category-mid2"
           adm-unit="/23197833490/alltools1/alltools1_module_2"
+          ads-slot="5790255714"
           class="ad2 ad-width"
         />
 
@@ -61,7 +63,11 @@
 
         <aside class="box-aside">
           <!-- <GoogleAd ad-slot="1851010709" /> -->
-          <adm-slot adm-id="category-mid3" adm-unit="/23197833490/alltools1/alltools1_module_3" />
+          <adm-slot
+            adm-id="category-mid3"
+            adm-unit="/23197833490/alltools1/alltools1_module_3"
+            ads-slot="1851010709"
+          />
           <h2 class="title-h2">Favorite {{ isApp ? "Tools" : "Games" }}</h2>
           <ContentItemRow
             v-for="(item, index) in hotSoftwares"

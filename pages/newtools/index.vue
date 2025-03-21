@@ -8,6 +8,7 @@
         <adm-slot
           adm-id="new-app-mid1"
           adm-unit="/23197833490/alltools1/alltools1_module_1"
+          ads-slot="8687934067"
           class="ad1 ad-width"
         />
         <section class="box-list-section box-category">
@@ -24,6 +25,7 @@
         <adm-slot
           adm-id="new-app-mid2"
           adm-unit="/23197833490/alltools1/alltools1_module_2"
+          ads-slot="3091221944"
           class="ad2 ad-width"
         />
         <h2 class="title-h2">All Games</h2>
@@ -48,7 +50,11 @@
 
         <aside class="box-aside">
           <!-- <GoogleAd ad-slot="1778140279" /> -->
-          <adm-slot adm-id="new-app-mid3" adm-unit="/23197833490/alltools1/alltools1_module_3" />
+          <adm-slot
+            adm-id="new-app-mid3"
+            adm-unit="/23197833490/alltools1/alltools1_module_3"
+            ads-slot="1778140279"
+          />
           <h2 class="title-h2">Hot Games</h2>
           <ContentItemRow
             v-for="(item, index) in recGames.slice(0, 10)"

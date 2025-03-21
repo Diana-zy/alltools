@@ -20,6 +20,7 @@
       <adm-slot
         adm-id="search-mid1"
         adm-unit="/23197833490/alltools1/alltools1_search_1"
+        ads-slot="1454551777"
         class="ad-width"
       />
 

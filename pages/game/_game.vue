@@ -43,6 +43,7 @@
         <adm-slot
           adm-id="detail-mid1"
           adm-unit="/23197833490/alltools1/alltools1_detail_1"
+          ads-slot="7045171250"
           class="ad-width"
         />
 
@@ -134,6 +135,7 @@
           <adm-slot
             adm-id="detail-mid2"
             adm-unit="/23197833490/alltools1/alltools1_detail_2"
+            ads-slot="8358252927"
             class="ad-width"
           />
         </div>
@@ -233,7 +235,11 @@
 
         <aside class="box-aside">
           <!-- <GoogleAd ad-slot="7793230426" /> -->
-          <adm-slot adm-id="detail-mid3" adm-unit="/23197833490/alltools1/alltools1_detail_3" />
+          <adm-slot
+            adm-id="detail-mid3"
+            adm-unit="/23197833490/alltools1/alltools1_detail_3"
+            ads-slot="7793230426"
+          />
           <h2 class="title-h2">Hot Games</h2>
           <ContentItemRow
             v-for="(item, index) in bestGames"
