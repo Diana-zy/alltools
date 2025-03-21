@@ -10,6 +10,7 @@
           class="ad1 ad-width"
           adm-id="apps-mid1"
           adm-unit="/23197833490/alltools1/alltools1_module_1"
+          ads-slot="3617086157"
         />
 
         <InfiniteScrollList
@@ -24,6 +25,7 @@
               class="ad2"
               adm-id="apps-mid2"
               adm-unit="/23197833490/alltools1/alltools1_module_2"
+              ads-slot="1653435668"
             />
             <ContentItemCommon
               v-for="(item, index) in items"
@@ -37,7 +39,11 @@
 
         <aside class="box-aside">
           <!-- <GoogleAd ad-slot="4629971226" /> -->
-          <adm-slot adm-id="apps-mid3" adm-unit="/23197833490/alltools1/alltools1_module_3" />
+          <adm-slot
+            adm-id="apps-mid3"
+            adm-unit="/23197833490/alltools1/alltools1_module_3"
+            ads-slot="2851633541"
+          />
           <h2 class="title-h2"><i class="icon-favorite-app" />Favorite Apps</h2>
           <ContentItemRow
             v-for="(item, index) in hotApps"

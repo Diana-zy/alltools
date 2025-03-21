@@ -9,6 +9,7 @@
         class="ad-width"
         adm-id="search-mid1"
         adm-unit="/23197833490/alltools1/alltools1_search_1"
+        ads-slot="1454551777"
       />
       <!-- 移动端独占 -->
       <section class="m-search-box pc-hidden">

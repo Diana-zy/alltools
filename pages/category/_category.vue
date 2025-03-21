@@ -21,6 +21,7 @@
           class="ad1 ad-width"
           adm-id="category-mid1"
           adm-unit="/23197833490/alltools1/alltools1_module_1"
+          ads-slot="2851633541"
         />
         <section class="box-module box-category">
           <ContentItemCommon2
@@ -37,6 +38,7 @@
           class="ad2 ad-width"
           adm-id="category-mid2"
           adm-unit="/23197833490/alltools1/alltools1_module_2"
+          ads-slot="5790255714"
         />
         <h2 class="title-h2"><i class="icon-recommend" />All {{ isApp ? "Apps" : "Games" }}</h2>
 
@@ -60,7 +62,11 @@
 
         <aside class="box-aside">
           <!-- <GoogleAd ad-slot="1851010709" /> -->
-          <adm-slot adm-id="category-mid3" adm-unit="/23197833490/alltools1/alltools1_module_3" />
+          <adm-slot
+            adm-id="category-mid3"
+            adm-unit="/23197833490/alltools1/alltools1_module_3"
+            ads-slot="1851010709"
+          />
           <h2 class="title-h2"
             ><i :class="isApp ? 'icon-favorite-app' : 'icon-favorite-game'" />Favorite
             {{ isApp ? "Apps" : "Games" }}</h2

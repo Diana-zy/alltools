@@ -10,6 +10,7 @@
           class="ad1 ad-width"
           adm-id="games-mid1"
           adm-unit="/23197833490/alltools1/alltools1_module_1"
+          ads-slot="5592680679"
         />
         <InfiniteScrollList
           api-endpoint="/api/game/all_game"
@@ -23,6 +24,7 @@
               class="ad2"
               adm-id="games-mid2"
               adm-unit="/23197833490/alltools1/alltools1_module_2"
+              ads-slot="6905762344"
             />
             <ContentItemCommon
               v-for="(item, index) in items"

@@ -2,7 +2,8 @@
   <div>
     <div ref="admSlot" class="adm-slot">
       <p ref="title" class="title">Advertisement</p>
-      <div :id="admId" ref="googleAdmSlot" class="ad-slot"></div>
+      <div :id="admId" ref="googleAdmSlot" class="ad-slot" :data-slot="adsSlot"></div>
+      <div :id="`${admId}-ads`"></div>
     </div>
   </div>
 </template>
@@ -15,6 +16,10 @@ export default {
       required: true
     },
     admUnit: {
+      type: String,
+      required: true
+    },
+    adsSlot: {
       type: String,
       required: true
     }

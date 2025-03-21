@@ -10,6 +10,7 @@
           class="ad1 ad-width"
           adm-id="hot-mid1"
           adm-unit="/23197833490/alltools1/alltools1_module_1"
+          ads-slot="4419007919"
         />
         <section class="box-module box-category">
           <ContentItemCommon2
@@ -26,6 +27,7 @@
           class="ad2 ad-width"
           adm-id="hot-mid2"
           adm-unit="/23197833490/alltools1/alltools1_module_2"
+          ads-slot="9615494277"
         />
         <h2 class="title-h2"><i class="icon-recommend" />All</h2>
 
@@ -49,7 +51,11 @@
 
         <aside class="box-aside">
           <!-- <GoogleAd ad-slot="2314097401" /> -->
-          <adm-slot adm-id="hot-mid3" adm-unit="/23197833490/alltools1/alltools1_module_3" />
+          <adm-slot
+            adm-id="hot-mid3"
+            adm-unit="/23197833490/alltools1/alltools1_module_3"
+            ads-slot="2314097401"
+          />
           <h2 class="title-h2"><i class="icon-best" />Best</h2>
           <ContentItemRow
             v-for="(item, index) in recGames"

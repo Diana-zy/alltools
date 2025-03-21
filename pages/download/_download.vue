@@ -56,6 +56,7 @@
           class="ad-width"
           adm-id="download-mid1"
           adm-unit="/23197833490/alltools1/alltools1_detail_1"
+          ads-slot="3297497936"
         />
 
         <h2 class="title-h2"><i class="icon-recommend" />Discover More</h2>
@@ -74,6 +75,7 @@
           class="ad-width"
           adm-id="download-mid2"
           adm-unit="/23197833490/alltools1/alltools1_detail_2"
+          ads-slot="2955836717"
         />
 
         <h2 class="title-h2"><i class="icon-recommend" /> Recommend</h2>
@@ -89,7 +91,11 @@
 
         <aside class="box-aside">
           <!-- <GoogleAd ad-slot="3489069628" /> -->
-          <adm-slot adm-id="download-mid3" adm-unit="/23197833490/alltools1/alltools1_detail_3" />
+          <adm-slot
+            adm-id="download-mid3"
+            adm-unit="/23197833490/alltools1/alltools1_detail_3"
+            ads-slot="3489069628"
+          />
           <h2 class="title-h2"
             ><i :class="isApp ? 'icon-favorite-app' : 'icon-favorite-game'" /> Hot
             {{ isApp ? "Apps" : "Games" }}</h2

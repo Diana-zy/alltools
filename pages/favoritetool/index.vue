@@ -10,6 +10,7 @@
           class="ad1 ad-width"
           adm-id="fav-app-mid1"
           adm-unit="/23197833490/alltools1/alltools1_module_1"
+          ads-slot="8687934067"
         />
         <section class="box-module box-category">
           <ContentItemCommon2
@@ -26,6 +27,7 @@
           class="ad2 ad-width"
           adm-id="fav-app-mid2"
           adm-unit="/23197833490/alltools1/alltools1_module_2"
+          ads-slot="3091221944"
         />
         <h2 class="title-h2"><i class="icon-recommend" />All Tools</h2>
 
@@ -49,7 +51,11 @@
 
         <aside class="box-aside">
           <!-- <GoogleAd ad-slot="1778140279" /> -->
-          <adm-slot adm-id="fav-app-mid3" adm-unit="/23197833490/alltools1/alltools1_module_3" />
+          <adm-slot
+            adm-id="fav-app-mid3"
+            adm-unit="/23197833490/alltools1/alltools1_module_3"
+            ads-slot="1778140279"
+          />
           <h2 class="title-h2"><i class="icon-hot" />Hot Tools</h2>
           <ContentItemRow
             v-for="(item, index) in newApps"

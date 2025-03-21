@@ -46,6 +46,7 @@
           class="ad-width"
           adm-id="app-mid1"
           adm-unit="/23197833490/alltools1/alltools1_detail_1"
+          ads-slot="7534582229"
         />
 
         <section>
@@ -137,6 +138,7 @@
             class="ad-width"
             adm-id="app-mid2"
             adm-unit="/23197833490/alltools1/alltools1_detail_2"
+            ads-slot="8029406241"
           />
         </div>
 
@@ -184,7 +186,11 @@
 
         <aside class="box-aside">
           <!-- <GoogleAd ad-slot="3595337216" /> -->
-          <adm-slot adm-id="app-mid3" adm-unit="/23197833490/alltools1/alltools1_detail_3" />
+          <adm-slot
+            adm-id="app-mid3"
+            adm-unit="/23197833490/alltools1/alltools1_detail_3"
+            ads-slot="3595337216"
+          />
 
           <h2 class="title-h2"><i class="icon-hot" />Hot Apps</h2>
           <ContentItemRow
