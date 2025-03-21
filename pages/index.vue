@@ -269,6 +269,12 @@
           />
         </div>
       </section>
+      <adm-slot
+        class="ad-1"
+        adm-id="home-1"
+        adm-unit="/23197833490/alltools1/alltools1_home_1"
+        ads-slot="6907896266"
+      />
       <section>
         <!-- <CustomLink to="/favoritetool/" class="title-h2 title-shadow"
           ><i class="icon-favorite-app" />Favorite Tools<i class="icon-arrow"
@@ -287,18 +293,12 @@
           />
         </div>
       </section>
-      <!-- <CustomLink to="/freshtool/" class="title-h2 title-shadow title-hidden">
-          <i class="icon-fresh" />Fresh Tools <i class="icon-arrow"
-        /></CustomLink>
-        <section class="box-row-scroll module-hidden">
-          <ContentItemRow1
-            v-for="(item, index) in newApps"
-            :key="index"
-            :item="item"
-            :index="index"
-            :to="`/app/${item.path}/`"
-          />
-        </section> -->
+      <adm-slot
+        class="ad-2"
+        adm-id="home-2"
+        adm-unit="/23197833490/alltools1/alltools1_home_2"
+        ads-slot="4281732921"
+      />
 
       <div class="title-h2"><i class="icon-recommend" />Recommend </div>
       <InfiniteScrollList2
@@ -833,6 +833,10 @@ export default {
 .m-button-hidden {
   display: flex;
 }
+.ad-1,
+.ad-2 {
+  margin-top: 32px;
+}
 @media screen and (max-width: 1220px) {
   .box-row-scroll {
     padding: vw2(4) 0;
@@ -1241,6 +1245,10 @@ export default {
   }
   .m-button-hidden {
     display: none;
+  }
+  .ad-1,
+  .ad-2 {
+    margin-top: vw(48);
   }
 }
 </style>
