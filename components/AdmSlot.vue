@@ -36,7 +36,7 @@ export default {
         console.log(width, height);
         const adScript = document.createElement("script");
         adScript.innerHTML = `googletag.cmd.push(function () {
-              googletag.defineSlot('${this.admUnit}', [336, 280], '${this.admId}').addService(googletag.pubads());
+              googletag.defineSlot('${this.admUnit}', ['fluid', [${width},${height}]], '${this.admId}').addService(googletag.pubads());
               googletag.enableServices();
               googletag.display('${this.admId}');
             });`;
