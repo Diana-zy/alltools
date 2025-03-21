@@ -344,6 +344,20 @@
         } else if (sourceAttribute && -1 !== sourceAttribute.indexOf("anchor_0")) {
           // 点击锚定广告
           dataLayer.push({ event: "D_FI" });
+        } else if (
+          sourceAttributeSrc &&
+          -1 !== sourceAttributeSrc.indexOf("googleads.g.doubleclick.net/pagead/ads?")
+        ) {
+          const closestIns = activeElement.closest("ins");
+          let adStatus = "unfilled";
+          if (closestIns) {
+            adStatus = closestIns.getAttribute("data-ad-status") || adStatus;
+          }
+          if ("filled" == adStatus) {
+            // 点击页内广告
+            dataLayer.push({ event: "D_IP" });
+            dataLayer.push({ event: "D_IP_ADS" });
+          }
         }
       });
     </script>
