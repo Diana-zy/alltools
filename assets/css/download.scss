@@ -48,6 +48,11 @@
       }
     }
   }
+  .tip {
+    margin-top: 16px;
+    font-size: 13px;
+    color: rgba($font1, 0.6);
+  }
 }
 .icon-android {
   @include icon(24px, 24px, "icon-android2.png");
@@ -88,6 +93,20 @@
     background: $color4;
     color: $color2;
     border: 1px solid $color2;
+  }
+  // 直接下载 apk（download_source = apkpure_direct）：比普通跳转按钮更突出
+  .direct-download {
+    background: #00a173;
+    box-shadow: 6px 6px 12px 0px rgba(0, 161, 115, 0.24), -6px -6px 12px 0px #ffffff;
+  }
+  // 没有可用下载链接时置灰禁用
+  .is-disabled {
+    background: #e8e8e8 !important;
+    color: #9d9d9d !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    pointer-events: none;
+    cursor: default;
   }
   .qrcode {
     position: absolute;

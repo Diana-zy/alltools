@@ -34,23 +34,54 @@
                 <p><b>Updated:</b> {{ currentSoftware.updated_time }}</p>
               </div>
               <div class="platform">
-                <div v-if="currentSoftware.android" class="android">
-                  <i class="icon-android"></i>Android
-                  <div class="qrcode">
+                <div
+                  v-if="currentSoftware.android"
+                  class="android"
+                  :class="{
+                    'direct-download': isDirectDownload(currentSoftware.android_download_source),
+                    'is-disabled': !currentSoftware.android_web_url
+                  }"
+                >
+                  <i class="icon-android"></i
+                  >{{
+                    isDirectDownload(currentSoftware.android_download_source)
+                      ? "Download APK"
+                      : "Android"
+                  }}
+                  <div v-if="currentSoftware.android_web_url" class="qrcode">
                     Android
                     <img :src="qrCodeGoogle" alt="qrcode" />
                   </div>
-                  <a :href="currentSoftware.android_web_url"></a>
+                  <a
+                    v-if="currentSoftware.android_web_url"
+                    :href="currentSoftware.android_web_url"
+                    :rel="
+                      isDirectDownload(currentSoftware.android_download_source)
+                        ? 'nofollow noopener'
+                        : 'noopener'
+                    "
+                  ></a>
                 </div>
 
-                <div v-if="currentSoftware.ios" class="ios">
+                <div
+                  v-if="currentSoftware.ios"
+                  class="ios"
+                  :class="{ 'is-disabled': !currentSoftware.ios_web_url }"
+                >
                   <i class="icon-ios"></i>iOS
-                  <div class="qrcode">
+                  <div v-if="currentSoftware.ios_web_url" class="qrcode">
                     iOS
                     <img :src="qrCodeIos" alt="qrcode" />
                   </div>
-                  <a :href="currentSoftware.ios_web_url"></a>
+                  <a
+                    v-if="currentSoftware.ios_web_url"
+                    :href="currentSoftware.ios_web_url"
+                    rel="noopener"
+                  ></a>
                 </div>
+              </div>
+              <div v-if="isDirectDownload(currentSoftware.android_download_source)" class="tip">
+                * Download provided by APKPure.
               </div>
             </div>
           </div>
@@ -193,6 +224,10 @@ export default {
       } catch (error) {
         console.error("Error generating QR code:", error);
       }
+    },
+    // download_source 为空时按旧逻辑处理（跳转商店），只有明确是 apkpure_direct 才展示"直接下载"样式
+    isDirectDownload(downloadSource) {
+      return downloadSource === "apkpure_direct";
     }
   }
 };
