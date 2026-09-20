@@ -4,7 +4,10 @@
     <Header />
     <main class="main">
       <div class="main-left">
-        <h2 class="title-h2">All Games</h2>
+        <div class="tab-switch">
+          <CustomLink to="/apps/" class="tab-item">Top Free Apps</CustomLink>
+          <span class="tab-item active">Top Free Games</span>
+        </div>
         <!-- <GoogleAd ad-slot="5592680679" class="ad1 ad-width" /> -->
         <adm-slot
           adm-id="games-mid1"
@@ -101,6 +104,24 @@ export default {
 }
 .main-left {
   width: 770px;
+}
+.tab-switch {
+  display: flex;
+  gap: 32px;
+  padding: 16px 0;
+  margin-bottom: 8px;
+}
+.tab-item {
+  color: $font2;
+  font-family: "seb";
+  font-size: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+}
+.tab-item.active {
+  color: #fd6b21;
+  border-bottom-color: #fd6b21;
 }
 .ad2 {
   grid-row-end: 4;

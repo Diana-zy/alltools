@@ -19,7 +19,7 @@
         {{ item.score.length == 1 ? item.score + ".0" : item.score || 4.6 }}
       </div>
     </div>
-    <p class="arrow"></p>
+    <span class="get-btn">GET</span>
   </CustomLink>
 </template>
 
@@ -110,8 +110,20 @@ export default {
   }
 }
 
-.arrow {
-  @include icon(24px, 24px, "icon-arrow-right.png");
+.get-btn {
+  flex-shrink: 0;
+  min-width: 64px;
+  height: 32px;
+  padding: 0 16px;
+  border: 1px solid #fd6b21;
+  border-radius: 16px;
+  color: #fd6b21;
+  font-family: "seb";
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .item:hover {
@@ -120,8 +132,9 @@ export default {
   .name {
     color: $color2;
   }
-  .arrow {
-    @include icon(24px, 24px, "icon-arrow-right2.png");
+  .get-btn {
+    background: #fd6b21;
+    color: #ffffff;
   }
 }
 @media screen and (max-width: 879px) {
@@ -181,17 +194,18 @@ export default {
     background: $color2;
   }
 
-  .arrow {
-    display: none;
+  .get-btn {
+    min-width: vw(112);
+    height: vw(56);
+    padding: 0 vw(24);
+    border-radius: vw(28);
+    font-size: vw(22);
   }
 
   .item:hover {
     box-shadow: 0 0 0 0 rgba(40, 11, 69, 0.2), 0 0 0 0 rgba(255, 255, 255, 0.3),
       inset vw(8) vw(8) vw(16) 0px rgba(40, 11, 69, 0.2),
       inset vw(-8) vw(-8) vw(16) 0px rgba(255, 255, 255, 0.3);
-    .arrow {
-      display: none;
-    }
     .name {
       color: #ffffff;
     }

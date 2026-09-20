@@ -52,9 +52,8 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-::v-deep .m-menu,
-::v-deep .m-search,
-::v-deep .pwa-download {
+::v-deep .more-btn,
+::v-deep .m-search {
   display: none;
 }
 ::v-deep .header {

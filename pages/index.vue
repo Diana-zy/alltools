@@ -4,10 +4,17 @@
     <div class="fix-bg1"></div>
     <Header current-path="home" />
     <main class="main">
+      <adm-slot
+        adm-id="home-1"
+        adm-unit="/23197833490/alltools1/alltools1_home_1"
+        ads-slot="6667048681"
+        class="ad-1 ad-top"
+      />
+
       <section class="rec">
         <div class="rec-content">
           <transition
-            v-for="(item, index) in bestGames.slice(0, 2)"
+            v-for="(item, index) in heroGamesShown"
             :key="index"
             :item="item"
             :index="index"
@@ -42,7 +49,7 @@
                   <div class="rating-star">
                     <p :style="{ width: (((item.score || 4.6) / 5) * 100).toFixed(0) + '%' }"></p>
                   </div>
-                  {{ item.score.length == 1 ? item.score + ".0" : item.score || 4.6 }}
+                  {{ item.score && item.score.length == 1 ? item.score + ".0" : item.score || 4.6 }}
                 </div>
               </CustomLink>
               <CustomLink :to="`/game/${item.path}/`" class="item-icon">
@@ -60,12 +67,7 @@
             </div>
           </transition>
 
-          <div
-            v-for="(item, index) in bestGames.slice(0, 2)"
-            :key="index"
-            :item="item"
-            :index="index"
-          >
+          <div v-for="(item, index) in heroGamesShown" :key="index" :item="item" :index="index">
             <CustomLink
               v-show="recIndex === index"
               :to="`/game/${item.path}/`"
@@ -75,7 +77,7 @@
             </CustomLink>
           </div>
 
-          <CustomLink to="/best/" class="module-name"> Best Games ></CustomLink>
+          <CustomLink to="/best/" class="module-name"> Top Games ></CustomLink>
           <div class="corner"></div>
         </div>
       </section>
@@ -84,31 +86,33 @@
         <div class="new-content">
           <div class="item-content">
             <transition
-              v-for="(item, index) in newGames.slice(0, 6)"
+              v-for="(item, index) in heroAppsShown"
               :key="index"
               :item="item"
               :index="index"
               name="fade"
             >
-              <CustomLink v-show="newIndex === index" :to="`/game/${item.path}/`" class="item">
+              <CustomLink v-show="newIndex === index" :to="`/app/${item.path}/`" class="item">
                 <p class="name">{{ item.name }}</p>
                 <div class="score"
                   ><i class="icon-star" />
                   <span>
-                    {{ item.score.length == 1 ? item.score + ".0" : item.score || 4.6 }}</span
+                    {{
+                      item.score && item.score.length == 1 ? item.score + ".0" : item.score || 4.6
+                    }}</span
                   ></div
                 >
               </CustomLink>
             </transition>
 
             <transition
-              v-for="(item, index) in newGames.slice(0, 6)"
+              v-for="(item, index) in heroAppsShown"
               :key="index"
               :item="item"
               :index="index"
               name="fade"
             >
-              <CustomLink v-show="newIndex === index" :to="`/game/${item.path}/`" class="img-box">
+              <CustomLink v-show="newIndex === index" :to="`/app/${item.path}/`" class="img-box">
                 <NuxtImg
                   format="auto"
                   fit="cover"
@@ -132,14 +136,14 @@
               </CustomLink>
             </transition>
 
-            <CustomLink to="/new/" class="new-name"> New Games > </CustomLink>
+            <CustomLink to="/bestools/" class="new-name"> Top Apps > </CustomLink>
 
             <div v-once v-swiper:mySwiper="swiperOption" class="swiper-box">
               <div class="swiper-wrapper">
                 <CustomLink
-                  v-for="(item, i) in newGames.slice(0, 6)"
+                  v-for="(item, i) in heroAppsShown"
                   :key="i"
-                  :to="`/game/${item.path}/`"
+                  :to="`/app/${item.path}/`"
                   class="swiper-slide"
                 >
                   <NuxtImg
@@ -153,7 +157,9 @@
                   />
                   <div class="rating">
                     <div class="rating-star"> </div>
-                    {{ item.score.length == 1 ? item.score + ".0" : item.score || 4.6 }}
+                    {{
+                      item.score && item.score.length == 1 ? item.score + ".0" : item.score || 4.6
+                    }}
                   </div>
                 </CustomLink>
               </div>
@@ -165,16 +171,10 @@
           </div>
         </div>
       </section>
-      <article class="article">
-        <adm-slot
-          adm-id="home-1"
-          adm-unit="/23197833490/alltools1/alltools1_home_1"
-          ads-slot="6667048681"
-          class="ad-1"
-        />
 
+      <article class="article">
         <CustomLink to="/bestools/" class="title-h2"
-          >Best Tools<div class="title-see-more"><span>More</span><i class="icon-arrow" /></div
+          >Top Apps<div class="title-see-more"><span>View All</span><i class="icon-arrow" /></div
         ></CustomLink>
         <section class="best-tools">
           <div class="box-row-scroll box-scroll-hidden">
@@ -197,54 +197,52 @@
             />
           </div>
         </section>
+
         <adm-slot
           adm-id="home-2"
           adm-unit="/23197833490/alltools1/alltools1_home_2"
           ads-slot="4080715115"
           class="ad-2"
         />
-        <CustomLink to="/newtools/" class="title-h2">
-          New Tools <div class="title-see-more"><span>More</span><i class="icon-arrow" /></div
+
+        <CustomLink to="/best/" class="title-h2"
+          >Top Games<div class="title-see-more"><span>View All</span><i class="icon-arrow" /></div
         ></CustomLink>
-        <section class="new-tools">
+        <section class="top-games">
           <div class="box-row-scroll box-scroll-hidden">
             <ContentItemRow
-              v-for="(item, index) in newApps.slice(0, 12)"
+              v-for="(item, index) in bestGames.slice(0, 12)"
               :key="index"
               :item="item"
               :index="index"
-              :to="`/app/${item.path}/`"
+              :to="`/game/${item.path}/`"
             />
           </div>
           <div class="box-list-section">
             <ContentItemList
-              v-for="(item, index) in newApps.slice(0, 12)"
+              v-for="(item, index) in bestGames.slice(0, 12)"
               :key="index"
               :index="index"
               :item="item"
-              :to="`/${'app'}/${item.path}/`"
+              :to="`/${'game'}/${item.path}/`"
             />
           </div>
         </section>
 
-        <div class="title-h2">Recommend </div>
-        <InfiniteScrollList2
-          class="box-common module-background"
-          api-endpoint="/api/game/all_app"
-          :initial-page="2"
-          :page-size="20"
-          :initial-items="all"
-        >
-          <template #default="{ items }">
-            <ContentItemCommon
-              v-for="(item, index) in items"
-              :key="index"
-              :index="index"
-              :item="item"
-              :to="item.type === 1 ? `/game/${item.path}/` : `/app/${item.path}/`"
-            />
-          </template>
-        </InfiniteScrollList2>
+        <CustomLink to="/apps/" class="title-h2"
+          >Recommended apks you must have<div class="title-see-more"
+            ><span>View All</span><i class="icon-arrow"
+          /></div
+        ></CustomLink>
+        <section class="recommended-apks">
+          <ContentItemRank
+            v-for="(item, index) in recommendedApksShown"
+            :key="index"
+            :item="item"
+            :index="index"
+            :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
+          />
+        </section>
       </article>
     </main>
     <Footer />
@@ -255,6 +253,8 @@
 
 <script>
 import { directive } from "vue-awesome-swiper";
+import { heroApps, heroGames, recommendedApks } from "~/config/featured";
+
 export default {
   directives: {
     swiper: directive
@@ -262,76 +262,26 @@ export default {
   async asyncData({ $axios, env }) {
     try {
       // 并行处理多个异步请求
-      const [
-        bestGamesResponse,
-        bestAppsResponse,
-        newAppsResponse,
-        newGamesResponse,
-        allGamesResponse,
-        allAppsResponse
-      ] = await Promise.all([
-        $axios.$get("/api/game/menu", {
-          params: {
-            site_id: env.SITE_ID,
-            mod_id: "best-games",
-            size: 15
-          }
-        }),
+      const [bestAppsResponse, bestGamesResponse] = await Promise.all([
         $axios.$get("/api/game/menu", {
           params: {
             site_id: env.SITE_ID,
             mod_id: "best-apps",
-            size: 15
+            size: 30
           }
         }),
         $axios.$get("/api/game/menu", {
           params: {
             site_id: env.SITE_ID,
-            mod_id: "new-apps",
-            size: 15
-          }
-        }),
-        $axios.$get("/api/game/menu", {
-          params: {
-            site_id: env.SITE_ID,
-            mod_id: "new-games",
-            size: 15
-          }
-        }),
-        $axios.$get("/api/game/all_game", {
-          params: {
-            site_id: env.SITE_ID,
-            page: 1,
-            size: 20
-          }
-        }),
-        $axios.$get("/api/game/all_app", {
-          params: {
-            site_id: env.SITE_ID,
-            page: 1,
-            size: 20
+            mod_id: "best-games",
+            size: 30
           }
         })
       ]);
 
-      const result = [];
-      for (let i = 0; i < Math.max(allAppsResponse.list.length, allAppsResponse.list.length); i++) {
-        if (i < allAppsResponse.list.length) {
-          result.push(allAppsResponse.list[i]);
-        }
-        if (i < allGamesResponse.list.length) {
-          result.push(allGamesResponse.list[i]);
-        }
-      }
-
-      // 返回多个接口的数据
       return {
-        all: result,
-        bestGames: bestGamesResponse.list,
         bestApps: bestAppsResponse.list,
-        newApps: newAppsResponse.list,
-        newGames: newGamesResponse.list,
-        allGames: allGamesResponse.list
+        bestGames: bestGamesResponse.list
       };
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -341,13 +291,8 @@ export default {
     return {
       recIndex: 0,
       newIndex: 0,
-      bannerApps: [],
-      deferredPrompt: null,
-      showInstallButton: false,
-      input: "",
-      loading: false,
-      endOfList: false,
-      currentPage: 2,
+      bestApps: [],
+      bestGames: [],
       swiperOption: {
         slidesPerView: "auto",
         loop: true,
@@ -368,64 +313,38 @@ export default {
       }
     };
   },
+  computed: {
+    // 轮播固定运营位：config/featured.js 里配置了 path 就用配置的，没配就 fallback 到 ranking 数据
+    heroGamesShown() {
+      const picked = this.pickByPath(heroGames, this.bestGames);
+      return (picked.length ? picked : this.bestGames).slice(0, 2);
+    },
+    heroAppsShown() {
+      const picked = this.pickByPath(heroApps, this.bestApps);
+      return (picked.length ? picked : this.bestApps).slice(0, 6);
+    },
+    recommendedApksShown() {
+      const pool = [...this.bestApps, ...this.bestGames];
+      const picked = this.pickByPath(recommendedApks, pool);
+      return (picked.length ? picked : this.bestApps).slice(0, 10);
+    }
+  },
   mounted() {
     this.nextSlide();
-    // this.$nextTick(() => {
-    //   this.scrollAnchor();
-    // });
   },
   methods: {
+    pickByPath(paths, pool) {
+      if (!paths || !paths.length) return [];
+      return paths.map((path) => pool.find((item) => item.path === path)).filter(Boolean);
+    },
     nextSlide() {
       this.currentChangeTimer = setInterval(() => {
-        this.recIndex = (this.recIndex + 1) % 2;
-        console.log("recIndex" + this.recIndex);
+        this.recIndex = (this.recIndex + 1) % Math.max(this.heroGamesShown.length, 1);
       }, 4000);
     },
     onSlideChange() {
       this.newIndex = (this.mySwiper && this.mySwiper.realIndex) || 0;
-      console.log(this.newIndex);
     }
-    // scrollAnchor() {
-    //   const scrollDistance = 200; // 滚动距离，单位：像素
-    //   const duration = 2000; // 滚动持续时间，单位：毫秒
-
-    //   const startPosition = window.pageYOffset;
-    //   const targetPosition = startPosition + scrollDistance;
-    //   const startTime = performance.now();
-    //   let animationFrameId;
-
-    //   function scrollStep(currentTime) {
-    //     const elapsed = currentTime - startTime;
-    //     const progress = Math.min(elapsed / duration, 1); // 进度值，范围在 0 到 1 之间
-    //     const ease = easeInOutQuad(progress); // 使用缓动函数计算当前进度
-    //     const currentScroll = startPosition + (targetPosition - startPosition) * ease;
-
-    //     window.scrollTo(0, currentScroll);
-
-    //     if (elapsed < duration) {
-    //       animationFrameId = requestAnimationFrame(scrollStep);
-    //     }
-    //   }
-
-    //   function easeInOutQuad(t) {
-    //     return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-    //   }
-
-    //   function stopScrolling() {
-    //     if (animationFrameId) {
-    //       cancelAnimationFrame(animationFrameId);
-    //       animationFrameId = null;
-    //     }
-    //   }
-
-    //   // 监听用户交互事件
-    //   window.addEventListener("mousemove", stopScrolling);
-    //   window.addEventListener("mousedown", stopScrolling);
-    //   window.addEventListener("touchstart", stopScrolling);
-    //   window.addEventListener("touchmove", stopScrolling);
-
-    //   requestAnimationFrame(scrollStep);
-    // }
   }
 };
 </script>
@@ -452,6 +371,11 @@ export default {
 .main {
   max-width: 1440px;
   margin: 0 auto;
+}
+
+.ad-top {
+  max-width: 1200px;
+  margin: 16px auto 0;
 }
 
 .article {
@@ -484,46 +408,11 @@ export default {
     bottom: 0;
     left: 120px;
     z-index: 2;
-    // &::after {
-    //   content: "";
-    //   width: 100%;
-    //   height: 100%;
-    //   backdrop-filter: blur(7px);
-    //   border-left: 4px solid #ffffff;
-    //   display: flex;
-    //   float: right;
-    //   position: relative;
-    //   bottom: 400px;
-    //   animation: scan 3.2s;
-    //   animation-delay: 0.6s;
-    //   animation-fill-mode: forwards;
-    //   right: 0;
-    //   z-index: 2;
-    // }
   }
 
   .img {
     width: 100%;
     height: 100%;
-  }
-
-  @keyframes scan {
-    0% {
-      width: 100%;
-    }
-    50% {
-      width: 0;
-    }
-    51% {
-      opacity: 1;
-    }
-    52% {
-      opacity: 0;
-    }
-    100% {
-      width: 0;
-      opacity: 0;
-    }
   }
 
   .corner {
@@ -822,6 +711,11 @@ export default {
 
 .box-scroll-hidden {
   display: grid;
+}
+
+.recommended-apks {
+  display: flex;
+  flex-direction: column;
 }
 
 .pc-hidden {
@@ -1244,12 +1138,6 @@ export default {
 
   .box-row-scroll {
     display: none;
-    // padding: vw(24) vw(46);
-    // grid-template-columns: repeat(4, vw(510));
-    // gap: vw(32);
-    // @include scroll;
-    // z-index: 2;
-    // position: relative;
   }
 
   .box-common {

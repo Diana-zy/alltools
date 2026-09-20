@@ -2,7 +2,9 @@
   <header class="header">
     <div class="header-main" :class="{ 'home-header': currentPath === 'home' }">
       <div class="m-list">
-        <CustomLink class="pc-hidden m-menu" to="/menu/"></CustomLink>
+        <div class="more-btn" :class="{ 'home-icon': currentPath === 'home' }" @click="openDrawer">
+          <i class="icon-more"></i>
+        </div>
 
         <!-- logo -->
         <CustomLink
@@ -12,17 +14,7 @@
           ><i class="icon-logo"></i
         ></CustomLink>
       </div>
-      <!-- 下载到桌面 -->
       <div class="menu">
-        <div
-          v-if="showInstallButton"
-          class="pwa-download"
-          :class="{ 'home-icon': currentPath === 'home' }"
-          @click="installPWA"
-        >
-          <i class="icon-pwa"></i>
-        </div>
-
         <!-- pc 搜索 -->
         <div class="pc-search">
           <input
@@ -43,13 +35,16 @@
         </CustomLink>
       </div>
     </div>
+    <NavDrawer :open="drawerOpen" @close="drawerOpen = false" />
   </header>
 </template>
 
 <script>
 import { simulateSearch } from "~/utils/utils";
+import NavDrawer from "~/components/NavDrawer.vue";
 
 export default {
+  components: { NavDrawer },
   props: {
     currentPath: {
       type: String
@@ -58,24 +53,8 @@ export default {
   data() {
     return {
       input: "",
-      deferredPrompt: null,
-      showInstallButton: false
+      drawerOpen: false
     };
-  },
-  mounted() {
-    // 判断是否支持 PWA
-    if ("serviceWorker" in navigator && "PushManager" in window) {
-      if (window.deferredPrompt) {
-        this.deferredPrompt = window.deferredPrompt;
-        this.showInstallButton = true;
-      } else {
-        window.addEventListener("beforeinstallprompt", (e) => {
-          e.preventDefault();
-          this.deferredPrompt = e;
-          this.showInstallButton = true;
-        });
-      }
-    }
   },
   methods: {
     search() {
@@ -88,19 +67,8 @@ export default {
       }
       simulateSearch(this.input);
     },
-    installPWA() {
-      if (this.deferredPrompt) {
-        this.deferredPrompt.prompt();
-        this.deferredPrompt.userChoice.then(() => {
-          this.deferredPrompt = null;
-        });
-      }
-    },
-    randomGame() {
-      const links = document.querySelectorAll('a[href*="/game"]');
-      const randomIndex = Math.floor(Math.random() * links.length);
-      const randomLink = links[randomIndex];
-      randomLink.click();
+    openDrawer() {
+      this.drawerOpen = true;
     }
   }
 };
@@ -143,10 +111,11 @@ export default {
   justify-content: space-between;
 }
 
-.pwa-download {
+.more-btn {
   @include center;
   width: 40px;
   height: 40px;
+  margin-right: 16px;
   box-shadow: 6px 6px 12px 0px rgba(132, 40, 0, 0.27), -6px -6px 12px 0px rgba(255, 255, 255, 0.48);
   border: 2px solid rgba(255, 255, 255, 0.1);
   border-radius: 50%;
@@ -156,8 +125,8 @@ export default {
   cursor: pointer;
 }
 
-.icon-pwa {
-  @include icon(24px, 24px, "icon-pwa-pc.png");
+.icon-more {
+  @include icon(24px, 24px, "icon-menu.png");
 }
 
 .pc-search {
@@ -234,10 +203,18 @@ export default {
     justify-content: space-between;
   }
 
-  .m-menu {
-    display: block;
-    @include icon(vw(48), vw(48), "icon-menu.png");
+  .more-btn {
+    width: vw(80);
+    height: vw(80);
+    border-radius: vw(24);
+    background: $color4;
+    box-shadow: 6px 6px 12px 0px rgba(114, 35, 10, 0.21);
+    border: 2px solid #ffffff;
     margin-right: vw(36);
+  }
+
+  .icon-more {
+    @include icon(vw(48), vw(48), "icon-menu.png");
   }
 
   .logo {
@@ -247,26 +224,6 @@ export default {
     background-size: vw(232) vw(64);
     box-shadow: 6px 6px 12px 0px rgba(114, 35, 10, 0.21);
     border-radius: vw(60);
-  }
-  .pwa-download {
-    @include center;
-    width: vw(80);
-    height: vw(80);
-    border-radius: vw(24);
-    background: $color4;
-    box-shadow: 6px 6px 12px 0px rgba(114, 35, 10, 0.21);
-    border: 2px solid #ffffff;
-    margin-left: auto;
-    span {
-      display: none;
-    }
-  }
-
-  .icon-pwa {
-    @include icon(vw(48), vw(48), "icon-pwa-m.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    margin-right: 0;
   }
 
   .pc-search {
