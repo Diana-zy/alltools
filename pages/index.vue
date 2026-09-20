@@ -7,14 +7,14 @@
       <section class="rec">
         <div class="rec-content">
           <transition
-            v-for="(item, index) in bestApps.slice(0, 2)"
+            v-for="(item, index) in bestGames.slice(0, 2)"
             :key="index"
             :item="item"
             :index="index"
             name="fade"
           >
             <div v-show="recIndex === index">
-              <CustomLink :to="`/app/${item.path}/`" class="img-box">
+              <CustomLink :to="`/game/${item.path}/`" class="img-box">
                 <NuxtImg
                   format="auto"
                   fit="cover"
@@ -36,7 +36,7 @@
                   class="img pc-hidden"
                 />
               </CustomLink>
-              <CustomLink :to="`/app/${item.path}/`" class="info">
+              <CustomLink :to="`/game/${item.path}/`" class="info">
                 <p class="name">{{ item.name }}</p>
                 <div class="rating">
                   <div class="rating-star">
@@ -45,7 +45,7 @@
                   {{ item.score.length == 1 ? item.score + ".0" : item.score || 4.6 }}
                 </div>
               </CustomLink>
-              <CustomLink :to="`/app/${item.path}/`" class="item-icon">
+              <CustomLink :to="`/game/${item.path}/`" class="item-icon">
                 <NuxtImg
                   format="auto"
                   fit="cover"
@@ -61,21 +61,21 @@
           </transition>
 
           <div
-            v-for="(item, index) in bestApps.slice(0, 2)"
+            v-for="(item, index) in bestGames.slice(0, 2)"
             :key="index"
             :item="item"
             :index="index"
           >
             <CustomLink
               v-show="recIndex === index"
-              :to="`/app/${item.path}/`"
+              :to="`/game/${item.path}/`"
               class="download-box"
             >
               <div class="download"><i class="icon-pc-pwa" /></div>
             </CustomLink>
           </div>
 
-          <CustomLink to="/bestools/" class="module-name"> Top Apps ></CustomLink>
+          <CustomLink to="/best/" class="module-name"> Best Games ></CustomLink>
           <div class="corner"></div>
         </div>
       </section>
@@ -84,13 +84,13 @@
         <div class="new-content">
           <div class="item-content">
             <transition
-              v-for="(item, index) in newApps.slice(0, 6)"
+              v-for="(item, index) in newGames.slice(0, 6)"
               :key="index"
               :item="item"
               :index="index"
               name="fade"
             >
-              <CustomLink v-show="newIndex === index" :to="`/app/${item.path}/`" class="item">
+              <CustomLink v-show="newIndex === index" :to="`/game/${item.path}/`" class="item">
                 <p class="name">{{ item.name }}</p>
                 <div class="score"
                   ><i class="icon-star" />
@@ -102,13 +102,13 @@
             </transition>
 
             <transition
-              v-for="(item, index) in newApps.slice(0, 6)"
+              v-for="(item, index) in newGames.slice(0, 6)"
               :key="index"
               :item="item"
               :index="index"
               name="fade"
             >
-              <CustomLink v-show="newIndex === index" :to="`/app/${item.path}/`" class="img-box">
+              <CustomLink v-show="newIndex === index" :to="`/game/${item.path}/`" class="img-box">
                 <NuxtImg
                   format="auto"
                   fit="cover"
@@ -132,14 +132,14 @@
               </CustomLink>
             </transition>
 
-            <CustomLink to="/newtools/" class="new-name"> New Apps > </CustomLink>
+            <CustomLink to="/new/" class="new-name"> New Games > </CustomLink>
 
             <div v-once v-swiper:mySwiper="swiperOption" class="swiper-box">
               <div class="swiper-wrapper">
                 <CustomLink
-                  v-for="(item, i) in newApps.slice(0, 6)"
+                  v-for="(item, i) in newGames.slice(0, 6)"
                   :key="i"
-                  :to="`/app/${item.path}/`"
+                  :to="`/game/${item.path}/`"
                   class="swiper-slide"
                 >
                   <NuxtImg
@@ -241,7 +241,7 @@
               :key="index"
               :index="index"
               :item="item"
-              :to="`/app/${item.path}/`"
+              :to="item.type === 1 ? `/game/${item.path}/` : `/app/${item.path}/`"
             />
           </template>
         </InfiniteScrollList2>
@@ -262,7 +262,21 @@ export default {
   async asyncData({ $axios, env }) {
     try {
       // 并行处理多个异步请求
-      const [bestAppsResponse, newAppsResponse, allAppsResponse] = await Promise.all([
+      const [
+        bestGamesResponse,
+        bestAppsResponse,
+        newAppsResponse,
+        newGamesResponse,
+        allGamesResponse,
+        allAppsResponse
+      ] = await Promise.all([
+        $axios.$get("/api/game/menu", {
+          params: {
+            site_id: env.SITE_ID,
+            mod_id: "best-games",
+            size: 15
+          }
+        }),
         $axios.$get("/api/game/menu", {
           params: {
             site_id: env.SITE_ID,
@@ -277,6 +291,20 @@ export default {
             size: 15
           }
         }),
+        $axios.$get("/api/game/menu", {
+          params: {
+            site_id: env.SITE_ID,
+            mod_id: "new-games",
+            size: 15
+          }
+        }),
+        $axios.$get("/api/game/all_game", {
+          params: {
+            site_id: env.SITE_ID,
+            page: 1,
+            size: 20
+          }
+        }),
         $axios.$get("/api/game/all_app", {
           params: {
             site_id: env.SITE_ID,
@@ -286,10 +314,24 @@ export default {
         })
       ]);
 
+      const result = [];
+      for (let i = 0; i < Math.max(allAppsResponse.list.length, allAppsResponse.list.length); i++) {
+        if (i < allAppsResponse.list.length) {
+          result.push(allAppsResponse.list[i]);
+        }
+        if (i < allGamesResponse.list.length) {
+          result.push(allGamesResponse.list[i]);
+        }
+      }
+
+      // 返回多个接口的数据
       return {
-        all: allAppsResponse.list,
+        all: result,
+        bestGames: bestGamesResponse.list,
         bestApps: bestAppsResponse.list,
-        newApps: newAppsResponse.list
+        newApps: newAppsResponse.list,
+        newGames: newGamesResponse.list,
+        allGames: allGamesResponse.list
       };
     } catch (error) {
       console.error("Error fetching data:", error);
