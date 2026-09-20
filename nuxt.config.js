@@ -46,8 +46,7 @@ export default {
     trailingSlash: true
   },
   head: {
-    title:
-      "AllTools1－dedicated to the dreams and wonders of the young crowd, play with your own colors in the game!",
+    title: "AllTools1 APK Download － safe, free APK downloads and app info for Android",
     meta: [
       {
         name: "version",
@@ -61,13 +60,13 @@ export default {
         hid: "description",
         name: "description",
         content:
-          "AllTools1 is a platform that gathers countless young gamers with the best free online games. All of our games are designed to provide young people with a better way to relax and have fun, ≈ and a wide range of styles waiting for your selection. When you are looking for fun through games, AllTools1 will be your faithful choice, offering you a more comprehensive range of games, the most diverse selection and as many new surprises as possible!"
+          "AllTools1 APK Download is a platform for discovering and downloading Android apps. Browse app details, ratings, screenshots and version history, and get free, verified APK downloads across a wide range of categories."
       },
       {
         hid: "keywords",
         name: "keywords",
         content:
-          "Role-playing games, entertainment games, puzzle games, strategy games, cute games, pet games, parkour games, synthesis games, dress up games, princess games, adventure games, casual games, healing games, horror games, music games, cooking games"
+          "APK download, Android apps, free apps, app store, app download, APK file, mobile apps, app catalog"
       }
     ],
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
@@ -97,14 +96,14 @@ export default {
   },
   modules: ["@nuxtjs/axios"],
   sitemap: {
-    hostname: "https://alltools1.com/"
+    hostname: "https://apk.alltools1.com/"
   },
   pwa: {
     manifest: {
-      name: "AllTools1",
-      short_name: "AllTools1",
+      name: "AllTools1 APK Download",
+      short_name: "AllTools1 APK",
       description:
-        "AllTools1 is a platform that gathers countless young gamers with the best free online games. All of our games are designed to provide young people with a better way to relax and have fun, with healthy gameplay and a wide range of styles waiting for your selection. When you are looking for fun through games, AllTools1 will be your faithful choice, offering you a more comprehensive range of games, the most diverse selection and as many new surprises as possible!",
+        "AllTools1 APK Download is a platform for discovering and downloading Android apps. Browse app details, ratings, screenshots and version history, and get free, verified APK downloads across a wide range of categories.",
       icons: [
         {
           src: "/icons/32.png",
