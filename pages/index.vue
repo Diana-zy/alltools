@@ -253,7 +253,19 @@
 
 <script>
 import { directive } from "vue-awesome-swiper";
-import { heroApps, heroGames, recommendedApks } from "~/config/featured";
+
+// 站点管理 / 模块游戏推荐（site_module 表）里还没配置这个 mod_id 时，/api/game/menu 会报错，
+// 这里统一兜底成空列表，不让首页因为运营还没配好某个模块就直接挂掉。
+async function fetchModule($axios, siteId, modId, size) {
+  try {
+    const res = await $axios.$get("/api/game/menu", {
+      params: { site_id: siteId, mod_id: modId, size }
+    });
+    return res.list || [];
+  } catch (error) {
+    return [];
+  }
+}
 
 export default {
   directives: {
@@ -261,27 +273,22 @@ export default {
   },
   async asyncData({ $axios, env }) {
     try {
-      // 并行处理多个异步请求
-      const [bestAppsResponse, bestGamesResponse] = await Promise.all([
-        $axios.$get("/api/game/menu", {
-          params: {
-            site_id: env.SITE_ID,
-            mod_id: "best-apps",
-            size: 30
-          }
-        }),
-        $axios.$get("/api/game/menu", {
-          params: {
-            site_id: env.SITE_ID,
-            mod_id: "best-games",
-            size: 30
-          }
-        })
-      ]);
+      const [bestApps, bestGames, heroGamesConfigured, heroAppsConfigured, recommendedApksConfigured] =
+        await Promise.all([
+          fetchModule($axios, env.SITE_ID, "best-apps", 30),
+          fetchModule($axios, env.SITE_ID, "best-games", 30),
+          // 以下三个模块由 BI 后台「站点管理/模块游戏推荐」运营配置，未配置时为空数组，走 fallback
+          fetchModule($axios, env.SITE_ID, "home-hero-games", 2),
+          fetchModule($axios, env.SITE_ID, "home-hero-apps", 6),
+          fetchModule($axios, env.SITE_ID, "home-recommended-apks", 10)
+        ]);
 
       return {
-        bestApps: bestAppsResponse.list,
-        bestGames: bestGamesResponse.list
+        bestApps,
+        bestGames,
+        heroGamesConfigured,
+        heroAppsConfigured,
+        recommendedApksConfigured
       };
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -293,6 +300,9 @@ export default {
       newIndex: 0,
       bestApps: [],
       bestGames: [],
+      heroGamesConfigured: [],
+      heroAppsConfigured: [],
+      recommendedApksConfigured: [],
       swiperOption: {
         slidesPerView: "auto",
         loop: true,
@@ -314,29 +324,26 @@ export default {
     };
   },
   computed: {
-    // 轮播固定运营位：config/featured.js 里配置了 path 就用配置的，没配就 fallback 到 ranking 数据
+    // 轮播/推荐位：BI 后台「站点管理/模块游戏推荐」配置了 mod_id 就用配置的，没配就 fallback 到 ranking 数据
     heroGamesShown() {
-      const picked = this.pickByPath(heroGames, this.bestGames);
-      return (picked.length ? picked : this.bestGames).slice(0, 2);
+      return (this.heroGamesConfigured.length ? this.heroGamesConfigured : this.bestGames).slice(
+        0,
+        2
+      );
     },
     heroAppsShown() {
-      const picked = this.pickByPath(heroApps, this.bestApps);
-      return (picked.length ? picked : this.bestApps).slice(0, 6);
+      return (this.heroAppsConfigured.length ? this.heroAppsConfigured : this.bestApps).slice(0, 6);
     },
     recommendedApksShown() {
-      const pool = [...this.bestApps, ...this.bestGames];
-      const picked = this.pickByPath(recommendedApks, pool);
-      return (picked.length ? picked : this.bestApps).slice(0, 10);
+      return (
+        this.recommendedApksConfigured.length ? this.recommendedApksConfigured : this.bestApps
+      ).slice(0, 10);
     }
   },
   mounted() {
     this.nextSlide();
   },
   methods: {
-    pickByPath(paths, pool) {
-      if (!paths || !paths.length) return [];
-      return paths.map((path) => pool.find((item) => item.path === path)).filter(Boolean);
-    },
     nextSlide() {
       this.currentChangeTimer = setInterval(() => {
         this.recIndex = (this.recIndex + 1) % Math.max(this.heroGamesShown.length, 1);
