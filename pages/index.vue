@@ -179,14 +179,19 @@ async function fetchModule($axios, siteId, modId, size) {
 export default {
   async asyncData({ $axios, env }) {
     try {
-      const [bestApps, bestGames, heroConfigured, recommendedApksConfigured] = await Promise.all([
-        fetchModule($axios, env.SITE_ID, "best-apps", 30),
-        fetchModule($axios, env.SITE_ID, "best-games", 30),
-        // 以下两个模块由 BI 后台「站点管理/模块游戏推荐」运营配置（不分应用/游戏类型），
-        // 未配置时为空数组，走 fallback
-        fetchModule($axios, env.SITE_ID, "home-hero", 5),
-        fetchModule($axios, env.SITE_ID, "home-recommended-apks", 10)
-      ]);
+      // 依次请求而不是 Promise.all 并发——后端在多个并发请求下会 502（实测单条请求正常，
+      // 4 条并发就炸），排队请求虽然多花几百毫秒，但不会把首页拖挂。
+      const bestApps = await fetchModule($axios, env.SITE_ID, "best-apps", 30);
+      const bestGames = await fetchModule($axios, env.SITE_ID, "best-games", 30);
+      // 以下两个模块由 BI 后台「站点管理/模块游戏推荐」运营配置（不分应用/游戏类型），
+      // 未配置时为空数组，走 fallback
+      const heroConfigured = await fetchModule($axios, env.SITE_ID, "home-hero", 5);
+      const recommendedApksConfigured = await fetchModule(
+        $axios,
+        env.SITE_ID,
+        "home-recommended-apks",
+        10
+      );
 
       return {
         bestApps,
