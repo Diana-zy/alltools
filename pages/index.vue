@@ -166,6 +166,12 @@ async function fetchModule($axios, siteId, modId, size) {
     });
     return res.list || [];
   } catch (error) {
+    console.error(
+      `[home] fetchModule 失败 mod_id=${modId} site_id=${siteId}:`,
+      error && error.message,
+      error && error.response && error.response.status,
+      error && error.response && error.response.data
+    );
     return [];
   }
 }
