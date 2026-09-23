@@ -43,10 +43,9 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 6px 6px 12px 0px rgba(114, 35, 10, 0.21), 0 0 0 0 #ffffff,
-    inset 0 0 0 0 rgba(114, 35, 10, 0.21), inset 0 0 0 0 #ffffff;
+  background: #ffffff;
   border-radius: 24px;
-  border: 2px solid #ffffff;
+  border: 1px solid #eef0f3;
   height: 176px;
   transition: all 0.2s;
 }
@@ -73,8 +72,7 @@ export default {
   color: rgba($font1, 0.6);
 }
 .item:hover {
-  box-shadow: 0 0 0 0 rgba(114, 35, 10, 0.21), 0 0 0 0 #ffffff,
-    inset 6px 6px 12px 0px rgba(114, 35, 10, 0.21), inset -6px -6px 12px 0px #ffffff;
+  border-color: $color2;
   .name {
     color: $color2;
   }

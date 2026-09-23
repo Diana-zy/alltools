@@ -114,7 +114,7 @@
           </div>
         </section>
 
-        <ExpandableText :text="currentSoftware.desc" current-path="download" />
+        <ExpandableText :text="currentSoftware.desc" />
 
         <section v-if="currentSoftware.banner_list.length > 0" class="screenshots">
           <h2 class="title-h2">Screenshots</h2>

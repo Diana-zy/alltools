@@ -13,7 +13,6 @@
   align-items: center;
   margin-bottom: 32px;
   background: $color4;
-  box-shadow: 6px 6px 12px 0px rgba(114, 35, 10, 0.21);
   border-radius: 24px;
   padding-right: 24px;
   height: 112px;
@@ -58,7 +57,6 @@
     }
   }
   .get-it-now {
-    box-shadow: 6px 6px 12px 0px rgba(114, 35, 10, 0.21);
     width: 120px;
     height: 40px;
     background: $color2;
@@ -74,7 +72,7 @@
   }
 }
 .table-content {
-  box-shadow: inset 6px 6px 12px 0px rgba(114, 35, 10, 0.21), inset -6px -6px 12px 0px #ffffff;
+  background: #f5f6f8;
   border-radius: 24px;
   padding: 24px 24px 24px 6px;
   margin: 32px 0;
@@ -128,7 +126,7 @@ $categories: category, os, size, version, updated;
   border-bottom: none;
 }
 .application-desc {
-  box-shadow: inset 6px 6px 12px 0px rgba(114, 35, 10, 0.21), inset -6px -6px 12px 0px #ffffff;
+  background: #f5f6f8;
   border-radius: 24px;
   padding: 24px;
   margin-bottom: 32px;
@@ -190,7 +188,6 @@ $categories: category, os, size, version, updated;
     width: 121px;
     height: 40px;
     background: $color2;
-    box-shadow: 6px 6px 12px 0px rgba(35, 86, 145, 0.16), -6px -6px 12px 0px #ffffff;
     border-radius: 48px;
     color: #fff;
     margin-bottom: 16px;

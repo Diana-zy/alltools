@@ -54,9 +54,8 @@ export default {
   height: 80px;
   display: flex;
   align-items: center;
-  box-shadow: 6px 6px 12px 0px rgba(114, 35, 10, 0.21), 0 0 0 0 #ffffff,
-    inset 0 0 0 0 rgba(114, 35, 10, 0.21), inset 0 0 0 0 #ffffff;
-  border: 2px solid #ffffff;
+  background: #ffffff;
+  border: 1px solid #eef0f3;
   padding-left: 8px;
   padding-right: 8px;
   border-radius: 16px;
@@ -127,8 +126,7 @@ export default {
 }
 
 .item:hover {
-  box-shadow: 0 0 0 0 rgba(114, 35, 10, 0.21), 0 0 0 0 #ffffff,
-    inset 6px 6px 12px 0px rgba(114, 35, 10, 0.21), inset -6px -6px 12px 0px #ffffff;
+  border-color: $color2;
   .name {
     color: $color2;
   }
@@ -143,9 +141,6 @@ export default {
     padding-left: vw(20);
     padding-right: vw(20);
     border-radius: vw(32);
-    box-shadow: vw(8) vw(8) vw(16) 0px rgba(40, 11, 69, 0.2),
-      vw(-8) vw(-8) vw(16) 0px rgba(255, 255, 255, 0.3), inset 0 0 0 0 rgba(40, 11, 69, 0.2),
-      inset 0 0 0 0 rgba(255, 255, 255, 0.3);
     background: $color3;
     border: 2px solid rgba(255, 255, 255, 0.1);
   }
@@ -203,9 +198,6 @@ export default {
   }
 
   .item:hover {
-    box-shadow: 0 0 0 0 rgba(40, 11, 69, 0.2), 0 0 0 0 rgba(255, 255, 255, 0.3),
-      inset vw(8) vw(8) vw(16) 0px rgba(40, 11, 69, 0.2),
-      inset vw(-8) vw(-8) vw(16) 0px rgba(255, 255, 255, 0.3);
     .name {
       color: #ffffff;
     }

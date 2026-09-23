@@ -73,7 +73,7 @@ body {
   margin-right: 2px;
 }
 .box-small-bg {
-  box-shadow: inset 6px 6px 12px 0px rgba(114, 35, 10, 0.21), inset -6px -6px 12px 0px #ffffff;
+  background: #f5f6f8;
   border-radius: 24px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(124px, 1fr));
@@ -247,7 +247,6 @@ body {
   width: 8px;
   height: 8px;
   background: rgba(253, 107, 33, 0.2);
-  box-shadow: inset 1px 1px 1px 0px rgba(0, 0, 0, 0.1);
   border-radius: 50%;
   opacity: 1;
   box-sizing: content-box;

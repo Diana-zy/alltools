@@ -47,8 +47,6 @@ export default {
     height: vw(198);
     height: 100%;
     padding: vw(16);
-    box-shadow: 6px 6px 12px 0px rgba(114, 35, 10, 0.21), 0 0 0 0 #ffffff,
-      inset 0 0 0 0 rgba(114, 35, 10, 0.21), inset 0 0 0 0 #ffffff;
     border-radius: vw(32);
     position: relative;
     &:nth-child(2) {

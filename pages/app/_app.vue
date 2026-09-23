@@ -157,7 +157,7 @@
               </div>
             </div>
           </div>
-          <ExpandableText class="expand" :text="currentApp.desc" current-path="app" />
+          <ExpandableText class="expand" :text="currentApp.desc" />
         </section>
 
         <!-- <GoogleAd ad-slot="8029406241" class="ad-width" /> -->

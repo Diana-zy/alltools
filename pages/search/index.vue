@@ -148,7 +148,7 @@ export default {
 .search-null {
   width: 100%;
   height: 120px;
-  box-shadow: inset 4px 4px 8px 0px rgba(99, 82, 101, 0.16), inset -4px -4px 8px 0px #ffffff;
+  background: #f5f6f8;
   border-radius: 24px;
   @include center;
 }
@@ -201,9 +201,8 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: $color1;
-    box-shadow: inset 6px 6px 12px 0px rgba(114, 35, 10, 0.21), inset -6px -6px 12px 0px #ffffff;
-    border: 2px solid #ffffff;
+    background: #f5f6f8;
+    border: 1px solid #eef0f3;
     margin: 0 vw(94) vw(48) vw(94);
     height: vw(96);
     border-radius: vw(60);

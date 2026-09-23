@@ -78,7 +78,6 @@ export default {
 .header {
   width: 100%;
   background: $color3;
-  box-shadow: 0px 6px 12px 0px rgba(132, 40, 0, 0.26);
 }
 
 .header-main {
@@ -100,8 +99,7 @@ export default {
   background-size: 116px 32px;
   background-position: center;
   background-repeat: no-repeat;
-  box-shadow: 6px 6px 12px 0px rgba(132, 40, 0, 0.27), -6px -6px 12px 0px rgba(255, 255, 255, 0.48);
-  border: 2px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: 38px;
 }
 
@@ -116,8 +114,7 @@ export default {
   width: 40px;
   height: 40px;
   margin-right: 16px;
-  box-shadow: 6px 6px 12px 0px rgba(132, 40, 0, 0.27), -6px -6px 12px 0px rgba(255, 255, 255, 0.48);
-  border: 2px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: 50%;
   background: $color2;
   color: $font1;
@@ -136,9 +133,8 @@ export default {
   padding: 0 4px 0 16px;
   width: 320px;
   height: 40px;
-  box-shadow: inset 6px 6px 12px 0px rgba(132, 40, 0, 0.27),
-    inset -6px -6px 12px 0px rgba(255, 255, 255, 0.48);
-  background: $color3;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: 100px;
   margin-left: 24px;
   .search {
@@ -208,8 +204,7 @@ export default {
     height: vw(80);
     border-radius: vw(24);
     background: $color4;
-    box-shadow: 6px 6px 12px 0px rgba(114, 35, 10, 0.21);
-    border: 2px solid #ffffff;
+    border: 1px solid #eef0f3;
     margin-right: vw(36);
   }
 
@@ -222,7 +217,6 @@ export default {
     width: vw(320);
     background-color: $color4;
     background-size: vw(232) vw(64);
-    box-shadow: 6px 6px 12px 0px rgba(114, 35, 10, 0.21);
     border-radius: vw(60);
   }
 
@@ -237,8 +231,7 @@ export default {
     height: vw(80);
     border-radius: vw(24);
     background: $color4;
-    box-shadow: 6px 6px 12px 0px rgba(114, 35, 10, 0.21);
-    border: 2px solid #ffffff;
+    border: 1px solid #eef0f3;
     margin-left: vw(32);
   }
 

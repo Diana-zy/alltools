@@ -50,10 +50,8 @@ export default {
   flex-direction: column;
   height: 197px;
   border-radius: 16px;
-  background: $color1;
-  box-shadow: 6px 6px 12px 0px rgba(114, 35, 10, 0.21), 0 0 0 0 #ffffff,
-    inset 0 0 0 0 rgba(114, 35, 10, 0.21), inset 0 0 0 0 #ffffff;
-  border: 2px solid #ffffff;
+  background: #ffffff;
+  border: 1px solid #eef0f3;
   transition: 0.1s;
 }
 .icon {
@@ -91,8 +89,7 @@ export default {
   @include bg("icon-rating.png");
 }
 .item:hover {
-  box-shadow: 0 0 0 0 rgba(114, 35, 10, 0.21), 0 0 0 0 #ffffff,
-    inset 6px 6px 12px 0px rgba(114, 35, 10, 0.21), inset -6px -6px 12px 0px #ffffff;
+  border-color: $color2;
   .name {
     color: $color2;
   }

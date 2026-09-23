@@ -43,9 +43,8 @@ export default {
   display: block;
   height: 151px;
   border-radius: 24px;
-  box-shadow: 6px 6px 12px 0px rgba(114, 35, 10, 0.21), 0 0 0 0 #ffffff,
-    inset 0 0 0 0 rgba(114, 35, 10, 0.21), inset 0 0 0 0 #ffffff;
-  border: 2px solid #ffffff;
+  background: #ffffff;
+  border: 1px solid #eef0f3;
   position: relative;
   transition: all 0.2s;
 }
@@ -84,8 +83,7 @@ export default {
   height: 14px;
 }
 .item:hover {
-  box-shadow: 0 0 0 0 rgba(114, 35, 10, 0.21), 0 0 0 0 #ffffff,
-    inset 6px 6px 12px 0px rgba(114, 35, 10, 0.21), inset -6px -6px 12px 0px #ffffff;
+  border-color: $color2;
   .name {
     color: $color2;
   }

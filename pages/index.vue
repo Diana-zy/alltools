@@ -312,12 +312,9 @@ export default {
   .download-box {
     width: 106px;
     height: 106px;
-    background: rgba(242, 242, 242, 0.4);
-    box-shadow: inset -4px -4px 5px 0px rgba(255, 255, 255, 0.97),
-      inset 4px 4px 5px 0px rgba(183, 102, 118, 0.32), -4px -4px 4px 0px rgba(255, 255, 255, 0.4),
-      4px 4px 4px 0px rgba(183, 102, 118, 0.25);
+    background: #ffffff;
     border-radius: 50%;
-    border: 2px solid #f2f2f2;
+    border: 1px solid #eef0f3;
     @include center;
     position: absolute;
     bottom: -53px;
@@ -330,8 +327,6 @@ export default {
     width: 82px;
     height: 82px;
     background: #fff9e3;
-    box-shadow: -4px -4px 5px 0px rgba(255, 255, 255, 0.4),
-      4px 4px 5px 0px rgba(183, 102, 118, 0.25);
     border-radius: 50%;
     @include center;
     .icon-pc-pwa {
@@ -495,10 +490,6 @@ export default {
     .download-box {
       width: vw2(106);
       height: vw2(106);
-      box-shadow: inset vw2(-4) vw2(-4) vw2(5) 0px rgba(255, 255, 255, 0.97),
-        inset vw2(4) vw2(4) vw2(5) 0px rgba(183, 102, 118, 0.32),
-        vw2(-4) vw2(-4) vw2(4) 0px rgba(255, 255, 255, 0.4),
-        vw2(4) vw2(4) vw2(4) 0px rgba(183, 102, 118, 0.25);
       border: vw2(2) solid #f2f2f2;
       bottom: vw2(-53);
     }
@@ -506,8 +497,6 @@ export default {
       width: vw2(82);
       height: vw2(82);
       background: #fff9e3;
-      box-shadow: vw2(-4) vw2(-4) vw2(5) 0px rgba(255, 255, 255, 0.4),
-        vw2(4) vw2(4) vw2(5) 0px rgba(183, 102, 118, 0.25);
       .icon-pc-pwa {
         width: vw2(40);
         height: vw2(40);
@@ -592,9 +581,6 @@ export default {
       width: vw(126);
       height: vw(126);
       background: #ffd89d;
-      box-shadow: 3px 3px 6px 0px rgba(104, 28, 28, 0.35),
-        -3px -3px 6px 0px rgba(255, 255, 255, 0.4), inset 3px 3px 6px 0px rgba(104, 28, 28, 0.35),
-        inset -3px -3px 6px 0px rgba(255, 255, 255, 0.45);
       border-radius: 50%;
       border: 2px solid #fff9e3;
       @include center;
@@ -606,8 +592,6 @@ export default {
       width: vw(98);
       height: vw(98);
       background: #fff9e3;
-      box-shadow: 3px 3px 6px 0px rgba(104, 28, 28, 0.35),
-        -3px -3px 6px 0px rgba(255, 255, 255, 0.4);
       border-radius: 50%;
       @include center;
       .icon-pc-pwa {

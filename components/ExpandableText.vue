@@ -1,11 +1,5 @@
 <template>
-  <div
-    class="expandable-text"
-    :class="{
-      'is-expanded': expanded,
-      'shadow-hidden': currentPath === 'download' || currentPath === 'app'
-    }"
-  >
+  <div class="expandable-text" :class="{ 'is-expanded': expanded }">
     <div class="text-content">
       {{ text }}
     </div>
@@ -21,9 +15,6 @@ export default {
     text: {
       type: String,
       required: true
-    },
-    currentPath: {
-      type: String
     }
   },
 
@@ -89,11 +80,8 @@ export default {
   .expandable-text {
     padding: vw(32);
     font-size: vw(24);
-    box-shadow: inset 6px 6px 12px 0px rgba(114, 35, 10, 0.21), inset -6px -6px 12px 0px #ffffff;
+    background: #f5f6f8;
     border-radius: vw(32);
-  }
-  .shadow-hidden {
-    box-shadow: none;
   }
   .toggle-button {
     font-size: vw(24);

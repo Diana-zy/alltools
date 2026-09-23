@@ -106,7 +106,7 @@ export default {
   max-width: 80%;
   height: 100%;
   background: $color1;
-  box-shadow: 6px 0 16px rgba(0, 0, 0, 0.2);
+  border-right: 1px solid #eef0f3;
   padding-top: 16px;
   overflow-y: auto;
 }
