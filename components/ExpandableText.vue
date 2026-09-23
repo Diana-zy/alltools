@@ -1,7 +1,10 @@
 <template>
   <div
     class="expandable-text"
-    :class="{ 'is-expanded': expanded, 'shadow-hidden': currentPath === 'download' }"
+    :class="{
+      'is-expanded': expanded,
+      'shadow-hidden': currentPath === 'download' || currentPath === 'app'
+    }"
   >
     <div class="text-content">
       {{ text }}

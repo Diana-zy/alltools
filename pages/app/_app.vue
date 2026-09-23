@@ -157,7 +157,7 @@
               </div>
             </div>
           </div>
-          <ExpandableText class="expand" :text="currentApp.desc" />
+          <ExpandableText class="expand" :text="currentApp.desc" current-path="app" />
         </section>
 
         <!-- <GoogleAd ad-slot="8029406241" class="ad-width" /> -->
@@ -505,6 +505,13 @@ export default {
   @include icon(22px, 22px, "icon-download.png");
   margin-right: 10px;
   filter: brightness(0) invert(1);
+}
+
+// game.scss 里 .table-content 默认是立体阴影配色，这个页面改成跟上面 header 一样的
+// 白色/浅灰平面风格，不用阴影
+.table-content {
+  box-shadow: none;
+  background: #f5f6f8;
 }
 
 @media screen and (max-width: 879px) {
