@@ -9,8 +9,8 @@
           <NuxtImg
             format="auto"
             fit="cover"
-            width="96"
-            height="96"
+            width="100"
+            height="100"
             class="icon"
             :src="currentSoftware.icon"
             :alt="currentSoftware.name"
@@ -373,17 +373,17 @@ export default {
   margin-top: 24px;
 }
 .app-header .icon {
-  width: 72px;
-  height: 72px;
+  width: 100px;
+  height: 100px;
   border-radius: 20px;
   margin-right: 16px;
   flex-shrink: 0;
 }
 .header-main .name {
   font-family: "sesb";
-  font-size: 20px;
+  font-size: 22px;
   color: $font1;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 .category-badge {
   display: inline-flex;
@@ -590,13 +590,13 @@ export default {
     margin-top: vw(36);
   }
   .app-header .icon {
-    width: vw(120);
-    height: vw(120);
+    width: 100px;
+    height: 100px;
     border-radius: vw(28);
     margin-right: vw(24);
   }
   .header-main .name {
-    font-size: vw(30);
+    font-size: 22px;
   }
   .category-badge {
     font-size: vw(22);

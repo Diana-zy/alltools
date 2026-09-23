@@ -204,7 +204,7 @@ export default {
     width: vw(80);
     height: vw(80);
     border-radius: vw(24);
-    background: $color4;
+    background: #ffffff;
     border: 1px solid #eef0f3;
     margin-right: vw(36);
   }
@@ -216,8 +216,9 @@ export default {
   .logo {
     @include btn-img(vw(280), vw(80), "logo.png");
     width: vw(320);
-    background-color: $color4;
+    background-color: #ffffff;
     background-size: vw(232) vw(64);
+    border: 1px solid #eef0f3;
     border-radius: vw(60);
   }
 
@@ -231,7 +232,7 @@ export default {
     width: vw(80);
     height: vw(80);
     border-radius: vw(24);
-    background: $color4;
+    background: #ffffff;
     border: 1px solid #eef0f3;
     margin-left: vw(32);
   }
@@ -241,7 +242,7 @@ export default {
   }
 
   .home-icon {
-    background: $color4;
+    background: #ffffff;
     border: 1px solid #eef0f3;
     box-shadow: none;
   }
