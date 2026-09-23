@@ -16,8 +16,10 @@
             class="icon"
           ></NuxtImg>
           <div class="info">
-            <div class="name">{{ currentApp.name }}</div>
-            <!-- <div class="category">{{ currentApp.category_name }}</div> -->
+            <div class="name"
+              >{{ currentApp.name }}<i v-if="currentApp.is_verified" class="icon-verified"></i
+            ></div>
+            <div v-if="currentApp.developer" class="developer">{{ currentApp.developer }}</div>
             <div class="rating">
               <div class="rating-star">
                 <p :style="{ width: (((currentApp.score || 4.6) / 5) * 100).toFixed(0) + '%' }"></p>
@@ -34,7 +36,7 @@
               })
             "
           >
-            <i class="icon-get-it-now"></i>Get Game
+            <i class="icon-get-it-now"></i>Get App
           </div>
         </section>
 
@@ -99,6 +101,22 @@
               <div class="table-cell"><i class="icon-updated"></i>Updated</div>
               <div class="table-cell">{{ currentApp.updated_time }}</div>
             </div>
+            <div v-if="currentApp.downloads" class="table-row">
+              <div class="table-cell">Downloads</div>
+              <div class="table-cell">{{ currentApp.downloads }}</div>
+            </div>
+            <div v-if="currentApp.developer" class="table-row">
+              <div class="table-cell">Developer</div>
+              <div class="table-cell">{{ currentApp.developer }}</div>
+            </div>
+            <div v-if="currentApp.content_rating" class="table-row">
+              <div class="table-cell">Content Rating</div>
+              <div class="table-cell">{{ currentApp.content_rating }}</div>
+            </div>
+            <div v-if="currentApp.price" class="table-row">
+              <div class="table-cell">Price</div>
+              <div class="table-cell">{{ currentApp.price }}</div>
+            </div>
           </div>
         </section>
 
@@ -143,8 +161,8 @@
             ><i class="icon-download"></i>Download
           </CustomLink>
           <div class="tip">
-            * For reference, The {{ currentApp.name }} game websites are all approved, there are no
-            viruses and malware.
+            * For reference, the {{ currentApp.name }} download sources are all verified, there are
+            no viruses and malware.
           </div>
         </section>
 
@@ -186,8 +204,8 @@
             </div>
           </div>
           <div class="tip">
-            * For reference, The {{ currentApp.name }} game websites are all approved, there are no
-            viruses and malware.
+            * For reference, the {{ currentApp.name }} download sources are all verified, there are
+            no viruses and malware.
           </div>
         </section> -->
 
@@ -349,9 +367,7 @@ export default {
   // },
   head() {
     return {
-      title: `AllTools1 － dedicated to the dreams and wonders of the young crowd, play with your own colors in the ${
-        this.currentApp.name || "game"
-      }!`
+      title: `${this.currentApp.name || "App"} - Download APK | AllTools1 APK Download`
     };
   }
 };
@@ -360,5 +376,75 @@ export default {
 @import "~/assets/css/game.scss";
 .shadow-hidden {
   box-shadow: none;
+}
+.application-info {
+  height: auto;
+  min-height: 112px;
+}
+.application-info .info {
+  height: auto;
+  justify-content: center;
+}
+.application-info .name {
+  display: flex;
+  align-items: center;
+}
+.icon-verified {
+  width: 16px;
+  height: 16px;
+  margin-left: 6px;
+  border-radius: 50%;
+  background: #2bb673;
+  position: relative;
+  flex-shrink: 0;
+  &::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 8px;
+    height: 5px;
+    border-left: 2px solid #ffffff;
+    border-bottom: 2px solid #ffffff;
+    transform: rotate(-45deg);
+  }
+}
+.application-info .developer {
+  color: rgba($font1, 0.6);
+  font-size: 14px;
+  margin-top: 4px;
+}
+.application-info .rating {
+  margin-top: 6px;
+}
+@media screen and (max-width: 879px) {
+  .application-info {
+    height: auto;
+    min-height: vw(160);
+  }
+  .application-info .info {
+    height: auto;
+    justify-content: center;
+  }
+  .application-info .rating {
+    margin-top: vw(8);
+  }
+  .icon-verified {
+    width: vw(28);
+    height: vw(28);
+    margin-left: vw(8);
+    &::after {
+      top: vw(6);
+      left: vw(6);
+      width: vw(14);
+      height: vw(8);
+    }
+  }
+  .application-info .developer {
+    font-size: vw(24);
+    margin-top: vw(6);
+    width: vw(320);
+    @include ellipsis;
+  }
 }
 </style>

@@ -43,6 +43,8 @@
         <span>{{ item.name }}</span>
       </CustomLink>
     </div>
+    <Footer />
+    <BackTop />
   </div>
 </template>
 
