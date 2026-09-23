@@ -105,7 +105,7 @@ export default {
   width: 280px;
   max-width: 80%;
   height: 100%;
-  background: $color1;
+  background: #ffffff;
   border-right: 1px solid #eef0f3;
   padding-top: 16px;
   overflow-y: auto;

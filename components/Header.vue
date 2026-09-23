@@ -77,7 +77,8 @@ export default {
 <style lang="scss" scoped>
 .header {
   width: 100%;
-  background: $color3;
+  background: #ffffff;
+  border-bottom: 1px solid #eef0f3;
 }
 
 .header-main {
@@ -99,7 +100,7 @@ export default {
   background-size: 116px 32px;
   background-position: center;
   background-repeat: no-repeat;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid #eef0f3;
   border-radius: 38px;
 }
 
@@ -114,7 +115,7 @@ export default {
   width: 40px;
   height: 40px;
   margin-right: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: none;
   border-radius: 50%;
   background: $color2;
   color: $font1;
@@ -133,8 +134,8 @@ export default {
   padding: 0 4px 0 16px;
   width: 320px;
   height: 40px;
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: #f5f6f8;
+  border: 1px solid #eef0f3;
   border-radius: 100px;
   margin-left: 24px;
   .search {
@@ -183,14 +184,14 @@ export default {
 
   .header-main {
     width: 100%;
-    background: $color1;
+    background: #ffffff;
     height: 100%;
     padding: 0 vw(46);
     justify-content: space-between;
   }
 
   .home-header {
-    background: $color3;
+    background: #ffffff;
   }
 
   .m-list {
@@ -240,13 +241,13 @@ export default {
   }
 
   .home-icon {
-    background: $color3;
-    border: none;
+    background: $color4;
+    border: 1px solid #eef0f3;
     box-shadow: none;
   }
 
   .shadow-hidden {
-    background-color: $color3;
+    background-color: #ffffff;
     box-shadow: none;
   }
 }

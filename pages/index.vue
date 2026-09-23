@@ -249,7 +249,7 @@ export default {
   position: absolute;
   top: 64px;
   left: 0;
-  background: $color3;
+  background: #ffffff;
 }
 .main {
   max-width: 1440px;
@@ -275,7 +275,7 @@ export default {
     position: relative;
     width: 100%;
     height: 100%;
-    background-color: $color3;
+    background-color: #ffffff;
   }
 
   .item {
@@ -550,7 +550,7 @@ export default {
 }
 @media screen and (max-width: 879px) {
   .page {
-    background: $color1;
+    background: #ffffff;
   }
   .fix-bg {
     display: none;

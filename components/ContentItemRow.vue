@@ -141,8 +141,8 @@ export default {
     padding-left: vw(20);
     padding-right: vw(20);
     border-radius: vw(32);
-    background: $color3;
-    border: 2px solid rgba(255, 255, 255, 0.1);
+    background: #ffffff;
+    border: 1px solid #eef0f3;
   }
 
   .icon {
@@ -162,21 +162,20 @@ export default {
     font-size: vw(28);
     height: vw(36);
     line-height: vw(36);
-    color: #ffffff;
+    color: $font1;
     @include ellipsis;
   }
 
   .rating {
     font-size: vw(24);
     line-height: vw(30);
-    color: #ffffff;
+    color: $font2;
   }
 
   .rating-star {
     margin-right: vw(8);
     width: vw(120);
     height: vw(24);
-    @include bg("icon-star3.png");
     background-size: vw(24) vw(24);
 
     p {
@@ -195,12 +194,6 @@ export default {
     padding: 0 vw(24);
     border-radius: vw(28);
     font-size: vw(22);
-  }
-
-  .item:hover {
-    .name {
-      color: #ffffff;
-    }
   }
 }
 </style>

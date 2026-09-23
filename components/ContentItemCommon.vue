@@ -92,7 +92,7 @@ export default {
   .item {
     width: 100%;
     height: vw(218);
-    background: $color1;
+    background: #ffffff;
     border-radius: vw(32);
   }
   .icon {

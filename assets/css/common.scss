@@ -16,11 +16,12 @@ a {
 body {
   color: $font1;
   font-size: 14px;
+  background: #ffffff;
 }
 .page {
   position: relative;
   box-sizing: content-box;
-  background: $color1;
+  background: #ffffff;
 }
 .pc-hidden {
   display: none;
@@ -153,7 +154,7 @@ body {
   }
   .page {
     padding: vw(96) 0 0;
-    background: $color1;
+    background: #ffffff;
   }
   .main {
     padding: 0;
