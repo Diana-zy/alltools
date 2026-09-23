@@ -27,8 +27,9 @@ body {
   display: none;
 }
 .title-h2 {
-  font-family: seb;
-  font-size: 20px;
+  font-family: se;
+  font-weight: normal;
+  font-size: 16px;
   color: $font1;
   line-height: 24px;
   margin-top: 36px;
@@ -74,12 +75,9 @@ body {
   margin-right: 2px;
 }
 .box-small-bg {
-  background: #f5f6f8;
-  border-radius: 24px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(124px, 1fr));
   gap: 24px;
-  padding: 24px;
   margin-bottom: 32px;
 }
 .box-common {
@@ -163,7 +161,7 @@ body {
     padding: 0;
   }
   .title-h2 {
-    font-size: vw(36);
+    font-size: 16px;
     margin-top: vw(54);
     margin-bottom: vw(38);
     padding: 0 vw(16);
@@ -221,7 +219,6 @@ body {
     height: vw(48);
   }
   .box-small-bg {
-    padding: vw(32);
     grid-template-columns: repeat(3, vw(176));
     gap: vw(32);
     margin: 0 vw(46);

@@ -114,7 +114,7 @@
           </div>
         </section>
 
-        <ExpandableText :text="currentSoftware.desc" />
+        <DescriptionText :text="currentSoftware.desc" />
 
         <section v-if="currentSoftware.banner_list.length > 0" class="screenshots">
           <h2 class="title-h2">Screenshots</h2>
@@ -186,10 +186,6 @@
             ></a>
           </div>
         </div>
-        <div v-if="currentSoftware.apkpure_url" class="tip">
-          * Download provided by APKPure.
-        </div>
-
         <!-- <GoogleAd ad-slot="2955836717" class="ad-width" /> -->
         <adm-slot
           adm-id="download-mid2"
@@ -547,20 +543,13 @@ export default {
   }
 }
 
-// download.scss 里的 .tip 是挂在 .download-info .tip 下的，这个页面已经不用那层包裹了，
-// 补一份等价样式
-.tip {
-  margin-top: 16px;
-  font-size: 13px;
-  color: rgba($font1, 0.6);
-}
-
 // 参照 apkuick 的样式改成上下堆叠的整行按钮（Google Play 蓝色 / App Store 黑色）
 .platform {
   flex-direction: column;
   .android,
   .ios {
     width: 100%;
+    height: 56px;
     margin: 0 0 12px;
   }
 }
@@ -677,9 +666,11 @@ export default {
   }
   .platform {
     padding: 0 vw(46);
-  }
-  .tip {
-    padding: 0 vw(46);
+    .android,
+    .ios {
+      height: vw(96);
+      border-radius: vw(48);
+    }
   }
 }
 </style>

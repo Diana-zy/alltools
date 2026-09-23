@@ -50,16 +50,18 @@
           ></div>
         </div>
 
-        <CustomLink class="primary-download" :to="`/download/${currentApp.path}/`">
-          <i class="icon-download-cta"></i>Download Latest APK
-        </CustomLink>
-
         <!-- <GoogleAd ad-slot="7534582229" /> -->
         <adm-slot
           adm-id="app-mid1"
           adm-unit="/23197833490/alltools1/alltools1_detail_1"
           ads-slot="7534582229"
         />
+
+        <!-- Download 按钮放在第一个广告位下面：顶部如果有锚定广告，展开/折叠会把按钮遮住，
+        放在广告下面能避免被挡住 -->
+        <CustomLink class="primary-download" :to="`/download/${currentApp.path}/`">
+          <i class="icon-download-cta"></i>Download Latest APK
+        </CustomLink>
 
         <!-- <section>
           <div v-if="currentApp.banner_list.length > 0" class="m-swiper">
@@ -86,6 +88,32 @@
           </div>
         </section> -->
 
+        <section v-if="currentApp.banner_list.length > 0" class="screenshots">
+          <h2 class="title-h2">Screenshots</h2>
+          <div class="swiper-bg">
+            <div v-swiper:Swiper="swiperOption" class="swiper-box">
+              <div class="swiper-wrapper">
+                <div v-for="(banner, i) in currentApp.banner_list" :key="i" class="swiper-slide">
+                  <NuxtImg
+                    format="auto"
+                    fit="cover"
+                    height="250"
+                    :src="banner"
+                    :alt="currentApp.name"
+                    loading="lazy"
+                    class="img"
+                  />
+                </div>
+              </div>
+              <div class="swiper-tool">
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-next"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section class="table-content">
           <div class="table-info">
             <div class="table-row">
@@ -105,7 +133,7 @@
             </div>
             <div class="table-row">
               <div class="table-cell"><i class="icon-size"></i>Size</div>
-              <div class="table-cell">{{ currentApp.apk_size }}</div>
+              <div class="table-cell">{{ currentApp.apk_size || "--" }}</div>
             </div>
             <div class="table-row">
               <div class="table-cell"><i class="icon-version"></i>Version</div>
@@ -134,31 +162,7 @@
           </div>
         </section>
 
-        <section class="application-desc">
-          <div v-if="currentApp.banner_list.length > 0" class="swiper-bg">
-            <div v-swiper:Swiper="swiperOption" class="swiper-box">
-              <div class="swiper-wrapper">
-                <div v-for="(banner, i) in currentApp.banner_list" :key="i" class="swiper-slide">
-                  <NuxtImg
-                    format="auto"
-                    fit="cover"
-                    height="288"
-                    :src="banner"
-                    :alt="currentApp.name"
-                    loading="lazy"
-                    class="img"
-                  />
-                </div>
-              </div>
-              <div class="swiper-tool">
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-pagination"></div>
-                <div class="swiper-button-next"></div>
-              </div>
-            </div>
-          </div>
-          <ExpandableText class="expand" :text="currentApp.desc" />
-        </section>
+        <DescriptionText :text="currentApp.desc" />
 
         <!-- <GoogleAd ad-slot="8029406241" class="ad-width" /> -->
         <adm-slot
@@ -436,7 +440,46 @@ export default {
   background: #f5f6f8;
 }
 
+// 截图挪到包信息卡片上面，加个 Screenshots 标题，高度固定 250px（不用 game.scss 里
+// .application-desc 那套自带描述文字的截图轮播样式）
+.screenshots {
+  margin: 24px 0;
+}
+.screenshots .swiper-bg {
+  margin-top: 16px;
+  overflow: hidden;
+}
+.screenshots .swiper-box {
+  width: 100%;
+}
+.screenshots .swiper-slide {
+  width: auto;
+  margin-right: 16px;
+  .img {
+    height: 250px;
+    border-radius: 16px;
+  }
+}
+.screenshots .swiper-tool {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 12px;
+  .swiper-pagination {
+    position: static;
+    width: auto;
+  }
+}
+
 @media screen and (max-width: 879px) {
+  .screenshots {
+    padding: 0 vw(46);
+    margin: vw(36) 0;
+  }
+  .screenshots .swiper-slide .img {
+    height: 250px;
+    border-radius: vw(24);
+  }
   .app-header {
     padding: 0 vw(46);
     margin-top: vw(36);

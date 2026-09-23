@@ -40,19 +40,20 @@ export default {
 
 <style lang="scss" scoped>
 .item {
-  display: block;
-  height: 131px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 147px;
   border-radius: 16px;
   background: #ffffff;
   border: 1px solid #eef0f3;
-  position: relative;
   transition: all 0.2s;
 }
 .icon {
   width: 76px;
   height: 76px;
   border-radius: 12px;
-  margin: 16px auto 6px;
+  margin: 16px auto 8px;
 }
 .name {
   width: 80%;
@@ -68,15 +69,7 @@ export default {
 }
 .rating {
   @include center;
-  color: $font1;
-  background: rgba(255, 255, 255, 0.4);
-  border-radius: 100px;
-  font-size: 12px;
-  position: absolute;
-  padding: 0 4px;
-  bottom: 37px;
-  left: 50%;
-  transform: translateX(-50%);
+  color: rgba($font1, 0.6);
 }
 .icon-rating {
   width: 14px;
@@ -91,7 +84,7 @@ export default {
 @media screen and (max-width: 879px) {
   .item {
     width: 100%;
-    height: vw(218);
+    height: vw(252);
     background: #ffffff;
     border-radius: vw(32);
   }
@@ -111,12 +104,10 @@ export default {
     padding: 0 vw(16);
   }
   .rating {
-    backdrop-filter: blur(4px);
+    margin-top: vw(4);
     font-size: vw(24);
-    bottom: vw(57);
-    border-radius: vw(32);
-    padding: vw(4) vw(8);
-    color: $font1;
+    width: fit-content;
+    color: rgba($font1, 0.6);
   }
   .icon-rating {
     width: vw(24);
