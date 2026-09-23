@@ -168,59 +168,6 @@
           class="ad-width"
         />
 
-        <section class="get-the-game">
-          <CustomLink class="download" :to="`/download/${currentApp.path}/`"
-            ><i class="icon-download"></i>Download
-          </CustomLink>
-          <div class="tip">
-            * For reference, the {{ currentApp.name }} download sources are all verified, there are
-            no viruses and malware.
-          </div>
-        </section>
-
-        <!-- <section class="download-info">
-          <div class="base-info">
-            <NuxtImg
-              format="auto"
-              fit="cover"
-              width="210"
-              height="210"
-              class="icon"
-              :src="currentApp.icon"
-              :alt="currentApp.name"
-            />
-            <div class="base-info-content">
-              <div class="name">
-                {{ currentApp.name }}
-              </div>
-
-              <div class="platform">
-                <div v-if="currentApp.android" class="android">
-                  <i class="icon-android1"></i>Android
-                  <div class="qrcode">
-                    Android
-                    <img :src="qrCodeGoogle" alt="qrcode" />
-                  </div>
-                  <a :href="currentApp.android_web_url"></a>
-                </div>
-
-                <div v-if="currentApp.ios" class="ios">
-                  <i class="icon-ios1"></i>iOS
-                  <div class="qrcode">
-                    iOS
-                    <img :src="qrCodeIos" alt="qrcode" />
-                  </div>
-                  <a :href="currentApp.ios_web_url"></a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="tip">
-            * For reference, the {{ currentApp.name }} download sources are all verified, there are
-            no viruses and malware.
-          </div>
-        </section> -->
-
         <h2 class="title-h2">Related Apps</h2>
 
         <section class="box-small-bg">
@@ -277,7 +224,6 @@
   </div>
 </template>
 <script>
-// import QRCode from "qrcode";
 import { directive } from "vue-awesome-swiper";
 import { shuffleArray } from "~/utils/utils";
 import "swiper/css/swiper.min.css";
@@ -337,8 +283,6 @@ export default {
   },
   data() {
     return {
-      // qrCodeGoogle: "",
-      // qrCodeIos: "",
       swiperOption: {
         slidesPerView: "auto",
         autoplay: {
@@ -355,28 +299,6 @@ export default {
       }
     };
   },
-  // mounted() {
-  //   if (this.currentApp.ios_web_url) {
-  //     this.generateQRCode(this.currentApp.ios_web_url).then((data) => {
-  //       this.qrCodeIos = data;
-  //     });
-  //   }
-  //   if (this.currentApp.android_web_url) {
-  //     this.generateQRCode(this.currentApp.android_web_url).then((data) => {
-  //       this.qrCodeGoogle = data;
-  //     });
-  //   }
-  // },
-  // methods: {
-  //   async generateQRCode(url) {
-  //     try {
-  //       const qrCodeDataURL = await QRCode.toDataURL(url);
-  //       return qrCodeDataURL;
-  //     } catch (error) {
-  //       console.error("Error generating QR code:", error);
-  //     }
-  //   }
-  // },
   head() {
     return {
       title: `${this.currentApp.name || "App"} - Download APK | AllTools1 APK Download`
