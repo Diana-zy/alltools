@@ -27,17 +27,9 @@
               {{ currentApp.score || 4.6 }}
             </div>
           </div>
-          <div
-            class="get-it-now"
-            @click="
-              $refs.targetElement.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-              })
-            "
-          >
+          <CustomLink class="get-it-now" :to="`/download/${currentApp.path}/`">
             <i class="icon-get-it-now"></i>Get App
-          </div>
+          </CustomLink>
         </section>
 
         <!-- <GoogleAd ad-slot="7534582229" /> -->
@@ -146,15 +138,13 @@
           <ExpandableText class="expand" :text="currentApp.desc" />
         </section>
 
-        <div ref="targetElement">
-          <!-- <GoogleAd ad-slot="8029406241" class="ad-width" /> -->
-          <adm-slot
-            adm-id="app-mid2"
-            adm-unit="/23197833490/alltools1/alltools1_detail_2"
-            ads-slot="8029406241"
-            class="ad-width"
-          />
-        </div>
+        <!-- <GoogleAd ad-slot="8029406241" class="ad-width" /> -->
+        <adm-slot
+          adm-id="app-mid2"
+          adm-unit="/23197833490/alltools1/alltools1_detail_2"
+          ads-slot="8029406241"
+          class="ad-width"
+        />
 
         <section class="get-the-game">
           <CustomLink class="download" :to="`/download/${currentApp.path}/`"

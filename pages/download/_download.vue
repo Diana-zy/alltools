@@ -142,6 +142,19 @@
           </div>
         </section>
 
+        <a
+          v-if="currentSoftware.android_web_url || currentSoftware.ios_web_url"
+          class="download-now-btn"
+          :href="currentSoftware.android_web_url || currentSoftware.ios_web_url"
+          :rel="
+            isDirectDownload(currentSoftware.android_download_source)
+              ? 'nofollow noopener'
+              : 'noopener'
+          "
+        >
+          <i class="icon-download-cta"></i>Download APK Now
+        </a>
+
         <div ref="storeButtons" class="platform">
           <div
             v-if="currentSoftware.android"
@@ -470,7 +483,8 @@ export default {
   }
 }
 
-.primary-download {
+.primary-download,
+.download-now-btn {
   width: 100%;
   height: 56px;
   border-radius: 32px;
@@ -482,6 +496,11 @@ export default {
   @include center;
   cursor: pointer;
   margin-bottom: 24px;
+}
+// .primary-download 只是滚动到下面的商店按钮，.download-now-btn 直接链到真实下载地址，
+// 是这个页面上第一个"点了就是真下载"的按钮
+.download-now-btn {
+  margin-top: 24px;
 }
 .icon-download-cta {
   @include icon(22px, 22px, "icon-download.png");
@@ -638,7 +657,8 @@ export default {
       height: vw(8);
     }
   }
-  .primary-download {
+  .primary-download,
+  .download-now-btn {
     margin: 0 vw(46) vw(36);
     width: calc(100% - vw(92));
     height: vw(96);
