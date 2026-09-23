@@ -78,7 +78,7 @@
       </section>
 
       <article class="article">
-        <CustomLink to="/bestools/" class="title-h2"
+        <CustomLink to="/rankings/?tab=apps" class="title-h2"
           >Top Apps<div class="title-see-more"><span>View All</span><i class="icon-arrow" /></div
         ></CustomLink>
         <section class="best-tools">
@@ -110,7 +110,7 @@
           class="ad-2"
         />
 
-        <CustomLink to="/best/" class="title-h2"
+        <CustomLink to="/rankings/?tab=games" class="title-h2"
           >Top Games<div class="title-see-more"><span>View All</span><i class="icon-arrow" /></div
         ></CustomLink>
         <section class="top-games">

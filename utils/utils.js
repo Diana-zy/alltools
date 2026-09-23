@@ -38,9 +38,19 @@ export function simulateSearch(value) {
 }
 
 export function generateCustomLink(url) {
-  const targetPath = url;
+  // to 里可能自带查询参数（比如 "/rankings/?tab=apps"），拆出来跟当前页面的追踪参数合并，
+  // 而不是直接拼接产生两个"?"（那样第二个"?"会被当成普通字符，把 tab 的值污染成
+  // "apps?from=home..." 这种脏字符串）。
+  const [rawPath, ownQueryString] = url.split("?");
+  const targetPath = rawPath;
   const currentParams = new URLSearchParams(window.location.search);
   const currentPathname = window.location.pathname;
+
+  if (ownQueryString) {
+    new URLSearchParams(ownQueryString).forEach((value, key) => {
+      currentParams.set(key, value);
+    });
+  }
 
   // 定义路径与类型的映射关系
   const pathTypeMappings = [
