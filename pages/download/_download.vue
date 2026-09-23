@@ -143,14 +143,10 @@
         </section>
 
         <a
-          v-if="currentSoftware.android_web_url || currentSoftware.ios_web_url"
+          v-if="currentSoftware.apkpure_url"
           class="download-now-btn"
-          :href="currentSoftware.android_web_url || currentSoftware.ios_web_url"
-          :rel="
-            isDirectDownload(currentSoftware.android_download_source)
-              ? 'nofollow noopener'
-              : 'noopener'
-          "
+          :href="currentSoftware.apkpure_url"
+          rel="nofollow noopener"
         >
           <i class="icon-download-cta"></i>Download APK Now
         </a>
@@ -159,17 +155,9 @@
           <div
             v-if="currentSoftware.android"
             class="android"
-            :class="{
-              'direct-download': isDirectDownload(currentSoftware.android_download_source),
-              'is-disabled': !currentSoftware.android_web_url
-            }"
+            :class="{ 'is-disabled': !currentSoftware.android_web_url }"
           >
-            <i class="icon-android"></i
-            >{{
-              isDirectDownload(currentSoftware.android_download_source)
-                ? "Download APK"
-                : "Google Play"
-            }}
+            <i class="icon-android"></i>Google Play
             <div v-if="currentSoftware.android_web_url" class="qrcode">
               Android
               <img :src="qrCodeGoogle" alt="qrcode" />
@@ -177,11 +165,7 @@
             <a
               v-if="currentSoftware.android_web_url"
               :href="currentSoftware.android_web_url"
-              :rel="
-                isDirectDownload(currentSoftware.android_download_source)
-                  ? 'nofollow noopener'
-                  : 'noopener'
-              "
+              rel="noopener"
             ></a>
           </div>
 
@@ -202,7 +186,7 @@
             ></a>
           </div>
         </div>
-        <div v-if="isDirectDownload(currentSoftware.android_download_source)" class="tip">
+        <div v-if="currentSoftware.apkpure_url" class="tip">
           * Download provided by APKPure.
         </div>
 
@@ -367,10 +351,6 @@ export default {
       } catch (error) {
         console.error("Error generating QR code:", error);
       }
-    },
-    // download_source 为空时按旧逻辑处理（跳转商店），只有明确是 apkpure_direct 才展示"直接下载"样式
-    isDirectDownload(downloadSource) {
-      return downloadSource === "apkpure_direct";
     }
   }
 };
@@ -575,8 +555,7 @@ export default {
   color: rgba($font1, 0.6);
 }
 
-// 参照 apkuick 的样式改成上下堆叠的整行按钮（Google Play 蓝色 / App Store 黑色），
-// 用 :not() 保住原有 .direct-download（绿色）覆盖优先级，不然会被这里的蓝色覆盖掉
+// 参照 apkuick 的样式改成上下堆叠的整行按钮（Google Play 蓝色 / App Store 黑色）
 .platform {
   flex-direction: column;
   .android,
@@ -585,7 +564,7 @@ export default {
     margin: 0 0 12px;
   }
 }
-.platform .android:not(.direct-download):not(.is-disabled) {
+.platform .android:not(.is-disabled) {
   background: #4285f4;
   box-shadow: 6px 6px 12px 0px rgba(66, 133, 244, 0.24), -6px -6px 12px 0px #ffffff;
 }
