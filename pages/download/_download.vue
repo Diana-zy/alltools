@@ -440,8 +440,8 @@ export default {
   width: 32px;
   height: 32px;
   border-radius: 10px;
-  background: $color4;
-  box-shadow: 6px 6px 12px 0px rgba(114, 35, 10, 0.21), -6px -6px 12px 0px #ffffff;
+  background: #ffffff;
+  border: 1px solid rgba($font1, 0.12);
   @include center;
 }
 .icon-verified {
@@ -472,7 +472,7 @@ export default {
   color: #ffffff;
   font-family: "sesb";
   font-size: 17px;
-  box-shadow: 6px 6px 12px 0px rgba(114, 35, 10, 0.21);
+  box-shadow: none;
   @include center;
   cursor: pointer;
   margin-bottom: 24px;
@@ -500,7 +500,7 @@ export default {
 .info-cell {
   display: flex;
   flex-direction: column;
-  background: $color4;
+  background: #f5f6f8;
   border-radius: 16px;
   padding: 12px 16px;
 }
@@ -566,12 +566,13 @@ export default {
 }
 .platform .android:not(.is-disabled) {
   background: #4285f4;
-  box-shadow: 6px 6px 12px 0px rgba(66, 133, 244, 0.24), -6px -6px 12px 0px #ffffff;
+  box-shadow: none;
 }
 .platform .ios:not(.is-disabled) {
   background: #000000;
   color: #ffffff;
   border: none;
+  box-shadow: none;
 }
 
 @media screen and (max-width: 879px) {

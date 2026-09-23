@@ -4,33 +4,55 @@
     <main class="main">
       <div class="main-left">
         <Breadcrumb :name="currentApp.name" />
-        <section class="application-info">
+
+        <section class="app-header">
           <NuxtImg
             format="auto"
             fit="cover"
-            width="156"
-            height="156"
+            width="72"
+            height="72"
             :src="currentApp.icon"
             :alt="currentApp.name"
             loading="lazy"
             class="icon"
           ></NuxtImg>
-          <div class="info">
-            <div class="name"
-              >{{ currentApp.name }}<i v-if="currentApp.is_verified" class="icon-verified"></i
-            ></div>
-            <div v-if="currentApp.developer" class="developer">{{ currentApp.developer }}</div>
-            <div class="rating">
-              <div class="rating-star">
-                <p :style="{ width: (((currentApp.score || 4.6) / 5) * 100).toFixed(0) + '%' }"></p>
-              </div>
-              {{ currentApp.score || 4.6 }}
-            </div>
+          <div class="header-main">
+            <div class="name">{{ currentApp.name }}</div>
+            <CustomLink
+              v-if="currentApp.category_name"
+              class="category-badge"
+              :to="`/category/${currentApp.category_path}/`"
+              >{{ currentApp.category_name }}</CustomLink
+            >
           </div>
-          <CustomLink class="get-it-now" :to="`/download/${currentApp.path}/`">
-            <i class="icon-get-it-now"></i>Get App
-          </CustomLink>
         </section>
+
+        <div class="stats-row">
+          <div class="stat">
+            <i class="icon-stat-star"></i>
+            <div class="stat-text"
+              ><b>{{ currentApp.score || 4.6 }}</b><span>RATINGS</span></div
+            >
+          </div>
+          <div v-if="currentApp.downloads" class="stat">
+            <i class="icon-stat-download"></i>
+            <div class="stat-text"
+              ><b>{{ currentApp.downloads }}</b><span>DOWNLOADS</span></div
+            >
+          </div>
+          <div v-if="currentApp.content_rating" class="stat">
+            <div class="stat-text"
+              ><b>{{ currentApp.content_rating }}</b><span>AGE</span></div
+            >
+          </div>
+          <div v-if="currentApp.is_verified" class="verified-box"
+            ><i class="icon-verified"></i
+          ></div>
+        </div>
+
+        <CustomLink class="primary-download" :to="`/download/${currentApp.path}/`">
+          <i class="icon-download-cta"></i>Download Latest APK
+        </CustomLink>
 
         <!-- <GoogleAd ad-slot="7534582229" /> -->
         <adm-slot
@@ -367,26 +389,91 @@ export default {
 .shadow-hidden {
   box-shadow: none;
 }
-.application-info {
-  height: auto;
-  min-height: 112px;
-}
-.application-info .info {
-  height: auto;
-  justify-content: center;
-}
-.application-info .name {
+
+// 参照 apkuick 的样式：白色平面背景，不用站内其他地方那套立体阴影配色
+.app-header {
   display: flex;
   align-items: center;
+  margin-top: 24px;
+}
+.app-header .icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+  margin-right: 16px;
+  flex-shrink: 0;
+}
+.header-main .name {
+  font-family: "sesb";
+  font-size: 20px;
+  color: $font1;
+  margin-bottom: 6px;
+}
+.category-badge {
+  display: inline-flex;
+  padding: 2px 12px;
+  border: 1px solid $color2;
+  border-radius: 12px;
+  color: $color2;
+  font-size: 13px;
+  font-family: "sesb";
+}
+
+.stats-row {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+  padding: 16px 0;
+  border-top: 1px solid rgba($font1, 0.08);
+  border-bottom: 1px solid rgba($font1, 0.08);
+}
+.stat {
+  display: flex;
+  align-items: center;
+  margin-right: 32px;
+}
+.stat-text {
+  display: flex;
+  flex-direction: column;
+  b {
+    font-family: "sesb";
+    color: $font1;
+    font-size: 15px;
+    line-height: 18px;
+  }
+  span {
+    font-size: 11px;
+    color: rgba($font1, 0.5);
+    letter-spacing: 0.5px;
+  }
+}
+.icon-stat-star,
+.icon-stat-download {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+.icon-stat-star {
+  @include icon(20px, 20px, "icon-star-rec.png");
+}
+.icon-stat-download {
+  @include icon(20px, 20px, "icon-download.png");
+}
+.verified-box {
+  margin-left: auto;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid rgba($font1, 0.12);
+  @include center;
 }
 .icon-verified {
   width: 16px;
   height: 16px;
-  margin-left: 6px;
   border-radius: 50%;
   background: #2bb673;
   position: relative;
-  flex-shrink: 0;
   &::after {
     content: "";
     position: absolute;
@@ -399,30 +486,73 @@ export default {
     transform: rotate(-45deg);
   }
 }
-.application-info .developer {
-  color: rgba($font1, 0.6);
-  font-size: 14px;
-  margin-top: 4px;
+
+.primary-download {
+  display: flex;
+  width: 100%;
+  height: 56px;
+  border-radius: 32px;
+  background: $color2;
+  color: #ffffff;
+  font-family: "sesb";
+  font-size: 17px;
+  box-shadow: none;
+  @include center;
+  cursor: pointer;
+  margin-bottom: 24px;
 }
-.application-info .rating {
-  margin-top: 6px;
+.icon-download-cta {
+  @include icon(22px, 22px, "icon-download.png");
+  margin-right: 10px;
+  filter: brightness(0) invert(1);
 }
+
 @media screen and (max-width: 879px) {
-  .application-info {
-    height: auto;
-    min-height: vw(160);
+  .app-header {
+    padding: 0 vw(46);
+    margin-top: vw(36);
   }
-  .application-info .info {
-    height: auto;
-    justify-content: center;
+  .app-header .icon {
+    width: vw(120);
+    height: vw(120);
+    border-radius: vw(28);
+    margin-right: vw(24);
   }
-  .application-info .rating {
-    margin-top: vw(8);
+  .header-main .name {
+    font-size: vw(30);
+  }
+  .category-badge {
+    font-size: vw(22);
+    padding: vw(4) vw(20);
+    border-radius: vw(20);
+  }
+  .stats-row {
+    margin: vw(32) vw(46);
+    padding: vw(24) 0;
+  }
+  .stat {
+    margin-right: vw(40);
+  }
+  .stat-text b {
+    font-size: vw(26);
+  }
+  .stat-text span {
+    font-size: vw(20);
+  }
+  .icon-stat-star,
+  .icon-stat-download {
+    width: vw(36);
+    height: vw(36);
+    margin-right: vw(12);
+  }
+  .verified-box {
+    width: vw(56);
+    height: vw(56);
+    border-radius: vw(16);
   }
   .icon-verified {
     width: vw(28);
     height: vw(28);
-    margin-left: vw(8);
     &::after {
       top: vw(6);
       left: vw(6);
@@ -430,11 +560,16 @@ export default {
       height: vw(8);
     }
   }
-  .application-info .developer {
-    font-size: vw(24);
-    margin-top: vw(6);
-    width: vw(320);
-    @include ellipsis;
+  .primary-download {
+    margin: 0 vw(46) vw(36);
+    width: calc(100% - vw(92));
+    height: vw(96);
+    border-radius: vw(48);
+    font-size: vw(28);
+  }
+  .icon-download-cta {
+    width: vw(36);
+    height: vw(36);
   }
 }
 </style>
