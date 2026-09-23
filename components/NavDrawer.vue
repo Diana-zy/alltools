@@ -14,12 +14,50 @@
       <CustomLink to="/bestools/" class="menu-item" @click.native="$emit('close')"
         ><i class="icon-apps"></i>Top Apps</CustomLink
       >
-      <CustomLink to="/games/" class="menu-item" @click.native="$emit('close')"
-        ><i class="icon-games"></i>All Games</CustomLink
-      >
-      <CustomLink to="/apps/" class="menu-item" @click.native="$emit('close')"
-        ><i class="icon-apps"></i>All Apps</CustomLink
-      >
+
+      <div class="menu-group">
+        <div class="menu-item" @click="gamesExpanded = !gamesExpanded"
+          ><i class="icon-games"></i>Games<i
+            class="icon-arrow"
+            :class="{ 'icon-arrow-up': gamesExpanded }"
+          ></i
+        ></div>
+        <div v-if="gamesExpanded" class="submenu">
+          <CustomLink to="/games/" class="submenu-item" @click.native="$emit('close')"
+            >All Games</CustomLink
+          >
+          <CustomLink
+            v-for="item in gameCategories"
+            :key="item.id"
+            :to="`/category/${item.path}/`"
+            class="submenu-item"
+            @click.native="$emit('close')"
+            >{{ item.name }}</CustomLink
+          >
+        </div>
+      </div>
+
+      <div class="menu-group">
+        <div class="menu-item" @click="appsExpanded = !appsExpanded"
+          ><i class="icon-apps"></i>Apps<i
+            class="icon-arrow"
+            :class="{ 'icon-arrow-up': appsExpanded }"
+          ></i
+        ></div>
+        <div v-if="appsExpanded" class="submenu">
+          <CustomLink to="/apps/" class="submenu-item" @click.native="$emit('close')"
+            >All Apps</CustomLink
+          >
+          <CustomLink
+            v-for="item in appCategories"
+            :key="item.id"
+            :to="`/category/${item.path}/`"
+            class="submenu-item"
+            @click.native="$emit('close')"
+            >{{ item.name }}</CustomLink
+          >
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -30,6 +68,40 @@ export default {
     open: {
       type: Boolean,
       default: false
+    }
+  },
+  data() {
+    return {
+      gamesExpanded: false,
+      appsExpanded: false,
+      gameCategories: [],
+      appCategories: [],
+      categoriesLoaded: false
+    };
+  },
+  watch: {
+    open(isOpen) {
+      if (isOpen && !this.categoriesLoaded) {
+        this.fetchCategories();
+      }
+    }
+  },
+  methods: {
+    async fetchCategories() {
+      this.categoriesLoaded = true;
+      try {
+        const response = await this.$axios.$get("/api/game/get_all_category", {
+          params: {
+            site_id: process.env.SITE_ID
+          }
+        });
+        // 只展示这个站点下实际有内容的分类（total > 0），空分类不在导航里出现
+        this.gameCategories = (response.list || []).filter((item) => item.total > 0);
+        this.appCategories = (response.app_list || []).filter((item) => item.total > 0);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+        this.categoriesLoaded = false;
+      }
     }
   }
 };
@@ -88,6 +160,7 @@ export default {
   font-size: 16px;
   color: $font1;
   font-family: "sesb";
+  cursor: pointer;
 }
 
 .icon-home,
@@ -105,5 +178,36 @@ export default {
 }
 .icon-apps {
   @include icon(24px, 24px, "icon-apps.png");
+}
+
+.icon-arrow {
+  width: 8px;
+  height: 8px;
+  margin-left: auto;
+  margin-right: 24px;
+  border-right: 2px solid rgba($font1, 0.5);
+  border-bottom: 2px solid rgba($font1, 0.5);
+  transform: rotate(45deg);
+  transition: transform 0.15s ease;
+  flex-shrink: 0;
+}
+.icon-arrow-up {
+  transform: rotate(-135deg);
+}
+
+.submenu {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 8px;
+}
+
+.submenu-item {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  padding-left: 60px;
+  font-size: 14px;
+  color: rgba($font1, 0.7);
+  @include ellipsis;
 }
 </style>
