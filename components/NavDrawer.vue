@@ -8,49 +8,21 @@
       <CustomLink to="/" class="menu-item" @click.native="$emit('close')"
         ><i class="icon-home"></i>Home</CustomLink
       >
-      <CustomLink to="/best/" class="menu-item" @click.native="$emit('close')"
-        ><i class="icon-games"></i>Top Games</CustomLink
-      >
-      <CustomLink to="/bestools/" class="menu-item" @click.native="$emit('close')"
-        ><i class="icon-apps"></i>Top Apps</CustomLink
+      <CustomLink to="/rankings/" class="menu-item" @click.native="$emit('close')"
+        ><i class="icon-rank"></i>Top Rankings</CustomLink
       >
 
       <div class="menu-group">
-        <div class="menu-item" @click="gamesExpanded = !gamesExpanded"
-          ><i class="icon-games"></i>Games<i
+        <div class="menu-item" @click="categoriesExpanded = !categoriesExpanded"
+          ><i class="icon-categories"></i>Categories<i
             class="icon-arrow"
-            :class="{ 'icon-arrow-up': gamesExpanded }"
+            :class="{ 'icon-arrow-up': categoriesExpanded }"
           ></i
         ></div>
-        <div v-if="gamesExpanded" class="submenu">
-          <CustomLink to="/games/" class="submenu-item" @click.native="$emit('close')"
-            >All Games</CustomLink
-          >
+        <div v-if="categoriesExpanded" class="submenu">
           <CustomLink
-            v-for="item in gameCategories"
-            :key="item.id"
-            :to="`/category/${item.path}/`"
-            class="submenu-item"
-            @click.native="$emit('close')"
-            >{{ item.name }}</CustomLink
-          >
-        </div>
-      </div>
-
-      <div class="menu-group">
-        <div class="menu-item" @click="appsExpanded = !appsExpanded"
-          ><i class="icon-apps"></i>Apps<i
-            class="icon-arrow"
-            :class="{ 'icon-arrow-up': appsExpanded }"
-          ></i
-        ></div>
-        <div v-if="appsExpanded" class="submenu">
-          <CustomLink to="/apps/" class="submenu-item" @click.native="$emit('close')"
-            >All Apps</CustomLink
-          >
-          <CustomLink
-            v-for="item in appCategories"
-            :key="item.id"
+            v-for="item in allCategories"
+            :key="`${item.kind}-${item.id}`"
             :to="`/category/${item.path}/`"
             class="submenu-item"
             @click.native="$emit('close')"
@@ -72,10 +44,8 @@ export default {
   },
   data() {
     return {
-      gamesExpanded: false,
-      appsExpanded: false,
-      gameCategories: [],
-      appCategories: [],
+      categoriesExpanded: false,
+      allCategories: [],
       categoriesLoaded: false
     };
   },
@@ -95,9 +65,11 @@ export default {
             site_id: process.env.SITE_ID
           }
         });
-        // 只展示这个站点下实际有内容的分类（total > 0），空分类不在导航里出现
-        this.gameCategories = (response.list || []).filter((item) => item.total > 0);
-        this.appCategories = (response.app_list || []).filter((item) => item.total > 0);
+        // 只展示这个站点下实际有内容的分类（total > 0），空分类不在导航里出现；
+        // Games/Apps 分类合并成一个平铺列表，不再分组
+        this.allCategories = [...(response.list || []), ...(response.app_list || [])].filter(
+          (item) => item.total > 0
+        );
       } catch (error) {
         console.error("Error fetching categories:", error);
         this.categoriesLoaded = false;
@@ -164,8 +136,8 @@ export default {
 }
 
 .icon-home,
-.icon-games,
-.icon-apps {
+.icon-rank,
+.icon-categories {
   width: 24px;
   height: 24px;
   margin-right: 12px;
@@ -173,11 +145,11 @@ export default {
 .icon-home {
   @include icon(24px, 24px, "icon-home.png");
 }
-.icon-games {
-  @include icon(24px, 24px, "icon-games.png");
+.icon-rank {
+  @include icon(24px, 24px, "icon-rocket.png");
 }
-.icon-apps {
-  @include icon(24px, 24px, "icon-apps.png");
+.icon-categories {
+  @include icon(24px, 24px, "icon-categories.png");
 }
 
 .icon-arrow {
