@@ -37,8 +37,10 @@ export default {
 
 @media screen and (max-width: 879px) {
   .description-text {
-    padding: 0;
     font-size: vw(24);
+  }
+  .text-content {
+    padding: 0 vw(46);
   }
 }
 </style>

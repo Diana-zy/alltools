@@ -478,12 +478,16 @@ export default {
 }
 .screenshots .swiper-slide {
   width: auto !important;
+  max-width: 80vw !important;
   height: 250px !important;
+  overflow: hidden;
   margin-right: 16px;
   .img {
+    display: block;
     height: 250px !important;
     width: auto !important;
-    max-width: none !important;
+    max-width: 80vw !important;
+    max-height: 250px !important;
     object-fit: contain;
     border-radius: 16px;
     border: 1px solid #eef0f3;
@@ -522,8 +526,10 @@ export default {
     padding-left: vw(24);
   }
   .screenshots {
-    padding: 0 vw(46);
     margin: vw(36) 0;
+  }
+  .screenshots .swiper-bg {
+    padding: 0 vw(46);
   }
   .screenshots .swiper-slide .img {
     height: 250px;

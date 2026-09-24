@@ -478,9 +478,63 @@ export default {
   filter: brightness(0) invert(1);
 }
 
+// game.scss 里的表格样式，这个页面没有 import game.scss（走的是 download.scss），
+// 直接抄一份放在自己的 scoped style 里，靠 scoped 属性选择器天然盖过 download.scss
+// 里同名的 .icon-android/.icon-ios/.main 等全局定义，不用改 download.scss
 .table-content {
   box-shadow: none;
   background: #f5f6f8;
+  border-radius: 24px;
+  padding: 24px 24px 24px 6px;
+  margin: 32px 0;
+}
+.table-info {
+  display: flex;
+  flex-direction: column;
+  border-collapse: collapse;
+  width: 100%;
+  font-family: "sesb";
+  color: $font1;
+}
+$table-icon-categories: category, os, size, version, updated, downloads, developer,
+  content-rating, price;
+@each $category in $table-icon-categories {
+  .table-cell .icon-#{$category} {
+    @include icon(20px, 20px, "icon-#{$category}.png");
+    margin-right: 8px;
+  }
+}
+.table-cell .icon-android {
+  @include icon(16px, 16px, "icon-android3.png");
+  margin-right: 8px;
+}
+.table-cell .icon-ios {
+  @include icon(16px, 16px, "icon-ios3.png");
+  margin-right: 8px;
+}
+.link-category {
+  color: $color2;
+  text-decoration-line: underline;
+}
+.table-row {
+  display: flex;
+}
+.table-cell {
+  display: flex;
+  align-items: center;
+  width: 184px;
+  height: 32px;
+  padding-left: 18px;
+  color: rgba($font1, 0.6);
+}
+.table-cell:last-child {
+  width: auto;
+  padding-left: 32px;
+  border-right: none;
+  color: $font1;
+}
+.table-row:last-child {
+  border-bottom: none;
 }
 
 .screenshots {
@@ -500,12 +554,16 @@ export default {
 }
 .swiper-slide {
   width: auto !important;
+  max-width: 80vw !important;
   height: 288px !important;
+  overflow: hidden;
   margin-right: 16px;
   .img {
+    display: block;
     height: 288px !important;
     width: auto !important;
-    max-width: none !important;
+    max-width: 80vw !important;
+    max-height: 288px !important;
     object-fit: contain;
     border-radius: 16px;
     border: 1px solid #eef0f3;
@@ -561,6 +619,10 @@ export default {
 }
 .platform .icon-android {
   @include icon(28px, 28px, "icon-play-color.png");
+  margin-right: 8px;
+}
+.platform .icon-ios {
+  @include icon(28px, 28px, "icon-ios-color.png");
   margin-right: 8px;
 }
 
@@ -639,8 +701,10 @@ export default {
     padding-left: vw(24);
   }
   .screenshots {
-    padding: 0 vw(46);
     margin: vw(36) 0;
+  }
+  .swiper-bg {
+    padding: 0 vw(46);
   }
   .swiper-slide .img {
     border-radius: vw(24);
@@ -653,7 +717,8 @@ export default {
       border-radius: vw(48);
     }
   }
-  .platform .icon-android {
+  .platform .icon-android,
+  .platform .icon-ios {
     width: vw(44);
     height: vw(44);
     margin-right: vw(16);
