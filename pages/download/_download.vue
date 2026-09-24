@@ -65,15 +65,6 @@
           class="ad-width"
         />
 
-        <!-- 页内广告位：跟其他 adm-slot 一样走 BI 广告投放系统，ad-unit/ads-slot 需要在 Google Ad
-        Manager/AdSense 后台新建一个真实广告位后再替换成正式 ID，现在这两个是占位值。 -->
-        <adm-slot
-          adm-id="download-discover1"
-          adm-unit="/23197833490/alltools1/alltools1_detail_discover_1"
-          ads-slot="0000000001"
-          class="ad-width"
-        />
-
         <section class="info-grid-section">
           <h2 class="title-h2">About this app</h2>
           <div class="info-grid">
@@ -114,8 +105,6 @@
           </div>
         </section>
 
-        <DescriptionText :text="currentSoftware.desc" />
-
         <section v-if="currentSoftware.banner_list.length > 0" class="screenshots">
           <h2 class="title-h2">Screenshots</h2>
           <div class="swiper-bg">
@@ -124,7 +113,7 @@
                 <div v-for="(banner, i) in currentSoftware.banner_list" :key="i" class="swiper-slide">
                   <NuxtImg
                     format="auto"
-                    fit="cover"
+                    fit="contain"
                     height="288"
                     :src="banner"
                     :alt="currentSoftware.name"
@@ -194,16 +183,9 @@
           class="ad-width"
         />
 
-        <adm-slot
-          adm-id="download-discover2"
-          adm-unit="/23197833490/alltools1/alltools1_detail_discover_2"
-          ads-slot="0000000002"
-          class="ad-width"
-        />
-
         <h2 class="title-h2">Related {{ isApp ? "Apps" : "Games" }}</h2>
-        <section class="box-small-bg">
-          <ContentItemSmall
+        <section class="box-common">
+          <ContentItemDetail
             v-for="(item, index) in relatedSoftwares"
             :key="index"
             :index="index"
@@ -374,6 +356,7 @@ export default {
   border-radius: 20px;
   margin-right: 16px;
   flex-shrink: 0;
+  border: 1px solid #eef0f3;
 }
 .header-main .name {
   font-family: "sesb";
@@ -394,6 +377,7 @@ export default {
 .stats-row {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin: 20px 0;
   padding: 16px 0;
   border-top: 1px solid rgba($font1, 0.08);
@@ -402,7 +386,6 @@ export default {
 .stat {
   display: flex;
   align-items: center;
-  margin-right: 32px;
 }
 .stat-text {
   display: flex;
@@ -432,7 +415,6 @@ export default {
   @include icon(20px, 20px, "icon-download.png");
 }
 .verified-box {
-  margin-left: auto;
   width: 32px;
   height: 32px;
   border-radius: 10px;
@@ -468,10 +450,24 @@ export default {
   color: #ffffff;
   font-family: "sesb";
   font-size: 17px;
-  box-shadow: none;
   @include center;
   cursor: pointer;
   margin-bottom: 24px;
+}
+.primary-download {
+  animation: breathe 1.8s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(253, 107, 33, 0.45);
+  }
+  50% {
+    transform: scale(1.03);
+    box-shadow: 0 0 0 10px rgba(253, 107, 33, 0);
+  }
 }
 // .primary-download 只是滚动到下面的商店按钮，.download-now-btn 直接链到真实下载地址，
 // 是这个页面上第一个"点了就是真下载"的按钮
@@ -517,9 +513,18 @@ export default {
 .screenshots {
   margin: 24px 0;
 }
+.screenshots .title-h2 {
+  margin: 10px 0 5px;
+  padding: 0;
+  height: auto;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: left;
+}
 .swiper-bg {
   margin-top: 16px;
   overflow: hidden;
+  position: relative;
 }
 .swiper-box {
   width: 100%;
@@ -529,7 +534,10 @@ export default {
   margin-right: 16px;
   .img {
     height: 288px;
+    width: auto;
+    object-fit: contain;
     border-radius: 16px;
+    border: 1px solid #eef0f3;
   }
 }
 .swiper-tool {
@@ -541,6 +549,29 @@ export default {
     position: static;
     width: auto;
   }
+}
+.swiper-button-prev,
+.swiper-button-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  background: $color2;
+  border-radius: 50%;
+  z-index: 2;
+  &::after {
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+  }
+}
+.swiper-button-prev {
+  left: 8px;
+}
+.swiper-button-next {
+  right: 8px;
 }
 
 // 参照 apkuick 的样式改成上下堆叠的整行按钮（Google Play 蓝色 / App Store 黑色）
@@ -562,6 +593,10 @@ export default {
   color: #ffffff;
   border: none;
   box-shadow: none;
+}
+.platform .icon-android {
+  @include icon(24px, 24px, "icon-play-color.png");
+  margin-right: 8px;
 }
 
 @media screen and (max-width: 879px) {
@@ -595,9 +630,6 @@ export default {
   .stats-row {
     margin: vw(32) vw(46);
     padding: vw(24) 0;
-  }
-  .stat {
-    margin-right: vw(40);
   }
   .stat-text b {
     font-size: vw(26);
@@ -671,6 +703,11 @@ export default {
       height: vw(96);
       border-radius: vw(48);
     }
+  }
+  .platform .icon-android {
+    width: vw(44);
+    height: vw(44);
+    margin-right: vw(16);
   }
 }
 </style>

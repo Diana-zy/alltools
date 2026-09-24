@@ -1,36 +1,40 @@
 <template>
   <div v-if="open" class="drawer-root">
-    <div class="backdrop" @click="$emit('close')"></div>
-    <div class="panel">
-      <div class="panel-header">
-        <span class="close-btn" @click="$emit('close')">&times;</span>
-      </div>
-      <CustomLink to="/" class="menu-item" @click.native="$emit('close')"
-        ><i class="icon-home"></i>Home</CustomLink
-      >
-      <CustomLink to="/rankings/" class="menu-item" @click.native="$emit('close')"
-        ><i class="icon-rank"></i>Top Rankings</CustomLink
-      >
+    <transition name="drawer-fade">
+      <div class="backdrop" @click="$emit('close')"></div>
+    </transition>
+    <transition name="drawer-slide">
+      <div class="panel">
+        <div class="panel-header">
+          <span class="close-btn" @click="$emit('close')">&times;</span>
+        </div>
+        <CustomLink to="/" class="menu-item" @click.native="$emit('close')"
+          ><i class="icon-home"></i>Home</CustomLink
+        >
+        <CustomLink to="/rankings/" class="menu-item" @click.native="$emit('close')"
+          ><i class="icon-rank"></i>Top Rankings</CustomLink
+        >
 
-      <div class="menu-group">
-        <div class="menu-item" @click="categoriesExpanded = !categoriesExpanded"
-          ><i class="icon-categories"></i>Categories<i
-            class="icon-arrow"
-            :class="{ 'icon-arrow-up': categoriesExpanded }"
-          ></i
-        ></div>
-        <div v-if="categoriesExpanded" class="submenu">
-          <CustomLink
-            v-for="item in allCategories"
-            :key="`${item.kind}-${item.id}`"
-            :to="`/category/${item.path}/`"
-            class="submenu-item"
-            @click.native="$emit('close')"
-            >{{ item.name }}</CustomLink
-          >
+        <div class="menu-group">
+          <div class="menu-item" @click="categoriesExpanded = !categoriesExpanded"
+            ><i class="icon-categories"></i>Categories<i
+              class="icon-arrow"
+              :class="{ 'icon-arrow-up': categoriesExpanded }"
+            ></i
+          ></div>
+          <div v-if="categoriesExpanded" class="submenu">
+            <CustomLink
+              v-for="item in allCategories"
+              :key="`${item.kind}-${item.id}`"
+              :to="`/category/${item.path}/`"
+              class="submenu-item"
+              @click.native="$emit('close')"
+              >{{ item.name }}</CustomLink
+            >
+          </div>
         </div>
       </div>
-    </div>
+    </transition>
   </div>
 </template>
 
@@ -96,6 +100,24 @@ export default {
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.4);
+}
+
+.drawer-fade-enter-active,
+.drawer-fade-leave-active {
+  transition: opacity 0.25s ease;
+}
+.drawer-fade-enter,
+.drawer-fade-leave-to {
+  opacity: 0;
+}
+
+.drawer-slide-enter-active,
+.drawer-slide-leave-active {
+  transition: transform 0.28s ease;
+}
+.drawer-slide-enter,
+.drawer-slide-leave-to {
+  transform: translateX(-100%);
 }
 
 .panel {

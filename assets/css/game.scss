@@ -86,7 +86,7 @@
   color: $font1;
 }
 
-$categories: category, os, size, version, updated;
+$categories: category, os, size, version, updated, downloads, developer, content-rating, price;
 @each $category in $categories {
   .icon-#{$category} {
     @include icon(20px, 20px, "icon-#{$category}.png");
@@ -483,7 +483,7 @@ $categories: category, os, size, version, updated;
     font-size: vw(24);
   }
 
-  $categories: category, os, size, version, updated;
+  $categories: category, os, size, version, updated, downloads, developer, content-rating, price;
   @each $category in $categories {
     .icon-#{$category} {
       width: vw(40);

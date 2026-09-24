@@ -28,7 +28,8 @@ export default {
 <style lang="scss" scoped>
 .text-content {
   line-height: 1.5;
-  color: rgba($font1, 0.6);
+  font-size: 14px;
+  color: $font1;
   text-align: left;
   word-break: break-word;
   white-space: pre-line;

@@ -96,7 +96,7 @@
                 <div v-for="(banner, i) in currentApp.banner_list" :key="i" class="swiper-slide">
                   <NuxtImg
                     format="auto"
-                    fit="cover"
+                    fit="contain"
                     height="250"
                     :src="banner"
                     :alt="currentApp.name"
@@ -113,6 +113,15 @@
             </div>
           </div>
         </section>
+
+        <!-- 页内广告位：跟其他 adm-slot 一样走 BI 广告投放系统，ad-unit/ads-slot 需要在 Google Ad
+        Manager/AdSense 后台新建一个真实广告位后再替换成正式 ID，现在这个是占位值。 -->
+        <adm-slot
+          adm-id="app-mid1b"
+          adm-unit="/23197833490/alltools1/alltools1_detail_1b"
+          ads-slot="0000000003"
+          class="ad-width"
+        />
 
         <section class="table-content">
           <div class="table-info">
@@ -144,19 +153,19 @@
               <div class="table-cell">{{ currentApp.updated_time }}</div>
             </div>
             <div v-if="currentApp.downloads" class="table-row">
-              <div class="table-cell">Downloads</div>
+              <div class="table-cell"><i class="icon-downloads"></i>Downloads</div>
               <div class="table-cell">{{ currentApp.downloads }}</div>
             </div>
             <div v-if="currentApp.developer" class="table-row">
-              <div class="table-cell">Developer</div>
+              <div class="table-cell"><i class="icon-developer"></i>Developer</div>
               <div class="table-cell">{{ currentApp.developer }}</div>
             </div>
             <div v-if="currentApp.content_rating" class="table-row">
-              <div class="table-cell">Content Rating</div>
+              <div class="table-cell"><i class="icon-content-rating"></i>Content Rating</div>
               <div class="table-cell">{{ currentApp.content_rating }}</div>
             </div>
             <div v-if="currentApp.price" class="table-row">
-              <div class="table-cell">Price</div>
+              <div class="table-cell"><i class="icon-price"></i>Price</div>
               <div class="table-cell">{{ currentApp.price }}</div>
             </div>
           </div>
@@ -174,8 +183,8 @@
 
         <h2 class="title-h2">Related Apps</h2>
 
-        <section class="box-small-bg">
-          <ContentItemSmall
+        <section class="box-common">
+          <ContentItemDetail
             v-for="(item, index) in relatedApps"
             :key="index"
             :index="index"
@@ -328,6 +337,7 @@ export default {
   border-radius: 20px;
   margin-right: 16px;
   flex-shrink: 0;
+  border: 1px solid #eef0f3;
 }
 .header-main .name {
   font-family: "sesb";
@@ -348,6 +358,7 @@ export default {
 .stats-row {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin: 20px 0;
   padding: 16px 0;
   border-top: 1px solid rgba($font1, 0.08);
@@ -356,7 +367,6 @@ export default {
 .stat {
   display: flex;
   align-items: center;
-  margin-right: 32px;
 }
 .stat-text {
   display: flex;
@@ -386,7 +396,6 @@ export default {
   @include icon(20px, 20px, "icon-download.png");
 }
 .verified-box {
-  margin-left: auto;
   width: 32px;
   height: 32px;
   border-radius: 10px;
@@ -422,10 +431,22 @@ export default {
   color: #ffffff;
   font-family: "sesb";
   font-size: 17px;
-  box-shadow: none;
   @include center;
   cursor: pointer;
   margin-bottom: 24px;
+  animation: breathe 1.8s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(253, 107, 33, 0.45);
+  }
+  50% {
+    transform: scale(1.03);
+    box-shadow: 0 0 0 10px rgba(253, 107, 33, 0);
+  }
 }
 .icon-download-cta {
   @include icon(22px, 22px, "icon-download.png");
@@ -445,9 +466,18 @@ export default {
 .screenshots {
   margin: 24px 0;
 }
+.screenshots .title-h2 {
+  margin: 10px 0 5px;
+  padding: 0;
+  height: auto;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: left;
+}
 .screenshots .swiper-bg {
   margin-top: 16px;
   overflow: hidden;
+  position: relative;
 }
 .screenshots .swiper-box {
   width: 100%;
@@ -457,7 +487,10 @@ export default {
   margin-right: 16px;
   .img {
     height: 250px;
+    width: auto;
+    object-fit: contain;
     border-radius: 16px;
+    border: 1px solid #eef0f3;
   }
 }
 .screenshots .swiper-tool {
@@ -470,8 +503,34 @@ export default {
     width: auto;
   }
 }
+.screenshots .swiper-button-prev,
+.screenshots .swiper-button-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  background: $color2;
+  border-radius: 50%;
+  z-index: 2;
+  &::after {
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+  }
+}
+.screenshots .swiper-button-prev {
+  left: 8px;
+}
+.screenshots .swiper-button-next {
+  right: 8px;
+}
 
 @media screen and (max-width: 879px) {
+  .table-cell:last-child {
+    padding-left: vw(24);
+  }
   .screenshots {
     padding: 0 vw(46);
     margin: vw(36) 0;
@@ -501,9 +560,6 @@ export default {
   .stats-row {
     margin: vw(32) vw(46);
     padding: vw(24) 0;
-  }
-  .stat {
-    margin-right: vw(40);
   }
   .stat-text b {
     font-size: vw(26);

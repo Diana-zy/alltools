@@ -205,7 +205,6 @@ export default {
     height: vw(80);
     border-radius: vw(24);
     background: #ffffff;
-    border: 1px solid #eef0f3;
     margin-right: vw(36);
   }
 
@@ -218,8 +217,11 @@ export default {
     width: vw(320);
     background-color: #ffffff;
     background-size: vw(232) vw(64);
-    border: 1px solid #eef0f3;
     border-radius: vw(60);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
   }
 
   .pc-search {
@@ -233,7 +235,6 @@ export default {
     height: vw(80);
     border-radius: vw(24);
     background: #ffffff;
-    border: 1px solid #eef0f3;
     margin-left: vw(32);
   }
 
@@ -243,7 +244,6 @@ export default {
 
   .home-icon {
     background: #ffffff;
-    border: 1px solid #eef0f3;
     box-shadow: none;
   }
 
