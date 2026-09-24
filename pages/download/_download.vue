@@ -454,7 +454,8 @@ export default {
   cursor: pointer;
   margin-bottom: 24px;
 }
-.primary-download {
+.primary-download,
+.download-now-btn {
   animation: breathe 1.8s ease-in-out infinite;
 }
 
@@ -624,6 +625,10 @@ $table-icon-categories: category, os, size, version, updated, downloads, develop
 .platform .icon-ios {
   @include icon(28px, 28px, "icon-ios-color.png");
   margin-right: 8px;
+}
+.platform .is-disabled .icon-android,
+.platform .is-disabled .icon-ios {
+  filter: grayscale(1) opacity(0.5);
 }
 
 @media screen and (max-width: 879px) {
