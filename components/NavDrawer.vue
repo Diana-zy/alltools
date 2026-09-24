@@ -146,7 +146,7 @@ export default {
   @include icon(24px, 24px, "icon-home.png");
 }
 .icon-rank {
-  @include icon(24px, 24px, "icon-rocket.png");
+  @include icon(24px, 24px, "icon-rank.png");
 }
 .icon-categories {
   @include icon(24px, 24px, "icon-categories.png");
