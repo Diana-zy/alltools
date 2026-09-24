@@ -465,7 +465,11 @@ export default {
   margin: 24px 0;
 }
 .screenshots .swiper-bg {
-  margin-top: 16px;
+  margin: 16px 0 0 !important;
+  padding: 0;
+  height: auto !important;
+  border-radius: 0 !important;
+  display: block !important;
 }
 .screenshots .swiper-box {
   width: 100%;
@@ -493,21 +497,31 @@ export default {
     border: 1px solid #eef0f3;
   }
 }
+.screenshots .swiper-tool {
+  position: static !important;
+  top: auto !important;
+  left: auto !important;
+  width: auto !important;
+  height: 0 !important;
+  margin: 0 !important;
+  display: block !important;
+}
 .screenshots .swiper-tool .swiper-pagination {
-  display: none;
+  display: none !important;
 }
 .screenshots .swiper-button-prev,
 .screenshots .swiper-button-next {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 32px;
-  height: 32px;
-  margin: 0;
+  position: absolute !important;
+  top: 50% !important;
+  bottom: auto !important;
+  transform: translateY(-50%) !important;
+  width: 32px !important;
+  height: 32px !important;
+  margin: 0 !important;
   background: $color2;
   border-radius: 50%;
   z-index: 2;
-  display: flex;
+  display: flex !important;
   &::after {
     color: #fff;
     font-size: 14px;
