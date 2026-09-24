@@ -218,6 +218,7 @@ export default {
     background-color: #ffffff;
     background-size: vw(232) vw(64);
     border-radius: vw(60);
+    border: none;
     position: absolute;
     left: 50%;
     top: 50%;

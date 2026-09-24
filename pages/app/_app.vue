@@ -298,12 +298,9 @@ export default {
     return {
       swiperOption: {
         slidesPerView: "auto",
+        loop: true,
         autoplay: {
           delay: 3000
-        },
-        pagination: {
-          el: ".swiper-pagination",
-          clickable: true
         },
         navigation: {
           nextEl: ".swiper-button-next",
@@ -330,6 +327,9 @@ export default {
   display: flex;
   align-items: center;
   margin-top: 24px;
+}
+.app-header .header-main {
+  padding: 0;
 }
 .app-header .icon {
   width: 100px;
@@ -440,11 +440,9 @@ export default {
 @keyframes breathe {
   0%,
   100% {
-    transform: scale(1);
     box-shadow: 0 0 0 0 rgba(253, 107, 33, 0.45);
   }
   50% {
-    transform: scale(1.03);
     box-shadow: 0 0 0 10px rgba(253, 107, 33, 0);
   }
 }
@@ -466,42 +464,33 @@ export default {
 .screenshots {
   margin: 24px 0;
 }
-.screenshots .title-h2 {
-  margin: 10px 0 5px;
-  padding: 0;
-  height: auto;
-  font-size: 18px;
-  font-weight: bold;
-  text-align: left;
-}
 .screenshots .swiper-bg {
   margin-top: 16px;
-  overflow: hidden;
-  position: relative;
 }
 .screenshots .swiper-box {
   width: 100%;
+  height: auto !important;
+  overflow: hidden;
+  position: relative;
+}
+.screenshots .swiper-wrapper {
+  height: auto !important;
 }
 .screenshots .swiper-slide {
-  width: auto;
+  width: auto !important;
+  height: 250px !important;
   margin-right: 16px;
   .img {
-    height: 250px;
-    width: auto;
+    height: 250px !important;
+    width: auto !important;
+    max-width: none !important;
     object-fit: contain;
     border-radius: 16px;
     border: 1px solid #eef0f3;
   }
 }
-.screenshots .swiper-tool {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 12px;
-  .swiper-pagination {
-    position: static;
-    width: auto;
-  }
+.screenshots .swiper-tool .swiper-pagination {
+  display: none;
 }
 .screenshots .swiper-button-prev,
 .screenshots .swiper-button-next {
@@ -514,6 +503,7 @@ export default {
   background: $color2;
   border-radius: 50%;
   z-index: 2;
+  display: flex;
   &::after {
     color: #fff;
     font-size: 14px;

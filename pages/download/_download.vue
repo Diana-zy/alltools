@@ -65,42 +65,50 @@
           class="ad-width"
         />
 
-        <section class="info-grid-section">
-          <h2 class="title-h2">About this app</h2>
-          <div class="info-grid">
-            <div class="info-cell">
-              <span class="label">Name</span>
-              <span class="value">{{ currentSoftware.name }}</span>
+        <section class="table-content">
+          <div class="table-info">
+            <div class="table-row">
+              <div class="table-cell"><i class="icon-category"></i>Category</div>
+              <div class="table-cell">
+                <CustomLink :to="`/category/${currentSoftware.category_path}/`" class="link-category">{{
+                  currentSoftware.category_name
+                }}</CustomLink>
+              </div>
             </div>
-            <div v-if="currentSoftware.category_name" class="info-cell">
-              <span class="label">Category</span>
-              <span class="value">{{ currentSoftware.category_name }}</span>
+            <div class="table-row">
+              <div class="table-cell"><i class="icon-os"></i>OS</div>
+              <div class="table-cell"
+                ><i v-if="currentSoftware.android" class="icon-android"></i
+                ><i v-if="currentSoftware.ios" class="icon-ios"></i
+              ></div>
             </div>
-            <div v-if="currentSoftware.price" class="info-cell">
-              <span class="label">Price</span>
-              <span class="value">{{ currentSoftware.price }}</span>
+            <div class="table-row">
+              <div class="table-cell"><i class="icon-size"></i>Size</div>
+              <div class="table-cell">{{ currentSoftware.apk_size || "--" }}</div>
             </div>
-            <div class="info-cell">
-              <span class="label">Safety</span>
-              <span class="value">{{
-                currentSoftware.is_verified ? "100% Safe" : "Unverified"
-              }}</span>
+            <div class="table-row">
+              <div class="table-cell"><i class="icon-version"></i>Version</div>
+              <div class="table-cell">{{ currentSoftware.version }}</div>
             </div>
-            <div v-if="currentSoftware.developer" class="info-cell">
-              <span class="label">Developer</span>
-              <span class="value">{{ currentSoftware.developer }}</span>
+            <div class="table-row">
+              <div class="table-cell"><i class="icon-updated"></i>Updated</div>
+              <div class="table-cell">{{ currentSoftware.updated_time }}</div>
             </div>
-            <div v-if="currentSoftware.version" class="info-cell">
-              <span class="label">Version</span>
-              <span class="value">{{ currentSoftware.version }}</span>
+            <div v-if="currentSoftware.downloads" class="table-row">
+              <div class="table-cell"><i class="icon-downloads"></i>Downloads</div>
+              <div class="table-cell">{{ currentSoftware.downloads }}</div>
             </div>
-            <div v-if="currentSoftware.apk_size" class="info-cell">
-              <span class="label">Size</span>
-              <span class="value">{{ currentSoftware.apk_size }}</span>
+            <div v-if="currentSoftware.developer" class="table-row">
+              <div class="table-cell"><i class="icon-developer"></i>Developer</div>
+              <div class="table-cell">{{ currentSoftware.developer }}</div>
             </div>
-            <div v-if="currentSoftware.updated_time" class="info-cell">
-              <span class="label">Updated</span>
-              <span class="value">{{ currentSoftware.updated_time }}</span>
+            <div v-if="currentSoftware.content_rating" class="table-row">
+              <div class="table-cell"><i class="icon-content-rating"></i>Content Rating</div>
+              <div class="table-cell">{{ currentSoftware.content_rating }}</div>
+            </div>
+            <div v-if="currentSoftware.price" class="table-row">
+              <div class="table-cell"><i class="icon-price"></i>Price</div>
+              <div class="table-cell">{{ currentSoftware.price }}</div>
             </div>
           </div>
         </section>
@@ -141,11 +149,7 @@
         </a>
 
         <div ref="storeButtons" class="platform">
-          <div
-            v-if="currentSoftware.android"
-            class="android"
-            :class="{ 'is-disabled': !currentSoftware.android_web_url }"
-          >
+          <div class="android" :class="{ 'is-disabled': !currentSoftware.android_web_url }">
             <i class="icon-android"></i>Google Play
             <div v-if="currentSoftware.android_web_url" class="qrcode">
               Android
@@ -158,11 +162,7 @@
             ></a>
           </div>
 
-          <div
-            v-if="currentSoftware.ios"
-            class="ios"
-            :class="{ 'is-disabled': !currentSoftware.ios_web_url }"
-          >
+          <div class="ios" :class="{ 'is-disabled': !currentSoftware.ios_web_url }">
             <i class="icon-ios"></i>App Store
             <div v-if="currentSoftware.ios_web_url" class="qrcode">
               iOS
@@ -295,12 +295,9 @@ export default {
       qrCodeIos: "",
       swiperOption: {
         slidesPerView: "auto",
+        loop: true,
         autoplay: {
           delay: 3000
-        },
-        pagination: {
-          el: ".swiper-pagination",
-          clickable: true
         },
         navigation: {
           nextEl: ".swiper-button-next",
@@ -349,6 +346,9 @@ export default {
   display: flex;
   align-items: center;
   margin-top: 24px;
+}
+.app-header .header-main {
+  padding: 0;
 }
 .app-header .icon {
   width: 100px;
@@ -461,11 +461,9 @@ export default {
 @keyframes breathe {
   0%,
   100% {
-    transform: scale(1);
     box-shadow: 0 0 0 0 rgba(253, 107, 33, 0.45);
   }
   50% {
-    transform: scale(1.03);
     box-shadow: 0 0 0 10px rgba(253, 107, 33, 0);
   }
 }
@@ -480,75 +478,41 @@ export default {
   filter: brightness(0) invert(1);
 }
 
-.info-grid-section {
-  margin: 24px 0;
-}
-.info-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: 16px;
-}
-.info-cell {
-  display: flex;
-  flex-direction: column;
+.table-content {
+  box-shadow: none;
   background: #f5f6f8;
-  border-radius: 16px;
-  padding: 12px 16px;
-}
-.info-cell .label {
-  font-size: 12px;
-  color: rgba($font1, 0.5);
-  margin-bottom: 4px;
-}
-.info-cell .value {
-  font-family: "sesb";
-  color: $font1;
-  font-size: 15px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .screenshots {
   margin: 24px 0;
 }
-.screenshots .title-h2 {
-  margin: 10px 0 5px;
-  padding: 0;
-  height: auto;
-  font-size: 18px;
-  font-weight: bold;
-  text-align: left;
-}
 .swiper-bg {
   margin-top: 16px;
-  overflow: hidden;
-  position: relative;
 }
 .swiper-box {
   width: 100%;
+  height: auto !important;
+  overflow: hidden;
+  position: relative;
+}
+.swiper-wrapper {
+  height: auto !important;
 }
 .swiper-slide {
-  width: auto;
+  width: auto !important;
+  height: 288px !important;
   margin-right: 16px;
   .img {
-    height: 288px;
-    width: auto;
+    height: 288px !important;
+    width: auto !important;
+    max-width: none !important;
     object-fit: contain;
     border-radius: 16px;
     border: 1px solid #eef0f3;
   }
 }
-.swiper-tool {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 12px;
-  .swiper-pagination {
-    position: static;
-    width: auto;
-  }
+.swiper-tool .swiper-pagination {
+  display: none;
 }
 .swiper-button-prev,
 .swiper-button-next {
@@ -561,6 +525,7 @@ export default {
   background: $color2;
   border-radius: 50%;
   z-index: 2;
+  display: flex;
   &::after {
     color: #fff;
     font-size: 14px;
@@ -585,7 +550,7 @@ export default {
   }
 }
 .platform .android:not(.is-disabled) {
-  background: #4285f4;
+  background: #4b9df6;
   box-shadow: none;
 }
 .platform .ios:not(.is-disabled) {
@@ -595,7 +560,7 @@ export default {
   box-shadow: none;
 }
 .platform .icon-android {
-  @include icon(24px, 24px, "icon-play-color.png");
+  @include icon(28px, 28px, "icon-play-color.png");
   margin-right: 8px;
 }
 
@@ -670,30 +635,14 @@ export default {
     width: vw(36);
     height: vw(36);
   }
-  .info-grid-section {
-    padding: 0 vw(46);
-    margin: vw(36) 0;
-  }
-  .info-grid {
-    gap: vw(20);
-    margin-top: vw(24);
-  }
-  .info-cell {
-    border-radius: vw(24);
-    padding: vw(20) vw(24);
-  }
-  .info-cell .label {
-    font-size: vw(20);
-  }
-  .info-cell .value {
-    font-size: vw(26);
+  .table-cell:last-child {
+    padding-left: vw(24);
   }
   .screenshots {
     padding: 0 vw(46);
     margin: vw(36) 0;
   }
   .swiper-slide .img {
-    height: vw(400);
     border-radius: vw(24);
   }
   .platform {
