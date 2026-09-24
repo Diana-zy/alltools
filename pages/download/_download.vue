@@ -506,11 +506,11 @@ $table-icon-categories: category, os, size, version, updated, downloads, develop
   }
 }
 .table-cell .icon-android {
-  @include icon(16px, 16px, "icon-android3.png");
+  @include icon(16px, 16px, "icon-android.png");
   margin-right: 8px;
 }
 .table-cell .icon-ios {
-  @include icon(16px, 16px, "icon-ios3.png");
+  @include icon(16px, 16px, "icon-ios.png");
   margin-right: 8px;
 }
 .link-category {

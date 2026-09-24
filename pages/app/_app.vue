@@ -458,6 +458,16 @@ export default {
   box-shadow: none;
   background: #f5f6f8;
 }
+// game.scss 全局的 .icon-android/.icon-ios 用的是纯橙色图标(icon-android3/ios3)，
+// 跟 Category/Size 这些"深灰+橙色小点"风格的图标不搭，OS这一行单独换成同色系的版本
+.table-cell .icon-android {
+  @include icon(16px, 16px, "icon-android.png");
+  margin-right: 8px;
+}
+.table-cell .icon-ios {
+  @include icon(16px, 16px, "icon-ios.png");
+  margin-right: 8px;
+}
 
 // 截图挪到包信息卡片上面，加个 Screenshots 标题，高度固定 250px（不用 game.scss 里
 // .application-desc 那套自带描述文字的截图轮播样式）
