@@ -106,22 +106,15 @@
           />
           <h2 class="title-h2">All Games</h2>
 
-          <InfiniteScrollList
-            :api-endpoint="`/api/game/all_game`"
-            :initial-page="2"
-            :page-size="30"
-            :initial-items="allGames"
-          >
-            <template #default="{ items }">
-              <ContentItemCommon
-                v-for="(item, index) in items"
-                :key="index"
-                :index="index"
-                :item="item"
-                :to="`/game/${item.path}/`"
-              />
-            </template>
-          </InfiniteScrollList>
+          <section class="box-common box-category">
+            <ContentItemCommon
+              v-for="(item, index) in allGames"
+              :key="index"
+              :index="index"
+              :item="item"
+              :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
+            />
+          </section>
 
           <aside class="box-aside">
             <adm-slot
@@ -188,6 +181,15 @@ async function fetchList($axios, url, params) {
   }
 }
 
+async function fetchRaw($axios, url, params, fallback) {
+  try {
+    return await $axios.$get(url, { params });
+  } catch (error) {
+    console.error(`[rankings] 请求失败 ${url}:`, params, error && error.message);
+    return fallback;
+  }
+}
+
 export default {
   async asyncData({ $axios, env, query }) {
     const bestApps = await fetchList($axios, "/api/game/menu", {
@@ -215,11 +217,36 @@ export default {
       mod_id: "new-games",
       size: 10
     });
-    const allGames = await fetchList($axios, "/api/game/all_game", {
-      site_id: env.SITE_ID,
-      page: 1,
-      size: 30
-    });
+    // 游戏库里绝大部分是 H5 游戏（game_type=H5），能下载 APK 的游戏类型(DOWNLOAD)内容太少，
+    // all_game 接口经常是空的；改成读 Entertainment 分类下的内容（运营手动把一批可下载的
+    // 应用/游戏分到了这个分类里），找不到 Entertainment 分类时 fallback 回原来的 all_game
+    const categoriesResponse = await fetchRaw(
+      $axios,
+      "/api/game/get_all_category",
+      { site_id: env.SITE_ID },
+      { list: [], app_list: [] }
+    );
+    const entertainmentCategory = [
+      ...(categoriesResponse.list || []),
+      ...(categoriesResponse.app_list || [])
+    ].find((item) => (item.name || "").toLowerCase() === "entertainment");
+
+    let allGames;
+    if (entertainmentCategory) {
+      const categoryGameResponse = await fetchRaw(
+        $axios,
+        "/api/game/get_category_game",
+        { site_id: env.SITE_ID, category_id: entertainmentCategory.id },
+        { list: [] }
+      );
+      allGames = categoryGameResponse.list || [];
+    } else {
+      allGames = await fetchList($axios, "/api/game/all_game", {
+        site_id: env.SITE_ID,
+        page: 1,
+        size: 30
+      });
+    }
     // Top Picks tab：跟首页 Top Picks 用同一个 BI 模块(home-recommended-apks)，未配置时
     // fallback 到 bestApps，跟首页保持一致
     const recommendedApksConfigured = await fetchList($axios, "/api/game/menu", {
