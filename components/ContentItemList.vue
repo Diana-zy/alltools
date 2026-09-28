@@ -1,15 +1,23 @@
 <template>
   <CustomLink :to="to" class="item">
-    <NuxtImg
-      format="auto"
-      fit="cover"
-      width="192"
-      height="192"
-      :src="item.icon"
-      :alt="item.name"
-      class="icon"
-      :loading="index < eager ? 'eager' : 'lazy'"
-    />
+    <div class="icon-box">
+      <NuxtImg
+        format="auto"
+        fit="cover"
+        width="192"
+        height="192"
+        :src="item.icon"
+        :alt="item.name"
+        class="icon"
+        :loading="index < eager ? 'eager' : 'lazy'"
+      />
+      <span
+        v-if="showRank && index < 6"
+        class="rank-badge"
+        :style="{ background: rankColors[index] }"
+        >{{ index + 1 }}</span
+      >
+    </div>
     <p class="name">{{ item.name }}</p>
     <p class="rating"> <i class="icon-rating" />{{ item.score || 4.6 }}</p>
   </CustomLink>
@@ -33,7 +41,16 @@ export default {
     to: {
       type: String,
       required: true
+    },
+    showRank: {
+      type: Boolean,
+      default: false
     }
+  },
+  data() {
+    return {
+      rankColors: ["#fd6b21", "#3b82f6", "#22c55e", "#a855f7", "#ec4899", "#14b8a6"]
+    };
   }
 };
 </script>
@@ -49,12 +66,35 @@ export default {
   height: 176px;
   transition: all 0.2s;
 }
+.icon-box {
+  position: relative;
+  width: 109px;
+  margin: 16px auto 6px;
+}
+
 .icon {
   width: 109px;
   height: 109px;
   border-radius: 12px;
-  margin: 16px auto 6px;
+  border: 1px solid #eef0f3;
   transition: transform 0.2s;
+}
+
+.rank-badge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 20px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 12px 0 10px 0;
+  color: #ffffff;
+  font-family: "seb";
+  font-size: 11px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .name {
   width: 90%;
@@ -82,11 +122,21 @@ export default {
     height: vw(262);
     border-radius: vw(32);
   }
+  .icon-box {
+    width: vw(144);
+    margin: vw(20) auto vw(10);
+  }
   .icon {
     width: vw(144);
     height: vw(144);
     border-radius: vw(24);
-    margin: vw(20) auto vw(10);
+  }
+  .rank-badge {
+    min-width: vw(36);
+    height: vw(32);
+    padding: 0 vw(10);
+    border-radius: vw(24) 0 vw(18) 0;
+    font-size: vw(20);
   }
   .name {
     width: vw(156);

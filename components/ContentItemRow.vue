@@ -74,7 +74,7 @@ export default {
   width: 64px;
   height: 64px;
   border-radius: 12px;
-  // border: 1px solid rgba(65, 65, 76, 0.1);
+  border: 1px solid #eef0f3;
   margin-right: 8px;
 }
 .name {

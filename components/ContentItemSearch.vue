@@ -58,6 +58,7 @@ export default {
   width: 124px;
   height: 124px;
   border-radius: 12px;
+  border: 1px solid #eef0f3;
   margin: 16px 0 10px;
 }
 .info {

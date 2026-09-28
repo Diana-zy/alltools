@@ -11,7 +11,12 @@
         class="icon"
         :loading="index < eager ? 'eager' : 'lazy'"
       />
-      <span v-if="showRank && index < 6" class="rank-badge">{{ index + 1 }}</span>
+      <span
+        v-if="showRank && index < 6"
+        class="rank-badge"
+        :style="{ background: rankColors[index] }"
+        >{{ index + 1 }}</span
+      >
     </div>
     <div class="info">
       <p class="name">{{ item.name }}</p>
@@ -50,6 +55,11 @@ export default {
       type: Boolean,
       default: true
     }
+  },
+  data() {
+    return {
+      rankColors: ["#fd6b21", "#3b82f6", "#22c55e", "#a855f7", "#ec4899", "#14b8a6"]
+    };
   }
 };
 </script>
@@ -72,21 +82,20 @@ export default {
   width: 72px;
   height: 72px;
   border-radius: 14px;
+  border: 1px solid #eef0f3;
 }
 
 .rank-badge {
   position: absolute;
-  top: -6px;
-  left: -6px;
+  top: 0;
+  left: 0;
   min-width: 20px;
-  height: 20px;
-  padding: 0 4px;
-  border-radius: 6px;
-  background: #fd6b21;
-  border: 2px solid #ffffff;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 14px 0 10px 0;
   color: #ffffff;
   font-family: "seb";
-  font-size: 12px;
+  font-size: 11px;
   line-height: 1;
   display: flex;
   align-items: center;
@@ -165,13 +174,12 @@ export default {
     border-radius: vw(24);
   }
   .rank-badge {
-    top: vw(-10);
-    left: vw(-10);
+    top: 0;
+    left: 0;
     min-width: vw(36);
-    height: vw(36);
-    padding: 0 vw(6);
-    border-radius: vw(10);
-    border-width: vw(3);
+    height: vw(32);
+    padding: 0 vw(10);
+    border-radius: vw(24) 0 vw(18) 0;
     font-size: vw(20);
   }
   .name {

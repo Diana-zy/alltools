@@ -53,6 +53,7 @@ export default {
   width: 76px;
   height: 76px;
   border-radius: 12px;
+  border: 1px solid #eef0f3;
   margin: 16px auto 8px;
 }
 .name {

@@ -147,6 +147,7 @@
               :key="index"
               :index="index"
               :item="item"
+              :show-rank="true"
               :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
             />
           </section>
