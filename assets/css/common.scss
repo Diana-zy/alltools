@@ -62,9 +62,17 @@ body {
   }
 }
 
+.title-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
 .title-see-more {
   display: flex;
   align-items: center;
+  flex-shrink: 0;
   margin-left: auto;
 
   span {
@@ -72,6 +80,7 @@ body {
     font-size: 14px;
     color: rgba(65, 65, 76, 0.6);
     line-height: 18px;
+    white-space: nowrap;
   }
 }
 

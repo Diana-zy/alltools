@@ -50,9 +50,8 @@
 
         <article class="article">
           <CustomLink to="/rankings/?tab=apps" class="title-h2 title-h2-first"
-            >Top Picks in Last 24 Hours<div class="title-see-more"
-              ><span>View All</span><i class="icon-arrow"
-            /></div
+            ><span class="title-text">Top Picks in Last 24 Hours</span
+            ><div class="title-see-more"><span>View All</span><i class="icon-arrow" /></div
           ></CustomLink>
           <section class="recommended-apks">
             <ContentItemRank
@@ -74,7 +73,8 @@
           />
 
           <CustomLink to="/rankings/?tab=apps" class="title-h2"
-            >Top Apps<div class="title-see-more"><span>View All</span><i class="icon-arrow" /></div
+            ><span class="title-text">Top Apps</span
+            ><div class="title-see-more"><span>View All</span><i class="icon-arrow" /></div
           ></CustomLink>
           <section class="best-tools">
             <div class="box-row-scroll box-scroll-hidden">
@@ -106,7 +106,8 @@
           />
 
           <CustomLink to="/rankings/?tab=games" class="title-h2"
-            >Top Games<div class="title-see-more"><span>View All</span><i class="icon-arrow" /></div
+            ><span class="title-text">Top Games</span
+            ><div class="title-see-more"><span>View All</span><i class="icon-arrow" /></div
           ></CustomLink>
           <section class="top-games">
             <div class="box-row-scroll box-scroll-hidden">
@@ -238,9 +239,9 @@ export default {
 }
 
 .wrapper {
-  max-width: 1240px;
+  max-width: 1230px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 15px;
   box-sizing: border-box;
 }
 
@@ -402,6 +403,7 @@ export default {
   .box-list-section {
     display: grid;
     margin: 0;
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .recommended-apks {
