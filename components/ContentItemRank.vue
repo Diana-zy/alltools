@@ -1,6 +1,5 @@
 <template>
   <CustomLink :to="to" class="item">
-    <span class="rank">{{ index + 1 }}</span>
     <NuxtImg
       format="auto"
       fit="cover"
@@ -52,24 +51,14 @@ export default {
 .item {
   display: flex;
   align-items: center;
-  padding: 12px 8px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-}
-
-.rank {
-  width: 24px;
-  flex-shrink: 0;
-  text-align: center;
-  color: $font2;
-  font-family: "seb";
-  font-size: 16px;
+  padding: 12px 0;
 }
 
 .icon {
-  width: 56px;
-  height: 56px;
-  border-radius: 12px;
-  margin: 0 12px;
+  width: 72px;
+  height: 72px;
+  border-radius: 14px;
+  margin-right: 16px;
   flex-shrink: 0;
 }
 
@@ -133,17 +122,13 @@ export default {
 
 @media screen and (max-width: 879px) {
   .item {
-    padding: vw(20) vw(16);
-  }
-  .rank {
-    width: vw(40);
-    font-size: vw(26);
+    padding: vw(20) 0;
   }
   .icon {
-    width: vw(96);
-    height: vw(96);
-    border-radius: vw(20);
-    margin: 0 vw(20);
+    width: vw(120);
+    height: vw(120);
+    border-radius: vw(24);
+    margin-right: vw(20);
   }
   .name {
     font-size: vw(28);

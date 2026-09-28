@@ -19,61 +19,31 @@
             :index="index"
             name="fade"
           >
-            <div v-show="recIndex === index">
-              <CustomLink :to="heroLink(item)" class="img-box">
-                <NuxtImg
-                  format="auto"
-                  fit="cover"
-                  width="592"
-                  height="400"
-                  :src="item.pc_img || item.icon"
-                  :alt="item.name"
-                  :preloader="index === 0"
-                  class="img m-hidden"
-                />
-                <NuxtImg
-                  format="auto"
-                  fit="cover"
-                  width="332"
-                  height="416"
-                  :src="item.mobile_img || item.icon"
-                  :alt="item.name"
-                  :preloader="index === 0"
-                  class="img pc-hidden"
-                />
-              </CustomLink>
-              <CustomLink :to="heroLink(item)" class="info">
-                <p class="name">{{ item.name }}</p>
-                <div class="rating">
-                  <div class="rating-star">
-                    <p :style="{ width: (((item.score || 4.6) / 5) * 100).toFixed(0) + '%' }"></p>
-                  </div>
-                  {{ item.score && item.score.length == 1 ? item.score + ".0" : item.score || 4.6 }}
-                </div>
-              </CustomLink>
-              <CustomLink :to="heroLink(item)" class="item-icon">
-                <NuxtImg
-                  format="auto"
-                  fit="cover"
-                  width="120"
-                  height="120"
-                  :src="item.icon"
-                  :alt="item.name"
-                  :preloader="index === 0"
-                  class="icon"
-                />
-              </CustomLink>
-            </div>
-          </transition>
-
-          <div v-for="(item, index) in heroShown" :key="index" :item="item" :index="index">
-            <CustomLink v-show="recIndex === index" :to="heroLink(item)" class="download-box">
-              <div class="download"><i class="icon-pc-pwa" /></div>
+            <CustomLink v-show="recIndex === index" :to="heroLink(item)" class="hero-card">
+              <NuxtImg
+                format="auto"
+                fit="cover"
+                width="1200"
+                height="400"
+                :src="item.pc_img || item.icon"
+                :alt="item.name"
+                :preloader="index === 0"
+                class="hero-img m-hidden"
+              />
+              <NuxtImg
+                format="auto"
+                fit="cover"
+                width="686"
+                height="416"
+                :src="item.mobile_img || item.icon"
+                :alt="item.name"
+                :preloader="index === 0"
+                class="hero-img pc-hidden"
+              />
+              <div class="hero-overlay"></div>
+              <p class="hero-name">{{ item.name }}</p>
             </CustomLink>
-          </div>
-
-          <CustomLink to="/apps/" class="module-name"> Explore ></CustomLink>
-          <div class="corner"></div>
+          </transition>
         </div>
       </section>
 
@@ -84,7 +54,7 @@
         <section class="best-tools">
           <div class="box-row-scroll box-scroll-hidden">
             <ContentItemRow
-              v-for="(item, index) in bestApps.slice(0, 12)"
+              v-for="(item, index) in bestApps.slice(0, 9)"
               :key="index"
               :item="item"
               :index="index"
@@ -94,7 +64,7 @@
           </div>
           <div class="box-list-section">
             <ContentItemList
-              v-for="(item, index) in bestApps.slice(0, 12)"
+              v-for="(item, index) in bestApps.slice(0, 9)"
               :key="index"
               :index="index"
               :item="item"
@@ -116,7 +86,7 @@
         <section class="top-games">
           <div class="box-row-scroll box-scroll-hidden">
             <ContentItemRow
-              v-for="(item, index) in bestGames.slice(0, 12)"
+              v-for="(item, index) in bestGames.slice(0, 9)"
               :key="index"
               :item="item"
               :index="index"
@@ -125,7 +95,7 @@
           </div>
           <div class="box-list-section">
             <ContentItemList
-              v-for="(item, index) in bestGames.slice(0, 12)"
+              v-for="(item, index) in bestGames.slice(0, 9)"
               :key="index"
               :index="index"
               :item="item"
@@ -134,10 +104,17 @@
           </div>
         </section>
 
+        <!-- 页内广告位：跟其他 adm-slot 一样走 BI 广告投放系统，ad-unit/ads-slot 需要在 Google Ad
+        Manager/AdSense 后台新建一个真实广告位后再替换成正式 ID，现在这个是占位值。 -->
+        <adm-slot
+          adm-id="home-3"
+          adm-unit="/23197833490/alltools1/alltools1_home_3"
+          ads-slot="0000000004"
+          class="ad-3"
+        />
+
         <CustomLink to="/apps/" class="title-h2"
-          >Recommended apks you must have<div class="title-see-more"
-            ><span>View All</span><i class="icon-arrow"
-          /></div
+          >Top Picks<div class="title-see-more"><span>View All</span><i class="icon-arrow" /></div
         ></CustomLink>
         <section class="recommended-apks">
           <ContentItemRank
@@ -269,140 +246,47 @@ export default {
 .rec {
   position: relative;
   width: 100%;
-  height: 400px;
 
   .rec-content {
     position: relative;
-    width: 100%;
-    height: 100%;
+    max-width: 1200px;
+    height: 400px;
+    margin: 0 auto;
+    border-radius: 24px;
+    overflow: hidden;
     background-color: #ffffff;
   }
 
-  .item {
-    display: inline-block;
+  .hero-card {
+    position: absolute;
+    inset: 0;
+    display: block;
+  }
+
+  .hero-img {
     width: 100%;
     height: 100%;
   }
 
-  .img-box {
+  .hero-overlay {
     position: absolute;
-    width: 592px;
-    height: 400px;
+    left: 0;
+    right: 0;
     bottom: 0;
-    left: 120px;
-    z-index: 2;
+    height: 40%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0));
   }
 
-  .img {
-    width: 100%;
-    height: 100%;
-  }
-
-  .corner {
-    width: 182px;
-    height: 66px;
+  .hero-name {
     position: absolute;
-    bottom: -65px;
-    right: 50%;
-    transform: translateX(50%);
-    @include bg("~/assets/images/icon-corner.png");
-    z-index: 1;
-  }
-
-  .download-box {
-    width: 106px;
-    height: 106px;
-    background: #ffffff;
-    border-radius: 50%;
-    border: 1px solid #eef0f3;
-    @include center;
-    position: absolute;
-    bottom: -53px;
-    right: 49.9%;
-    transform: translateX(50%);
-    z-index: 3;
-  }
-
-  .download {
-    width: 82px;
-    height: 82px;
-    background: #fff9e3;
-    border-radius: 50%;
-    @include center;
-    .icon-pc-pwa {
-      @include icon(40px, 40px, "icon-pc-download.png");
-    }
-  }
-
-  .module-name {
-    width: 340px;
-    height: 64px;
-    font-family: sebi;
-    font-size: 48px;
-    color: #fd6b21;
-    line-height: 56px;
-    position: absolute;
-    top: 64px;
-    right: 360px;
-  }
-
-  .item-icon {
-    width: 120px;
-    height: 120px;
-    border-radius: 20px;
-    position: absolute;
-    bottom: 120px;
-    right: 580px;
-    border: 4px solid #ffffff;
-    .icon {
-      width: 100%;
-      height: 100%;
-      border-radius: 20px;
-    }
-  }
-
-  .info {
-    width: 378px;
-    height: 84px;
-    position: absolute;
-    bottom: 138px;
-    right: 190px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    z-index: 2;
-  }
-
-  .name {
-    width: 100%;
+    left: 32px;
+    bottom: 24px;
+    right: 32px;
     font-family: seb;
-    font-size: 32px;
-    color: #fd6b21;
-    line-height: 44px;
+    font-size: 28px;
+    color: #ffffff;
     text-align: left;
     @include ellipsis;
-  }
-
-  .rating {
-    margin: 10px 0 0;
-    color: #fd6b21;
-    font-size: 18px;
-    line-height: 21px;
-    display: flex;
-    align-items: center;
-  }
-
-  .rating-star {
-    margin-right: 4px;
-    width: 120px;
-    height: 24px;
-    @include bg("icon-star-rec1.png");
-    background-size: 24px 24px;
-    p {
-      height: 24px;
-      @include bg("icon-star-rec.png");
-      background-size: 24px 24px;
-    }
   }
 
   .fade-enter-active,
@@ -447,7 +331,8 @@ export default {
 }
 
 .ad-1,
-.ad-2 {
+.ad-2,
+.ad-3 {
   margin-top: 32px;
 }
 
@@ -456,17 +341,8 @@ export default {
     max-width: 1210px;
   }
   .rec {
-    .img-box {
-      left: 10px;
-    }
-    .module-name {
-      right: 240px;
-    }
-    .item-icon {
-      right: 460px;
-    }
-    .info {
-      right: 64px;
+    .rec-content {
+      max-width: 1160px;
     }
   }
 }
@@ -475,76 +351,16 @@ export default {
     height: vw2(400);
   }
   .rec {
-    height: vw2(400);
-
-    .img-box {
-      width: vw2(592);
+    .rec-content {
       height: vw2(400);
-      left: vw2(10);
+      margin: 0 vw2(20);
+      border-radius: vw2(24);
     }
-    .corner {
-      width: vw2(182);
-      height: vw2(66);
-      bottom: vw2(-65);
-    }
-    .download-box {
-      width: vw2(106);
-      height: vw2(106);
-      border: vw2(2) solid #f2f2f2;
-      bottom: vw2(-53);
-    }
-    .download {
-      width: vw2(82);
-      height: vw2(82);
-      background: #fff9e3;
-      .icon-pc-pwa {
-        width: vw2(40);
-        height: vw2(40);
-      }
-    }
-    .module-name {
-      width: vw2(340);
-      height: vw2(64);
-      font-size: vw2(48);
-      line-height: vw2(56);
-      top: vw2(64);
-      right: vw2(240);
-    }
-    .item-icon {
-      width: vw2(120);
-      height: vw2(120);
-      border-radius: vw2(20);
-      bottom: vw2(120);
-      right: vw2(460);
-      border: vw2(4) solid #ffffff;
-      .icon {
-        border-radius: vw2(40);
-      }
-    }
-    .info {
-      width: vw2(378);
-      height: vw2(84);
-      bottom: vw2(138);
-      right: vw2(64);
-    }
-    .name {
-      font-size: vw2(32);
-      line-height: vw2(44);
-    }
-    .rating {
-      margin: vw2(10) 0 0;
-      font-size: vw2(18);
-      line-height: vw2(21);
-    }
-    .rating-star {
-      margin-right: vw2(4);
-      width: vw2(120);
-      height: vw2(24);
-      background-size: vw2(24) vw2(24);
-      p {
-        height: vw2(24);
-        background-size: vw2(24) vw2(24);
-      }
+    .hero-name {
+      left: vw2(32);
+      bottom: vw2(24);
+      right: vw2(32);
+      font-size: vw2(28);
     }
   }
 }
@@ -560,91 +376,16 @@ export default {
   }
 
   .rec {
-    height: vw(416);
-
-    .img-box {
-      width: vw(332);
-      height: 100%;
-      bottom: 0;
-      left: 0;
+    .rec-content {
+      height: vw(416);
+      margin: 0 vw(46);
+      border-radius: vw(32);
     }
-
-    .corner {
-      width: vw(246);
-      height: vw(72);
-      bottom: vw(-72);
-      right: 50%;
-      transform: translateX(50%);
-      @include bg("~/assets/images/icon-corner-m.png");
-    }
-    .download-box {
-      width: vw(126);
-      height: vw(126);
-      background: #ffd89d;
-      border-radius: 50%;
-      border: 2px solid #fff9e3;
-      @include center;
-      bottom: vw(-63);
-      right: 50%;
-      transform: translateX(50%);
-    }
-    .download {
-      width: vw(98);
-      height: vw(98);
-      background: #fff9e3;
-      border-radius: 50%;
-      @include center;
-      .icon-pc-pwa {
-        @include icon(vw(48), vw(48), "icon-m-download.png");
-      }
-    }
-    .module-name {
-      width: vw(300);
-      height: vw(58);
-      font-size: vw(44);
-      line-height: vw(52);
-      top: vw(32);
-      right: vw(74);
-    }
-
-    .item-icon {
-      width: vw(96);
-      height: vw(96);
-      border-radius: vw(20);
-      top: vw(114);
-      right: vw(280);
-      border: vw(2) solid #ffffff;
-      .icon {
-        border-radius: vw(20);
-      }
-    }
-    .info {
-      width: vw(340);
-      height: vw(88);
-      bottom: vw(106);
-      right: vw(36);
-    }
-
-    .name {
-      font-size: vw(36);
-      line-height: vw(46);
-    }
-    .rating {
-      margin: 0;
-      font-size: vw(24);
-      line-height: vw(30);
-    }
-    .rating-star {
-      margin-right: vw(2);
-      width: vw(160);
-      height: vw(32);
-      @include bg("icon-star-rec1.png");
-      background-size: vw(32) vw(32);
-      p {
-        height: vw(32);
-        @include bg("icon-star-rec.png");
-        background-size: vw(32) vw(32);
-      }
+    .hero-name {
+      left: vw(32);
+      bottom: vw(24);
+      right: vw(32);
+      font-size: vw(32);
     }
   }
 
@@ -659,6 +400,11 @@ export default {
 
   .box-list-section {
     display: grid;
+  }
+
+  .recommended-apks {
+    margin: 0;
+    padding: 0 vw(46);
   }
 
   .title-h2 {
@@ -679,7 +425,8 @@ export default {
     display: none;
   }
   .ad-1,
-  .ad-2 {
+  .ad-2,
+  .ad-3 {
     margin-top: vw(48);
   }
 }
