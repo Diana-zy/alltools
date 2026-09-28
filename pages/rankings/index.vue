@@ -25,6 +25,12 @@
             @click="setTab('games')"
             >Games</div
           >
+          <div
+            class="tab"
+            :class="{ active: activeTab === 'picks' }"
+            @click="setTab('picks')"
+            >Top Picks</div
+          >
         </div>
 
         <template v-if="activeTab === 'apps'">
@@ -81,7 +87,7 @@
           </aside>
         </template>
 
-        <template v-else>
+        <template v-else-if="activeTab === 'games'">
           <section class="box-common box-category">
             <ContentItemSmall
               v-for="(item, index) in bestGames"
@@ -132,6 +138,34 @@
               :to="`/game/${item.path}/`"
             />
           </aside>
+        </template>
+
+        <template v-else>
+          <section class="picks-list">
+            <ContentItemRank
+              v-for="(item, index) in recommendedApksShown"
+              :key="index"
+              :item="item"
+              :index="index"
+              :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
+            />
+          </section>
+
+          <div v-if="recommendedApksHasMore" class="show-more" @click="showMoreApks">
+            {{ showMoreLoading ? "Loading..." : "Show More" }}
+          </div>
+
+          <h2 class="title-h2">Recommend</h2>
+          <section class="picks-list">
+            <ContentItemRank
+              v-for="(item, index) in bottomRecommend"
+              :key="index"
+              :item="item"
+              :index="index"
+              :show-rank="false"
+              :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
+            />
+          </section>
         </template>
       </div>
     </main>
@@ -186,30 +220,65 @@ export default {
       page: 1,
       size: 30
     });
+    // Top Picks tab：跟首页 Top Picks 用同一个 BI 模块(home-recommended-apks)，未配置时
+    // fallback 到 bestApps，跟首页保持一致
+    const recommendedApksConfigured = await fetchList($axios, "/api/game/menu", {
+      site_id: env.SITE_ID,
+      mod_id: "home-recommended-apks",
+      size: 27
+    });
 
     return {
-      activeTab: query.tab === "games" ? "games" : "apps",
+      activeTab: ["games", "picks"].includes(query.tab) ? query.tab : "apps",
       bestApps,
       newApps,
       allApps,
       bestGames,
       newGames,
-      allGames
+      allGames,
+      recommendedApksConfigured,
+      // Top Picks 一次展示9个，点 Show More 再展示下9个，最多27个（3批）
+      revealedApksCount: 9,
+      showMoreLoading: false
     };
   },
   computed: {
     topAd() {
-      return this.activeTab === "apps"
-        ? {
-            admId: "rankings-app-mid1",
-            admUnit: "/23197833490/alltools1/alltools1_module_1",
-            adsSlot: "3074328547"
-          }
-        : {
-            admId: "rankings-game-mid1",
-            admUnit: "/23197833490/alltools1/alltools1_module_1",
-            adsSlot: "2858514230"
-          };
+      if (this.activeTab === "apps") {
+        return {
+          admId: "rankings-app-mid1",
+          admUnit: "/23197833490/alltools1/alltools1_module_1",
+          adsSlot: "3074328547"
+        };
+      }
+      if (this.activeTab === "games") {
+        return {
+          admId: "rankings-game-mid1",
+          admUnit: "/23197833490/alltools1/alltools1_module_1",
+          adsSlot: "2858514230"
+        };
+      }
+      // Top Picks tab 的广告位是占位值，需要在 Google Ad Manager 后台新建正式广告位后再替换
+      return {
+        admId: "rankings-picks-mid1",
+        admUnit: "/23197833490/alltools1/alltools1_module_1",
+        adsSlot: "0000000007"
+      };
+    },
+    recommendedApksAll() {
+      return (
+        this.recommendedApksConfigured.length ? this.recommendedApksConfigured : this.bestApps
+      ).slice(0, 27);
+    },
+    recommendedApksShown() {
+      return this.recommendedApksAll.slice(0, this.revealedApksCount);
+    },
+    recommendedApksHasMore() {
+      return this.revealedApksCount < this.recommendedApksAll.length;
+    },
+    // Recommend：应用+游戏各取前3个，混着展示，不做无限加载
+    bottomRecommend() {
+      return [...this.bestApps.slice(0, 3), ...this.bestGames.slice(0, 3)];
     }
   },
   methods: {
@@ -217,6 +286,24 @@ export default {
       if (this.activeTab === tab) return;
       this.activeTab = tab;
       this.$router.replace({ query: { ...this.$route.query, tab } }).catch(() => {});
+    },
+    showMoreApks() {
+      if (this.showMoreLoading || !this.recommendedApksHasMore) return;
+      this.showMoreLoading = true;
+      const reveal = () => {
+        this.revealedApksCount = Math.min(
+          this.revealedApksCount + 9,
+          this.recommendedApksAll.length
+        );
+        this.showMoreLoading = false;
+      };
+      // 激励广告由 app.html 里的 window.showRewardedAd 触发；没有广告可用/加载失败/关闭
+      // 都会调用回调直接展示下一批，不会卡住用户
+      if (typeof window !== "undefined" && typeof window.showRewardedAd === "function") {
+        window.showRewardedAd(reveal);
+      } else {
+        reveal();
+      }
     }
   },
   head() {
@@ -263,6 +350,24 @@ export default {
 .box-category {
   margin-bottom: 32px;
   margin-top: 24px;
+}
+.picks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 24px;
+}
+.show-more {
+  width: 100%;
+  height: 48px;
+  margin-top: 16px;
+  border: 1px solid #fd6b21;
+  border-radius: 24px;
+  color: #fd6b21;
+  font-family: "seb";
+  font-size: 14px;
+  @include center;
+  cursor: pointer;
 }
 .title-h2 {
   display: flex;
@@ -313,6 +418,16 @@ export default {
   .box-category {
     margin-bottom: vw(48);
     margin-top: vw(36);
+  }
+  .picks-list {
+    padding: 0 vw(24);
+    margin-top: vw(36);
+  }
+  .show-more {
+    height: vw(80);
+    margin-top: vw(24);
+    border-radius: vw(40);
+    font-size: vw(26);
   }
 }
 </style>

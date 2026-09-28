@@ -49,7 +49,7 @@
         </section>
 
         <article class="article">
-          <CustomLink to="/rankings/?tab=apps" class="title-h2 title-h2-first"
+          <CustomLink to="/rankings/?tab=picks" class="title-h2 title-h2-first"
             ><span class="title-text">Top Picks in Last 24 Hours</span
             ><div class="title-see-more"><span>View All</span><i class="icon-arrow" /></div
           ></CustomLink>
@@ -59,22 +59,6 @@
               :key="index"
               :item="item"
               :index="index"
-              :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
-            />
-          </section>
-
-          <div v-if="recommendedApksHasMore" class="show-more" @click="showMoreApks">
-            {{ showMoreLoading ? "Loading..." : "Show More" }}
-          </div>
-
-          <h2 class="title-h2">Recommend</h2>
-          <section class="bottom-recommend">
-            <ContentItemRank
-              v-for="(item, index) in bottomRecommend"
-              :key="index"
-              :item="item"
-              :index="index"
-              :show-rank="false"
               :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
             />
           </section>
@@ -187,7 +171,7 @@ export default {
         $axios,
         env.SITE_ID,
         "home-recommended-apks",
-        27
+        10
       );
 
       return {
@@ -206,10 +190,7 @@ export default {
       bestApps: [],
       bestGames: [],
       heroConfigured: [],
-      recommendedApksConfigured: [],
-      // Top Picks 一次展示9个，点 Show More 再展示下9个，最多27个（3批）
-      revealedApksCount: 9,
-      showMoreLoading: false
+      recommendedApksConfigured: []
     };
   },
   computed: {
@@ -218,20 +199,10 @@ export default {
       if (this.heroConfigured.length) return this.heroConfigured.slice(0, 5);
       return [...this.bestGames.slice(0, 3), ...this.bestApps.slice(0, 2)].slice(0, 5);
     },
-    recommendedApksAll() {
+    recommendedApksShown() {
       return (
         this.recommendedApksConfigured.length ? this.recommendedApksConfigured : this.bestApps
-      ).slice(0, 27);
-    },
-    recommendedApksShown() {
-      return this.recommendedApksAll.slice(0, this.revealedApksCount);
-    },
-    recommendedApksHasMore() {
-      return this.revealedApksCount < this.recommendedApksAll.length;
-    },
-    // Top Picks 最下面接的 Recommend：应用+游戏各取前3个，混着展示，不做无限加载
-    bottomRecommend() {
-      return [...this.bestApps.slice(0, 3), ...this.bestGames.slice(0, 3)];
+      ).slice(0, 9);
     }
   },
   mounted() {
@@ -245,21 +216,6 @@ export default {
       this.currentChangeTimer = setInterval(() => {
         this.recIndex = (this.recIndex + 1) % Math.max(this.heroShown.length, 1);
       }, 4000);
-    },
-    showMoreApks() {
-      if (this.showMoreLoading || !this.recommendedApksHasMore) return;
-      this.showMoreLoading = true;
-      const reveal = () => {
-        this.revealedApksCount = Math.min(this.revealedApksCount + 9, this.recommendedApksAll.length);
-        this.showMoreLoading = false;
-      };
-      // 穿插广告由 app.html 里的 window.showRewardedAd 触发；没有广告可用/加载失败/关闭
-      // 都会调用回调直接展示下一批，不会卡住用户
-      if (typeof window !== "undefined" && typeof window.showRewardedAd === "function") {
-        window.showRewardedAd(reveal);
-      } else {
-        reveal();
-      }
     }
   }
 };
@@ -380,24 +336,6 @@ export default {
   gap: 24px;
 }
 
-.show-more {
-  width: 100%;
-  height: 48px;
-  margin-top: 16px;
-  border: 1px solid #fd6b21;
-  border-radius: 24px;
-  color: #fd6b21;
-  font-family: "seb";
-  font-size: 14px;
-  @include center;
-  cursor: pointer;
-}
-
-.bottom-recommend {
-  display: flex;
-  flex-direction: column;
-}
-
 .pc-hidden {
   display: none;
 }
@@ -490,13 +428,6 @@ export default {
       width: 0;
       height: 0;
     }
-  }
-
-  .show-more {
-    height: vw(80);
-    margin-top: vw(24);
-    border-radius: vw(40);
-    font-size: vw(26);
   }
 
   .title-h2 {
