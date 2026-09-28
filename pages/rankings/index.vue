@@ -15,6 +15,12 @@
         <div class="tabs">
           <div
             class="tab"
+            :class="{ active: activeTab === 'picks' }"
+            @click="setTab('picks')"
+            >Top Picks</div
+          >
+          <div
+            class="tab"
             :class="{ active: activeTab === 'apps' }"
             @click="setTab('apps')"
             >Apps</div
@@ -24,12 +30,6 @@
             :class="{ active: activeTab === 'games' }"
             @click="setTab('games')"
             >Games</div
-          >
-          <div
-            class="tab"
-            :class="{ active: activeTab === 'picks' }"
-            @click="setTab('picks')"
-            >Top Picks</div
           >
         </div>
 
@@ -150,12 +150,13 @@
           </div>
 
           <h2 class="title-h2">Recommend</h2>
-          <section class="box-list-section box-category">
-            <ContentItemList
+          <section class="rank-list box-category">
+            <ContentItemRank
               v-for="(item, index) in bottomRecommend"
               :key="index"
               :index="index"
               :item="item"
+              :show-rank="false"
               :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
             />
           </section>
@@ -378,6 +379,10 @@ export default {
   margin-bottom: 32px;
   margin-top: 24px;
 }
+.rank-list {
+  display: flex;
+  flex-direction: column;
+}
 .show-more {
   width: 100%;
   height: 48px;
@@ -439,6 +444,9 @@ export default {
   .box-category {
     margin-bottom: vw(48);
     margin-top: vw(36);
+  }
+  .rank-list {
+    padding: 0 vw(46);
   }
   .show-more {
     width: calc(100% - vw(92));
