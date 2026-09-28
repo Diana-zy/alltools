@@ -46,18 +46,17 @@ export default {
   flex-direction: column;
   align-items: center;
   position: relative;
-  border-top: 1px solid rgba(65, 65, 76, 0.1);
+  background: #14142b;
 
   margin-top: 32px;
 }
 .subscription {
   width: 100%;
-  background: #14142b;
 }
 .subscription-content {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 32px 24px;
+  padding: 32px 24px 0;
 }
 .footer-logo {
   display: inline-flex;
@@ -80,42 +79,38 @@ export default {
   }
 }
 .copyright {
+  width: 100%;
   max-width: 1200px;
+  padding: 0 24px;
+}
+.copyright-content {
+  width: 100%;
+  min-height: 56px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  height: 56px;
-  position: relative;
-  z-index: 1;
-  &:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100vw;
-    height: 100%;
-    z-index: -1;
-  }
-  .copyright-content {
-    width: 100%;
-    height: 56px;
+  justify-content: center;
+  padding: 16px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+  div {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: $font1;
-    a {
-      color: $font1;
-      flex-shrink: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  a {
+    color: rgba(255, 255, 255, 0.6);
+    flex-shrink: 0;
+    &::after {
+      content: "|";
+      margin-left: 9px;
+      margin-right: 9px;
+      opacity: 0.4;
+    }
+    &:last-child {
       &::after {
-        content: "|";
-        margin-left: 9px;
-        margin-right: 9px;
-        opacity: 0.4;
-      }
-      &:last-child {
-        &::after {
-          content: "";
-        }
+        content: "";
       }
     }
   }
@@ -126,7 +121,7 @@ export default {
     margin-top: vw(48);
   }
   .subscription-content {
-    padding: vw(48) vw(46);
+    padding: vw(48) vw(46) 0;
   }
   .footer-logo {
     height: vw(72);
@@ -142,18 +137,16 @@ export default {
     line-height: vw(28);
   }
   .copyright {
-    height: auto;
-    padding-bottom: vw(46);
-    .copyright-content {
-      height: auto;
-      flex-direction: column;
-      font-size: vw(24);
-      line-height: vw(48);
-      a {
-        &::after {
-          margin-left: vw(8);
-          margin-right: vw(8);
-        }
+    padding: 0 vw(46);
+  }
+  .copyright-content {
+    padding: vw(32) 0;
+    font-size: vw(24);
+    line-height: vw(48);
+    a {
+      &::after {
+        margin-left: vw(8);
+        margin-right: vw(8);
       }
     }
   }

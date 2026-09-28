@@ -63,6 +63,15 @@
           />
         </section>
 
+        <!-- 页内广告位：跟其他 adm-slot 一样走 BI 广告投放系统，ad-unit/ads-slot 需要在 Google Ad
+        Manager/AdSense 后台新建一个真实广告位后再替换成正式 ID，现在这个是占位值。 -->
+        <adm-slot
+          adm-id="home-4"
+          adm-unit="/23197833490/alltools1/alltools1_home_4"
+          ads-slot="0000000005"
+          class="ad-4"
+        />
+
         <CustomLink to="/rankings/?tab=apps" class="title-h2"
           >Top Apps<div class="title-see-more"><span>View All</span><i class="icon-arrow" /></div
         ></CustomLink>
@@ -118,19 +127,9 @@
             />
           </div>
         </section>
-
-        <!-- 页内广告位：跟其他 adm-slot 一样走 BI 广告投放系统，ad-unit/ads-slot 需要在 Google Ad
-        Manager/AdSense 后台新建一个真实广告位后再替换成正式 ID，现在这个是占位值。 -->
-        <adm-slot
-          adm-id="home-3"
-          adm-unit="/23197833490/alltools1/alltools1_home_3"
-          ads-slot="0000000004"
-          class="ad-3"
-        />
       </article>
     </main>
     <Footer />
-    <BackTop />
     <!-- <AdLoading /> -->
   </div>
 </template>
@@ -334,7 +333,7 @@ export default {
 
 .ad-1,
 .ad-2,
-.ad-3 {
+.ad-4 {
   margin-top: 32px;
 }
 
@@ -407,6 +406,7 @@ export default {
   .recommended-apks {
     margin: 0;
     padding: 0 vw(46);
+    scroll-padding: 0 vw(46);
     display: grid;
     grid-auto-flow: column;
     grid-template-rows: repeat(3, auto);
@@ -439,7 +439,7 @@ export default {
   }
   .ad-1,
   .ad-2,
-  .ad-3 {
+  .ad-4 {
     margin-top: vw(48);
   }
 }
