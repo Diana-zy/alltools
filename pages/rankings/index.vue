@@ -149,6 +149,15 @@
             {{ showMoreLoading ? "Loading..." : "Show More" }}
           </div>
 
+          <!-- 页内广告位：跟其他 adm-slot 一样走 BI 广告投放系统，ad-unit/ads-slot 需要在 Google Ad
+          Manager/AdSense 后台新建一个真实广告位后再替换成正式 ID，现在这个是占位值。 -->
+          <adm-slot
+            adm-id="rankings-picks-mid2"
+            adm-unit="/23197833490/alltools1/alltools1_module_2"
+            ads-slot="0000000008"
+            class="ad2 ad-width"
+          />
+
           <h2 class="title-h2">Recommend</h2>
           <section class="rank-list box-category">
             <ContentItemRank
