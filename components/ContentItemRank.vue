@@ -11,7 +11,7 @@
         class="icon"
         :loading="index < eager ? 'eager' : 'lazy'"
       />
-      <span v-if="index < 6" class="rank-badge">{{ index + 1 }}</span>
+      <span v-if="showRank && index < 6" class="rank-badge">{{ index + 1 }}</span>
     </div>
     <div class="info">
       <p class="name">{{ item.name }}</p>
@@ -45,6 +45,10 @@ export default {
     to: {
       type: String,
       required: true
+    },
+    showRank: {
+      type: Boolean,
+      default: true
     }
   }
 };

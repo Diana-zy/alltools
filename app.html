@@ -106,6 +106,53 @@
           }
         });
 
+        // Top Picks "Show More" 用的激励广告：点击时手动请求展示，不像上面的插页广告是
+        // Google 自己按 navBar/unhideWindow 这类导航行为触发的。广告关闭、没有广告可填充、
+        // 或者 6 秒内广告没准备好，都会调用 onDone 回调直接放行，不会卡住用户看不到后面的内容。
+        let rewardedSlot;
+        window.showRewardedAd = function (onDone) {
+          let done = false;
+          const finish = () => {
+            if (done) return;
+            done = true;
+            onDone();
+          };
+          const timeoutId = setTimeout(finish, 6000);
+
+          googletag.cmd.push(function () {
+            if (!rewardedSlot) {
+              rewardedSlot = googletag.defineOutOfPageSlot(
+                "/23197833490/alltools1/alltools1_rewarded",
+                googletag.enums.OutOfPageFormat.REWARDED
+              );
+              if (!rewardedSlot) {
+                clearTimeout(timeoutId);
+                finish();
+                return;
+              }
+              rewardedSlot.addService(googletag.pubads());
+              googletag.pubads().addEventListener("rewardedSlotReady", (event) => {
+                if (event.slot === rewardedSlot) {
+                  clearTimeout(timeoutId);
+                  event.makeRewardedVisible();
+                }
+              });
+              googletag.pubads().addEventListener("rewardedSlotClosed", (event) => {
+                if (event.slot === rewardedSlot) finish();
+              });
+              googletag.pubads().addEventListener("slotRenderEnded", (event) => {
+                if (event.slot === rewardedSlot && event.isEmpty) {
+                  clearTimeout(timeoutId);
+                  finish();
+                }
+              });
+              googletag.display(rewardedSlot);
+            } else {
+              googletag.pubads().refresh([rewardedSlot]);
+            }
+          });
+        };
+
         anchorSlot = googletag.defineOutOfPageSlot(
           "/23197833490/alltools1/alltools1_anchor",
           googletag.enums.OutOfPageFormat.TOP_ANCHOR
