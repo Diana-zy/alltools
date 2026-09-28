@@ -19,11 +19,7 @@ body {
   background: #ffffff;
 }
 
-/* 全站滚动条改成细的悬浮样式，替代浏览器/系统默认的粗滚动条 */
-html {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(65, 65, 76, 0.3) transparent;
-}
+/* 内部小范围可滚动区域（抽屉菜单等）用细滚动条，跟系统默认粗滚动条区分开 */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -37,6 +33,15 @@ html {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(65, 65, 76, 0.5);
+}
+
+/* 页面级滚动条改成 plugins/custom-scrollbar.js 里实现的自定义悬浮指示条，
+   这里隐藏浏览器原生的页面滚动条，避免和自定义的重复显示 */
+html {
+  scrollbar-width: none;
+}
+html::-webkit-scrollbar {
+  display: none;
 }
 .page {
   position: relative;

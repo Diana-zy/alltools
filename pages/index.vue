@@ -421,8 +421,12 @@ export default {
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
     &::-webkit-scrollbar {
       display: none;
+      width: 0;
+      height: 0;
     }
   }
 

@@ -1,15 +1,18 @@
 <template>
   <CustomLink :to="to" class="item">
-    <NuxtImg
-      format="auto"
-      fit="cover"
-      width="96"
-      height="96"
-      :src="item.icon"
-      :alt="item.name"
-      class="icon"
-      :loading="index < eager ? 'eager' : 'lazy'"
-    />
+    <div class="icon-box">
+      <NuxtImg
+        format="auto"
+        fit="cover"
+        width="96"
+        height="96"
+        :src="item.icon"
+        :alt="item.name"
+        class="icon"
+        :loading="index < eager ? 'eager' : 'lazy'"
+      />
+      <span v-if="index < 6" class="rank-badge">{{ index + 1 }}</span>
+    </div>
     <div class="info">
       <p class="name">{{ item.name }}</p>
       <p class="meta">
@@ -55,12 +58,35 @@ export default {
   scroll-snap-align: start;
 }
 
+.icon-box {
+  position: relative;
+  flex-shrink: 0;
+  margin-right: 16px;
+}
+
 .icon {
   width: 72px;
   height: 72px;
   border-radius: 14px;
-  margin-right: 16px;
-  flex-shrink: 0;
+}
+
+.rank-badge {
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 4px;
+  border-radius: 6px;
+  background: #fd6b21;
+  border: 2px solid #ffffff;
+  color: #ffffff;
+  font-family: "seb";
+  font-size: 12px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .info {
@@ -126,11 +152,23 @@ export default {
   .item {
     padding: vw(20) 0;
   }
+  .icon-box {
+    margin-right: vw(20);
+  }
   .icon {
     width: vw(120);
     height: vw(120);
     border-radius: vw(24);
-    margin-right: vw(20);
+  }
+  .rank-badge {
+    top: vw(-10);
+    left: vw(-10);
+    min-width: vw(36);
+    height: vw(36);
+    padding: 0 vw(6);
+    border-radius: vw(10);
+    border-width: vw(3);
+    font-size: vw(20);
   }
   .name {
     font-size: vw(28);

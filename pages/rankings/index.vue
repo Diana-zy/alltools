@@ -3,6 +3,13 @@
     <Header />
     <main class="main">
       <div class="main-left">
+        <adm-slot
+          :adm-id="topAd.admId"
+          :adm-unit="topAd.admUnit"
+          :ads-slot="topAd.adsSlot"
+          class="ad1 ad-width"
+        />
+
         <h2 class="title-h2">Top Rankings</h2>
 
         <div class="tabs">
@@ -21,12 +28,6 @@
         </div>
 
         <template v-if="activeTab === 'apps'">
-          <adm-slot
-            adm-id="rankings-app-mid1"
-            adm-unit="/23197833490/alltools1/alltools1_module_1"
-            ads-slot="3074328547"
-            class="ad1 ad-width"
-          />
           <section class="box-list-section box-category">
             <ContentItemList
               v-for="(item, index) in bestApps"
@@ -81,12 +82,6 @@
         </template>
 
         <template v-else>
-          <adm-slot
-            adm-id="rankings-game-mid1"
-            adm-unit="/23197833490/alltools1/alltools1_module_1"
-            ads-slot="2858514230"
-            class="ad1 ad-width"
-          />
           <section class="box-common box-category">
             <ContentItemSmall
               v-for="(item, index) in bestGames"
@@ -201,6 +196,21 @@ export default {
       newGames,
       allGames
     };
+  },
+  computed: {
+    topAd() {
+      return this.activeTab === "apps"
+        ? {
+            admId: "rankings-app-mid1",
+            admUnit: "/23197833490/alltools1/alltools1_module_1",
+            adsSlot: "3074328547"
+          }
+        : {
+            admId: "rankings-game-mid1",
+            admUnit: "/23197833490/alltools1/alltools1_module_1",
+            adsSlot: "2858514230"
+          };
+    }
   },
   methods: {
     setTab(tab) {

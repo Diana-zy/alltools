@@ -79,6 +79,7 @@ export default {
   },
   plugins: [
     { src: "~/plugins/vue-infinite-scroll", ssr: false },
+    { src: "~/plugins/custom-scrollbar", ssr: false },
     "~/plugins/axios",
     "~/plugins/global-data"
   ],
