@@ -48,6 +48,21 @@
       </section>
 
       <article class="article">
+        <CustomLink to="/apps/" class="title-h2"
+          >Top Picks in Last 24 Hours<div class="title-see-more"
+            ><span>View All</span><i class="icon-arrow"
+          /></div
+        ></CustomLink>
+        <section class="recommended-apks">
+          <ContentItemRank
+            v-for="(item, index) in recommendedApksShown"
+            :key="index"
+            :item="item"
+            :index="index"
+            :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
+          />
+        </section>
+
         <CustomLink to="/rankings/?tab=apps" class="title-h2"
           >Top Apps<div class="title-see-more"><span>View All</span><i class="icon-arrow" /></div
         ></CustomLink>
@@ -112,19 +127,6 @@
           ads-slot="0000000004"
           class="ad-3"
         />
-
-        <CustomLink to="/apps/" class="title-h2"
-          >Top Picks<div class="title-see-more"><span>View All</span><i class="icon-arrow" /></div
-        ></CustomLink>
-        <section class="recommended-apks">
-          <ContentItemRank
-            v-for="(item, index) in recommendedApksShown"
-            :key="index"
-            :item="item"
-            :index="index"
-            :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
-          />
-        </section>
       </article>
     </main>
     <Footer />
@@ -198,7 +200,7 @@ export default {
     recommendedApksShown() {
       return (
         this.recommendedApksConfigured.length ? this.recommendedApksConfigured : this.bestApps
-      ).slice(0, 10);
+      ).slice(0, 9);
     }
   },
   mounted() {
@@ -405,6 +407,17 @@ export default {
   .recommended-apks {
     margin: 0;
     padding: 0 vw(46);
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(3, auto);
+    grid-auto-columns: 88%;
+    column-gap: vw(24);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   .title-h2 {

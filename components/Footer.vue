@@ -1,10 +1,13 @@
 <template>
   <footer class="footer">
     <div class="subscription">
-      <div class="introduction">
-        Apk-Alltools is a platform dedicated to showcasing and distributing the world's best and
-        most popular APK products. We regularly update the best apps and games from around the
-        globe, giving our users an unlimited experience.
+      <div class="subscription-content">
+        <CustomLink to="/" class="footer-logo"><i class="icon-logo"></i></CustomLink>
+        <div class="introduction">
+          Apk-Alltools is a platform dedicated to showcasing and distributing the world's best and
+          most popular APK products. We regularly update the best apps and games from around the
+          globe, giving our users an unlimited experience.
+        </div>
       </div>
     </div>
 
@@ -17,7 +20,7 @@
           ><CustomLink to="/disclosure.html" target="_blank">Disclosure & Disclaimer</CustomLink>
           <a href="mailto:Service@alltools1.com">Contact</a>
         </div>
-        <span>Copyright ©&nbsp; 2024 AllTools1 &nbsp;All rights reserved.</span>
+        <span>Copyright ©&nbsp; 2026 AllTools1 &nbsp;All rights reserved.</span>
       </div>
     </div>
     <Notification v-if="showNotification" :message="notificationMessage" />
@@ -48,16 +51,32 @@ export default {
   margin-top: 32px;
 }
 .subscription {
+  width: 100%;
+  background: #14142b;
+}
+.subscription-content {
   max-width: 1200px;
-  padding-top: 32px;
-  padding-bottom: 16px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+.footer-logo {
+  display: inline-flex;
+  align-items: center;
+  height: 48px;
+  padding: 0 16px;
+  border-radius: 8px;
+  background: #ffffff;
+  margin-bottom: 16px;
+  i {
+    @include icon(140px, 32px, "logo.png");
+  }
 }
 .introduction {
-  color: rgba($font1, 0.6);
-  line-height: 16px;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 20px;
   a {
     font-family: "sesb";
-    color: $font1;
+    color: #ffffff;
   }
 }
 .copyright {
@@ -106,16 +125,21 @@ export default {
     border-top: none;
     margin-top: vw(48);
   }
-  .subscription {
-    display: block;
-    padding-top: vw(32);
-    padding-bottom: vw(32);
+  .subscription-content {
+    padding: vw(48) vw(46);
+  }
+  .footer-logo {
+    height: vw(72);
+    padding: 0 vw(24);
+    border-radius: vw(12);
+    margin-bottom: vw(24);
+    i {
+      @include icon(vw(210), vw(48), "logo.png");
+    }
   }
   .introduction {
     font-size: vw(24);
     line-height: vw(28);
-    padding: 0 vw(46);
-    margin-top: vw(24);
   }
   .copyright {
     height: auto;

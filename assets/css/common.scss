@@ -178,8 +178,8 @@ body {
 
     span {
       color: $color2;
-      font-size: vw(28);
-      line-height: vw(36);
+      font-size: vw(24);
+      line-height: vw(30);
     }
     .icon-arrow {
       @include icon(vw(48), vw(48), "icon-title-arrow1.png");
