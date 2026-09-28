@@ -72,6 +72,7 @@ export default {
   color: $font1;
   font-family: "seb";
   font-size: 15px;
+  line-height: 22px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -133,6 +134,7 @@ export default {
   }
   .name {
     font-size: vw(28);
+    line-height: vw(40);
   }
   .meta {
     margin-top: vw(8);

@@ -146,49 +146,61 @@
 </template>
 
 <script>
+// 后端在多个并发请求下会502（实测单条请求正常，多条并发就炸），所以这里依次请求而不是
+// Promise.all并发，排队请求虽然多花几百毫秒，但不会把Rankings页拖挂；单条请求失败时兜底
+// 成空列表，不让整页因为某一个模块出错就白屏。
+async function fetchList($axios, url, params) {
+  try {
+    const res = await $axios.$get(url, { params });
+    return res.list || [];
+  } catch (error) {
+    console.error(`[rankings] 请求失败 ${url}:`, params, error && error.message);
+    return [];
+  }
+}
+
 export default {
   async asyncData({ $axios, env, query }) {
-    try {
-      const [
-        bestAppsResponse,
-        newAppsResponse,
-        allAppsResponse,
-        bestGamesResponse,
-        newGamesResponse,
-        allGamesResponse
-      ] = await Promise.all([
-        $axios.$get("/api/game/menu", {
-          params: { site_id: env.SITE_ID, mod_id: "best-apps", size: 30 }
-        }),
-        $axios.$get("/api/game/menu", {
-          params: { site_id: env.SITE_ID, mod_id: "new-apps", size: 12 }
-        }),
-        $axios.$get("/api/game/all_app", {
-          params: { site_id: env.SITE_ID, page: 1, size: 30 }
-        }),
-        $axios.$get("/api/game/menu", {
-          params: { site_id: env.SITE_ID, mod_id: "best-games", size: 30 }
-        }),
-        $axios.$get("/api/game/menu", {
-          params: { site_id: env.SITE_ID, mod_id: "new-games", size: 10 }
-        }),
-        $axios.$get("/api/game/all_game", {
-          params: { site_id: env.SITE_ID, page: 1, size: 30 }
-        })
-      ]);
+    const bestApps = await fetchList($axios, "/api/game/menu", {
+      site_id: env.SITE_ID,
+      mod_id: "best-apps",
+      size: 30
+    });
+    const newApps = await fetchList($axios, "/api/game/menu", {
+      site_id: env.SITE_ID,
+      mod_id: "new-apps",
+      size: 12
+    });
+    const allApps = await fetchList($axios, "/api/game/all_app", {
+      site_id: env.SITE_ID,
+      page: 1,
+      size: 30
+    });
+    const bestGames = await fetchList($axios, "/api/game/menu", {
+      site_id: env.SITE_ID,
+      mod_id: "best-games",
+      size: 30
+    });
+    const newGames = await fetchList($axios, "/api/game/menu", {
+      site_id: env.SITE_ID,
+      mod_id: "new-games",
+      size: 10
+    });
+    const allGames = await fetchList($axios, "/api/game/all_game", {
+      site_id: env.SITE_ID,
+      page: 1,
+      size: 30
+    });
 
-      return {
-        activeTab: query.tab === "games" ? "games" : "apps",
-        bestApps: bestAppsResponse.list,
-        newApps: newAppsResponse.list,
-        allApps: allAppsResponse.list,
-        bestGames: bestGamesResponse.list,
-        newGames: newGamesResponse.list,
-        allGames: allGamesResponse.list
-      };
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+    return {
+      activeTab: query.tab === "games" ? "games" : "apps",
+      bestApps,
+      newApps,
+      allApps,
+      bestGames,
+      newGames,
+      allGames
+    };
   },
   methods: {
     setTab(tab) {

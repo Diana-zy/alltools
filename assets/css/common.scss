@@ -29,9 +29,9 @@ body {
 .title-h2 {
   font-family: se;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 14px;
   color: $font1;
-  line-height: 24px;
+  line-height: 18px;
   margin: 10px 0 5px;
   width: 100%;
   height: auto;
@@ -170,7 +170,7 @@ body {
     padding: 0;
   }
   .title-h2 {
-    font-size: 16px;
+    font-size: 14px;
     width: calc(100% - vw(92));
     margin: 10px vw(46) 5px;
     padding: 0;

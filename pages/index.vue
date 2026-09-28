@@ -3,131 +3,133 @@
     <div class="fix-bg"></div>
     <Header current-path="home" />
     <main class="main">
-      <adm-slot
-        adm-id="home-1"
-        adm-unit="/23197833490/alltools1/alltools1_home_1"
-        ads-slot="6667048681"
-        class="ad-1 ad-top"
-      />
+      <div class="wrapper">
+        <adm-slot
+          adm-id="home-1"
+          adm-unit="/23197833490/alltools1/alltools1_home_1"
+          ads-slot="6667048681"
+          class="ad-1 ad-top"
+        />
 
-      <section class="rec">
-        <div class="rec-content">
-          <transition
-            v-for="(item, index) in heroShown"
-            :key="index"
-            :item="item"
-            :index="index"
-            name="fade"
-          >
-            <CustomLink v-show="recIndex === index" :to="heroLink(item)" class="hero-card">
-              <NuxtImg
-                format="auto"
-                fit="cover"
-                width="1200"
-                height="400"
-                :src="item.pc_img || item.icon"
-                :alt="item.name"
-                :preloader="index === 0"
-                class="hero-img m-hidden"
-              />
-              <NuxtImg
-                format="auto"
-                fit="cover"
-                width="686"
-                height="416"
-                :src="item.mobile_img || item.icon"
-                :alt="item.name"
-                :preloader="index === 0"
-                class="hero-img pc-hidden"
-              />
-              <div class="hero-overlay"></div>
-              <p class="hero-name">{{ item.name }}</p>
-            </CustomLink>
-          </transition>
-        </div>
-      </section>
+        <section class="rec">
+          <div class="rec-content">
+            <transition
+              v-for="(item, index) in heroShown"
+              :key="index"
+              :item="item"
+              :index="index"
+              name="fade"
+            >
+              <CustomLink v-show="recIndex === index" :to="heroLink(item)" class="hero-card">
+                <NuxtImg
+                  format="auto"
+                  fit="cover"
+                  width="1200"
+                  height="400"
+                  :src="item.pc_img || item.icon"
+                  :alt="item.name"
+                  :preloader="index === 0"
+                  class="hero-img m-hidden"
+                />
+                <NuxtImg
+                  format="auto"
+                  fit="cover"
+                  width="686"
+                  height="416"
+                  :src="item.mobile_img || item.icon"
+                  :alt="item.name"
+                  :preloader="index === 0"
+                  class="hero-img pc-hidden"
+                />
+                <div class="hero-overlay"></div>
+                <p class="hero-name">{{ item.name }}</p>
+              </CustomLink>
+            </transition>
+          </div>
+        </section>
 
-      <article class="article">
-        <CustomLink to="/apps/" class="title-h2"
-          >Top Picks in Last 24 Hours<div class="title-see-more"
-            ><span>View All</span><i class="icon-arrow"
-          /></div
-        ></CustomLink>
-        <section class="recommended-apks">
-          <ContentItemRank
-            v-for="(item, index) in recommendedApksShown"
-            :key="index"
-            :item="item"
-            :index="index"
-            :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
+        <article class="article">
+          <CustomLink to="/rankings/?tab=apps" class="title-h2 title-h2-first"
+            >Top Picks in Last 24 Hours<div class="title-see-more"
+              ><span>View All</span><i class="icon-arrow"
+            /></div
+          ></CustomLink>
+          <section class="recommended-apks">
+            <ContentItemRank
+              v-for="(item, index) in recommendedApksShown"
+              :key="index"
+              :item="item"
+              :index="index"
+              :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
+            />
+          </section>
+
+          <!-- 页内广告位：跟其他 adm-slot 一样走 BI 广告投放系统，ad-unit/ads-slot 需要在 Google Ad
+          Manager/AdSense 后台新建一个真实广告位后再替换成正式 ID，现在这个是占位值。 -->
+          <adm-slot
+            adm-id="home-4"
+            adm-unit="/23197833490/alltools1/alltools1_home_4"
+            ads-slot="0000000005"
+            class="ad-4"
           />
-        </section>
 
-        <!-- 页内广告位：跟其他 adm-slot 一样走 BI 广告投放系统，ad-unit/ads-slot 需要在 Google Ad
-        Manager/AdSense 后台新建一个真实广告位后再替换成正式 ID，现在这个是占位值。 -->
-        <adm-slot
-          adm-id="home-4"
-          adm-unit="/23197833490/alltools1/alltools1_home_4"
-          ads-slot="0000000005"
-          class="ad-4"
-        />
+          <CustomLink to="/rankings/?tab=apps" class="title-h2"
+            >Top Apps<div class="title-see-more"><span>View All</span><i class="icon-arrow" /></div
+          ></CustomLink>
+          <section class="best-tools">
+            <div class="box-row-scroll box-scroll-hidden">
+              <ContentItemRow
+                v-for="(item, index) in bestApps.slice(0, 9)"
+                :key="index"
+                :item="item"
+                :index="index"
+                :eager="2"
+                :to="`/app/${item.path}/`"
+              />
+            </div>
+            <div class="box-list-section">
+              <ContentItemList
+                v-for="(item, index) in bestApps.slice(0, 9)"
+                :key="index"
+                :index="index"
+                :item="item"
+                :to="`/${'app'}/${item.path}/`"
+              />
+            </div>
+          </section>
 
-        <CustomLink to="/rankings/?tab=apps" class="title-h2"
-          >Top Apps<div class="title-see-more"><span>View All</span><i class="icon-arrow" /></div
-        ></CustomLink>
-        <section class="best-tools">
-          <div class="box-row-scroll box-scroll-hidden">
-            <ContentItemRow
-              v-for="(item, index) in bestApps.slice(0, 9)"
-              :key="index"
-              :item="item"
-              :index="index"
-              :eager="2"
-              :to="`/app/${item.path}/`"
-            />
-          </div>
-          <div class="box-list-section">
-            <ContentItemList
-              v-for="(item, index) in bestApps.slice(0, 9)"
-              :key="index"
-              :index="index"
-              :item="item"
-              :to="`/${'app'}/${item.path}/`"
-            />
-          </div>
-        </section>
+          <adm-slot
+            adm-id="home-2"
+            adm-unit="/23197833490/alltools1/alltools1_home_2"
+            ads-slot="4080715115"
+            class="ad-2"
+          />
 
-        <adm-slot
-          adm-id="home-2"
-          adm-unit="/23197833490/alltools1/alltools1_home_2"
-          ads-slot="4080715115"
-          class="ad-2"
-        />
-
-        <CustomLink to="/rankings/?tab=games" class="title-h2"
-          >Top Games<div class="title-see-more"><span>View All</span><i class="icon-arrow" /></div
-        ></CustomLink>
-        <section class="top-games">
-          <div class="box-row-scroll box-scroll-hidden">
-            <ContentItemRow
-              v-for="(item, index) in bestGames.slice(0, 9)"
-              :key="index"
-              :item="item"
-              :index="index"
-              :to="`/game/${item.path}/`"
-            />
-          </div>
-          <div class="box-list-section">
-            <ContentItemList
-              v-for="(item, index) in bestGames.slice(0, 9)"
-              :key="index"
-              :index="index"
-              :item="item"
-              :to="`/${'game'}/${item.path}/`"
-            />
-          </div>
-        </section>
-      </article>
+          <CustomLink to="/rankings/?tab=games" class="title-h2"
+            >Top Games<div class="title-see-more"><span>View All</span><i class="icon-arrow" /></div
+          ></CustomLink>
+          <section class="top-games">
+            <div class="box-row-scroll box-scroll-hidden">
+              <ContentItemRow
+                v-for="(item, index) in bestGames.slice(0, 9)"
+                :key="index"
+                :item="item"
+                :index="index"
+                :to="`/game/${item.path}/`"
+              />
+            </div>
+            <div class="box-list-section">
+              <ContentItemList
+                v-for="(item, index) in bestGames.slice(0, 9)"
+                :key="index"
+                :index="index"
+                :item="item"
+                :to="`/${'game'}/${item.path}/`"
+              />
+            </div>
+          </section>
+        </article>
+      </div>
     </main>
     <Footer />
     <!-- <AdLoading /> -->
@@ -220,6 +222,7 @@ export default {
 <style lang="scss" scoped>
 .page {
   position: relative;
+  overflow-x: hidden;
 }
 .fix-bg {
   width: 100%;
@@ -234,14 +237,23 @@ export default {
   margin: 0 auto;
 }
 
+.wrapper {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
 .ad-top {
-  max-width: 1200px;
-  margin: 16px auto 0;
+  margin-top: 16px;
 }
 
 .article {
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
+}
+
+.title-h2-first {
+  margin-top: 24px;
 }
 
 .rec {
@@ -250,9 +262,8 @@ export default {
 
   .rec-content {
     position: relative;
-    max-width: 1200px;
+    width: 100%;
     height: 400px;
-    margin: 0 auto;
     border-radius: 24px;
     overflow: hidden;
     background-color: #ffffff;
@@ -321,6 +332,7 @@ export default {
 .recommended-apks {
   display: flex;
   flex-direction: column;
+  gap: 24px;
 }
 
 .pc-hidden {
@@ -337,16 +349,6 @@ export default {
   margin-top: 32px;
 }
 
-@media screen and (min-width: 1200px) and (max-width: 1450px) {
-  .main {
-    max-width: 1210px;
-  }
-  .rec {
-    .rec-content {
-      max-width: 1160px;
-    }
-  }
-}
 @media screen and (min-width: 879px) and (max-width: 1240px) {
   .fix-bg {
     height: vw2(400);
@@ -354,7 +356,6 @@ export default {
   .rec {
     .rec-content {
       height: vw2(400);
-      margin: 0 vw2(20);
       border-radius: vw2(24);
     }
     .hero-name {
@@ -379,7 +380,6 @@ export default {
   .rec {
     .rec-content {
       height: vw(416);
-      margin: 0 vw(46);
       border-radius: vw(32);
     }
     .hero-name {
@@ -396,22 +396,26 @@ export default {
 
   .box-common {
     margin: 0;
-    padding: 0 vw(46);
+    padding: 0;
   }
 
   .box-list-section {
     display: grid;
+    margin: 0;
   }
 
   .recommended-apks {
+    width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
     margin: 0;
-    padding: 0 vw(46);
-    scroll-padding: 0 vw(46);
+    padding: 0;
     display: grid;
     grid-auto-flow: column;
     grid-template-rows: repeat(3, auto);
     grid-auto-columns: 88%;
     column-gap: vw(24);
+    row-gap: vw(24);
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
@@ -424,6 +428,11 @@ export default {
     position: relative;
     height: vw(72);
     z-index: 2;
+    margin: 10px 0 5px;
+  }
+
+  .title-h2-first {
+    margin-top: 24px;
   }
 
   .box-scroll-hidden {
