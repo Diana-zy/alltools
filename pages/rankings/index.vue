@@ -141,12 +141,12 @@
         </template>
 
         <template v-else>
-          <section class="picks-list">
-            <ContentItemRank
+          <section class="box-list-section box-category">
+            <ContentItemList
               v-for="(item, index) in recommendedApksShown"
               :key="index"
-              :item="item"
               :index="index"
+              :item="item"
               :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
             />
           </section>
@@ -156,13 +156,12 @@
           </div>
 
           <h2 class="title-h2">Recommend</h2>
-          <section class="picks-list">
-            <ContentItemRank
+          <section class="box-list-section box-category">
+            <ContentItemList
               v-for="(item, index) in bottomRecommend"
               :key="index"
-              :item="item"
               :index="index"
-              :show-rank="false"
+              :item="item"
               :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
             />
           </section>
@@ -351,12 +350,6 @@ export default {
   margin-bottom: 32px;
   margin-top: 24px;
 }
-.picks-list {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  margin-top: 24px;
-}
 .show-more {
   width: 100%;
   height: 48px;
@@ -419,13 +412,10 @@ export default {
     margin-bottom: vw(48);
     margin-top: vw(36);
   }
-  .picks-list {
-    padding: 0 vw(24);
-    margin-top: vw(36);
-  }
   .show-more {
+    width: calc(100% - vw(92));
+    margin: vw(24) vw(46) 0;
     height: vw(80);
-    margin-top: vw(24);
     border-radius: vw(40);
     font-size: vw(26);
   }

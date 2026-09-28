@@ -3,6 +3,13 @@
     <Header />
     <main class="main">
       <div class="main-left">
+        <!-- <GoogleAd ad-slot="2540903743" class="ad1 ad-width" /> -->
+        <adm-slot
+          adm-id="category-mid1"
+          adm-unit="/23197833490/alltools1/alltools1_module_1"
+          ads-slot="2540903743"
+          class="ad1 ad-width"
+        />
         <h2 class="title-h2">
           <!-- <NuxtImg
             v-if="currentCategoryInfo.icon_dark"
@@ -16,13 +23,6 @@
           /> -->
           {{ currentCategoryName }}</h2
         >
-        <!-- <GoogleAd ad-slot="2540903743" class="ad1 ad-width" /> -->
-        <adm-slot
-          adm-id="category-mid1"
-          adm-unit="/23197833490/alltools1/alltools1_module_1"
-          ads-slot="2540903743"
-          class="ad1 ad-width"
-        />
         <section class="box-list-section box-category">
           <ContentItemList
             v-for="(item, index) in currentCategory"

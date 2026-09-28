@@ -70,10 +70,10 @@ export default {
           }
         });
         // 只展示这个站点下实际有内容的分类（total > 0），空分类不在导航里出现；
-        // Games/Apps 分类合并成一个平铺列表，不再分组
-        this.allCategories = [...(response.list || []), ...(response.app_list || [])].filter(
-          (item) => item.total > 0
-        );
+        // Games/Apps 分类合并成一个平铺列表，按首字母排序，不再分组
+        this.allCategories = [...(response.list || []), ...(response.app_list || [])]
+          .filter((item) => item.total > 0)
+          .sort((a, b) => a.name.localeCompare(b.name));
       } catch (error) {
         console.error("Error fetching categories:", error);
         this.categoriesLoaded = false;
