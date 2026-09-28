@@ -428,6 +428,7 @@ export default {
 
   .title-h2 {
     position: relative;
+    width: 100%;
     height: vw(72);
     z-index: 2;
     margin: 10px 0 5px;
