@@ -63,12 +63,11 @@
             />
           </section>
 
-          <!-- 页内广告位：跟其他 adm-slot 一样走 BI 广告投放系统，ad-unit/ads-slot 需要在 Google Ad
-          Manager/AdSense 后台新建一个真实广告位后再替换成正式 ID，现在这个是占位值。 -->
+          <!-- 页内广告位 -->
           <adm-slot
             adm-id="home-4"
             adm-unit="/23197833490/alltools1/alltools1_home_4"
-            ads-slot="0000000005"
+            ads-slot="23379573501"
             class="ad-4"
           />
 

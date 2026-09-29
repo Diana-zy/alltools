@@ -90,12 +90,11 @@
           </div>
         </section>
 
-        <!-- 页内广告位：跟其他 adm-slot 一样走 BI 广告投放系统，ad-unit/ads-slot 需要在 Google Ad
-        Manager/AdSense 后台新建一个真实广告位后再替换成正式 ID，现在这个是占位值。 -->
+        <!-- 页内广告位，跟应用/游戏详情页共用同一个 alltools1_detail_1b 广告单元 -->
         <adm-slot
           adm-id="detail-mid1b"
           adm-unit="/23197833490/alltools1/alltools1_detail_1b"
-          ads-slot="0000000006"
+          ads-slot="23380269898"
           class="ad-width"
         />
 

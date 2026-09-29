@@ -67,13 +67,12 @@
                 :item="item"
                 :to="`/app/${item.path}/`"
               />
-              <!-- 页内广告位：跟其他 adm-slot 一样走 BI 广告投放系统，ad-unit/ads-slot 需要在 Google Ad
-              Manager/AdSense 后台新建一个真实广告位后再替换成正式 ID，现在这个是占位值。 -->
+              <!-- 页内广告位，跟 Games tab 的这个广告位共用同一个 alltools1_module_4 广告单元 -->
               <adm-slot
                 v-if="items.length > 12"
                 adm-id="rankings-app-mid4"
                 adm-unit="/23197833490/alltools1/alltools1_module_4"
-                ads-slot="0000000009"
+                ads-slot="23380270099"
                 class="ad-inline"
               />
               <ContentItemDetail
@@ -130,13 +129,12 @@
               :item="item"
               :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
             />
-            <!-- 页内广告位：跟其他 adm-slot 一样走 BI 广告投放系统，ad-unit/ads-slot 需要在 Google Ad
-            Manager/AdSense 后台新建一个真实广告位后再替换成正式 ID，现在这个是占位值。 -->
+            <!-- 页内广告位，跟 Apps tab 的这个广告位共用同一个 alltools1_module_4 广告单元 -->
             <adm-slot
               v-if="allGames.length > 12"
               adm-id="rankings-game-mid4"
               adm-unit="/23197833490/alltools1/alltools1_module_4"
-              ads-slot="0000000010"
+              ads-slot="23380270099"
               class="ad-inline"
             />
             <ContentItemCommon
@@ -181,12 +179,12 @@
             {{ showMoreLoading ? "Loading..." : "Show More" }}
           </div>
 
-          <!-- 页内广告位：跟其他 adm-slot 一样走 BI 广告投放系统，ad-unit/ads-slot 需要在 Google Ad
-          Manager/AdSense 后台新建一个真实广告位后再替换成正式 ID，现在这个是占位值。 -->
+          <!-- adm-unit 路径跟 apps/games tab 的第2个广告位完全一样，本来就是共用同一个
+          广告位，ads-slot 沿用已有的真实ID，不需要新建 -->
           <adm-slot
             adm-id="rankings-picks-mid2"
             adm-unit="/23197833490/alltools1/alltools1_module_2"
-            ads-slot="0000000008"
+            ads-slot="8110840910"
             class="ad2 ad-width"
           />
 
@@ -327,11 +325,12 @@ export default {
           adsSlot: "2858514230"
         };
       }
-      // Top Picks tab 的广告位是占位值，需要在 Google Ad Manager 后台新建正式广告位后再替换
+      // adm-unit 路径跟 apps/games tab 完全一样，本来就是共用同一个广告位，
+      // ads-slot 沿用 apps tab 已有的真实ID即可，不需要新建
       return {
         admId: "rankings-picks-mid1",
         admUnit: "/23197833490/alltools1/alltools1_module_1",
-        adsSlot: "0000000007"
+        adsSlot: "3074328547"
       };
     },
     recommendedApksAll() {
