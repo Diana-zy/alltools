@@ -490,6 +490,11 @@ export default {
   padding: 24px 24px 24px 6px;
   margin: 32px 0;
 }
+// Related Apps 卡片网格和下面的 Recommend 标题靠得太近，title-h2 自己的 margin-top
+// 只有 10px，加大一点间距
+.box-common + .title-h2 {
+  margin-top: 32px;
+}
 .table-info {
   display: flex;
   flex-direction: column;
@@ -702,6 +707,9 @@ $table-icon-categories: category, os, size, version, updated, downloads, develop
   .icon-download-cta {
     width: vw(36);
     height: vw(36);
+  }
+  .box-common + .title-h2 {
+    margin-top: vw(48);
   }
   .table-cell:last-child {
     padding-left: vw(24);

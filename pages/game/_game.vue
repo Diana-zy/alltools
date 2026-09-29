@@ -434,6 +434,11 @@ export default {
   box-shadow: none;
   background: #f5f6f8;
 }
+// Related Games 卡片网格和下面的 Recommend 标题靠得太近，title-h2 自己的 margin-top
+// 只有 10px，加大一点间距
+.box-common + .title-h2 {
+  margin-top: 32px;
+}
 // game.scss 全局的 .icon-android/.icon-ios 用的是纯橙色图标(icon-android3/ios3)，
 // 跟 Category/Size 这些"深灰+橙色小点"风格的图标不搭，OS这一行单独换成同色系的版本
 .table-cell .icon-android {
@@ -522,6 +527,9 @@ export default {
 }
 
 @media screen and (max-width: 879px) {
+  .box-common + .title-h2 {
+    margin-top: vw(48);
+  }
   .table-cell:last-child {
     padding-left: vw(24);
   }
