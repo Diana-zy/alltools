@@ -72,10 +72,11 @@
                   <NuxtImg
                     format="auto"
                     fit="contain"
+                    width="500"
                     height="250"
                     :src="banner"
                     :alt="currentGame.name"
-                    loading="lazy"
+                    :loading="i === 0 ? 'eager' : 'lazy'"
                     class="img"
                   />
                 </div>

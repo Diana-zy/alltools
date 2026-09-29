@@ -122,10 +122,11 @@
                   <NuxtImg
                     format="auto"
                     fit="contain"
+                    width="580"
                     height="288"
                     :src="banner"
                     :alt="currentSoftware.name"
-                    loading="lazy"
+                    :loading="i === 0 ? 'eager' : 'lazy'"
                     class="img"
                   />
                 </div>
