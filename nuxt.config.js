@@ -35,7 +35,26 @@ export default {
         ...gameDownloadPaths,
         ...appDownloadPaths
       ];
-      return urls;
+
+      // 后端某条数据的 path 字段可能是空/异常值，拼出来的 url 不是合法 URL，
+      // sitemap 模块生成 sitemap.xml 时会直接 new URL() 报错把整个 generate 命令搞挂掉——
+      // 这里提前过滤掉这些非法项，避免因为个别脏数据拖垮整次发版。
+      const validUrls = urls.filter((url) => {
+        if (typeof url !== "string" || !url || url.includes("undefined") || url.includes("null")) {
+          console.warn("[generate.routes] 跳过非法路径:", url);
+          return false;
+        }
+        try {
+          // eslint-disable-next-line no-new
+          new URL(url, "https://apk.alltools1.com/");
+          return true;
+        } catch (e) {
+          console.warn("[generate.routes] 跳过非法路径:", url, e.message);
+          return false;
+        }
+      });
+
+      return validUrls;
     }
   },
   axios: {
