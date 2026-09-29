@@ -12,34 +12,20 @@
         />
 
         <section class="rec">
-          <!-- 桌面端：3 个卡片平铺展示，不需要切换 -->
-          <div class="rec-grid m-hidden">
-            <CustomLink
-              v-for="(item, index) in heroShown.slice(0, 3)"
-              :key="index"
-              :to="heroLink(item)"
-              class="hero-card"
-            >
-              <NuxtImg
-                format="auto"
-                fit="cover"
-                width="1200"
-                height="400"
-                :src="item.pc_img || item.icon"
-                :alt="item.name"
-                :preloader="index === 0"
-                class="hero-img"
-              />
-              <div class="hero-overlay"></div>
-              <p class="hero-name">{{ item.name }}</p>
-            </CustomLink>
-          </div>
-
-          <!-- 移动端：可手动滑动的轮播 -->
-          <div v-swiper:heroSwiper="heroSwiperOption" class="rec-content pc-hidden">
+          <div v-swiper:heroSwiper="heroSwiperOption" class="rec-content">
             <div class="swiper-wrapper">
               <div v-for="(item, index) in heroShown" :key="index" class="swiper-slide">
                 <CustomLink :to="heroLink(item)" class="hero-card">
+                  <NuxtImg
+                    format="auto"
+                    fit="cover"
+                    width="1200"
+                    height="400"
+                    :src="item.pc_img || item.icon"
+                    :alt="item.name"
+                    :preloader="index === 0"
+                    class="hero-img m-hidden"
+                  />
                   <NuxtImg
                     format="auto"
                     fit="cover"
@@ -48,7 +34,7 @@
                     :src="item.mobile_img || item.icon"
                     :alt="item.name"
                     :preloader="index === 0"
-                    class="hero-img"
+                    class="hero-img pc-hidden"
                   />
                   <div class="hero-overlay"></div>
                   <p class="hero-name">{{ item.name }}</p>
@@ -219,6 +205,8 @@ export default {
       heroConfigured: [],
       recommendedApksConfigured: [],
       heroSwiperOption: {
+        slidesPerView: 1,
+        spaceBetween: 16,
         loop: true,
         autoplay: {
           delay: 4000,
@@ -227,6 +215,13 @@ export default {
         pagination: {
           el: ".swiper-pagination",
           clickable: true
+        },
+        breakpoints: {
+          // PC 端一排展示 2 个，两两轮播
+          880: {
+            slidesPerView: 2,
+            spaceBetween: 24
+          }
         }
       }
     };
@@ -298,18 +293,6 @@ export default {
     border-radius: 24px;
     overflow: hidden;
     background-color: #ffffff;
-  }
-
-  .rec-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-  }
-
-  .rec-grid .hero-card {
-    height: 260px;
-    border-radius: 24px;
-    overflow: hidden;
   }
 
   .hero-card {
