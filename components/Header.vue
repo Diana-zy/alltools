@@ -82,19 +82,25 @@ export default {
 }
 
 .header-main {
-  max-width: 1200px;
+  width: 100%;
   height: 64px;
   display: flex;
   align-items: center;
-  margin: 0 auto;
+  padding: 0 32px;
+  box-sizing: border-box;
   position: relative;
   justify-content: space-between;
   z-index: 1;
 }
 
+.m-list {
+  display: flex;
+  align-items: center;
+}
+
 .logo {
   display: flex;
-  height: 100%;
+  height: 48px;
   @include btn-img(180px, 48px, "logo.png");
   width: 164px;
   background-size: 116px 32px;
@@ -102,6 +108,10 @@ export default {
   background-repeat: no-repeat;
   border: 1px solid #eef0f3;
   border-radius: 38px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .menu {

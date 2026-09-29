@@ -12,39 +12,50 @@
         />
 
         <section class="rec">
-          <div class="rec-content">
-            <transition
-              v-for="(item, index) in heroShown"
+          <!-- 桌面端：3 个卡片平铺展示，不需要切换 -->
+          <div class="rec-grid m-hidden">
+            <CustomLink
+              v-for="(item, index) in heroShown.slice(0, 3)"
               :key="index"
-              :item="item"
-              :index="index"
-              name="fade"
+              :to="heroLink(item)"
+              class="hero-card"
             >
-              <CustomLink v-show="recIndex === index" :to="heroLink(item)" class="hero-card">
-                <NuxtImg
-                  format="auto"
-                  fit="cover"
-                  width="1200"
-                  height="400"
-                  :src="item.pc_img || item.icon"
-                  :alt="item.name"
-                  :preloader="index === 0"
-                  class="hero-img m-hidden"
-                />
-                <NuxtImg
-                  format="auto"
-                  fit="cover"
-                  width="686"
-                  height="416"
-                  :src="item.mobile_img || item.icon"
-                  :alt="item.name"
-                  :preloader="index === 0"
-                  class="hero-img pc-hidden"
-                />
-                <div class="hero-overlay"></div>
-                <p class="hero-name">{{ item.name }}</p>
-              </CustomLink>
-            </transition>
+              <NuxtImg
+                format="auto"
+                fit="cover"
+                width="1200"
+                height="400"
+                :src="item.pc_img || item.icon"
+                :alt="item.name"
+                :preloader="index === 0"
+                class="hero-img"
+              />
+              <div class="hero-overlay"></div>
+              <p class="hero-name">{{ item.name }}</p>
+            </CustomLink>
+          </div>
+
+          <!-- 移动端：可手动滑动的轮播 -->
+          <div v-swiper:heroSwiper="heroSwiperOption" class="rec-content pc-hidden">
+            <div class="swiper-wrapper">
+              <div v-for="(item, index) in heroShown" :key="index" class="swiper-slide">
+                <CustomLink :to="heroLink(item)" class="hero-card">
+                  <NuxtImg
+                    format="auto"
+                    fit="cover"
+                    width="686"
+                    height="416"
+                    :src="item.mobile_img || item.icon"
+                    :alt="item.name"
+                    :preloader="index === 0"
+                    class="hero-img"
+                  />
+                  <div class="hero-overlay"></div>
+                  <p class="hero-name">{{ item.name }}</p>
+                </CustomLink>
+              </div>
+            </div>
+            <div class="swiper-pagination"></div>
           </div>
         </section>
 
@@ -53,14 +64,26 @@
             ><span class="title-text">Top Picks in Last 24 Hours</span
             ><div class="title-see-more"><span>View All</span><i class="icon-arrow" /></div
           ></CustomLink>
-          <section class="recommended-apks">
-            <ContentItemRank
-              v-for="(item, index) in recommendedApksShown"
-              :key="index"
-              :item="item"
-              :index="index"
-              :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
-            />
+          <section class="top-picks">
+            <div class="box-row-scroll box-scroll-hidden">
+              <ContentItemRow
+                v-for="(item, index) in recommendedApksShown"
+                :key="index"
+                :item="item"
+                :index="index"
+                :eager="2"
+                :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
+              />
+            </div>
+            <div class="box-list-section">
+              <ContentItemList
+                v-for="(item, index) in recommendedApksShown"
+                :key="index"
+                :index="index"
+                :item="item"
+                :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
+              />
+            </div>
           </section>
 
           <!-- 页内广告位 -->
@@ -137,6 +160,9 @@
 </template>
 
 <script>
+import { directive } from "vue-awesome-swiper";
+import "swiper/css/swiper.min.css";
+
 // 站点管理 / 模块游戏推荐（site_module 表）里还没配置这个 mod_id 时，/api/game/menu 会报错，
 // 这里统一兜底成空列表，不让首页因为运营还没配好某个模块就直接挂掉。
 async function fetchModule($axios, siteId, modId, size) {
@@ -157,6 +183,9 @@ async function fetchModule($axios, siteId, modId, size) {
 }
 
 export default {
+  directives: {
+    swiper: directive
+  },
   async asyncData({ $axios, env }) {
     try {
       // 依次请求而不是 Promise.all 并发——后端在多个并发请求下会 502（实测单条请求正常，
@@ -185,11 +214,21 @@ export default {
   },
   data() {
     return {
-      recIndex: 0,
       bestApps: [],
       bestGames: [],
       heroConfigured: [],
-      recommendedApksConfigured: []
+      recommendedApksConfigured: [],
+      heroSwiperOption: {
+        loop: true,
+        autoplay: {
+          delay: 4000,
+          disableOnInteraction: false
+        },
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true
+        }
+      }
     };
   },
   computed: {
@@ -204,17 +243,9 @@ export default {
       ).slice(0, 9);
     }
   },
-  mounted() {
-    this.nextSlide();
-  },
   methods: {
     heroLink(item) {
       return `/${item.type === 1 ? "game" : "app"}/${item.path}/`;
-    },
-    nextSlide() {
-      this.currentChangeTimer = setInterval(() => {
-        this.recIndex = (this.recIndex + 1) % Math.max(this.heroShown.length, 1);
-      }, 4000);
     }
   }
 };
@@ -269,10 +300,23 @@ export default {
     background-color: #ffffff;
   }
 
+  .rec-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .rec-grid .hero-card {
+    height: 260px;
+    border-radius: 24px;
+    overflow: hidden;
+  }
+
   .hero-card {
-    position: absolute;
-    inset: 0;
+    position: relative;
     display: block;
+    width: 100%;
+    height: 100%;
   }
 
   .hero-img {
@@ -301,16 +345,11 @@ export default {
     @include ellipsis;
   }
 
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: opacity 1s;
+  ::v-deep .swiper-pagination-bullet {
+    background: #ffffff;
+    opacity: 0.6;
   }
-  .fade-enter,
-  .fade-leave-to {
-    opacity: 0;
-  }
-  .fade-enter-to,
-  .fade-leave {
+  ::v-deep .swiper-pagination-bullet-active {
     opacity: 1;
   }
 }
@@ -327,12 +366,6 @@ export default {
 
 .box-scroll-hidden {
   display: grid;
-}
-
-.recommended-apks {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
 }
 
 .pc-hidden {
@@ -403,30 +436,6 @@ export default {
     display: grid;
     margin: 0;
     grid-template-columns: repeat(3, 1fr);
-  }
-
-  .recommended-apks {
-    width: 100%;
-    max-width: 100vw;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    grid-auto-flow: column;
-    grid-template-rows: repeat(3, auto);
-    grid-auto-columns: 88%;
-    column-gap: vw(24);
-    row-gap: vw(24);
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    &::-webkit-scrollbar {
-      display: none;
-      width: 0;
-      height: 0;
-    }
   }
 
   .title-h2 {
