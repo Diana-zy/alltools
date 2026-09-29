@@ -109,7 +109,10 @@ export default {
     "@nuxtjs/style-resources",
     "@nuxt/image",
     "@nuxtjs/pwa",
-    "@nuxtjs/sitemap",
+    // sitemap 模块生成 sitemap.xml 时内部报 "Invalid URL" 把整次 generate 搞挂，
+    // 排查多轮无果，先临时关掉让发版不被卡住，sitemap.xml 只影响搜索引擎收录，
+    // 不影响站点本身任何功能——之后单独排查根因再恢复。
+    // "@nuxtjs/sitemap",
     "nuxt-purgecss"
   ],
   css: ["@/assets/css/fonts.css", "@/assets/css/reset.css", "@/assets/css/common.scss"],
