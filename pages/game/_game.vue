@@ -171,23 +171,15 @@
 
         <h2 class="title-h2">Recommend</h2>
 
-        <InfiniteScrollList
-          class="box-common"
-          api-endpoint="/api/game/all_game"
-          :initial-page="2"
-          :page-size="21"
-          :initial-items="allGames"
-        >
-          <template #default="{ items }">
-            <ContentItemDetail
-              v-for="(item, index) in items"
-              :key="index"
-              :index="index"
-              :item="item"
-              :to="`/game/${item.path}/`"
-            />
-          </template>
-        </InfiniteScrollList>
+        <section class="box-common">
+          <ContentItemDetail
+            v-for="(item, index) in allGames"
+            :key="index"
+            :index="index"
+            :item="item"
+            :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
+          />
+        </section>
 
         <aside class="box-aside">
           <!-- <GoogleAd ad-slot="7793230426" /> -->
@@ -258,10 +250,35 @@ export default {
             }
           })
         ]);
+
+      // 游戏库里绝大部分是 H5 游戏（game_type=H5），能下载 APK 的游戏类型(DOWNLOAD)内容太少，
+      // all_game 接口经常是空的（跟 Rankings 页 All Games 同样的问题）；找不到内容时改读
+      // Entertainment 分类下的内容（运营手动把一批可下载的应用/游戏分类到了这里）兜底
+      let allGames = allGamesResponse.list || [];
+      if (allGames.length === 0) {
+        try {
+          const categoriesResponse = await $axios.$get("/api/game/get_all_category", {
+            params: { site_id: env.SITE_ID }
+          });
+          const entertainmentCategory = [
+            ...(categoriesResponse.list || []),
+            ...(categoriesResponse.app_list || [])
+          ].find((item) => (item.name || "").toLowerCase() === "entertainment");
+          if (entertainmentCategory) {
+            const categoryGameResponse = await $axios.$get("/api/game/get_category_game", {
+              params: { site_id: env.SITE_ID, category_id: entertainmentCategory.id }
+            });
+            allGames = categoryGameResponse.list || [];
+          }
+        } catch (error) {
+          console.error("Error fetching Entertainment category fallback:", error);
+        }
+      }
+
       return {
         currentGame: currentGameResponse,
         relatedGames: relatedGamesResponse.list,
-        allGames: allGamesResponse.list,
+        allGames,
         bestGames: shuffleArray(bestGamesResponse.list)
       };
     } catch (error) {
