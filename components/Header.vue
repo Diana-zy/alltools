@@ -56,22 +56,7 @@ export default {
       drawerOpen: false
     };
   },
-  mounted() {
-    // 顶部锚定广告（alltools1_anchor）会给 body 加 padding-top 把页面内容顶下去，
-    // 但 header 是 position:fixed 相对视口定位，不会跟着 body 的 padding 走，
-    // 导致广告展开时会盖住 header——这里跟随 body 的 padding-top 同步偏移 header 位置。
-    this.syncAnchorOffset();
-    this.bodyObserver = new MutationObserver(() => this.syncAnchorOffset());
-    this.bodyObserver.observe(document.body, { attributes: true, attributeFilter: ["style"] });
-  },
-  beforeDestroy() {
-    if (this.bodyObserver) this.bodyObserver.disconnect();
-  },
   methods: {
-    syncAnchorOffset() {
-      const offset = document.body.style.paddingTop || "0px";
-      this.$el.style.top = offset;
-    },
     search() {
       if (this.input.length < 2) {
         this.$globalMethod.showNotification({
