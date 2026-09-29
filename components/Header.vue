@@ -175,7 +175,7 @@ export default {
 @media screen and (max-width: 879px) {
   .header {
     width: 100%;
-    height: vw(96);
+    height: vw(126);
     position: fixed;
     top: 0;
     z-index: 10;
@@ -222,7 +222,7 @@ export default {
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, calc(-50% + #{vw(15)}));
   }
 
   .pc-search {
