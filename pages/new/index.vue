@@ -72,39 +72,34 @@
 </template>
 
 <script>
+// 站点管理里没配置对应 mod_id 时，/api/game/menu 会返回 null，直接读 .list 会报错
+// 把整个页面渲染搞挂——这里给每个请求单独兜底成空列表。
+async function fetchModule($axios, siteId, modId, size) {
+  try {
+    const res = await $axios.$get("/api/game/menu", { params: { site_id: siteId, mod_id: modId, size } });
+    return res.list || [];
+  } catch (error) {
+    console.error(`[new] fetchModule 失败 mod_id=${modId}:`, error && error.message);
+    return [];
+  }
+}
+
 export default {
   async asyncData({ $axios, env }) {
     try {
-      const [newGamesResponse, bestGamesResponse, allGamesResponse] = await Promise.all([
-        $axios.$get("/api/game/menu", {
-          params: {
-            site_id: env.SITE_ID,
-            mod_id: "new-games",
-            size: 10
-          }
-        }),
-        $axios.$get("/api/game/menu", {
-          params: {
-            site_id: env.SITE_ID,
-            mod_id: "best-games",
-            size: 30
-          }
-        }),
-        $axios.$get("/api/game/all_game", {
-          params: {
-            site_id: env.SITE_ID,
-            page: 1,
-            size: 30
-          }
-        })
-      ]);
+      const newGames = await fetchModule($axios, env.SITE_ID, "new-games", 10);
+      const bestGames = await fetchModule($axios, env.SITE_ID, "best-games", 30);
+      const allGamesResponse = await $axios.$get("/api/game/all_game", {
+        params: { site_id: env.SITE_ID, page: 1, size: 30 }
+      });
       return {
-        newGames: newGamesResponse.list,
-        bestGames: bestGamesResponse.list,
-        allGames: allGamesResponse.list
+        newGames,
+        bestGames,
+        allGames: (allGamesResponse && allGamesResponse.list) || []
       };
     } catch (error) {
       console.error("Error fetching data:", error);
+      return { newGames: [], bestGames: [], allGames: [] };
     }
   }
 };

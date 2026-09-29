@@ -1,6 +1,50 @@
 import TerserPlugin from "terser-webpack-plugin";
 import OptimizeCSSAssetsPlugin from "optimize-css-assets-webpack-plugin";
 
+const SITE_HOSTNAME = "https://apk.alltools1.com/";
+
+// 后端某条数据的 path 字段可能是空/异常值，拼出来的 url 不是合法 URL，
+// sitemap 模块生成 sitemap.xml 时会直接 new URL() 报错把整个 generate 命令搞挂掉——
+// 这里提前过滤掉这些非法项，避免因为个别脏数据拖垮整次发版。
+async function fetchSiteRoutes() {
+  const postsData = await fetch(
+    `${process.env.PROD_API_URL}/api/game/get_all_path_v2?site_id=${process.env.SITE_ID}`
+  );
+
+  const posts = await postsData.json();
+
+  const gameCategoryPaths = posts.data.game_category.map((item) => `/category/${item}`);
+  const appCategoryPaths = posts.data.app_category.map((item) => `/category/${item}`);
+  const gameDetailPaths = posts.data.game_detail.map((item) => `/game/${item}`);
+  const appDetailPaths = posts.data.app_detail.map((item) => `/app/${item}`);
+  const gameDownloadPaths = posts.data.game_detail.map((item) => `/download/${item}`);
+  const appDownloadPaths = posts.data.app_detail.map((item) => `/download/${item}`);
+
+  const urls = [
+    ...gameCategoryPaths,
+    ...appCategoryPaths,
+    ...gameDetailPaths,
+    ...appDetailPaths,
+    ...gameDownloadPaths,
+    ...appDownloadPaths
+  ];
+
+  return urls.filter((url) => {
+    if (typeof url !== "string" || !url || url.includes("undefined") || url.includes("null")) {
+      console.warn("[routes] 跳过非法路径:", url);
+      return false;
+    }
+    try {
+      // eslint-disable-next-line no-new
+      new URL(url, SITE_HOSTNAME);
+      return true;
+    } catch (e) {
+      console.warn("[routes] 跳过非法路径:", url, e.message);
+      return false;
+    }
+  });
+}
+
 export default {
   target: "static",
   server: {
@@ -13,49 +57,7 @@ export default {
     crawler: false,
     concurrency: 10,
     interval: 100,
-    async routes() {
-      const postsData = await fetch(
-        `${process.env.PROD_API_URL}/api/game/get_all_path_v2?site_id=${process.env.SITE_ID}`
-      );
-
-      const posts = await postsData.json();
-
-      const gameCategoryPaths = posts.data.game_category.map((item) => `/category/${item}`);
-      const appCategoryPaths = posts.data.app_category.map((item) => `/category/${item}`);
-      const gameDetailPaths = posts.data.game_detail.map((item) => `/game/${item}`);
-      const appDetailPaths = posts.data.app_detail.map((item) => `/app/${item}`);
-      const gameDownloadPaths = posts.data.game_detail.map((item) => `/download/${item}`);
-      const appDownloadPaths = posts.data.app_detail.map((item) => `/download/${item}`);
-
-      const urls = [
-        ...gameCategoryPaths,
-        ...appCategoryPaths,
-        ...gameDetailPaths,
-        ...appDetailPaths,
-        ...gameDownloadPaths,
-        ...appDownloadPaths
-      ];
-
-      // 后端某条数据的 path 字段可能是空/异常值，拼出来的 url 不是合法 URL，
-      // sitemap 模块生成 sitemap.xml 时会直接 new URL() 报错把整个 generate 命令搞挂掉——
-      // 这里提前过滤掉这些非法项，避免因为个别脏数据拖垮整次发版。
-      const validUrls = urls.filter((url) => {
-        if (typeof url !== "string" || !url || url.includes("undefined") || url.includes("null")) {
-          console.warn("[generate.routes] 跳过非法路径:", url);
-          return false;
-        }
-        try {
-          // eslint-disable-next-line no-new
-          new URL(url, "https://apk.alltools1.com/");
-          return true;
-        } catch (e) {
-          console.warn("[generate.routes] 跳过非法路径:", url, e.message);
-          return false;
-        }
-      });
-
-      return validUrls;
-    }
+    routes: fetchSiteRoutes
   },
   axios: {
     baseURL:
