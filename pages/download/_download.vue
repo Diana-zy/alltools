@@ -705,6 +705,9 @@ $table-icon-categories: category, os, size, version, updated, downloads, develop
   .table-cell:last-child {
     padding-left: vw(24);
   }
+  .table-content {
+    margin: vw(36) vw(46);
+  }
   .screenshots {
     margin: vw(36) 0;
   }

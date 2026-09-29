@@ -61,9 +61,25 @@
           >
             <template #default="{ items }">
               <ContentItemDetail
-                v-for="(item, index) in items"
-                :key="index"
+                v-for="(item, index) in items.slice(0, 12)"
+                :key="`a-${index}`"
                 :index="index"
+                :item="item"
+                :to="`/app/${item.path}/`"
+              />
+              <!-- 页内广告位：跟其他 adm-slot 一样走 BI 广告投放系统，ad-unit/ads-slot 需要在 Google Ad
+              Manager/AdSense 后台新建一个真实广告位后再替换成正式 ID，现在这个是占位值。 -->
+              <adm-slot
+                v-if="items.length > 12"
+                adm-id="rankings-app-mid4"
+                adm-unit="/23197833490/alltools1/alltools1_module_4"
+                ads-slot="0000000009"
+                class="ad-inline"
+              />
+              <ContentItemDetail
+                v-for="(item, index) in items.slice(12)"
+                :key="`b-${index}`"
+                :index="index + 12"
                 :item="item"
                 :to="`/app/${item.path}/`"
               />
@@ -108,9 +124,25 @@
 
           <section class="box-common box-category">
             <ContentItemCommon
-              v-for="(item, index) in allGames"
-              :key="index"
+              v-for="(item, index) in allGames.slice(0, 12)"
+              :key="`a-${index}`"
               :index="index"
+              :item="item"
+              :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
+            />
+            <!-- 页内广告位：跟其他 adm-slot 一样走 BI 广告投放系统，ad-unit/ads-slot 需要在 Google Ad
+            Manager/AdSense 后台新建一个真实广告位后再替换成正式 ID，现在这个是占位值。 -->
+            <adm-slot
+              v-if="allGames.length > 12"
+              adm-id="rankings-game-mid4"
+              adm-unit="/23197833490/alltools1/alltools1_module_4"
+              ads-slot="0000000010"
+              class="ad-inline"
+            />
+            <ContentItemCommon
+              v-for="(item, index) in allGames.slice(12)"
+              :key="`b-${index}`"
+              :index="index + 12"
               :item="item"
               :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
             />
@@ -365,6 +397,10 @@ export default {
 .ad1,
 .ad2 {
   width: 100%;
+}
+.ad-inline {
+  grid-column: 1 / -1;
+  margin: 8px 0;
 }
 .tabs {
   display: flex;
