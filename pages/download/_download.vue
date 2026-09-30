@@ -52,7 +52,8 @@
         <div
           class="primary-download"
           @click="
-            $refs.storeButtons.scrollIntoView({ behavior: 'smooth', block: 'center' })
+            $refs.storeButtons.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            trackDownloadClick('primary');
           "
         >
           <i class="icon-download-cta"></i>Download Latest APK
@@ -145,6 +146,7 @@
           class="download-now-btn"
           :href="currentSoftware.apkpure_url"
           rel="nofollow noopener"
+          @click="trackDownloadClick('apkpure')"
         >
           <i class="icon-download-cta"></i>Download APK Now
         </a>
@@ -160,6 +162,7 @@
               v-if="currentSoftware.android_web_url"
               :href="currentSoftware.android_web_url"
               rel="noopener"
+              @click="trackDownloadClick('google_play')"
             ></a>
           </div>
 
@@ -173,6 +176,7 @@
               v-if="currentSoftware.ios_web_url"
               :href="currentSoftware.ios_web_url"
               rel="noopener"
+              @click="trackDownloadClick('app_store')"
             ></a>
           </div>
         </div>
@@ -191,6 +195,7 @@
             :key="index"
             :index="index"
             :item="item"
+            list-name="download_related"
             :to="item.type === 1 ? `/game/${item.path}/` : `/app/${item.path}/`"
           />
         </section>
@@ -202,6 +207,7 @@
             :key="index"
             :index="index"
             :item="item"
+            list-name="download_recommend"
             :to="item.type === 1 ? `/game/${item.path}/` : `/app/${item.path}/`"
           />
         </section>
@@ -219,6 +225,7 @@
             :key="index"
             :item="item"
             :index="index"
+            list-name="download_top"
             :to="item.type === 1 ? `/game/${item.path}/` : `/app/${item.path}/`"
           />
         </aside>
@@ -234,6 +241,7 @@
 import QRCode from "qrcode";
 import { directive } from "vue-awesome-swiper";
 import { shuffleArray } from "~/utils/utils";
+import { trackEvent } from "~/utils/track";
 import "swiper/css/swiper.min.css";
 
 export default {
@@ -327,6 +335,14 @@ export default {
       } catch (error) {
         console.error("Error generating QR code:", error);
       }
+    },
+    trackDownloadClick(buttonType) {
+      trackEvent("download_click", {
+        page_type: "download",
+        button_type: buttonType,
+        item_id: this.currentSoftware.path,
+        item_name: this.currentSoftware.name
+      });
     }
   }
 };

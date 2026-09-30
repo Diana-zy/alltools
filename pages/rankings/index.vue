@@ -40,6 +40,7 @@
               :key="index"
               :index="index"
               :item="item"
+              list-name="rankings_apps_best"
               :to="`/app/${item.path}/`"
             />
           </section>
@@ -65,6 +66,7 @@
                 :key="`a-${index}`"
                 :index="index"
                 :item="item"
+                list-name="rankings_apps_all"
                 :to="`/app/${item.path}/`"
               />
               <!-- 页内广告位，跟 Games tab 的这个广告位共用同一个 alltools1_module_4 广告单元 -->
@@ -80,6 +82,7 @@
                 :key="`b-${index}`"
                 :index="index + 12"
                 :item="item"
+                list-name="rankings_apps_all"
                 :to="`/app/${item.path}/`"
               />
             </template>
@@ -97,6 +100,7 @@
               :key="index"
               :item="item"
               :index="index"
+              list-name="rankings_apps_hot"
               :to="`/app/${item.path}/`"
             />
           </aside>
@@ -109,6 +113,7 @@
               :key="index"
               :index="index"
               :item="item"
+              list-name="rankings_games_best"
               :to="`/game/${item.path}/`"
             />
           </section>
@@ -127,6 +132,7 @@
               :key="`a-${index}`"
               :index="index"
               :item="item"
+              list-name="rankings_games_all"
               :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
             />
             <!-- 页内广告位，跟 Apps tab 的这个广告位共用同一个 alltools1_module_4 广告单元 -->
@@ -142,6 +148,7 @@
               :key="`b-${index}`"
               :index="index + 12"
               :item="item"
+              list-name="rankings_games_all"
               :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
             />
           </section>
@@ -158,6 +165,7 @@
               :key="index"
               :item="item"
               :index="index"
+              list-name="rankings_games_hot"
               :to="`/game/${item.path}/`"
             />
           </aside>
@@ -171,6 +179,7 @@
               :index="index"
               :item="item"
               :show-rank="true"
+              list-name="rankings_picks_list"
               :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
             />
           </section>
@@ -196,6 +205,7 @@
               :index="index"
               :item="item"
               :show-rank="false"
+              list-name="rankings_picks_recommend"
               :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
             />
           </section>
@@ -208,6 +218,8 @@
 </template>
 
 <script>
+import { trackEvent } from "~/utils/track";
+
 // 后端在多个并发请求下会502（实测单条请求正常，多条并发就炸），所以这里依次请求而不是
 // Promise.all并发，排队请求虽然多花几百毫秒，但不会把Rankings页拖挂；单条请求失败时兜底
 // 成空列表，不让整页因为某一个模块出错就白屏。
@@ -357,9 +369,14 @@ export default {
     },
     showMoreApks() {
       if (this.showMoreLoading || !this.recommendedApksHasMore) return;
+      trackEvent("show_more_click", { page_type: "rankings_top_picks" });
       this.showMoreLoading = true;
       // Show More 按钮只出现一次：点击后一次性展开剩余全部内容，不再分批、不再需要二次点击
-      const reveal = () => {
+      const reveal = (result) => {
+        // result 只有第一次点击真正请求了广告才会有值，后面直接放行的场景不打点
+        if (result) {
+          trackEvent("rewarded_ad_result", { page_type: "rankings_top_picks", result });
+        }
         this.revealedApksCount = this.recommendedApksAll.length;
         this.showMoreLoading = false;
       };

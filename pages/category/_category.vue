@@ -29,6 +29,7 @@
             :key="index"
             :index="index"
             :item="item"
+            list-name="category_best"
             :to="`/${isApp ? 'app' : 'game'}/${item.path}/`"
           />
         </section>
@@ -56,6 +57,7 @@
               :key="index"
               :index="index"
               :item="item"
+              list-name="category_all"
               :to="`/${isApp ? 'app' : 'game'}/${item.path}/`"
             />
           </template>
@@ -74,6 +76,7 @@
             :key="index"
             :item="item"
             :index="index"
+            list-name="category_hot"
             :to="`/${isApp ? 'app' : 'game'}/${item.path}/`"
           />
         </aside>

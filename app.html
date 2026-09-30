@@ -114,6 +114,8 @@
         // 会导致按钮卡在 loading 状态出不来。
         let rewardedSlot;
         let rewardedUsed = false;
+        // onDone 第二个参数是广告结果（shown/closed/empty/timeout），第一次点击才有值，
+        // 后面几次直接放行的场景不传，方便外面区分要不要打点。
         window.showRewardedAd = function (onDone) {
           if (rewardedUsed) {
             onDone();
@@ -121,13 +123,13 @@
           }
 
           let done = false;
-          const finish = () => {
+          const finish = (result) => {
             if (done) return;
             done = true;
             rewardedUsed = true;
-            onDone();
+            onDone(result);
           };
-          const timeoutId = setTimeout(finish, 6000);
+          const timeoutId = setTimeout(() => finish("timeout"), 6000);
 
           googletag.cmd.push(function () {
             rewardedSlot = googletag.defineOutOfPageSlot(
@@ -136,23 +138,37 @@
             );
             if (!rewardedSlot) {
               clearTimeout(timeoutId);
-              finish();
+              finish("empty");
               return;
             }
             rewardedSlot.addService(googletag.pubads());
             googletag.pubads().addEventListener("rewardedSlotReady", (event) => {
               if (event.slot === rewardedSlot) {
                 clearTimeout(timeoutId);
+                // 广告真正展示出来这个时机不会经过 onDone（要等用户关掉广告才会走 finish），
+                // 这里单独打一条 shown 事件，跟 closed/empty/timeout 区分开
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                  event: "able_rewarded_ad_result",
+                  page_type: "rankings_top_picks",
+                  result: "shown"
+                });
+                if (typeof window.gtag === "function") {
+                  window.gtag("event", "able_rewarded_ad_result", {
+                    page_type: "rankings_top_picks",
+                    result: "shown"
+                  });
+                }
                 event.makeRewardedVisible();
               }
             });
             googletag.pubads().addEventListener("rewardedSlotClosed", (event) => {
-              if (event.slot === rewardedSlot) finish();
+              if (event.slot === rewardedSlot) finish("closed");
             });
             googletag.pubads().addEventListener("slotRenderEnded", (event) => {
               if (event.slot === rewardedSlot && event.isEmpty) {
                 clearTimeout(timeoutId);
-                finish();
+                finish("empty");
               }
             });
             googletag.display(rewardedSlot);

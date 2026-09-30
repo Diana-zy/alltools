@@ -11,9 +11,9 @@
           class="text"
           type="text"
           placeholder="Search"
-          @keyup.enter="searchGame"
+          @keyup.enter="onSearchSubmit"
         />
-        <p class="m-search" @click="searchGame"><i class="icon-search"></i></p>
+        <p class="m-search" @click="onSearchSubmit"><i class="icon-search"></i></p>
       </section>
 
       <!-- <GoogleAd ad-slot="1454551777" class="ad-width" /> -->
@@ -47,6 +47,7 @@
           :key="index"
           :index="index"
           :item="item"
+          list-name="search_result_apps"
           :to="`/app/${item.path}/`"
         />
         <h3 class="title-padding" v-if="matchGameData.list.length > 0">Games</h3>
@@ -55,6 +56,7 @@
           :key="index + 10000"
           :index="index"
           :item="item"
+          list-name="search_result_games"
           :to="`/game/${item.path}/`"
         />
       </section>
@@ -73,6 +75,7 @@
             :key="index"
             :index="index"
             :item="item"
+            list-name="search_recommend"
             :to="`/app/${item.path}/`"
           />
         </template>
@@ -84,6 +87,8 @@
 </template>
 
 <script>
+import { trackEvent } from "~/utils/track";
+
 export default {
   async asyncData({ $axios, env }) {
     try {
@@ -116,6 +121,10 @@ export default {
     this.input && this.searchGame();
   },
   methods: {
+    onSearchSubmit() {
+      trackEvent("search_submit", { page_type: "search_page", search_term: this.input });
+      this.searchGame();
+    },
     async searchGame() {
       if (this.input.length < 2) {
         this.$globalMethod.showNotification({

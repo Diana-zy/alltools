@@ -58,6 +58,7 @@
                 :item="item"
                 :index="index"
                 :eager="2"
+                list-name="top_picks"
                 :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
               />
             </div>
@@ -67,6 +68,7 @@
                 :key="index"
                 :item="item"
                 :index="index"
+                list-name="top_picks"
                 :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
               />
             </div>
@@ -92,6 +94,7 @@
                 :item="item"
                 :index="index"
                 :eager="2"
+                list-name="top_apps"
                 :to="`/app/${item.path}/`"
               />
             </div>
@@ -101,6 +104,7 @@
                 :key="index"
                 :index="index"
                 :item="item"
+                list-name="top_apps"
                 :to="`/${'app'}/${item.path}/`"
               />
             </div>
@@ -124,6 +128,7 @@
                 :key="index"
                 :item="item"
                 :index="index"
+                list-name="top_games"
                 :to="`/game/${item.path}/`"
               />
             </div>
@@ -133,6 +138,7 @@
                 :key="index"
                 :index="index"
                 :item="item"
+                list-name="top_games"
                 :to="`/${'game'}/${item.path}/`"
               />
             </div>
@@ -147,6 +153,7 @@
 
 <script>
 import { directive } from "vue-awesome-swiper";
+import { trackEvent } from "~/utils/track";
 import "swiper/css/swiper.min.css";
 
 // 站点管理 / 模块游戏推荐（site_module 表）里还没配置这个 mod_id 时，/api/game/menu 会报错，
@@ -225,6 +232,19 @@ export default {
         }
       }
     };
+  },
+  mounted() {
+    // 首页浏览来源：站内其他页面跳转过来 referrer 是本站域名，否则算落地页（直接访问/外部来源）
+    let viewSource = "landing";
+    if (document.referrer) {
+      try {
+        viewSource =
+          new URL(document.referrer).origin === window.location.origin ? "internal" : "landing";
+      } catch (e) {
+        viewSource = "landing";
+      }
+    }
+    trackEvent("home_page", { view_source: viewSource });
   },
   computed: {
     // 轮播/推荐位：BI 后台「站点管理/模块游戏推荐」配置了 mod_id 就用配置的，没配就 fallback 到 ranking 数据

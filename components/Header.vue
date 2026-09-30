@@ -41,6 +41,7 @@
 
 <script>
 import { simulateSearch } from "~/utils/utils";
+import { trackEvent, getPageType } from "~/utils/track";
 import NavDrawer from "~/components/NavDrawer.vue";
 
 export default {
@@ -65,6 +66,7 @@ export default {
         });
         return;
       }
+      trackEvent("search_submit", { page_type: getPageType(), search_term: this.input });
       simulateSearch(this.input);
     },
     openDrawer() {

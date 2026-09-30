@@ -1,5 +1,5 @@
 <template>
-  <CustomLink :to="to" class="item">
+  <CustomLink :to="to" class="item" @click.native="trackCardClick">
     <NuxtImg
       format="auto"
       fit="cover"
@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import { trackEvent, getPageType } from "~/utils/track";
+
 export default {
   props: {
     item: {
@@ -33,8 +35,29 @@ export default {
     to: {
       type: String,
       required: true
+    },
+    listName: {
+      type: String,
+      default: ""
+    }
+  },
+  methods: {
+    trackCardClick() {
+      const pageType = getPageType();
+      const params = {
+        list_name: this.listName,
+        item_id: this.item.path,
+        item_type: this.item.type === 1 ? "game" : "app",
+        position: this.index
+      };
+      trackEvent("card_click", { page_type: pageType, ...params });
+      // 首页单独打一个专用事件，用来算首页的有效点击率（able_home_content_click / able_home_page）
+      if (pageType === "home") {
+        trackEvent("home_content_click", params);
+      }
     }
   }
+
 };
 </script>
 

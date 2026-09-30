@@ -59,7 +59,11 @@
 
         <!-- Download 按钮放在第一个广告位下面：顶部如果有锚定广告，展开/折叠会把按钮遮住，
         放在广告下面能避免被挡住 -->
-        <CustomLink class="primary-download" :to="`/download/${currentGame.path}/`">
+        <CustomLink
+          class="primary-download"
+          :to="`/download/${currentGame.path}/`"
+          @click.native="trackDownloadClick('primary')"
+        >
           <i class="icon-download-cta"></i>Download Latest APK
         </CustomLink>
 
@@ -164,6 +168,7 @@
             :key="index"
             :index="index"
             :item="item"
+            list-name="game_detail_related"
             :to="`/game/${item.path}/`"
           />
         </section>
@@ -176,6 +181,7 @@
             :key="index"
             :index="index"
             :item="item"
+            list-name="game_detail_recommend"
             :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
           />
         </section>
@@ -193,6 +199,7 @@
             :key="index"
             :item="item"
             :index="index"
+            list-name="game_detail_hot"
             :to="`/game/${item.path}/`"
           />
         </aside>
@@ -206,6 +213,7 @@
 <script>
 import { directive } from "vue-awesome-swiper";
 import { shuffleArray } from "~/utils/utils";
+import { trackEvent } from "~/utils/track";
 import "swiper/css/swiper.min.css";
 
 export default {
@@ -305,6 +313,16 @@ export default {
         this.currentGame.name || "game"
       }!`
     };
+  },
+  methods: {
+    trackDownloadClick(buttonType) {
+      trackEvent("download_click", {
+        page_type: "game_detail",
+        button_type: buttonType,
+        item_id: this.currentGame.path,
+        item_name: this.currentGame.name
+      });
+    }
   }
 };
 </script>
