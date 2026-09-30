@@ -358,11 +358,9 @@ export default {
     showMoreApks() {
       if (this.showMoreLoading || !this.recommendedApksHasMore) return;
       this.showMoreLoading = true;
+      // Show More 按钮只出现一次：点击后一次性展开剩余全部内容，不再分批、不再需要二次点击
       const reveal = () => {
-        this.revealedApksCount = Math.min(
-          this.revealedApksCount + 9,
-          this.recommendedApksAll.length
-        );
+        this.revealedApksCount = this.recommendedApksAll.length;
         this.showMoreLoading = false;
       };
       // 激励广告由 app.html 里的 window.showRewardedAd 触发；没有广告可用/加载失败/关闭

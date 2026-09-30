@@ -109,47 +109,53 @@
         // Top Picks "Show More" 用的激励广告：点击时手动请求展示，不像上面的插页广告是
         // Google 自己按 navBar/unhideWindow 这类导航行为触发的。广告关闭、没有广告可填充、
         // 或者 6 秒内广告没准备好，都会调用 onDone 回调直接放行，不会卡住用户看不到后面的内容。
+        // 注意：REWARDED 广告位只在第一次点击时真正请求广告；后面几次点击 Show More 直接放行，
+        // 不再重复请求——用 refresh() 对已经展示过的激励广告位重复请求，Google 不会正常返回新广告，
+        // 会导致按钮卡在 loading 状态出不来。
         let rewardedSlot;
+        let rewardedUsed = false;
         window.showRewardedAd = function (onDone) {
+          if (rewardedUsed) {
+            onDone();
+            return;
+          }
+
           let done = false;
           const finish = () => {
             if (done) return;
             done = true;
+            rewardedUsed = true;
             onDone();
           };
           const timeoutId = setTimeout(finish, 6000);
 
           googletag.cmd.push(function () {
+            rewardedSlot = googletag.defineOutOfPageSlot(
+              "/23197833490/alltools1/alltools1_rewarded",
+              googletag.enums.OutOfPageFormat.REWARDED
+            );
             if (!rewardedSlot) {
-              rewardedSlot = googletag.defineOutOfPageSlot(
-                "/23197833490/alltools1/alltools1_rewarded",
-                googletag.enums.OutOfPageFormat.REWARDED
-              );
-              if (!rewardedSlot) {
+              clearTimeout(timeoutId);
+              finish();
+              return;
+            }
+            rewardedSlot.addService(googletag.pubads());
+            googletag.pubads().addEventListener("rewardedSlotReady", (event) => {
+              if (event.slot === rewardedSlot) {
+                clearTimeout(timeoutId);
+                event.makeRewardedVisible();
+              }
+            });
+            googletag.pubads().addEventListener("rewardedSlotClosed", (event) => {
+              if (event.slot === rewardedSlot) finish();
+            });
+            googletag.pubads().addEventListener("slotRenderEnded", (event) => {
+              if (event.slot === rewardedSlot && event.isEmpty) {
                 clearTimeout(timeoutId);
                 finish();
-                return;
               }
-              rewardedSlot.addService(googletag.pubads());
-              googletag.pubads().addEventListener("rewardedSlotReady", (event) => {
-                if (event.slot === rewardedSlot) {
-                  clearTimeout(timeoutId);
-                  event.makeRewardedVisible();
-                }
-              });
-              googletag.pubads().addEventListener("rewardedSlotClosed", (event) => {
-                if (event.slot === rewardedSlot) finish();
-              });
-              googletag.pubads().addEventListener("slotRenderEnded", (event) => {
-                if (event.slot === rewardedSlot && event.isEmpty) {
-                  clearTimeout(timeoutId);
-                  finish();
-                }
-              });
-              googletag.display(rewardedSlot);
-            } else {
-              googletag.pubads().refresh([rewardedSlot]);
-            }
+            });
+            googletag.display(rewardedSlot);
           });
         };
 
