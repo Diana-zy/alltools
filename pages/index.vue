@@ -206,7 +206,7 @@ export default {
       recommendedApksConfigured: [],
       heroSwiperOption: {
         slidesPerView: 1,
-        spaceBetween: 16,
+        spaceBetween: 0,
         loop: true,
         autoplay: {
           delay: 4000,
@@ -220,7 +220,7 @@ export default {
           // PC 端一排展示 2 个，两两轮播
           880: {
             slidesPerView: 2,
-            spaceBetween: 24
+            spaceBetween: 0
           }
         }
       }
@@ -335,6 +335,11 @@ export default {
   ::v-deep .swiper-pagination-bullet-active {
     opacity: 1;
   }
+
+  // PC 端不需要滚动点
+  ::v-deep .swiper-pagination {
+    display: none;
+  }
 }
 .box-row-scroll {
   padding: 4px 0;
@@ -403,6 +408,14 @@ export default {
       bottom: vw(24);
       right: vw(32);
       font-size: vw(32);
+    }
+    ::v-deep .swiper-pagination {
+      display: block;
+      left: auto;
+      right: vw(24);
+      bottom: vw(16);
+      width: auto;
+      text-align: right;
     }
   }
 
