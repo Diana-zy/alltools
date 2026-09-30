@@ -54,9 +54,9 @@ html::-webkit-scrollbar {
 .title-h2 {
   font-family: se;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 18px;
   color: $font1;
-  line-height: 18px;
+  line-height: 22px;
   margin: 10px 0 5px;
   width: 100%;
   height: auto;
@@ -204,8 +204,8 @@ html::-webkit-scrollbar {
     padding: 0;
   }
   .title-h2 {
-    font-size: vw(24);
-    line-height: vw(30);
+    font-size: vw(30);
+    line-height: vw(38);
     width: calc(100% - vw(92));
     margin: 10px vw(46) 5px;
     padding: 0;
