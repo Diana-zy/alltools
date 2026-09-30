@@ -96,7 +96,7 @@
             />
             <h2 class="title-h2">Hot Apps</h2>
             <ContentItemRow
-              v-for="(item, index) in newApps"
+              v-for="(item, index) in allApps.slice(0, 12)"
               :key="index"
               :item="item"
               :index="index"
@@ -161,7 +161,7 @@
             />
             <h2 class="title-h2">Hot Games</h2>
             <ContentItemRow
-              v-for="(item, index) in newGames.slice(0, 10)"
+              v-for="(item, index) in allGames.slice(0, 12)"
               :key="index"
               :item="item"
               :index="index"
@@ -209,6 +209,24 @@
               :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
             />
           </section>
+
+          <aside class="box-aside">
+            <adm-slot
+              adm-id="rankings-picks-mid3"
+              adm-unit="/23197833490/alltools1/alltools1_module_3"
+              ads-slot="9448165209"
+            />
+            <h2 class="title-h2">Top Downloads</h2>
+            <ContentItemRank
+              v-for="(item, index) in topDownloads"
+              :key="index"
+              :item="item"
+              :index="index"
+              :show-rank="false"
+              list-name="rankings_picks_top_downloads"
+              :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
+            />
+          </aside>
         </template>
       </div>
     </main>
@@ -249,11 +267,6 @@ export default {
       mod_id: "best-apps",
       size: 30
     });
-    const newApps = await fetchList($axios, "/api/game/menu", {
-      site_id: env.SITE_ID,
-      mod_id: "new-apps",
-      size: 12
-    });
     const allApps = await fetchList($axios, "/api/game/all_app", {
       site_id: env.SITE_ID,
       page: 1,
@@ -263,11 +276,6 @@ export default {
       site_id: env.SITE_ID,
       mod_id: "best-games",
       size: 30
-    });
-    const newGames = await fetchList($axios, "/api/game/menu", {
-      site_id: env.SITE_ID,
-      mod_id: "new-games",
-      size: 10
     });
     // 游戏库里绝大部分是 H5 游戏（game_type=H5），能下载 APK 的游戏类型(DOWNLOAD)内容太少，
     // all_game 接口经常是空的；改成读 Entertainment 分类下的内容（运营手动把一批可下载的
@@ -310,10 +318,8 @@ export default {
     return {
       activeTab: ["games", "picks"].includes(query.tab) ? query.tab : "apps",
       bestApps,
-      newApps,
       allApps,
       bestGames,
-      newGames,
       allGames,
       recommendedApksConfigured,
       // Top Picks 一次展示9个，点 Show More 再展示下9个，最多27个（3批）
@@ -359,6 +365,11 @@ export default {
     // Recommend：应用+游戏各取前3个，混着展示，不做无限加载
     bottomRecommend() {
       return [...this.bestApps.slice(0, 3), ...this.bestGames.slice(0, 3)];
+    },
+    // Top Picks 侧边栏 Top Downloads：跟下载页 Top Downloads 同一个数据源（best-apps/best-games），
+    // 应用+游戏混着取前12个
+    topDownloads() {
+      return [...this.bestApps, ...this.bestGames].slice(0, 12);
     }
   },
   methods: {
