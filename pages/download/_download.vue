@@ -154,10 +154,10 @@
         <div ref="storeButtons" class="platform">
           <div class="android" :class="{ 'is-disabled': !currentSoftware.android_web_url }">
             <i class="icon-android"></i>Google Play
-            <div v-if="currentSoftware.android_web_url" class="qrcode">
+            <!-- <div v-if="currentSoftware.android_web_url" class="qrcode">
               Android
               <img :src="qrCodeGoogle" alt="qrcode" />
-            </div>
+            </div> -->
             <a
               v-if="currentSoftware.android_web_url"
               :href="currentSoftware.android_web_url"
@@ -168,10 +168,10 @@
 
           <div class="ios" :class="{ 'is-disabled': !currentSoftware.ios_web_url }">
             <i class="icon-ios"></i>App Store
-            <div v-if="currentSoftware.ios_web_url" class="qrcode">
+            <!-- <div v-if="currentSoftware.ios_web_url" class="qrcode">
               iOS
               <img :src="qrCodeIos" alt="qrcode" />
-            </div>
+            </div> -->
             <a
               v-if="currentSoftware.ios_web_url"
               :href="currentSoftware.ios_web_url"
