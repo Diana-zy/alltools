@@ -27,38 +27,49 @@ export default {
   mounted() {
     this.observer = new IntersectionObserver(this.handleIntersection);
     this.observer.observe(this.$refs.googleAdmSlot);
-    this.lockHeight();
+    this.setupSizing();
   },
   beforeDestroy() {
-    if (this.heightObserver) this.heightObserver.disconnect();
+    if (this.resizeObserver) this.resizeObserver.disconnect();
   },
   methods: {
-    // 广告脚本(fluid 渲染 / 兜底的经典 AdSense 自适应广告)有时会用带 !important 的内联样式
-    // 把容器高度改高，CSS 层面的 !important 拦不住内联 !important，只能用 JS 实时把它纠正回来。
-    lockHeight() {
+    // CSS 默认是 height:auto，页面刚渲染时容器天然贴合标题高度（没有内容可撑开），
+    // 不需要 JS 介入就已经是"矮"的状态。等广告(fluid 渲染或兜底的经典 AdSense)真正
+    // 渲染出内容后，用 ResizeObserver 量出实际内容高度再把容器长上去，但不超过 CSS
+    // 里定义的上限（max-height，即之前的 200px / vw(560)），防止异常情况撑到很高；
+    // 没有内容时把高度还给 CSS 的 auto，容器自动收回去。
+    setupSizing() {
       const el = this.$refs.admSlot;
-      const fixedHeight = el.getBoundingClientRect().height;
-      if (!fixedHeight) return;
-      const enforce = () => {
-        if (Math.round(el.getBoundingClientRect().height) !== Math.round(fixedHeight)) {
-          el.style.setProperty("height", `${fixedHeight}px`, "important");
-          el.style.setProperty("max-height", `${fixedHeight}px`, "important");
+      const computedMaxHeight = parseFloat(window.getComputedStyle(el).maxHeight);
+      this.maxHeight = Number.isFinite(computedMaxHeight)
+        ? computedMaxHeight
+        : el.getBoundingClientRect().height;
+      this.titleHeight = this.$refs.title.getBoundingClientRect().height;
+
+      const adsEl = document.getElementById(`${this.admId}-ads`);
+      this.resizeObserver = new ResizeObserver(() => {
+        const adHeight = this.$refs.googleAdmSlot.scrollHeight;
+        const fallbackHeight = adsEl ? adsEl.scrollHeight : 0;
+        const contentHeight = Math.max(adHeight, fallbackHeight);
+        if (contentHeight > 0) {
+          this.applyHeight(Math.min(this.titleHeight + contentHeight, this.maxHeight));
+        } else {
+          el.style.removeProperty("height");
           el.style.setProperty("overflow", "hidden", "important");
         }
-      };
-      enforce();
-      this.heightObserver = new MutationObserver(enforce);
-      this.heightObserver.observe(el, {
-        attributes: true,
-        attributeFilter: ["style"],
-        childList: true,
-        subtree: true
       });
+      this.resizeObserver.observe(this.$refs.googleAdmSlot);
+      if (adsEl) this.resizeObserver.observe(adsEl);
+    },
+    applyHeight(height) {
+      const el = this.$refs.admSlot;
+      el.style.setProperty("height", `${height}px`, "important");
+      el.style.setProperty("overflow", "hidden", "important");
     },
     handleIntersection(entries) {
       if (entries[0].isIntersecting) {
         const width = this.$refs.admSlot.clientWidth;
-        const height = this.$refs.admSlot.clientHeight - this.$refs.title.clientHeight;
+        const height = this.maxHeight - this.titleHeight;
         console.log(width, height);
         const adScript = document.createElement("script");
         adScript.innerHTML = `googletag.cmd.push(function () {
@@ -78,7 +89,8 @@ export default {
 .adm-slot {
   margin: 0 auto;
   width: 100%;
-  height: 200px !important;
+  height: auto;
+  max-height: 200px;
   overflow: hidden;
 }
 .title {
@@ -90,8 +102,8 @@ export default {
 
 @media screen and (max-width: 879px) {
   .adm-slot {
-    height: vw(560) !important;
-    max-height: vw(560) !important;
+    height: auto;
+    max-height: vw(560);
     overflow: hidden;
   }
   .title {
