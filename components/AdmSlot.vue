@@ -52,7 +52,7 @@ export default {
 .adm-slot {
   margin: 0 auto;
   width: 100%;
-  height: 240px;
+  height: 200px;
 }
 .title {
   background: #ffffff;
@@ -63,8 +63,8 @@ export default {
 
 @media screen and (max-width: 879px) {
   .adm-slot {
-    height: vw(673);
-    max-height: vw(673);
+    height: vw(560);
+    max-height: vw(560);
     overflow-y: clip;
   }
   .title {
