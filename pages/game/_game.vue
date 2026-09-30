@@ -90,14 +90,6 @@
           </div>
         </section>
 
-        <!-- 页内广告位，跟应用/游戏详情页共用同一个 alltools1_detail_1b 广告单元 -->
-        <adm-slot
-          adm-id="detail-mid1b"
-          adm-unit="/23197833490/alltools1/alltools1_detail_1b"
-          ads-slot="23380269898"
-          class="ad-width"
-        />
-
         <section class="table-content">
           <div class="table-info">
             <div class="table-row">
@@ -145,6 +137,14 @@
             </div>
           </div>
         </section>
+
+        <!-- 页内广告位，跟应用/游戏详情页共用同一个 alltools1_detail_1b 广告单元 -->
+        <adm-slot
+          adm-id="detail-mid1b"
+          adm-unit="/23197833490/alltools1/alltools1_detail_1b"
+          ads-slot="23380269898"
+          class="ad-width"
+        />
 
         <DescriptionText :text="currentGame.desc" />
 
