@@ -61,12 +61,12 @@
                 :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
               />
             </div>
-            <div class="box-list-section">
-              <ContentItemList
+            <div class="recommended-apks">
+              <ContentItemRank
                 v-for="(item, index) in recommendedApksShown"
                 :key="index"
-                :index="index"
                 :item="item"
+                :index="index"
                 :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
               />
             </div>
@@ -356,6 +356,10 @@ export default {
   display: grid;
 }
 
+.recommended-apks {
+  display: none;
+}
+
 .pc-hidden {
   display: none;
 }
@@ -432,6 +436,30 @@ export default {
     display: grid;
     margin: 0;
     grid-template-columns: repeat(3, 1fr);
+  }
+
+  .recommended-apks {
+    width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(3, auto);
+    grid-auto-columns: 88%;
+    column-gap: vw(24);
+    row-gap: vw(24);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    &::-webkit-scrollbar {
+      display: none;
+      width: 0;
+      height: 0;
+    }
   }
 
   .title-h2 {
