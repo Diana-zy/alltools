@@ -52,7 +52,8 @@ export default {
 .adm-slot {
   margin: 0 auto;
   width: 100%;
-  height: 200px;
+  height: 200px !important;
+  overflow: hidden;
 }
 .title {
   background: #ffffff;
@@ -63,9 +64,9 @@ export default {
 
 @media screen and (max-width: 879px) {
   .adm-slot {
-    height: vw(560);
-    max-height: vw(560);
-    overflow-y: clip;
+    height: vw(560) !important;
+    max-height: vw(560) !important;
+    overflow: hidden;
   }
   .title {
     font-size: vw(24);
