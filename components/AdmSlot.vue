@@ -92,6 +92,7 @@ export default {
   height: auto;
   max-height: 200px;
   overflow: hidden;
+  transition: height 0.25s ease;
 }
 .title {
   background: #ffffff;
