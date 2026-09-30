@@ -27,8 +27,34 @@ export default {
   mounted() {
     this.observer = new IntersectionObserver(this.handleIntersection);
     this.observer.observe(this.$refs.googleAdmSlot);
+    this.lockHeight();
+  },
+  beforeDestroy() {
+    if (this.heightObserver) this.heightObserver.disconnect();
   },
   methods: {
+    // 广告脚本(fluid 渲染 / 兜底的经典 AdSense 自适应广告)有时会用带 !important 的内联样式
+    // 把容器高度改高，CSS 层面的 !important 拦不住内联 !important，只能用 JS 实时把它纠正回来。
+    lockHeight() {
+      const el = this.$refs.admSlot;
+      const fixedHeight = el.getBoundingClientRect().height;
+      if (!fixedHeight) return;
+      const enforce = () => {
+        if (Math.round(el.getBoundingClientRect().height) !== Math.round(fixedHeight)) {
+          el.style.setProperty("height", `${fixedHeight}px`, "important");
+          el.style.setProperty("max-height", `${fixedHeight}px`, "important");
+          el.style.setProperty("overflow", "hidden", "important");
+        }
+      };
+      enforce();
+      this.heightObserver = new MutationObserver(enforce);
+      this.heightObserver.observe(el, {
+        attributes: true,
+        attributeFilter: ["style"],
+        childList: true,
+        subtree: true
+      });
+    },
     handleIntersection(entries) {
       if (entries[0].isIntersecting) {
         const width = this.$refs.admSlot.clientWidth;
