@@ -72,33 +72,23 @@ export function generateCustomLink(url) {
     currentParams.delete("text");
   }
   function generateTargetDomain(currentDomain) {
-    // 正则表达式：匹配域名结构（兼容多级子域名、数字前缀）
-    const pattern = /^(www)?([a-z0-9]*)(?:\.([a-z0-9-]+))?\.([a-z0-9-]+)\.([a-z]{2,})$/i;
+    // 站点实际配置的 4 个自定义域名（Cloudflare R2）：
+    //   apk.alltools1.com  ↔ www.apk.alltools1.com
+    //   1.apk.alltools1.com ↔ www1.apk.alltools1.com
+    // 数字前缀（如"1"）跟 www 直接拼接（如 www1），没有数字前缀时 www 后面要带点（www.apk）。
+    const pattern = /^(www)?(\d*)\.?apk\.alltools1\.com$/i;
     const match = currentDomain.match(pattern);
 
-    if (!match) {
-      // 处理基础域名（如 a.com 或 www.a.com）
-      const basePattern = /^(www\.)?([a-z0-9-]+)\.([a-z]{2,})$/i;
-      const baseMatch = currentDomain.match(basePattern);
-      if (baseMatch) {
-        return baseMatch[1] ? `${baseMatch[2]}.${baseMatch[3]}` : `www.${currentDomain}`;
-      }
-      return currentDomain;
-    }
+    if (!match) return currentDomain;
 
-    // 解析匹配结果
-    // eslint-disable-next-line no-unused-vars
-    const [_, wwwPrefix, numberPrefix, middle, main, tld] = match;
+    const [, wwwPrefix, numberPrefix] = match;
 
     if (wwwPrefix) {
       // 移除 www 前缀
-      return `${numberPrefix || ""}${middle ? `.${middle}` : ""}.${main}.${tld}`.replace(/^\./, "");
+      return numberPrefix ? `${numberPrefix}.apk.alltools1.com` : "apk.alltools1.com";
     } else {
       // 添加 www 前缀
-      return `www${numberPrefix || ""}${middle ? `.${middle}` : ""}.${main}.${tld}`.replace(
-        /^\./,
-        ""
-      );
+      return numberPrefix ? `www${numberPrefix}.apk.alltools1.com` : "www.apk.alltools1.com";
     }
   }
 
