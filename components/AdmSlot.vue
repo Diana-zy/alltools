@@ -33,17 +33,16 @@ export default {
     if (this.resizeObserver) this.resizeObserver.disconnect();
   },
   methods: {
-    // CSS 默认是 height:auto，页面刚渲染时容器天然贴合标题高度（没有内容可撑开），
-    // 不需要 JS 介入就已经是"矮"的状态。等广告(fluid 渲染或兜底的经典 AdSense)真正
-    // 渲染出内容后，用 ResizeObserver 量出实际内容高度再把容器长上去，但不超过 CSS
-    // 里定义的上限（max-height，即之前的 200px / vw(560)），防止异常情况撑到很高；
-    // 没有内容时把高度还给 CSS 的 auto，容器自动收回去。
+    // 广告没准备好之前，整个广告位（连"Advertisement"标题都不露）保持高度为 0、
+    // 不可见，避免用户看到一个框先出现、再长大的过程。内部内容（标题、ad-slot、
+    // 兜底的经典 AdSense）照常渲染测量，只是被 overflow:hidden 裁掉不可见。等
+    // ResizeObserver 量到真实内容高度后，一步到位直接显示成最终高度（不做动画过渡），
+    // 上限还是原来定的 max-height（200px / vw(560)），防止异常情况撑到很高；广告
+    // 请求本身仍然按这个上限申请，让广告有机会用满。
     setupSizing() {
       const el = this.$refs.admSlot;
       const computedMaxHeight = parseFloat(window.getComputedStyle(el).maxHeight);
-      this.maxHeight = Number.isFinite(computedMaxHeight)
-        ? computedMaxHeight
-        : el.getBoundingClientRect().height;
+      this.maxHeight = Number.isFinite(computedMaxHeight) ? computedMaxHeight : 200;
       this.titleHeight = this.$refs.title.getBoundingClientRect().height;
 
       const adsEl = document.getElementById(`${this.admId}-ads`);
@@ -52,19 +51,15 @@ export default {
         const fallbackHeight = adsEl ? adsEl.scrollHeight : 0;
         const contentHeight = Math.max(adHeight, fallbackHeight);
         if (contentHeight > 0) {
-          this.applyHeight(Math.min(this.titleHeight + contentHeight, this.maxHeight));
+          const target = Math.min(this.titleHeight + contentHeight, this.maxHeight);
+          el.style.setProperty("height", `${target}px`, "important");
         } else {
-          el.style.removeProperty("height");
-          el.style.setProperty("overflow", "hidden", "important");
+          el.style.setProperty("height", "0px", "important");
         }
+        el.style.setProperty("overflow", "hidden", "important");
       });
       this.resizeObserver.observe(this.$refs.googleAdmSlot);
       if (adsEl) this.resizeObserver.observe(adsEl);
-    },
-    applyHeight(height) {
-      const el = this.$refs.admSlot;
-      el.style.setProperty("height", `${height}px`, "important");
-      el.style.setProperty("overflow", "hidden", "important");
     },
     handleIntersection(entries) {
       if (entries[0].isIntersecting) {
@@ -89,10 +84,9 @@ export default {
 .adm-slot {
   margin: 0 auto;
   width: 100%;
-  height: auto;
+  height: 0;
   max-height: 200px;
   overflow: hidden;
-  transition: height 0.25s ease;
 }
 .title {
   background: #ffffff;
@@ -103,7 +97,7 @@ export default {
 
 @media screen and (max-width: 879px) {
   .adm-slot {
-    height: auto;
+    height: 0;
     max-height: vw(560);
     overflow: hidden;
   }
