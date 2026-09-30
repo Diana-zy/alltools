@@ -326,6 +326,7 @@
       });
 
       window.pv_total = 0;
+      const pageLoadTime = performance.now();
       const domain = window.location.hostname.split(".").slice(-2).join("."); // 获取主域名
 
       const setCookie = (name, value, days, domain) => {
@@ -406,6 +407,50 @@
           updatePvCount();
         }
       });
+
+      // 快速跳出：跟下面那个只在"点链接跳转"时才触发的 beforeunload 逻辑是两回事，
+      // 所以单独开一个监听器。popstate 用来识别用户是不是点了浏览器的前进/后退按钮——
+      // 不管后退会落到站内还是站外，一律不计入跳出统计（后退按钮点击本身没法拦截，
+      // 只能靠 popstate 事件间接识别）。
+      window.addEventListener("popstate", () => {
+        window.__viaBackForward = true;
+      });
+      function getPageTypeForExit() {
+        const path = window.location.pathname;
+        if (/^\/$/.test(path)) return "home";
+        if (/^\/rankings\/?$/.test(path)) return "rankings";
+        if (/^\/category\/[\w-]+\/$/.test(path)) return "category_detail";
+        if (/^\/category\/?$/.test(path)) return "category";
+        if (/^\/search\/?$/.test(path)) return "search";
+        if (/^\/app\/.+/.test(path)) return "app_detail";
+        if (/^\/game\/.+/.test(path)) return "game_detail";
+        if (/^\/download\/.+/.test(path)) return "download";
+        return path.replaceAll("/", "") || "unknown";
+      }
+      // 统计口径：有效进入站点后，不到 3 秒就"离开网站"才算跳出——点站内链接切换到本站
+      // 别的页面不算（CustomLink 点击时会把 __internalNavClick 置为 true），点浏览器
+      // 前进/后退按钮离开的也不算；点广告走的、关标签页/换地址走的、点下载页跳到
+      // Google Play/App Store/APKPure 的，都算真正离开，一律计入。
+      // beforeunload 在 iOS Safari/站内 WebView（比如 Facebook App 内置浏览器）上触发不
+      // 可靠，pagehide 兼容性更好，两个都监听，用 exitReported 防止同一次离开重复上报两次。
+      let exitReported = false;
+      function reportExitIfNeeded() {
+        if (exitReported) return;
+        if (
+          performance.now() - pageLoadTime < 3000 &&
+          window.__internalNavClick !== true &&
+          window.__viaBackForward !== true
+        ) {
+          exitReported = true;
+          const params = { page_type: getPageTypeForExit() };
+          dataLayer.push({ event: "able_3s_exit", ...params });
+          if (typeof window.gtag === "function") {
+            window.gtag("event", "able_3s_exit", params);
+          }
+        }
+      }
+      window.addEventListener("beforeunload", reportExitIfNeeded);
+      window.addEventListener("pagehide", reportExitIfNeeded);
 
       // 初始化标志变量
       window.isUnloaded = false;
