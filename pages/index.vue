@@ -153,7 +153,7 @@
 
 <script>
 import { directive } from "vue-awesome-swiper";
-import { trackEvent } from "~/utils/track";
+import { trackEvent, trackFacebookStandardEvent } from "~/utils/track";
 import "swiper/css/swiper.min.css";
 
 // 站点管理 / 模块游戏推荐（site_module 表）里还没配置这个 mod_id 时，/api/game/menu 会报错，
@@ -245,6 +245,7 @@ export default {
       }
     }
     trackEvent("home_page", { view_source: viewSource });
+    trackFacebookStandardEvent("ViewContent", { content_name: "home" });
   },
   computed: {
     // 轮播/推荐位：BI 后台「站点管理/模块游戏推荐」配置了 mod_id 就用配置的，没配就 fallback 到 ranking 数据

@@ -4,6 +4,61 @@
     <meta charset="UTF-8" />
     {{ HEAD }}
 
+    <!-- Facebook Pixel：投放链接会带 hi_source=facebook&hi_pc=<pixel id> 这两个参数，
+    读到就存一天 Cookie（方便同一次访问后续页面 URL 上没带参数也能继续用），hi_source 是
+    facebook 时才动态加载 Facebook 官方 Pixel 基础代码，用 hi_pc 当 Pixel ID 初始化。 -->
+    <script>
+      (function () {
+        function getMainDomain() {
+          const parts = window.location.hostname.split(".");
+          return parts.length > 2 ? parts.slice(-2).join(".") : window.location.hostname;
+        }
+        function setDayCookie(name, value) {
+          const date = new Date();
+          date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
+          document.cookie = `${name}=${value};expires=${date.toUTCString()};domain=${getMainDomain()};path=/`;
+        }
+        function getCookieValue(name) {
+          const match = document.cookie.match(new RegExp("(?:^|; )" + name + "=([^;]*)"));
+          return match ? decodeURIComponent(match[1]) : "";
+        }
+        function getUrlOrCookieParam(key) {
+          const fromUrl = new URLSearchParams(window.location.search).get(key);
+          if (fromUrl) {
+            setDayCookie(key, fromUrl);
+            return fromUrl;
+          }
+          return getCookieValue(key);
+        }
+
+        const hiSource = getUrlOrCookieParam("hi_source");
+        const hiPc = getUrlOrCookieParam("hi_pc");
+        window.__hiSource = hiSource;
+        window.__hiPixelCode = hiPc;
+
+        if (hiSource === "facebook" && hiPc) {
+          !(function (f, b, e, v, n, t, s) {
+            if (f.fbq) return;
+            n = f.fbq = function () {
+              n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+            };
+            if (!f._fbq) f._fbq = n;
+            n.push = n;
+            n.loaded = true;
+            n.version = "2.0";
+            n.queue = [];
+            t = b.createElement(e);
+            t.async = true;
+            t.src = v;
+            s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s);
+          })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+          window.fbq("init", hiPc);
+          window.fbq("track", "PageView");
+        }
+      })();
+    </script>
+
     <script
       async
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1853000876464912"
@@ -147,18 +202,10 @@
                 clearTimeout(timeoutId);
                 // 广告真正展示出来这个时机不会经过 onDone（要等用户关掉广告才会走 finish），
                 // 这里单独打一条 shown 事件，跟 closed/empty/timeout 区分开
-                window.dataLayer = window.dataLayer || [];
-                window.dataLayer.push({
-                  event: "able_rewarded_ad_result",
+                window.pushAbleEvent("rewarded_ad_result", {
                   page_type: "rankings_top_picks",
                   result: "shown"
                 });
-                if (typeof window.gtag === "function") {
-                  window.gtag("event", "able_rewarded_ad_result", {
-                    page_type: "rankings_top_picks",
-                    result: "shown"
-                  });
-                }
                 event.makeRewardedVisible();
               }
             });
@@ -329,6 +376,21 @@
       const pageLoadTime = performance.now();
       const domain = window.location.hostname.split(".").slice(-2).join("."); // 获取主域名
 
+      // 跟 utils/track.js 里的 trackEvent 是同一套打点逻辑，这边纯 HTML/JS 环境没法 import 那个
+      // 模块，所以单独抄一份：同时推 dataLayer（GTM）、gtag（GA4）、fbq（Facebook Pixel，hi_source
+      // =facebook 时才会加载）。
+      window.pushAbleEvent = function (name, params) {
+        const eventName = `able_${name}`;
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: eventName, ...params });
+        if (typeof window.gtag === "function") {
+          window.gtag("event", eventName, params);
+        }
+        if (typeof window.fbq === "function") {
+          window.fbq("trackCustom", eventName, params);
+        }
+      };
+
       const setCookie = (name, value, days, domain) => {
         const date = new Date();
         date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
@@ -442,11 +504,7 @@
           window.__viaBackForward !== true
         ) {
           exitReported = true;
-          const params = { page_type: getPageTypeForExit() };
-          dataLayer.push({ event: "able_3s_exit", ...params });
-          if (typeof window.gtag === "function") {
-            window.gtag("event", "able_3s_exit", params);
-          }
+          window.pushAbleEvent("3s_exit", { page_type: getPageTypeForExit() });
         }
       }
       window.addEventListener("beforeunload", reportExitIfNeeded);
@@ -467,6 +525,9 @@
         if (1 === window.clickOpen) {
           // 点击穿插广告
           dataLayer.push({ event: "D_AL" });
+          if (typeof window.fbq === "function") {
+            window.fbq("track", "Purchase");
+          }
           bge("event", "button", { configId: "905001526682426624" });
           const domain = window.location.hostname.split(".").slice(-2).join("."); // 获取主域名
           setCookie("clickAL", "done", 1, domain);

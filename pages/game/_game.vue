@@ -213,7 +213,7 @@
 <script>
 import { directive } from "vue-awesome-swiper";
 import { shuffleArray } from "~/utils/utils";
-import { trackEvent } from "~/utils/track";
+import { trackEvent, trackFacebookStandardEvent } from "~/utils/track";
 import "swiper/css/swiper.min.css";
 
 export default {
@@ -316,12 +316,14 @@ export default {
   },
   methods: {
     trackDownloadClick(buttonType) {
-      trackEvent("download_click", {
+      const params = {
         page_type: "game_detail",
         button_type: buttonType,
         item_id: this.currentGame.path,
         item_name: this.currentGame.name
-      });
+      };
+      trackEvent("download_click", params);
+      trackFacebookStandardEvent("InitiateCheckout", params);
     }
   }
 };
