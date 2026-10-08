@@ -545,8 +545,9 @@ $table-icon-categories: category, os, size, version, updated, downloads, develop
 .table-cell {
   display: flex;
   align-items: center;
+  text-align: left;
   width: 184px;
-  height: 32px;
+  min-height: 32px;
   padding-left: 18px;
   color: rgba($font1, 0.6);
 }
