@@ -545,9 +545,8 @@ $table-icon-categories: category, os, size, version, updated, downloads, develop
 .table-cell {
   display: flex;
   align-items: center;
-  text-align: left;
   width: 184px;
-  min-height: 32px;
+  height: 32px;
   padding-left: 18px;
   color: rgba($font1, 0.6);
 }
@@ -728,19 +727,46 @@ $table-icon-categories: category, os, size, version, updated, downloads, develop
   .box-common + .title-h2 {
     margin-top: vw(48);
   }
+  .table-content {
+    margin: vw(48) vw(46) vw(6);
+    padding: vw(32) 0 vw(4) 0;
+    border: 1px solid #ffffff;
+  }
   .table-info {
+    border: none;
     font-size: vw(24);
+  }
+  @each $category in $table-icon-categories {
+    .table-cell .icon-#{$category} {
+      width: vw(40);
+      height: vw(40);
+      margin-right: vw(16);
+    }
+  }
+  .table-cell .icon-android {
+    @include icon(vw(32), vw(32), "icon-android.png");
+    margin-right: vw(16);
+  }
+  .table-cell .icon-ios {
+    @include icon(vw(32), vw(32), "icon-ios.png");
+  }
+  .link-category {
+    font-size: vw(24);
+  }
+  .table-row {
+    border-bottom: none;
+    margin-bottom: vw(24);
   }
   .table-cell {
     width: vw(298);
+    height: vw(40);
+    border-right: none;
+    padding-left: vw(24);
   }
   .table-cell:last-child {
     width: vw(390);
     padding-left: vw(24);
     @include ellipsis;
-  }
-  .table-content {
-    margin: vw(36) vw(46);
   }
   .screenshots {
     margin: vw(36) 0;
