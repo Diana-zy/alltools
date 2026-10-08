@@ -241,7 +241,7 @@
 import QRCode from "qrcode";
 import { directive } from "vue-awesome-swiper";
 import { shuffleArray } from "~/utils/utils";
-import { trackEvent } from "~/utils/track";
+import { trackEvent, trackFacebookStandardEvent } from "~/utils/track";
 import "swiper/css/swiper.min.css";
 
 export default {
@@ -337,12 +337,15 @@ export default {
       }
     },
     trackDownloadClick(buttonType) {
-      trackEvent("download_click", {
+      const params = {
         page_type: "download",
         button_type: buttonType,
         item_id: this.currentSoftware.path,
         item_name: this.currentSoftware.name
-      });
+      };
+      trackEvent("download_click", params);
+      // 下载页这几个下载按钮点击后也会触发穿插广告，跟全站其他内容点击一样算进 AddToCart
+      trackFacebookStandardEvent("AddToCart", params);
     }
   }
 };
