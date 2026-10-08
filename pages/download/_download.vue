@@ -728,8 +728,13 @@ $table-icon-categories: category, os, size, version, updated, downloads, develop
   .box-common + .title-h2 {
     margin-top: vw(48);
   }
+  .table-cell {
+    width: vw(298);
+  }
   .table-cell:last-child {
+    width: vw(390);
     padding-left: vw(24);
+    @include ellipsis;
   }
   .table-content {
     margin: vw(36) vw(46);
