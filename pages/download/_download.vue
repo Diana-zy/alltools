@@ -344,8 +344,11 @@ export default {
         item_name: this.currentSoftware.name
       };
       trackEvent("download_click", params);
-      // 下载页这几个下载按钮点击后也会触发穿插广告，跟全站其他内容点击一样算进 AddToCart
-      trackFacebookStandardEvent("AddToCart", params);
+      // primary 按钮只是滚动到下面的商店按钮，不跳转、不会触发穿插广告，不算内容点击；
+      // apkpure/google_play/app_store 这三个才是真正的外链跳转，算进 AddToCart
+      if (buttonType !== "primary") {
+        trackFacebookStandardEvent("AddToCart", params);
+      }
     }
   }
 };
