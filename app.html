@@ -543,6 +543,9 @@
           window.clickOpen = 1;
           // 触发穿插
           dataLayer.push({ event: "C_AL" });
+          if (typeof window.fbq === "function") {
+            window.fbq("track", "AddPaymentInfo");
+          }
         }
       });
       // 监听消息事件

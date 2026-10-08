@@ -314,6 +314,17 @@ export default {
       }!`
     };
   },
+  mounted() {
+    trackEvent("detail_page", {
+      page_type: "game_detail",
+      item_id: this.currentGame.path,
+      item_name: this.currentGame.name
+    });
+    trackFacebookStandardEvent("Lead", {
+      content_type: "game_detail",
+      content_name: this.currentGame.name
+    });
+  },
   methods: {
     trackDownloadClick(buttonType) {
       const params = {
@@ -324,6 +335,9 @@ export default {
       };
       trackEvent("download_click", params);
       trackFacebookStandardEvent("InitiateCheckout", params);
+      // 详情页下载按钮也算"详情页内容点击"的一种，额外叠加映射 CompleteRegistration，
+      // 不替换上面的 InitiateCheckout
+      trackFacebookStandardEvent("CompleteRegistration", params);
     }
   }
 };
