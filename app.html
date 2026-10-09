@@ -586,17 +586,35 @@
           handlePageUnload();
         }
       });
-      // 监听 hash 变化事件 --- 判断穿插全屏广告出现
-      window.addEventListener("hashchange", () => {
-        if ("#google_vignette" == window.location.hash) {
-          window.clickOpen = 1;
-          // 触发穿插
-          dataLayer.push({ event: "C_AL" });
-          if (typeof window.fbq === "function") {
-            window.fbq("track", "AddPaymentInfo");
-          }
+      // 判断穿插全屏广告出现：不用 hashchange 监听 URL 里的 #google_vignette——插页广告
+      // 位配置里开了 navBar 触发器，Google 很可能是用 History API 的 pushState/replaceState
+      // 去改 URL 的（SPA 场景的标准做法），这种方式改 URL 不会触发 hashchange 事件，导致
+      // 即使 URL 已经带上 #google_vignette，我们的监听代码也完全不会被执行到。改成直接监测
+      // 广告元素本身是否变成可见，不管 URL 是怎么改的都能抓到。先等广告的 <ins
+      // data-vignette-loaded="true"> 元素出现在 DOM 里（只需要定位一次，这个元素后续会被
+      // Google 重复使用），再持续监听它的 style 变化；每次从"不可见"变成"可见"都算一次
+      // 触发（保留"同一次页面停留期间弹几次插页广告就算几次"的统计口径，不是只算第一次）。
+      new MutationObserver((mutations, outerObserver) => {
+        const interstitialAdElement = document.querySelector('ins[data-vignette-loaded="true"]');
+        if (!interstitialAdElement) {
+          return;
         }
-      });
+        outerObserver.disconnect();
+        let wasInterstitialVisible = false;
+        new MutationObserver(() => {
+          const adDisplay = window.getComputedStyle(interstitialAdElement).display;
+          const isVisible = "block" === adDisplay || "flex" === adDisplay;
+          if (isVisible && !wasInterstitialVisible) {
+            window.clickOpen = 1;
+            // 触发穿插
+            dataLayer.push({ event: "C_AL" });
+            if (typeof window.fbq === "function") {
+              window.fbq("track", "AddPaymentInfo");
+            }
+          }
+          wasInterstitialVisible = isVisible;
+        }).observe(interstitialAdElement, { attributes: true, attributeFilter: ["style"] });
+      }).observe(document.body, { childList: true, subtree: true });
       // 监听消息事件：用 JSON.parse 后逐字段判断，比整段字符串精确匹配更抗 Google 调整
       // 字段顺序/新增字段——字符串精确匹配一旦对不上会静默失效，不会报错也不好发现
       window.addEventListener("message", (event) => {
