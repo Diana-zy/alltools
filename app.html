@@ -547,6 +547,45 @@
       }
       window.addEventListener("beforeunload", handlePageUnload);
       window.addEventListener("pagehide", handlePageUnload);
+      // beforeunload/pagehide 兜底之外再加一条独立检测路径：新开标签页时当前页根本不会
+      // unload（上面两个事件压根不会触发），iOS 上即使是当前页跳转 beforeunload 也可能不
+      // 触发。用 blur 记录"焦点进了插页广告 iframe"这个待确认状态，页面变成 hidden 时如果
+      // 待确认状态还在，就判定为点击穿插触发的离开，复用 handlePageUnload 统一上报（内部
+      // isUnloaded 去重，不会跟 beforeunload/pagehide 重复上报）。
+      window.__pendingVignetteClick = false;
+      window.addEventListener("blur", () => {
+        // 每次新的 blur 先无条件作废上一次待确认状态，焦点已经转移到别的目标了
+        window.__pendingVignetteClick = false;
+        if (1 !== window.clickOpen) {
+          return;
+        }
+        const activeElement = document.activeElement;
+        const nameAttribute = activeElement && activeElement.getAttribute("name");
+        if (
+          nameAttribute &&
+          -1 !==
+            nameAttribute.indexOf("google_ads_iframe_/23197833490/alltools1/alltools1_interstitial")
+        ) {
+          window.__pendingVignetteClick = true;
+        }
+      });
+      // 顶层页面发生任何点击，说明用户没有跟着广告走（插页广告内容在跨域 iframe 里，真正
+      // 点广告不会在我们自己的 document 上产生 click 事件），取消待确认状态。这里特意不用
+      // focus 做取消信号——实测 iOS 上点真实广告跳转时，focus 会抢在 visibilitychange 变
+      // hidden 之前触发，会把刚设置好的待确认状态提前误清空，导致真实点击反而漏报。
+      document.addEventListener(
+        "click",
+        () => {
+          window.__pendingVignetteClick = false;
+        },
+        true
+      );
+      window.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "hidden" && window.__pendingVignetteClick) {
+          window.__pendingVignetteClick = false;
+          handlePageUnload();
+        }
+      });
       // 监听 hash 变化事件 --- 判断穿插全屏广告出现
       window.addEventListener("hashchange", () => {
         if ("#google_vignette" == window.location.hash) {
@@ -558,12 +597,24 @@
           }
         }
       });
-      // 监听消息事件
+      // 监听消息事件：用 JSON.parse 后逐字段判断，比整段字符串精确匹配更抗 Google 调整
+      // 字段顺序/新增字段——字符串精确匹配一旦对不上会静默失效，不会报错也不好发现
       window.addEventListener("message", (event) => {
+        let vignetteMessageData;
+        try {
+          vignetteMessageData = JSON.parse(event.data);
+        } catch (e) {
+          return;
+        }
         if (
-          '{"eventType":"adClosed","result":{"status":1},"googMsgType":"fullscreen"}' === event.data
+          vignetteMessageData &&
+          "adClosed" === vignetteMessageData.eventType &&
+          vignetteMessageData.result &&
+          1 == vignetteMessageData.result.status &&
+          "fullscreen" === vignetteMessageData.googMsgType
         ) {
           window.clickOpen = 0;
+          window.__pendingVignetteClick = false;
           // 关闭穿插广告
           dataLayer.push({ event: "G_AL" });
         }
