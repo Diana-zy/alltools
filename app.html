@@ -559,13 +559,12 @@
         if (1 !== window.clickOpen) {
           return;
         }
+        // 插页广告内部可能是多层嵌套 iframe（外层容器 iframe 有 GPT 分配的 name，真正能点
+        // 的广告内容可能在没有这个 name、甚至没有 name 属性的内层 iframe 里），不再要求
+        // name 精确匹配特定广告位路径——广告展示期间，页面上唯一能被聚焦的东西基本只有
+        // 广告本身，只要焦点移到了任意一个 iframe 上就认为是点了广告
         const activeElement = document.activeElement;
-        const nameAttribute = activeElement && activeElement.getAttribute("name");
-        if (
-          nameAttribute &&
-          -1 !==
-            nameAttribute.indexOf("google_ads_iframe_/23197833490/alltools1/alltools1_interstitial")
-        ) {
+        if (activeElement && "IFRAME" === activeElement.tagName) {
           window.__pendingVignetteClick = true;
         }
       });
