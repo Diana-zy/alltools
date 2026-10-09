@@ -53,7 +53,7 @@
             :key="index"
             :item="item"
             :index="index"
-            :to="`/game/${item.path}/`"
+            :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
           />
         </aside>
       </div>

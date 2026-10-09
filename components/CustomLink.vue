@@ -20,8 +20,19 @@ export default {
       customLink: ""
     };
   },
-  mounted() {
-    this.customLink = generateCustomLink(this.to);
+  watch: {
+    // 不能用 mounted 一次性算好就完事：像 Rankings 页切 Tab 这种场景，不同 Tab 渲染的是
+    // 同一个组件、相同的 :key，Vue 会直接复用组件实例而不是销毁重建，mounted 就不会再触发，
+    // 导致 customLink 停在第一次挂载时的旧值，点击永远跳到错的详情页。改成 watch 这个 prop，
+    // 每次 to 变化都重新计算；immediate: true 兼容原来 mounted 里"首次挂载也要算一次"的效果。
+    to: {
+      immediate: true,
+      handler(newTo) {
+        if (process.client) {
+          this.customLink = generateCustomLink(newTo);
+        }
+      }
+    }
   },
   methods: {
     handleClick() {

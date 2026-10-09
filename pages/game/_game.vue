@@ -169,7 +169,7 @@
             :index="index"
             :item="item"
             list-name="game_detail_related"
-            :to="`/game/${item.path}/`"
+            :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
           />
         </section>
 
@@ -200,7 +200,7 @@
             :item="item"
             :index="index"
             list-name="game_detail_hot"
-            :to="`/game/${item.path}/`"
+            :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
           />
         </aside>
       </div>

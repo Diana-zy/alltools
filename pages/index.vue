@@ -129,7 +129,7 @@
                 :item="item"
                 :index="index"
                 list-name="top_games"
-                :to="`/game/${item.path}/`"
+                :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
               />
             </div>
             <div class="box-list-section">
@@ -139,7 +139,7 @@
                 :index="index"
                 :item="item"
                 list-name="top_games"
-                :to="`/${'game'}/${item.path}/`"
+                :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
               />
             </div>
           </section>

@@ -114,7 +114,7 @@
               :index="index"
               :item="item"
               list-name="rankings_games_best"
-              :to="`/game/${item.path}/`"
+              :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
             />
           </section>
 
@@ -166,7 +166,7 @@
               :item="item"
               :index="index"
               list-name="rankings_games_hot"
-              :to="`/game/${item.path}/`"
+              :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
             />
           </aside>
         </template>
@@ -370,6 +370,16 @@ export default {
     // 应用+游戏混着取前12个
     topDownloads() {
       return [...this.bestApps, ...this.bestGames].slice(0, 12);
+    }
+  },
+  mounted() {
+    // 纯静态站点：asyncData 里读 query.tab 只在打包(nuxt generate)那一刻跑一次，当时访问
+    // /rankings/ 并不带 tab 参数，所以烘焙进静态 HTML 的 activeTab 永远是打包时的默认值。
+    // 跨域名跳转(generateCustomLink 换域名)是整页硬加载，不会重新走 Vue Router 触发
+    // asyncData，水合时就直接吃了这个烘焙值，导致不管 URL 实际带的是哪个 tab 都显示默认的
+    // Apps。这里用真实的浏览器当前 URL 兜底纠正一次。
+    if (["games", "picks"].includes(this.$route.query.tab)) {
+      this.activeTab = this.$route.query.tab;
     }
   },
   methods: {
