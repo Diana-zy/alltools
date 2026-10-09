@@ -512,6 +512,22 @@
 
       // 初始化标志变量
       window.isUnloaded = false;
+      // 点击插页广告导致的离开（同标签跳转 / 新开标签页）共用这一个上报函数，靠 isUnloaded
+      // 去重，不管是从下面的 beforeunload/pagehide 分支触发，还是从新开标签页那条
+      // visibilitychange 分支触发，同一次离开只会上报一次。
+      function reportInterstitialClickExit() {
+        if (window.isUnloaded) {
+          return;
+        }
+        window.isUnloaded = true;
+        dataLayer.push({ event: "D_AL" });
+        if (typeof window.fbq === "function") {
+          window.fbq("track", "Purchase");
+        }
+        bge("event", "button", { configId: "905001526682426624" });
+        const domain = window.location.hostname.split(".").slice(-2).join("."); // 获取主域名
+        setCookie("clickAL", "done", 1, domain);
+      }
       // 监听页面即将卸载事件：beforeunload 在 iOS Safari / 站内 WebView（Facebook 内置
       // 浏览器等）上触发不可靠，跟 able_3s_exit 一样额外加 pagehide 兜底，两个共用同一个
       // 处理函数，靠 isUnloaded 防止同一次离开重复上报两次。
@@ -523,14 +539,7 @@
           // 点击穿插广告：插页广告内容在跨域 iframe 里，GTM 的自动链接点击监测看不到
           // iframe 内部的点击，所以这里不依赖 gtm.linkClick，只要广告正在展示
           // （clickOpen===1）、页面这时候要离开了，就判定为点击穿插触发的跳转
-          window.isUnloaded = true;
-          dataLayer.push({ event: "D_AL" });
-          if (typeof window.fbq === "function") {
-            window.fbq("track", "Purchase");
-          }
-          bge("event", "button", { configId: "905001526682426624" });
-          const domain = window.location.hostname.split(".").slice(-2).join("."); // 获取主域名
-          setCookie("clickAL", "done", 1, domain);
+          reportInterstitialClickExit();
           return;
         }
         // 广告没在展示时的普通跳转：保留原来的判断逻辑，只有确实检测到页面内链接点击
@@ -556,9 +565,11 @@
       window.addEventListener("blur", () => {
         // 每次新的 blur 先无条件作废上一次待确认状态，焦点已经转移到别的目标了
         window.__pendingVignetteClick = false;
-        if (1 !== window.clickOpen) {
-          return;
-        }
+        // 注意：这里故意不再判断 window.clickOpen===1——新开标签页跳转广告主落地页时，
+        // Google 的插页广告会在用户点击跳转的几乎同一时刻就发出 adClosed 消息（下面的
+        // message 监听会把 clickOpen 清成 0），这个消息经常抢在 blur 前面先触发，导致这里
+        // 一开始的 clickOpen 判断总是失败、检测形同虚设。改成只靠下面 activeElement 落在插页
+        // 广告自己的容器里这一个信号就够了，足够精确，不会被页面其他广告位误触发
         // 插页广告内部可能是多层嵌套 iframe，不管嵌套多深、iframe 叫什么名字，只要判断
         // "聚焦的元素是不是在插页广告自己的 <ins data-vignette-loaded> 容器里面"就行——
         // 这个选择器已经用来定位 C_AL 了，确认是准的，比猜 iframe 的 name/src 精确得多，
@@ -582,7 +593,11 @@
       window.addEventListener("visibilitychange", () => {
         if (document.visibilityState === "hidden" && window.__pendingVignetteClick) {
           window.__pendingVignetteClick = false;
-          handlePageUnload();
+          // 注意：这里直接调用 reportInterstitialClickExit，不走 handlePageUnload——
+          // handlePageUnload 内部还会再判断一次 window.clickOpen===1，但新开标签页时
+          // clickOpen 可能已经被上面的 adClosed 消息提前清成 0，这里的 activeElement
+          // 信号已经足够确认是点击广告导致的离开，不需要再依赖这个随时可能被提前清零的旗语
+          reportInterstitialClickExit();
         }
       });
       // 判断穿插全屏广告出现：不用 hashchange 监听 URL 里的 #google_vignette——插页广告
@@ -631,7 +646,12 @@
           "fullscreen" === vignetteMessageData.googMsgType
         ) {
           window.clickOpen = 0;
-          window.__pendingVignetteClick = false;
+          // 注意：这里故意不再清空 window.__pendingVignetteClick——点击插页广告跳转新开
+          // 标签页时，Google 几乎在用户点击的同一时刻就会发出这条 adClosed 消息，经常抢在
+          // blur/visibilitychange 前面先触发，一旦在这里清空待确认状态，新开标签页的点击就
+          // 永远检测不到了（这正是之前反馈"新开标签页点击穿插广告无法上报"的根因）。
+          // __pendingVignetteClick 自己有别的地方负责清空：每次新的 blur 一开始、以及顶层
+          // 文档任意点击时都会重置，不会因为这里不清空而导致误报堆积
           // 关闭穿插广告
           dataLayer.push({ event: "G_AL" });
         }
