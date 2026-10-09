@@ -559,12 +559,12 @@
         if (1 !== window.clickOpen) {
           return;
         }
-        // 插页广告内部可能是多层嵌套 iframe（外层容器 iframe 有 GPT 分配的 name，真正能点
-        // 的广告内容可能在没有这个 name、甚至没有 name 属性的内层 iframe 里），不再要求
-        // name 精确匹配特定广告位路径——广告展示期间，页面上唯一能被聚焦的东西基本只有
-        // 广告本身，只要焦点移到了任意一个 iframe 上就认为是点了广告
+        // 插页广告内部可能是多层嵌套 iframe，不管嵌套多深、iframe 叫什么名字，只要判断
+        // "聚焦的元素是不是在插页广告自己的 <ins data-vignette-loaded> 容器里面"就行——
+        // 这个选择器已经用来定位 C_AL 了，确认是准的，比猜 iframe 的 name/src 精确得多，
+        // 也不会被页面上其他广告位的 iframe 误触发
         const activeElement = document.activeElement;
-        if (activeElement && "IFRAME" === activeElement.tagName) {
+        if (activeElement && activeElement.closest('ins[data-vignette-loaded="true"]')) {
           window.__pendingVignetteClick = true;
         }
       });
