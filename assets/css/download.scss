@@ -36,6 +36,14 @@
         visibility: visible;
       }
     }
+    // 撑满整个按钮的可点击区域，之前这条规则只写在下面的移动端媒体查询里，PC 端的
+    // <a> 标签没有宽高，点击按钮本体点不到它，导致桌面端点击没反应
+    a {
+      position: absolute;
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
   }
   .android {
     background: $color2;
@@ -113,12 +121,6 @@
       height: vw(64);
       border-radius: vw(56);
       font-size: vw(28);
-      a {
-        position: absolute;
-        display: block;
-        width: 100%;
-        height: 100%;
-      }
     }
     .android {
       margin-right: vw(6);
