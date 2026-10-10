@@ -13,7 +13,7 @@
             height="100"
             :src="currentGame.icon"
             :alt="currentGame.name"
-            loading="lazy"
+            fetchpriority="high"
             class="icon"
           ></NuxtImg>
           <div class="header-main">

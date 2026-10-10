@@ -14,6 +14,7 @@
             class="icon"
             :src="currentSoftware.icon"
             :alt="currentSoftware.name"
+            fetchpriority="high"
           />
           <div class="header-main">
             <div class="name">{{ currentSoftware.name }}</div>
@@ -154,10 +155,6 @@
         <div ref="storeButtons" class="platform">
           <div class="android" :class="{ 'is-disabled': !currentSoftware.android_web_url }">
             <i class="icon-android"></i>Google Play
-            <!-- <div v-if="currentSoftware.android_web_url" class="qrcode">
-              Android
-              <img :src="qrCodeGoogle" alt="qrcode" />
-            </div> -->
             <a
               v-if="currentSoftware.android_web_url"
               :href="currentSoftware.android_web_url"
@@ -168,10 +165,6 @@
 
           <div class="ios" :class="{ 'is-disabled': !currentSoftware.ios_web_url }">
             <i class="icon-ios"></i>App Store
-            <!-- <div v-if="currentSoftware.ios_web_url" class="qrcode">
-              iOS
-              <img :src="qrCodeIos" alt="qrcode" />
-            </div> -->
             <a
               v-if="currentSoftware.ios_web_url"
               :href="currentSoftware.ios_web_url"
@@ -238,7 +231,6 @@
 </template>
 
 <script>
-import QRCode from "qrcode";
 import { directive } from "vue-awesome-swiper";
 import { shuffleArray } from "~/utils/utils";
 import { trackEvent, trackFacebookStandardEvent } from "~/utils/track";
@@ -300,8 +292,6 @@ export default {
   },
   data() {
     return {
-      qrCodeGoogle: "",
-      qrCodeIos: "",
       swiperOption: {
         slidesPerView: "auto",
         loop: true,
@@ -315,27 +305,7 @@ export default {
       }
     };
   },
-  mounted() {
-    if (this.currentSoftware.ios_web_url) {
-      this.generateQRCode(this.currentSoftware.ios_web_url).then((data) => {
-        this.qrCodeIos = data;
-      });
-    }
-    if (this.currentSoftware.android_web_url) {
-      this.generateQRCode(this.currentSoftware.android_web_url).then((data) => {
-        this.qrCodeGoogle = data;
-      });
-    }
-  },
   methods: {
-    async generateQRCode(url) {
-      try {
-        const qrCodeDataURL = await QRCode.toDataURL(url);
-        return qrCodeDataURL;
-      } catch (error) {
-        console.error("Error generating QR code:", error);
-      }
-    },
     trackDownloadClick(buttonType) {
       const params = {
         page_type: "download",

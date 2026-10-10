@@ -13,7 +13,7 @@
             height="100"
             :src="currentApp.icon"
             :alt="currentApp.name"
-            loading="lazy"
+            fetchpriority="high"
             class="icon"
           ></NuxtImg>
           <div class="header-main">

@@ -23,7 +23,8 @@
                     height="400"
                     :src="item.pc_img || item.icon"
                     :alt="item.name"
-                    :preloader="index === 0"
+                    :preload="index === 0"
+                    :fetchpriority="index === 0 ? 'high' : undefined"
                     class="hero-img m-hidden"
                   />
                   <NuxtImg
@@ -33,7 +34,8 @@
                     height="416"
                     :src="item.mobile_img || item.icon"
                     :alt="item.name"
-                    :preloader="index === 0"
+                    :preload="index === 0"
+                    :fetchpriority="index === 0 ? 'high' : undefined"
                     class="hero-img pc-hidden"
                   />
                   <div class="hero-overlay"></div>
