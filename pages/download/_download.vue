@@ -344,11 +344,11 @@ export default {
         item_name: this.currentSoftware.name
       };
       trackEvent("download_click", params);
-      // primary 按钮只是滚动到下面的商店按钮，不跳转、不会触发穿插广告，不算内容点击；
-      // apkpure/google_play/app_store 这三个才是真正的外链跳转，算进 AddToCart
-      if (buttonType !== "primary") {
-        trackFacebookStandardEvent("AddToCart", params);
-      }
+      // 下载页四个按钮（primary + apkpure/google_play/app_store）统一算"下载意图点击"，
+      // 推专门的 SubmitApplication，不复用全站通用的 AddToCart（那个在 CustomLink 里全站
+      // 任意内容点击都会触发，用来买下载页转化会混进大量普通浏览点击，不够干净）；也不能
+      // 复用 InitiateCheckout，那个已经专门用来投首页、对应详情页下载按钮点击这条路径了
+      trackFacebookStandardEvent("SubmitApplication", params);
     }
   }
 };
