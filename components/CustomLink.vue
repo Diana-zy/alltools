@@ -1,5 +1,5 @@
 <template>
-  <a :href="customLink || to" @click="handleClick">
+  <a :href="customLink || to" @pointerdown="handleClick">
     <slot></slot>
   </a>
 </template>
@@ -35,6 +35,12 @@ export default {
     }
   },
   methods: {
+    // 用 pointerdown（按下的瞬间）而不是 click 来触发埋点：插页广告库很可能在捕获阶段
+    // 抢在我们自己的 click 处理函数之前拦截点击、阻止事件继续传播，导致"用户到底点没点"
+    // 这个事实被广告拦截结果绑死——用户如果直接点了广告跳走，我们的 click 处理函数根本
+    // 没机会执行，内容点击就彻底漏报。pointerdown 和 click 是完全独立的事件类型，广告库
+    // 拦截 click 不会影响已经先一步跑完的 pointerdown；同时 pointerdown 在桌面/移动端
+    // （鼠标/触摸/触控笔）都是统一标准事件，不用额外处理触屏兼容
     handleClick() {
       const pageType = getPageType();
       trackEvent("content_click", { page_type: pageType });

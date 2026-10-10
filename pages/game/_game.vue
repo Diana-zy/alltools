@@ -62,7 +62,7 @@
         <CustomLink
           class="primary-download"
           :to="`/download/${currentGame.path}/`"
-          @click.native="trackDownloadClick('primary')"
+          @pointerdown.native="trackDownloadClick('primary')"
         >
           <i class="icon-download-cta"></i>Download Latest APK
         </CustomLink>

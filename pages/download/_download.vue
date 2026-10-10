@@ -146,7 +146,7 @@
           class="download-now-btn"
           :href="currentSoftware.apkpure_url"
           rel="nofollow noopener"
-          @click="trackDownloadClick('apkpure')"
+          @pointerdown="trackDownloadClick('apkpure')"
         >
           <i class="icon-download-cta"></i>Download APK Now
         </a>
@@ -162,7 +162,7 @@
               v-if="currentSoftware.android_web_url"
               :href="currentSoftware.android_web_url"
               rel="noopener"
-              @click="trackDownloadClick('google_play')"
+              @pointerdown="trackDownloadClick('google_play')"
             ></a>
           </div>
 
@@ -176,7 +176,7 @@
               v-if="currentSoftware.ios_web_url"
               :href="currentSoftware.ios_web_url"
               rel="noopener"
-              @click="trackDownloadClick('app_store')"
+              @pointerdown="trackDownloadClick('app_store')"
             ></a>
           </div>
         </div>
