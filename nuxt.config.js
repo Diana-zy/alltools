@@ -189,13 +189,11 @@ export default {
         automaticNameDelimiter: ".",
         name: true,
         minSize: 10000,
-        maxSize: 244000,
         cacheGroups: {
           vendor: {
             name: "vendors",
             test: /[\\/]node_modules[\\/]/,
             chunks: "all",
-            maxSize: 244000,
             priority: -10
           },
           styles: {
