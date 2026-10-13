@@ -218,6 +218,7 @@ export default {
     border-radius: vw(24);
     background: #ffffff;
     margin-right: vw(36);
+    transform: translateY(#{vw(15)});
   }
 
   .icon-more {
@@ -249,6 +250,7 @@ export default {
     border-radius: vw(24);
     background: #ffffff;
     margin-left: vw(32);
+    transform: translateY(#{vw(15)});
   }
 
   .icon-search {
