@@ -65,6 +65,10 @@
       crossorigin="anonymous"
     ></script>
 
+    <!-- 产品图标/截图都走 Cloudflare Image（bunchthings.com）处理，首屏第一张图加载前得先走一遍
+    DNS+TLS握手——提前建连接，省掉这段时间，不影响任何展示效果。 -->
+    <link rel="preconnect" href="https://bunchthings.com" crossorigin />
+
     <link rel="preload" href="https://securepubads.g.doubleclick.net/tag/js/gpt.js" as="script" />
     <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
     <!-- <script>
