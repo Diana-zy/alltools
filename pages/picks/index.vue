@@ -35,7 +35,7 @@
         <InfiniteScrollList2
           api-endpoint="/api/game/all_app"
           :initial-items="allApks"
-          class="box-common1"
+          class="box-common1 box-category"
         >
           <template #default="{ items }">
             <ContentItemDetail
