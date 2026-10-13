@@ -46,8 +46,9 @@ export function getPageType(pathname) {
     { pattern: /^\/apps\/?$/, type: "apps" },
     { pattern: /^\/games\/?$/, type: "games" },
     { pattern: /^\/new\/?$/, type: "new" },
-    { pattern: /^\/newtools\/?$/, type: "newtools" },
-    { pattern: /^\/menu\/?$/, type: "menu" }
+    { pattern: /^\/new-release\/?$/, type: "new_release" },
+    { pattern: /^\/picks\/?$/, type: "picks" },
+    { pattern: /^\/newtools\/?$/, type: "newtools" }
   ];
 
   const matched = mappings.find((m) => m.pattern.test(path));
