@@ -218,4 +218,43 @@ export default {
   color: rgba($font1, 0.7);
   @include ellipsis;
 }
+
+@media screen and (max-width: 879px) {
+  .panel {
+    width: vw(520);
+    padding-top: vw(32);
+  }
+
+  .close-btn {
+    font-size: vw(48);
+  }
+
+  .menu-item {
+    height: vw(96);
+    padding-left: vw(40);
+    font-size: vw(26);
+  }
+
+  .icon-home,
+  .icon-rank,
+  .icon-new,
+  .icon-picks,
+  .icon-categories {
+    width: vw(40);
+    height: vw(40);
+    margin-right: vw(20);
+  }
+
+  .icon-arrow {
+    width: vw(14);
+    height: vw(14);
+    margin-right: vw(40);
+  }
+
+  .submenu-item {
+    height: vw(72);
+    padding-left: vw(100);
+    font-size: vw(24);
+  }
+}
 </style>

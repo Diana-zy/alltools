@@ -1,9 +1,7 @@
 <template>
   <div class="description-text">
     <h2 class="title-h2">Description</h2>
-    <div class="text-content">
-      {{ cleanText }}
-    </div>
+    <div class="text-content">{{ cleanText }}</div>
   </div>
 </template>
 
