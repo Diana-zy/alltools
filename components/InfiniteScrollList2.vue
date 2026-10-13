@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import { shuffleArray } from "~/utils/utils";
+
 export default {
   props: {
     apiEndpoint: {
@@ -78,7 +80,10 @@ export default {
           }
         }
 
-        const newData = result;
+        // 按站点上架的 apk 产品随机排序：每一页拉到的 app+game 混合结果在拼进 items 前先打乱，
+        // 不是全站严格随机（分页本身仍按后端各自的权重顺序取数据），但每一屏展示的产品顺序
+        // 不固定，满足"随机排序"的展示需求，不需要后端额外支持真正的全局随机排序。
+        const newData = shuffleArray(result);
         this.items = this.items.concat(newData);
         if (newData.length === 0 || newData.length < this.pageSize) {
           this.endOfList = true;

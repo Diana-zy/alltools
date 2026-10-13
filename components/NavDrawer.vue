@@ -14,6 +14,12 @@
         <CustomLink to="/rankings/" class="menu-item" @click.native="$emit('close')"
           ><i class="icon-rank"></i>Top Rankings</CustomLink
         >
+        <CustomLink to="/new-release/" class="menu-item" @click.native="$emit('close')"
+          ><i class="icon-new"></i>Update in last 24 hours</CustomLink
+        >
+        <CustomLink to="/picks/" class="menu-item" @click.native="$emit('close')"
+          ><i class="icon-picks"></i>Easy Use and Happy Life</CustomLink
+        >
 
         <div class="menu-group">
           <div class="menu-item" @click="categoriesExpanded = !categoriesExpanded"
@@ -159,6 +165,8 @@ export default {
 
 .icon-home,
 .icon-rank,
+.icon-new,
+.icon-picks,
 .icon-categories {
   width: 24px;
   height: 24px;
@@ -169,6 +177,12 @@ export default {
 }
 .icon-rank {
   @include icon(24px, 24px, "icon-rank.png");
+}
+.icon-new {
+  @include icon(24px, 24px, "icon-new.png");
+}
+.icon-picks {
+  @include icon(24px, 24px, "icon-picks.png");
 }
 .icon-categories {
   @include icon(24px, 24px, "icon-categories.png");

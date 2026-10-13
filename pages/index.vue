@@ -76,6 +76,35 @@
             </div>
           </section>
 
+          <template v-if="newReleases.length > 0">
+            <CustomLink to="/new-release/" class="title-h2"
+              ><span class="title-text">Update in last 24 hours</span
+              ><div class="title-see-more"><span>View All</span><i class="icon-arrow" /></div
+            ></CustomLink>
+            <section class="new-release">
+              <div class="box-row-scroll box-scroll-hidden">
+                <ContentItemRow
+                  v-for="(item, index) in newReleases.slice(0, 9)"
+                  :key="index"
+                  :item="item"
+                  :index="index"
+                  list-name="new_release"
+                  :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
+                />
+              </div>
+              <div class="recommended-apks">
+                <ContentItemRank
+                  v-for="(item, index) in newReleases.slice(0, 9)"
+                  :key="index"
+                  :item="item"
+                  :index="index"
+                  list-name="new_release"
+                  :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
+                />
+              </div>
+            </section>
+          </template>
+
           <!-- 页内广告位 -->
           <adm-slot
             adm-id="home-4"
@@ -145,6 +174,35 @@
               />
             </div>
           </section>
+
+          <template v-if="editorsPick.length > 0">
+            <CustomLink to="/picks/" class="title-h2"
+              ><span class="title-text">Easy Use and Happy Life</span
+              ><div class="title-see-more"><span>View All</span><i class="icon-arrow" /></div
+            ></CustomLink>
+            <section class="editors-pick">
+              <div class="box-row-scroll box-scroll-hidden">
+                <ContentItemRow
+                  v-for="(item, index) in editorsPick.slice(0, 9)"
+                  :key="index"
+                  :item="item"
+                  :index="index"
+                  list-name="editors_pick"
+                  :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
+                />
+              </div>
+              <div class="recommended-apks">
+                <ContentItemRank
+                  v-for="(item, index) in editorsPick.slice(0, 9)"
+                  :key="index"
+                  :item="item"
+                  :index="index"
+                  list-name="editors_pick"
+                  :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
+                />
+              </div>
+            </section>
+          </template>
         </article>
       </div>
     </main>
@@ -196,12 +254,16 @@ export default {
         "home-recommended-apks",
         10
       );
+      const newReleases = await fetchModule($axios, env.SITE_ID, "new-games", 9);
+      const editorsPick = await fetchModule($axios, env.SITE_ID, "home-editors-pick", 9);
 
       return {
         bestApps,
         bestGames,
         heroConfigured,
-        recommendedApksConfigured
+        recommendedApksConfigured,
+        newReleases,
+        editorsPick
       };
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -213,6 +275,8 @@ export default {
       bestGames: [],
       heroConfigured: [],
       recommendedApksConfigured: [],
+      newReleases: [],
+      editorsPick: [],
       heroSwiperOption: {
         slidesPerView: 1,
         spaceBetween: 0,
