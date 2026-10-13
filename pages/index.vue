@@ -76,6 +76,14 @@
             </div>
           </section>
 
+          <!-- 页内广告位（第2个，轮播+Top Picks之后） -->
+          <adm-slot
+            adm-id="home-2"
+            adm-unit="/23197833490/alltools1/alltools1_home_2"
+            ads-slot="4080715115"
+            class="ad-2"
+          />
+
           <template v-if="newReleases.length > 0">
             <CustomLink to="/new-release/" class="title-h2"
               ><span class="title-text">Update in last 24 hours</span
@@ -105,12 +113,41 @@
             </section>
           </template>
 
-          <!-- 页内广告位 -->
+          <template v-if="editorsPick.length > 0">
+            <CustomLink to="/picks/" class="title-h2"
+              ><span class="title-text">Easy Use and Happy Life</span
+              ><div class="title-see-more"><span>View All</span><i class="icon-arrow" /></div
+            ></CustomLink>
+            <section class="editors-pick">
+              <div class="box-row-scroll box-scroll-hidden">
+                <ContentItemRow
+                  v-for="(item, index) in editorsPick.slice(0, 9)"
+                  :key="index"
+                  :item="item"
+                  :index="index"
+                  list-name="editors_pick"
+                  :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
+                />
+              </div>
+              <div class="recommended-apks">
+                <ContentItemRank
+                  v-for="(item, index) in editorsPick.slice(0, 9)"
+                  :key="index"
+                  :item="item"
+                  :index="index"
+                  list-name="editors_pick"
+                  :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
+                />
+              </div>
+            </section>
+          </template>
+
+          <!-- 页内广告位（第3个，Update+Easy Use之后） -->
           <adm-slot
-            adm-id="home-4"
-            adm-unit="/23197833490/alltools1/alltools1_home_4"
-            ads-slot="23379573501"
-            class="ad-4"
+            adm-id="home-3"
+            adm-unit="/23197833490/alltools1/alltools1_home_3"
+            ads-slot="23384133665"
+            class="ad-2"
           />
 
           <CustomLink to="/rankings/?tab=apps" class="title-h2"
@@ -141,11 +178,12 @@
             </div>
           </section>
 
+          <!-- 页内广告位（第4个，Top Apps之后） -->
           <adm-slot
-            adm-id="home-2"
-            adm-unit="/23197833490/alltools1/alltools1_home_2"
-            ads-slot="4080715115"
-            class="ad-2"
+            adm-id="home-4"
+            adm-unit="/23197833490/alltools1/alltools1_home_4"
+            ads-slot="23379573501"
+            class="ad-4"
           />
 
           <CustomLink to="/rankings/?tab=games" class="title-h2"
@@ -174,35 +212,6 @@
               />
             </div>
           </section>
-
-          <template v-if="editorsPick.length > 0">
-            <CustomLink to="/picks/" class="title-h2"
-              ><span class="title-text">Easy Use and Happy Life</span
-              ><div class="title-see-more"><span>View All</span><i class="icon-arrow" /></div
-            ></CustomLink>
-            <section class="editors-pick">
-              <div class="box-row-scroll box-scroll-hidden">
-                <ContentItemRow
-                  v-for="(item, index) in editorsPick.slice(0, 9)"
-                  :key="index"
-                  :item="item"
-                  :index="index"
-                  list-name="editors_pick"
-                  :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
-                />
-              </div>
-              <div class="recommended-apks">
-                <ContentItemRank
-                  v-for="(item, index) in editorsPick.slice(0, 9)"
-                  :key="index"
-                  :item="item"
-                  :index="index"
-                  list-name="editors_pick"
-                  :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
-                />
-              </div>
-            </section>
-          </template>
         </article>
       </div>
     </main>

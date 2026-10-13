@@ -46,6 +46,13 @@ export function generateCustomLink(url) {
   const currentParams = new URLSearchParams(window.location.search);
   const currentPathname = window.location.pathname;
 
+  // tab 是 Rankings 页面自己的 UI 状态参数（picks/apps/games），不是跨页面要保留的追踪参数。
+  // 之前这里只会合并当前页 query 上的参数、不会清掉页面专属的参数，导致从带 ?tab=xxx 的
+  // Rankings 页跳到任何没有自己 tab 参数的页面（比如首页）时，tab 会被错误地带过去。
+  // 这里先删掉继承来的 tab，如果目标链接自己带了 tab（比如 Rankings 内部切 tab 的链接），
+  // 下面合并 ownQueryString 时会重新设置回来，不受影响。
+  currentParams.delete("tab");
+
   if (ownQueryString) {
     new URLSearchParams(ownQueryString).forEach((value, key) => {
       currentParams.set(key, value);
