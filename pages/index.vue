@@ -84,7 +84,7 @@
 
         <article class="article">
           <CustomLink to="/rankings/?tab=picks" class="title-h2 title-h2-first"
-            ><span class="title-text">Top Picks in Last 24 Hours</span
+            ><span class="title-text">Top Picks in Last 24 Hours<span class="emoji-fire">🔥</span></span
             ><div class="title-see-more"><span>View All</span><i class="icon-arrow" /></div
           ></CustomLink>
           <section class="top-picks">
@@ -121,7 +121,7 @@
 
           <template v-if="newReleases.length > 0">
             <CustomLink to="/new-release/" class="title-h2"
-              ><span class="title-text">Update in last 24 hours</span
+              ><span class="title-text">Update in last 24 hours<span class="badge-new">NEW</span></span
               ><div class="title-see-more"><span>View All</span><i class="icon-arrow" /></div
             ></CustomLink>
             <section class="new-release">
@@ -151,7 +151,7 @@
 
           <template v-if="editorsPick.length > 0">
             <CustomLink to="/picks/" class="title-h2 easy-use-title"
-              ><span class="title-text">Easy Use and Happy Life</span
+              ><span class="title-text">Easy Use and Happy Life<span class="emoji-smile">🤩</span></span
               ><div class="title-see-more"><span>View All</span><i class="icon-arrow" /></div
             ></CustomLink>
             <section class="editors-pick">
@@ -403,6 +403,29 @@ export default {
 
 .title-h2-first {
   margin-top: 24px;
+}
+
+.emoji-fire {
+  margin-left: 6px;
+  font-size: 18px;
+}
+
+.badge-new {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: $color2;
+  font-family: seb;
+  font-size: 11px;
+  line-height: 1.3;
+  color: #ffffff;
+  vertical-align: 2px;
+}
+
+.emoji-smile {
+  margin-left: 6px;
+  font-size: 18px;
 }
 
 // Update in last 24 hours 和 Easy Use and Happy Life 这两个模块紧挨着，全局 .title-h2 的

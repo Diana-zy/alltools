@@ -1,5 +1,5 @@
 <template>
-  <div v-show="!isOverlappingAd" class="quick-nav">
+  <div class="quick-nav">
     <transition name="quick-nav-panel-fade">
       <div v-if="open" class="quick-nav-panel">
         <CustomLink to="/rankings/" class="quick-nav-item" @click.native="open = false">
@@ -45,64 +45,21 @@
 export default {
   data() {
     return {
-      open: false,
-      isOverlappingAd: false,
-      lastButtonRect: null // 保存按钮的最新边界矩形数据
+      open: false
     };
   },
   mounted() {
-    window.addEventListener("scroll", this.handleScroll);
     document.addEventListener("click", this.handleOutsideClick);
-    // 挡广告检测原来只在 scroll 事件里跑：页面刚加载、用户还没滚动过就点按钮时，这个检测
-    // 一次都没执行过，isOverlappingAd 还停在初始值 false，按钮该不该隐藏完全没判断，广告
-    // 容器还在加载/resize 过程中可能正好压在按钮位置，点击就被挡住了。这里挂载后立刻测一次，
-    // 并且之后每 500ms 定期重测，不管广告什么时候加载完/改尺寸都能跟上，不用等用户先滚动
-    this.handleScroll();
-    this.pollTimer = setInterval(this.handleScroll, 500);
   },
   beforeUnmount() {
-    window.removeEventListener("scroll", this.handleScroll);
     document.removeEventListener("click", this.handleOutsideClick);
-    clearInterval(this.pollTimer);
   },
   methods: {
-    // 跟原来 BackTop 的逻辑一样：悬浮按钮不能挡住广告，挡住了就直接隐藏，而不是叠在广告上面
-    handleScroll() {
-      const adsElements = document.querySelectorAll(".adsbygoogle");
-      const quickNavBtn = this.$refs.quickNavBtn;
-
-      if (quickNavBtn && quickNavBtn.getBoundingClientRect().height !== 0) {
-        this.lastButtonRect = quickNavBtn.getBoundingClientRect();
-      }
-
-      if (!this.lastButtonRect || !adsElements) {
-        this.isOverlappingAd = false;
-        return;
-      }
-
-      let isOverlappingAnyAd = false;
-      for (const adsElement of adsElements) {
-        const adsRect = adsElement.getBoundingClientRect();
-        if (this.isOverlapping(this.lastButtonRect, adsRect) && adsRect.height !== 0) {
-          isOverlappingAnyAd = true;
-          break;
-        }
-      }
-      this.isOverlappingAd = isOverlappingAnyAd;
-    },
     // 点击按钮和弹出面板以外的地方，自动收起面板
     handleOutsideClick(event) {
       if (this.open && !this.$el.contains(event.target)) {
         this.open = false;
       }
-    },
-    isOverlapping(rect1, rect2) {
-      return (
-        rect1.bottom > rect2.top &&
-        rect1.top < rect2.bottom &&
-        rect1.left < rect2.right &&
-        rect1.right > rect2.left
-      );
     }
   }
 };
@@ -111,7 +68,9 @@ export default {
 <style lang="scss" scoped>
 .quick-nav {
   position: fixed;
-  z-index: 500;
+  // 不做挡广告隐藏判断了，按钮必须任何时候都能点到，用接近最大值的 z-index 保证它始终在
+  // 最上层，不会被广告的 iframe（不管加载到哪个阶段）盖住拦截点击
+  z-index: 2147483000;
   bottom: 180px;
   right: 158px;
 }
