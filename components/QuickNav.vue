@@ -88,6 +88,10 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  // 这是个 div 不是 a 标签，站内给链接统一去点击高亮的全局样式套不到它身上，
+  // 移动端点击会出现默认的方形高亮/聚焦框，这里单独去掉
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
 
   &.quick-nav-btn-open {
     transform: scale(0.94);
