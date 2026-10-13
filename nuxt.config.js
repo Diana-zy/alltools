@@ -190,6 +190,19 @@ export default {
         name: true,
         minSize: 10000,
         cacheGroups: {
+          // swiper/vue-awesome-swiper 只有首页、详情页(app/game/download)这几个带轮播图/截图轮播
+          // 的页面才用得到，体积还不小。之前它们跟其他 node_modules 一起被下面的 vendor
+          // cacheGroup 捏进同一个固定命名的 vendors 包里——webpack 对固定命名(name: "vendors")的
+          // cacheGroup 只会产出一份物理文件，结果凡是引用到这份 vendors 包任意一部分代码的页面
+          // （几乎全站）都要把 swiper 也一起下载，哪怕那个页面根本没有轮播图。这里单独拆一个
+          // 优先级更高的 cacheGroup，把 swiper 相关代码从 vendors 里摘出来，只有真正 import 了
+          // vue-awesome-swiper 的页面才会引用到这个独立的 chunk。
+          swiper: {
+            name: "swiper",
+            test: /[\\/]node_modules[\\/](swiper|vue-awesome-swiper|dom7|ssr-window)[\\/]/,
+            chunks: "all",
+            priority: 10
+          },
           vendor: {
             name: "vendors",
             test: /[\\/]node_modules[\\/]/,
