@@ -53,10 +53,17 @@ export default {
   mounted() {
     window.addEventListener("scroll", this.handleScroll);
     document.addEventListener("click", this.handleOutsideClick);
+    // 挡广告检测原来只在 scroll 事件里跑：页面刚加载、用户还没滚动过就点按钮时，这个检测
+    // 一次都没执行过，isOverlappingAd 还停在初始值 false，按钮该不该隐藏完全没判断，广告
+    // 容器还在加载/resize 过程中可能正好压在按钮位置，点击就被挡住了。这里挂载后立刻测一次，
+    // 并且之后每 500ms 定期重测，不管广告什么时候加载完/改尺寸都能跟上，不用等用户先滚动
+    this.handleScroll();
+    this.pollTimer = setInterval(this.handleScroll, 500);
   },
   beforeUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
     document.removeEventListener("click", this.handleOutsideClick);
+    clearInterval(this.pollTimer);
   },
   methods: {
     // 跟原来 BackTop 的逻辑一样：悬浮按钮不能挡住广告，挡住了就直接隐藏，而不是叠在广告上面
