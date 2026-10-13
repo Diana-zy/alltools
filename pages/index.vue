@@ -11,39 +11,73 @@
           class="ad-1 ad-top"
         />
 
-        <section class="rec">
-          <div v-swiper:heroSwiper="heroSwiperOption" class="rec-content">
-            <div class="swiper-wrapper">
-              <div v-for="(item, index) in heroShown" :key="index" class="swiper-slide">
-                <CustomLink :to="heroLink(item)" class="hero-card">
-                  <NuxtImg
-                    format="auto"
-                    fit="cover"
-                    width="1200"
-                    height="400"
-                    :src="item.pc_img || item.icon"
-                    :alt="item.name"
-                    :preload="index === 0"
-                    :fetchpriority="index === 0 ? 'high' : undefined"
-                    class="hero-img m-hidden"
-                  />
-                  <NuxtImg
-                    format="auto"
-                    fit="cover"
-                    width="686"
-                    height="416"
-                    :src="item.mobile_img || item.icon"
-                    :alt="item.name"
-                    :preload="index === 0"
-                    :fetchpriority="index === 0 ? 'high' : undefined"
-                    class="hero-img pc-hidden"
-                  />
-                  <div class="hero-overlay"></div>
-                  <p class="hero-name">{{ item.name }}</p>
-                </CustomLink>
-              </div>
-            </div>
-            <div class="swiper-pagination"></div>
+        <!-- 两个合集的封面图（标题/文案/按钮都是直接画在图里的，不需要前端再叠一层文字），
+        PC端 Puzzle Games / AI Apps 两张并排一样大；移动端 Puzzle Games 占一整行，AI Apps 缩小跟
+        Editor's Picks（复用 Top Picks 数据，不需要单独传图）拼一行，省垂直空间 -->
+        <section class="collections">
+          <div class="collections-top">
+            <CustomLink to="/puzzle-games/" class="collection-card">
+              <NuxtImg
+                v-if="puzzleBanner"
+                format="auto"
+                fit="cover"
+                width="1200"
+                height="560"
+                :src="puzzleBanner.pc_img || puzzleBanner.icon"
+                alt="Best Free Puzzle Games"
+                fetchpriority="high"
+                class="collection-img m-hidden"
+              />
+              <NuxtImg
+                v-if="puzzleBanner"
+                format="auto"
+                fit="cover"
+                width="690"
+                height="360"
+                :src="puzzleBanner.mobile_img || puzzleBanner.icon"
+                alt="Best Free Puzzle Games"
+                fetchpriority="high"
+                class="collection-img pc-hidden"
+              />
+            </CustomLink>
+            <CustomLink to="/ai-apps/" class="collection-card m-hidden">
+              <NuxtImg
+                v-if="aiBanner"
+                format="auto"
+                fit="cover"
+                width="1200"
+                height="560"
+                :src="aiBanner.pc_img || aiBanner.icon"
+                alt="Most Popular AI Apps"
+                class="collection-img"
+              />
+            </CustomLink>
+          </div>
+          <div class="collections-bottom pc-hidden">
+            <CustomLink to="/ai-apps/" class="collection-card collection-ai-small">
+              <NuxtImg
+                v-if="aiBanner"
+                format="auto"
+                fit="cover"
+                width="440"
+                height="320"
+                :src="aiBanner.mobile_img || aiBanner.icon"
+                alt="Most Popular AI Apps"
+                class="collection-img"
+              />
+            </CustomLink>
+            <CustomLink to="/rankings/?tab=picks" class="collection-card editor-picks-card">
+              <NuxtImg
+                v-if="editorPicksBanner"
+                format="auto"
+                fit="cover"
+                width="440"
+                height="320"
+                :src="editorPicksBanner.mobile_img || editorPicksBanner.icon"
+                alt="Editor's Picks"
+                class="collection-img"
+              />
+            </CustomLink>
           </div>
         </section>
 
@@ -223,9 +257,7 @@
 </template>
 
 <script>
-import { directive } from "vue-awesome-swiper";
 import { trackEvent, trackFacebookStandardEvent } from "~/utils/track";
-import "swiper/css/swiper.min.css";
 
 // 站点管理 / 模块游戏推荐（site_module 表）里还没配置这个 mod_id 时，/api/game/menu 会报错，
 // 这里统一兜底成空列表，不让首页因为运营还没配好某个模块就直接挂掉。
@@ -247,18 +279,13 @@ async function fetchModule($axios, siteId, modId, size) {
 }
 
 export default {
-  directives: {
-    swiper: directive
-  },
   async asyncData({ $axios, env }) {
     try {
       // 依次请求而不是 Promise.all 并发——后端在多个并发请求下会 502（实测单条请求正常，
       // 4 条并发就炸），排队请求虽然多花几百毫秒，但不会把首页拖挂。
       const bestApps = await fetchModule($axios, env.SITE_ID, "best-apps", 30);
       const bestGames = await fetchModule($axios, env.SITE_ID, "best-games", 30);
-      // 以下两个模块由 BI 后台「站点管理/模块游戏推荐」运营配置（不分应用/游戏类型），
-      // 未配置时为空数组，走 fallback
-      const heroConfigured = await fetchModule($axios, env.SITE_ID, "home-hero", 5);
+      // 以下模块由 BI 后台「站点管理/模块游戏推荐」运营配置，未配置时为空数组，走 fallback
       const recommendedApksConfigured = await fetchModule(
         $axios,
         env.SITE_ID,
@@ -267,14 +294,24 @@ export default {
       );
       const newReleases = await fetchModule($axios, env.SITE_ID, "new-games", 9);
       const editorsPick = await fetchModule($axios, env.SITE_ID, "home-editors-pick", 9);
+      // 轮播位换成的两个合集入口卡片：跟当年 home-hero 模块一样，运营在 BI 后台单独配一个
+      // 只有 1 条数据的模块，上传 pc_img/mobile_img 当封面图，标题/文案直接画在图里，前端不叠字
+      const puzzleGamesBannerConfigured = await fetchModule(
+        $axios,
+        env.SITE_ID,
+        "puzzle-games-banner",
+        1
+      );
+      const aiAppsBannerConfigured = await fetchModule($axios, env.SITE_ID, "ai-apps-banner", 1);
 
       return {
         bestApps,
         bestGames,
-        heroConfigured,
         recommendedApksConfigured,
         newReleases,
-        editorsPick
+        editorsPick,
+        puzzleGamesBannerConfigured,
+        aiAppsBannerConfigured
       };
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -284,30 +321,11 @@ export default {
     return {
       bestApps: [],
       bestGames: [],
-      heroConfigured: [],
       recommendedApksConfigured: [],
       newReleases: [],
       editorsPick: [],
-      heroSwiperOption: {
-        slidesPerView: 1,
-        spaceBetween: 0,
-        loop: true,
-        autoplay: {
-          delay: 4000,
-          disableOnInteraction: false
-        },
-        pagination: {
-          el: ".swiper-pagination",
-          clickable: true
-        },
-        breakpoints: {
-          // PC 端一排展示 2 个，两两轮播
-          880: {
-            slidesPerView: 2,
-            spaceBetween: 0
-          }
-        }
-      }
+      puzzleGamesBannerConfigured: [],
+      aiAppsBannerConfigured: []
     };
   },
   mounted() {
@@ -325,20 +343,24 @@ export default {
     trackFacebookStandardEvent("ViewContent", { content_name: "home" });
   },
   computed: {
-    // 轮播/推荐位：BI 后台「站点管理/模块游戏推荐」配置了 mod_id 就用配置的，没配就 fallback 到 ranking 数据
-    heroShown() {
-      if (this.heroConfigured.length) return this.heroConfigured.slice(0, 5);
-      return [...this.bestGames.slice(0, 3), ...this.bestApps.slice(0, 2)].slice(0, 5);
-    },
+    // 推荐位：BI 后台「站点管理/模块游戏推荐」配置了 mod_id 就用配置的，没配就 fallback 到 ranking 数据
     recommendedApksShown() {
       return (
         this.recommendedApksConfigured.length ? this.recommendedApksConfigured : this.bestApps
       ).slice(0, 9);
-    }
-  },
-  methods: {
-    heroLink(item) {
-      return `/${item.type === 1 ? "game" : "app"}/${item.path}/`;
+    },
+    // 几个封面图：运营还没在 BI 后台配置对应模块时为 null，卡片走纯色背景兜底（不渲染图片），
+    // 不会因为没图挂掉或者显示 broken image
+    puzzleBanner() {
+      return this.puzzleGamesBannerConfigured[0] || null;
+    },
+    aiBanner() {
+      return this.aiAppsBannerConfigured[0] || null;
+    },
+    // Editor's Picks 直接复用首页「Top Picks in Last 24 Hours」那个模块（home-recommended-apks）
+    // 第一条数据的封面图，不用额外建模块
+    editorPicksBanner() {
+      return this.recommendedApksConfigured[0] || null;
     }
   }
 };
@@ -350,7 +372,7 @@ export default {
 }
 .fix-bg {
   width: 100%;
-  height: 400px;
+  height: 280px;
   position: absolute;
   top: 64px;
   left: 0;
@@ -386,64 +408,45 @@ export default {
   margin-top: 25px;
 }
 
-.rec {
-  position: relative;
+// 轮播图实测点击率不行，换成固定的合集入口卡片，不走swiper——纯静态展示，不存在轮播场景下
+// "异步加载布局闪一下"的问题。封面图本身就带了标题/文案/按钮（运营直接出成品图上传），
+// 前端不用再叠一层文字
+.collections {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   width: 100%;
+}
 
-  .rec-content {
-    position: relative;
-    width: 100%;
-    height: 400px;
-    border-radius: 24px;
-    overflow: hidden;
-    background-color: #ffffff;
-  }
+.collections-top {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+}
 
-  .hero-card {
-    position: relative;
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
+.collection-card {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 280px;
+  border-radius: 24px;
+  overflow: hidden;
+  transition: transform 0.2s;
+  // 运营还没在 BI 后台传封面图之前，走这个纯灰背景兜底，不会显示 broken image
+  background: #f5f6f8;
 
-  .hero-img {
-    width: 100%;
-    height: 100%;
+  &:hover {
+    transform: translateY(-2px);
   }
+}
 
-  .hero-overlay {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 40%;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0));
-  }
-
-  .hero-name {
-    position: absolute;
-    left: 32px;
-    bottom: 24px;
-    right: 32px;
-    font-family: seb;
-    font-size: 28px;
-    color: #ffffff;
-    text-align: left;
-    @include ellipsis;
-  }
-
-  ::v-deep .swiper-pagination-bullet {
-    background: #ffffff;
-    opacity: 0.6;
-  }
-  ::v-deep .swiper-pagination-bullet-active {
-    opacity: 1;
-  }
-
-  // PC 端不需要滚动点
-  ::v-deep .swiper-pagination {
-    display: none;
-  }
+.collection-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .box-row-scroll {
   padding: 4px 0;
@@ -480,19 +483,11 @@ export default {
 
 @media screen and (min-width: 879px) and (max-width: 1240px) {
   .fix-bg {
-    height: vw2(400);
+    height: vw2(280);
   }
-  .rec {
-    .rec-content {
-      height: vw2(400);
-      border-radius: vw2(24);
-    }
-    .hero-name {
-      left: vw2(32);
-      bottom: vw2(24);
-      right: vw2(32);
-      font-size: vw2(28);
-    }
+  .collection-card {
+    height: vw2(280);
+    border-radius: vw2(24);
   }
 }
 @media screen and (max-width: 879px) {
@@ -506,25 +501,34 @@ export default {
     padding: 0;
   }
 
-  .rec {
-    .rec-content {
-      height: vw(416);
-      border-radius: vw(32);
-    }
-    .hero-name {
-      left: vw(32);
-      bottom: vw(24);
-      right: vw(32);
-      font-size: vw(32);
-    }
-    ::v-deep .swiper-pagination {
-      display: block;
-      left: auto;
-      right: vw(24);
-      bottom: vw(16);
-      width: auto;
-      text-align: right;
-    }
+  .collections {
+    gap: vw(24);
+  }
+
+  .collections-top {
+    gap: vw(24);
+  }
+
+  // Puzzle Games 占一整行通栏banner，AI Apps 在下面跟 Editor's Picks 拼一行、缩小展示
+  .collection-card {
+    height: vw(300);
+    border-radius: vw(24);
+  }
+
+  // 移动端 AI Apps + Editor's Picks 拼一行，省一整张banner的垂直空间
+  .collections-bottom {
+    gap: vw(20);
+  }
+
+  // AI Apps 占约2/3宽度，Editor's Picks占约1/3，跟PC端AI Apps整行通栏比例呼应
+  .collection-ai-small {
+    flex: 2;
+    height: vw(230);
+  }
+
+  .editor-picks-card {
+    flex: 1;
+    height: vw(230);
   }
 
   .box-row-scroll {

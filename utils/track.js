@@ -48,6 +48,8 @@ export function getPageType(pathname) {
     { pattern: /^\/new\/?$/, type: "new" },
     { pattern: /^\/new-release\/?$/, type: "new_release" },
     { pattern: /^\/picks\/?$/, type: "picks" },
+    { pattern: /^\/puzzle-games\/?$/, type: "puzzle_games" },
+    { pattern: /^\/ai-apps\/?$/, type: "ai_apps" },
     { pattern: /^\/newtools\/?$/, type: "newtools" }
   ];
 

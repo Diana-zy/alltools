@@ -20,6 +20,12 @@
         <CustomLink to="/picks/" class="menu-item" @click.native="$emit('close')"
           ><i class="icon-picks"></i>Easy Use and Happy Life</CustomLink
         >
+        <CustomLink to="/puzzle-games/" class="menu-item" @click.native="$emit('close')"
+          ><i class="icon-puzzle"></i>Best Free Puzzle Games</CustomLink
+        >
+        <CustomLink to="/ai-apps/" class="menu-item" @click.native="$emit('close')"
+          ><i class="icon-ai"></i>Most Popular AI Apps</CustomLink
+        >
 
         <div class="menu-group">
           <div class="menu-item" @click="categoriesExpanded = !categoriesExpanded"
@@ -167,6 +173,8 @@ export default {
 .icon-rank,
 .icon-new,
 .icon-picks,
+.icon-puzzle,
+.icon-ai,
 .icon-categories {
   width: 24px;
   height: 24px;
@@ -183,6 +191,12 @@ export default {
 }
 .icon-picks {
   @include icon(24px, 24px, "icon-picks.png");
+}
+.icon-puzzle {
+  @include icon(24px, 24px, "icon-puzzle.png");
+}
+.icon-ai {
+  @include icon(24px, 24px, "icon-ai.png");
 }
 .icon-categories {
   @include icon(24px, 24px, "icon-categories.png");
@@ -239,6 +253,8 @@ export default {
   .icon-rank,
   .icon-new,
   .icon-picks,
+  .icon-puzzle,
+  .icon-ai,
   .icon-categories {
     width: vw(40);
     height: vw(40);
