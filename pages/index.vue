@@ -294,8 +294,9 @@ export default {
       );
       const newReleases = await fetchModule($axios, env.SITE_ID, "new-games", 9);
       const editorsPick = await fetchModule($axios, env.SITE_ID, "home-editors-pick", 9);
-      // 轮播位换成的两个合集入口卡片：跟当年 home-hero 模块一样，运营在 BI 后台单独配一个
-      // 只有 1 条数据的模块，上传 pc_img/mobile_img 当封面图，标题/文案直接画在图里，前端不叠字
+      // 轮播位换成的两个合集入口卡片：复用 puzzle-games-banner/ai-apps-banner 这两个模块
+      // （落地页 /puzzle-games/ /ai-apps/ 的主列表内容也是这两个模块），只取第1条数据的
+      // pc_img/mobile_img 当首页封面图，标题/文案直接画在图里，前端不叠字
       const puzzleGamesBannerConfigured = await fetchModule(
         $axios,
         env.SITE_ID,
@@ -515,8 +516,12 @@ export default {
     border-radius: vw(24);
   }
 
-  // 移动端 AI Apps + Editor's Picks 拼一行，省一整张banner的垂直空间
-  .collections-bottom {
+  // 移动端 AI Apps + Editor's Picks 拼一行，省一整张banner的垂直空间。
+  // 这里必须写 .collections-bottom.pc-hidden（两个class）而不是单独写 .collections-bottom，
+  // 否则跟后面 .pc-hidden{display:block} 选择器优先级相同、按源码顺序后者会覆盖掉
+  // display:flex，导致这一整行（里面都是<a>标签，默认display:inline）高度塌陷成0看不见
+  .collections-bottom.pc-hidden {
+    display: flex;
     gap: vw(20);
   }
 

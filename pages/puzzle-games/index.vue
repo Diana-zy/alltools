@@ -106,10 +106,12 @@ async function fetchAllApksPage1($axios, siteId) {
 export default {
   async asyncData({ $axios, env }) {
     try {
-      // best-puzzle-games 是运营在 BI 后台「站点管理/模块游戏推荐」手动挑选的内容，不是全量
-      // 目录，没有对应的 all_xxx 分页接口可接，所以这里一次性按模块配置的数量全部展示，不做
-      // InfiniteScrollList 翻页（这点跟 category 页的"All Apps/Games"翻页区块不同）。
-      const puzzleGames = await fetchModule($axios, env.SITE_ID, "best-puzzle-games", 60);
+      // puzzle-games-banner 是运营在 BI 后台「站点管理/模块游戏推荐」手动挑选的内容，一个模块
+      // 身兼两用：这里取它的全部条目当落地页主列表展示；首页轮播位的封面图（pc_img/mobile_img）
+      // 就是直接传在这个模块第1条数据上的，不需要单独建模块。不是全量目录，没有对应的
+      // all_xxx 分页接口可接，所以这里一次性按模块配置的数量全部展示，不做 InfiniteScrollList
+      // 翻页（这点跟 category 页的"All Apps/Games"翻页区块不同）。
+      const puzzleGames = await fetchModule($axios, env.SITE_ID, "puzzle-games-banner", 60);
       const bestGames = await fetchModule($axios, env.SITE_ID, "best-games", 10);
       const allApks = await fetchAllApksPage1($axios, env.SITE_ID);
       return { puzzleGames, bestGames, allApks };
