@@ -44,7 +44,7 @@
       </CustomLink>
     </div>
     <Footer />
-    <BackTop />
+    <QuickNav />
   </div>
 </template>
 

@@ -239,7 +239,7 @@
       </div>
     </main>
     <Footer />
-    <BackTop />
+    <QuickNav />
     <!-- <AdLoading /> -->
   </div>
 </template>

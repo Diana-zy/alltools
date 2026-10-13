@@ -13,7 +13,8 @@
 
         <!-- 两个合集的封面图（标题/文案/按钮都是直接画在图里的，不需要前端再叠一层文字），
         PC端 Puzzle Games / AI Apps 两张并排一样大；移动端 Puzzle Games 占一整行，AI Apps 缩小跟
-        Editor's Picks（复用 Top Picks 数据，不需要单独传图）拼一行，省垂直空间 -->
+        Editor's Picks（封面图复用 home-recommended-apks 模块第1条数据的 mobile_img）拼一行，
+        省垂直空间 -->
         <section class="collections">
           <div class="collections-top">
             <CustomLink to="/puzzle-games/" class="collection-card">
@@ -33,7 +34,7 @@
                 format="auto"
                 fit="cover"
                 width="690"
-                height="360"
+                height="300"
                 :src="puzzleBanner.mobile_img || puzzleBanner.icon"
                 alt="Best Free Puzzle Games"
                 fetchpriority="high"
@@ -59,8 +60,8 @@
                 v-if="aiBanner"
                 format="auto"
                 fit="cover"
-                width="440"
-                height="320"
+                width="446"
+                height="230"
                 :src="aiBanner.mobile_img || aiBanner.icon"
                 alt="Most Popular AI Apps"
                 class="collection-img"
@@ -71,8 +72,8 @@
                 v-if="editorPicksBanner"
                 format="auto"
                 fit="cover"
-                width="440"
-                height="320"
+                width="230"
+                height="240"
                 :src="editorPicksBanner.mobile_img || editorPicksBanner.icon"
                 alt="Editor's Picks"
                 class="collection-img"
@@ -252,6 +253,7 @@
       </div>
     </main>
     <Footer />
+    <QuickNav />
     <!-- <AdLoading /> -->
   </div>
 </template>

@@ -231,7 +231,7 @@
       </div>
     </main>
     <Footer />
-    <BackTop />
+    <QuickNav />
   </div>
 </template>
 

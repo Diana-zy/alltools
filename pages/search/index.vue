@@ -82,7 +82,7 @@
       </InfiniteScrollList>
     </main>
     <Footer />
-    <BackTop />
+    <QuickNav />
   </div>
 </template>
 
