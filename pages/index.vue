@@ -106,6 +106,7 @@
                   :key="index"
                   :item="item"
                   :index="index"
+                  :show-rank="false"
                   list-name="new_release"
                   :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
                 />
@@ -114,7 +115,7 @@
           </template>
 
           <template v-if="editorsPick.length > 0">
-            <CustomLink to="/picks/" class="title-h2"
+            <CustomLink to="/picks/" class="title-h2 easy-use-title"
               ><span class="title-text">Easy Use and Happy Life</span
               ><div class="title-see-more"><span>View All</span><i class="icon-arrow" /></div
             ></CustomLink>
@@ -135,6 +136,7 @@
                   :key="index"
                   :item="item"
                   :index="index"
+                  :show-rank="false"
                   list-name="editors_pick"
                   :to="`/${item.type === 1 ? 'game' : 'app'}/${item.path}/`"
                 />
@@ -378,6 +380,12 @@ export default {
   margin-top: 24px;
 }
 
+// Update in last 24 hours 和 Easy Use and Happy Life 这两个模块紧挨着，全局 .title-h2 的
+// margin-top:10px 视觉上太挤，这里单独给 Easy Use 标题加 15px 间距，不改全站公用的 .title-h2
+.easy-use-title {
+  margin-top: 25px;
+}
+
 .rec {
   position: relative;
   width: 100%;
@@ -568,6 +576,10 @@ export default {
 
   .title-h2-first {
     margin-top: 24px;
+  }
+
+  .easy-use-title {
+    margin-top: vw(30);
   }
 
   .box-scroll-hidden {
