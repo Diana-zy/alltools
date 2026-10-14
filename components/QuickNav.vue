@@ -35,8 +35,12 @@
       :class="{ 'quick-nav-btn-open': open }"
       @click="open = !open"
     >
-      <i class="icon-quick-nav"></i>
-      <span class="quick-nav-btn-label">Explore</span>
+      <div class="quick-nav-icon">
+        <span class="quick-nav-icon-bar bar1"></span>
+        <span class="quick-nav-icon-bar bar2"></span>
+        <span class="quick-nav-icon-bar bar3"></span>
+      </div>
+      <span class="quick-nav-btn-label">{{ open ? "Close" : "Explore" }}</span>
     </div>
   </div>
 </template>
@@ -98,8 +102,47 @@ export default {
   }
 }
 
-.icon-quick-nav {
-  @include icon(32px, 32px, "icon-quick-nav.png");
+// 三条横线用真实DOM元素画，不用图片，这样展开面板时能让上下两条转45度拼成X、
+// 中间一条淡出，做出经典的"汉堡图标变关闭图标"效果，比单纯缩小按钮更直观——
+// 尤其对中老年用户，"变成叉号"比"按钮变小了"更容易理解"这是关闭"的意思
+.quick-nav-icon {
+  position: relative;
+  width: 32px;
+  height: 24px;
+}
+
+.quick-nav-icon-bar {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: #ffffff;
+  transition: transform 0.25s ease, opacity 0.2s ease, top 0.25s ease;
+
+  &.bar1 {
+    top: 0;
+  }
+  &.bar2 {
+    top: 10px;
+  }
+  &.bar3 {
+    top: 20px;
+  }
+}
+
+.quick-nav-btn-open .quick-nav-icon-bar {
+  &.bar1 {
+    top: 10px;
+    transform: rotate(45deg);
+  }
+  &.bar2 {
+    opacity: 0;
+  }
+  &.bar3 {
+    top: 10px;
+    transform: rotate(-45deg);
+  }
 }
 
 .quick-nav-btn-label {
@@ -197,9 +240,28 @@ export default {
     width: vw(128);
     height: vw(128);
   }
-  .icon-quick-nav {
+  .quick-nav-icon {
     width: vw(56);
-    height: vw(56);
+    height: vw(42);
+  }
+  .quick-nav-icon-bar {
+    height: vw(7);
+
+    &.bar1 {
+      top: 0;
+    }
+    &.bar2 {
+      top: vw(18);
+    }
+    &.bar3 {
+      top: vw(35);
+    }
+  }
+  .quick-nav-btn-open .quick-nav-icon-bar {
+    &.bar1,
+    &.bar3 {
+      top: vw(18);
+    }
   }
   .quick-nav-btn-label {
     font-size: vw(22);
