@@ -2,27 +2,39 @@
   <div class="quick-nav">
     <transition name="quick-nav-panel-fade">
       <div v-if="open" class="quick-nav-panel">
-        <CustomLink to="/rankings/" class="quick-nav-item" @click.native="open = false">
+        <CustomLink to="/rankings/" class="quick-nav-item" @click.native="handleItemClick('rankings')">
           <i class="icon-rank"></i>
           <span class="quick-nav-label">Top Rankings</span>
           <i class="icon-chevron"></i>
         </CustomLink>
-        <CustomLink to="/new-release/" class="quick-nav-item" @click.native="open = false">
+        <CustomLink
+          to="/new-release/"
+          class="quick-nav-item"
+          @click.native="handleItemClick('new_release')"
+        >
           <i class="icon-new"></i>
           <span class="quick-nav-label">Update in last 24 hours</span>
           <i class="icon-chevron"></i>
         </CustomLink>
-        <CustomLink to="/picks/" class="quick-nav-item" @click.native="open = false">
+        <CustomLink to="/picks/" class="quick-nav-item" @click.native="handleItemClick('picks')">
           <i class="icon-picks"></i>
           <span class="quick-nav-label">Easy Use and Happy Life</span>
           <i class="icon-chevron"></i>
         </CustomLink>
-        <CustomLink to="/puzzle-games/" class="quick-nav-item" @click.native="open = false">
+        <CustomLink
+          to="/puzzle-games/"
+          class="quick-nav-item"
+          @click.native="handleItemClick('puzzle_games')"
+        >
           <i class="icon-puzzle"></i>
           <span class="quick-nav-label">Best Free Puzzle Games</span>
           <i class="icon-chevron"></i>
         </CustomLink>
-        <CustomLink to="/ai-apps/" class="quick-nav-item quick-nav-item-last" @click.native="open = false">
+        <CustomLink
+          to="/ai-apps/"
+          class="quick-nav-item quick-nav-item-last"
+          @click.native="handleItemClick('ai_apps')"
+        >
           <i class="icon-ai"></i>
           <span class="quick-nav-label">Most Popular AI Apps</span>
           <i class="icon-chevron"></i>
@@ -33,7 +45,7 @@
       ref="quickNavBtn"
       class="quick-nav-btn"
       :class="{ 'quick-nav-btn-open': open }"
-      @click="open = !open"
+      @click="handleBtnClick"
     >
       <div class="quick-nav-icon">
         <span class="quick-nav-icon-bar bar1"></span>
@@ -46,6 +58,8 @@
 </template>
 
 <script>
+import { trackEvent, getPageType } from "~/utils/track";
+
 export default {
   data() {
     return {
@@ -59,7 +73,29 @@ export default {
     document.removeEventListener("click", this.handleOutsideClick);
   },
   methods: {
-    // 点击按钮和弹出面板以外的地方，自动收起面板
+    // 点击悬浮按钮本身：根据点之前面板是开是关，分别算成"展开"还是"收起"。
+    // target 在这两种触发里没有具体值，但 GA4 同一个事件的不同触发如果参数字段不一致
+    // （有的带 target 有的不带），按 target 统计这个事件整体会把没带的那部分显示成
+    // (not set)、没法看整体用户数，所以这里也显式传个空字符串占位，跟 click_item 那次
+    // 字段对齐
+    handleBtnClick() {
+      trackEvent("quick_nav_click", {
+        page_type: getPageType(),
+        click_type: this.open ? "click_close" : "click_expand",
+        target: ""
+      });
+      this.open = !this.open;
+    },
+    // 点击面板里的某个入口：导航+收起面板之外，单独再打一条"点了具体哪一项"
+    handleItemClick(target) {
+      trackEvent("quick_nav_click", {
+        page_type: getPageType(),
+        click_type: "click_item",
+        target
+      });
+      this.open = false;
+    },
+    // 点击按钮和弹出面板以外的地方，自动收起面板（不算按钮本身的点击，不打点）
     handleOutsideClick(event) {
       if (this.open && !this.$el.contains(event.target)) {
         this.open = false;
@@ -107,15 +143,15 @@ export default {
 // 尤其对中老年用户，"变成叉号"比"按钮变小了"更容易理解"这是关闭"的意思
 .quick-nav-icon {
   position: relative;
-  width: 32px;
-  height: 24px;
+  width: 24px;
+  height: 18px;
 }
 
 .quick-nav-icon-bar {
   position: absolute;
   left: 0;
   width: 100%;
-  height: 4px;
+  height: 3px;
   border-radius: 2px;
   background: #ffffff;
   transition: transform 0.25s ease, opacity 0.2s ease, top 0.25s ease;
@@ -124,23 +160,23 @@ export default {
     top: 0;
   }
   &.bar2 {
-    top: 10px;
+    top: 7.5px;
   }
   &.bar3 {
-    top: 20px;
+    top: 15px;
   }
 }
 
 .quick-nav-btn-open .quick-nav-icon-bar {
   &.bar1 {
-    top: 10px;
+    top: 7.5px;
     transform: rotate(45deg);
   }
   &.bar2 {
     opacity: 0;
   }
   &.bar3 {
-    top: 10px;
+    top: 7.5px;
     transform: rotate(-45deg);
   }
 }
@@ -241,26 +277,26 @@ export default {
     height: vw(128);
   }
   .quick-nav-icon {
-    width: vw(56);
-    height: vw(42);
+    width: vw(42);
+    height: vw(32);
   }
   .quick-nav-icon-bar {
-    height: vw(7);
+    height: vw(5.5);
 
     &.bar1 {
       top: 0;
     }
     &.bar2 {
-      top: vw(18);
+      top: vw(13);
     }
     &.bar3 {
-      top: vw(35);
+      top: vw(26);
     }
   }
   .quick-nav-btn-open .quick-nav-icon-bar {
     &.bar1,
     &.bar3 {
-      top: vw(18);
+      top: vw(13);
     }
   }
   .quick-nav-btn-label {

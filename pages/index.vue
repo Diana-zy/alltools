@@ -17,7 +17,11 @@
         省垂直空间 -->
         <section class="collections">
           <div class="collections-top">
-            <CustomLink to="/puzzle-games/" class="collection-card">
+            <CustomLink
+              to="/puzzle-games/"
+              class="collection-card"
+              @click.native="trackBannerClick('home_puzzle_banner')"
+            >
               <NuxtImg
                 v-if="puzzleBanner"
                 format="auto"
@@ -41,7 +45,11 @@
                 class="collection-img pc-hidden"
               />
             </CustomLink>
-            <CustomLink to="/ai-apps/" class="collection-card m-hidden">
+            <CustomLink
+              to="/ai-apps/"
+              class="collection-card m-hidden"
+              @click.native="trackBannerClick('home_ai_apps_banner')"
+            >
               <NuxtImg
                 v-if="aiBanner"
                 format="auto"
@@ -55,7 +63,11 @@
             </CustomLink>
           </div>
           <div class="collections-bottom pc-hidden">
-            <CustomLink to="/ai-apps/" class="collection-card collection-ai-small">
+            <CustomLink
+              to="/ai-apps/"
+              class="collection-card collection-ai-small"
+              @click.native="trackBannerClick('home_ai_apps_banner')"
+            >
               <NuxtImg
                 v-if="aiBanner"
                 format="auto"
@@ -67,7 +79,11 @@
                 class="collection-img"
               />
             </CustomLink>
-            <CustomLink to="/rankings/?tab=picks" class="collection-card editor-picks-card">
+            <CustomLink
+              to="/rankings/?tab=picks"
+              class="collection-card editor-picks-card"
+              @click.native="trackBannerClick('home_editors_picks_banner')"
+            >
               <NuxtImg
                 v-if="editorPicksBanner"
                 format="auto"
@@ -364,6 +380,16 @@ export default {
     // 第一条数据的封面图，不用额外建模块
     editorPicksBanner() {
       return this.recommendedApksConfigured[0] || null;
+    }
+  },
+  methods: {
+    // 轮播位换成的三张入口大图直接写在模板里，没有走 ContentItemRow 这类带 home_content_click
+    // 打点的公用组件，之前漏了。这三张图只会出现在首页，page_type 不用再判断，直接写死 home
+    trackBannerClick(listName) {
+      const params = { list_name: listName };
+      trackEvent("card_click", { page_type: "home", ...params });
+      trackEvent("home_content_click", params);
+      trackFacebookStandardEvent("AddToWishlist", params);
     }
   }
 };
