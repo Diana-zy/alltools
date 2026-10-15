@@ -522,21 +522,36 @@
       }
 
       // 两个"浏览满3秒"转化事件，给投放测试用：
-      //   able_non_landing_page_3s：当前页不是本次(当天)落地页，且在这页停留满3秒——
+      //   able_non_landing_page_3s：当前页不是本次落地页，且在这页停留满3秒——
       //   衡量"用户从落地页往下逛了、还待得住"，映射 CompleteRegistration
       //   able_download_page_3s：当前页是下载页，且停留满3秒——不管广告是不是直接落地
       //   到下载页都算，衡量的是"到没到下载页、待没待住"这件事本身，映射 AddToWishlist
-      // 落地页用 1 天 Cookie 记第一次访问的路径当基准，跟 pv_total 是同一套机制。
       // 3 秒计时器从这段脚本真正跑起来那一刻开始算，不是从用户点击链接那一刻算——
       // {{ APP }} 的 SSR 内容这时候已经在 DOM 里了，不是空白页；如果网络慢到这段脚本都
       // 还没执行，计时器也不会提前开始，不会把纯加载时间算进这 3 秒里。到点之后还会看一眼
       // 页面在不在前台（document.visibilityState），不在前台（切了标签页/App）不算。
+      //
+      // 落地页基准：用 sessionStorage（按标签页/浏览会话隔离）记第一次访问的路径，不用跨天
+      // 的 Cookie——Cookie 是按天算的，同一天如果用户先后点了两条不同的广告（两次独立的
+      // 浏览会话），第二条广告的落地页会被第一条广告留下的 Cookie 记录污染。sessionStorage
+      // 天然在每个新的浏览会话里是空的（点一条新广告基本等于开了一次新的浏览会话），不需要
+      // 额外去比较"这次点击跟上次是不是同一条广告"，自动就不会相互污染；代价是如果用户在同一
+      // 个标签页里关掉又用浏览器历史记录回退到这个页面，sessionStorage 还在，这种边界情况不
+      // 影响实际统计口径。
       (function () {
-        let landingPath = getCookie("landing_path");
-        if (!landingPath) {
+        let landingPath;
+        try {
+          landingPath = sessionStorage.getItem("landing_path");
+          if (!landingPath) {
+            landingPath = window.location.pathname;
+            sessionStorage.setItem("landing_path", landingPath);
+          }
+        } catch (e) {
+          // 隐私模式/存储被禁用等情况下 sessionStorage 可能直接抛错，降级成"每页都当落地页"，
+          // 不让后面的逻辑因为取不到基准而报错
           landingPath = window.location.pathname;
-          setCookie("landing_path", landingPath, 1, domain);
         }
+
         const currentPath = window.location.pathname;
         const pageType = getPageTypeForExit();
 
