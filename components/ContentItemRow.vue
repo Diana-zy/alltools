@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { trackEvent, getPageType, trackFacebookStandardEvent } from "~/utils/track";
+import { trackEvent, getPageType } from "~/utils/track";
 
 export default {
   props: {
@@ -65,7 +65,6 @@ export default {
       // 首页单独打一个专用事件，用来算首页的有效点击率（able_home_content_click / able_home_page）
       if (pageType === "home") {
         trackEvent("home_content_click", params);
-        trackFacebookStandardEvent("AddToWishlist", params);
       }
     }
   }

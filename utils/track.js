@@ -21,10 +21,10 @@ export function trackEvent(name, params = {}) {
 // 额外映射到 Facebook 标准事件（跟上面的自定义事件直推是两回事，标准事件是 Facebook
 // 投放优化算法直接认的，自定义事件只是给后台看数据用）：
 //   首页浏览 -> ViewContent
-//   首页内容点击 -> AddToWishlist
 //   全站有效内容点击 -> AddToCart
 //   详情页下载按钮点击 -> InitiateCheckout
 //   点击插页广告 -> Purchase（这个在 app.html 里单独直接调 fbq，不走这个函数）
+//   AddToWishlist 暂未使用，已释放出来待分配给新的转化事件
 export function trackFacebookStandardEvent(eventName, params = {}) {
   if (typeof window === "undefined" || typeof window.fbq !== "function") return;
   window.fbq("track", eventName, params);

@@ -389,7 +389,6 @@ export default {
       const params = { list_name: listName };
       trackEvent("card_click", { page_type: "home", ...params });
       trackEvent("home_content_click", params);
-      trackFacebookStandardEvent("AddToWishlist", params);
     }
   }
 };
