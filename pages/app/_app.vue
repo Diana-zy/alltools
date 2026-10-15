@@ -64,7 +64,7 @@
           :to="`/download/${currentApp.path}/`"
           @pointerdown.native="trackDownloadClick('primary')"
         >
-          <i class="icon-download-cta"></i>{{ isIOSDevice ? "Download Now" : "Download Latest APK" }}
+          <i class="icon-download-cta"></i>Download Now
         </CustomLink>
 
         <!-- <section>
@@ -245,7 +245,7 @@
 </template>
 <script>
 import { directive } from "vue-awesome-swiper";
-import { shuffleArray, isIOS } from "~/utils/utils";
+import { shuffleArray } from "~/utils/utils";
 import { trackEvent, trackFacebookStandardEvent } from "~/utils/track";
 import "swiper/css/swiper.min.css";
 
@@ -304,9 +304,6 @@ export default {
   },
   data() {
     return {
-      // SSR 阶段没有 navigator，先默认 false（显示"Download Latest APK"），客户端
-      // mounted 后如果是 iOS 再改成 true，换成通用的"Download Now"文案
-      isIOSDevice: false,
       swiperOption: {
         slidesPerView: "auto",
         loop: true,
@@ -326,7 +323,6 @@ export default {
     };
   },
   mounted() {
-    this.isIOSDevice = isIOS();
     trackEvent("detail_page", {
       page_type: "app_detail",
       item_id: this.currentApp.path,
