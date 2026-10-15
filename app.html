@@ -678,9 +678,9 @@
       window.addEventListener("pagehide", handlePageUnload);
       // beforeunload/pagehide 兜底之外再加一条独立检测路径：新开标签页时当前页根本不会
       // unload（上面两个事件压根不会触发），iOS 上即使是当前页跳转 beforeunload 也可能不
-      // 触发。用 blur 记录"焦点进了插页广告 iframe"这个待确认状态，页面变成 hidden 时如果
-      // 待确认状态还在，就判定为点击穿插触发的离开，复用 handlePageUnload 统一上报（内部
-      // isUnloaded 去重，不会跟 beforeunload/pagehide 重复上报）。
+      // 触发。用 pointerdown 记录"按在插页广告容器上"这个待确认状态，页面变成 hidden 时
+      // 如果待确认状态还在，就判定为点击穿插触发的离开，复用 handlePageUnload 统一上报
+      // （内部 isUnloaded 去重，不会跟 beforeunload/pagehide 重复上报）。
       window.__pendingVignetteClick = false;
       // 真机实测发现：单纯切换浏览器标签页（没点广告）也会被误判成"点击穿插广告"——
       // 原因是不少富媒体/视频广告的 iframe 加载完会自动抢一下焦点（方便响应键盘控制），
@@ -690,7 +690,6 @@
       // 这是用户动作本身触发的原始事件：真正按在插页广告容器上时，这次按下会被解析到
       // 插页广告自己的 <ins data-vignette-loaded> 容器（跨域 iframe 内部真正的 click
       // 事件到不了这个文档，但 pointerdown 命中的是容器这个盒子本身，这里能看到）。
-      // blur 不再负责"武装"这个状态，只负责确认/作废。
       document.addEventListener(
         "pointerdown",
         (event) => {
@@ -700,31 +699,16 @@
         },
         true
       );
-      // iOS 的焦点模型跟 Android/桌面浏览器不完全一样：简单点一下 iframe 里的非表单控件
-      // 内容（比如插页广告的图片/视频），不一定会像 Android 那样把 document.activeElement
-      // 真的切换进那个 iframe。下面 blur 里"焦点没落在广告容器就作废"这步二次确认，用的
-      // 正是 activeElement，在 iOS 上这个检查本身的可靠性没有把握——这套改动目前只在安卓
-      // 真机验证过，iOS 没法在上线前单独测试，为了不让这层没把握的二次确认在 iOS 上误伤
-      // 真实点击（把真实的点击误判成没点、导致转化漏报，比多算更难发现、代价更大），iOS
-      // 上跳过这一步，只靠 pointerdown 武装的结果，不做基于 activeElement 的二次确认。
-      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-      window.addEventListener("blur", () => {
-        if (isIOS) {
-          return;
-        }
-        // 插页广告内部可能是多层嵌套 iframe，不管嵌套多深、iframe 叫什么名字，只要判断
-        // "聚焦的元素是不是在插页广告自己的 <ins data-vignette-loaded> 容器里面"就行——
-        // 这个选择器已经用来定位 C_AL 了，确认是准的。这里只做确认：如果按下时武装过、
-        // 但焦点最终没有落在广告容器里（比如按下后划走取消了），就作废；武装过且焦点确实
-        // 在广告容器里，维持武装状态不变——不在这里重新武装
-        if (!window.__pendingVignetteClick) {
-          return;
-        }
-        const activeElement = document.activeElement;
-        if (!(activeElement && activeElement.closest('ins[data-vignette-loaded="true"]'))) {
-          window.__pendingVignetteClick = false;
-        }
-      });
+      // 原来这里还有一步基于 blur + document.activeElement 的二次确认（武装后，如果焦点
+      // 最终没落在广告容器里就作废），现在去掉了——同标签页跳转这条路径下，blur 和页面
+      // 卸载几乎是同时发生的，document.activeElement 在卸载过程中随时可能已经被重置回
+      // body/null，不代表用户真的没点中；这一步会在用户确实点了广告、页面正在离开的
+      // 节骨眼上把刚武装好的状态错误清空，导致 handlePageUnload 读到 false，真实点击完全
+      // 报不上来（这正是同标签页跳转点击穿插广告零上报的根因）。这步二次确认原本是为了
+      // 防"按下去又划走取消了"这种情况，但这种情况已经有别的机制兜底：按下去没点成，用户
+      // 后续只要点了页面别的地方，下面"点别处就取消待确认"的监听会清空它；就算用户什么
+      // 都没点直接又按了一次别的地方，pointerdown 监听也会用这次按下的目标重新判定。去掉
+      // 这步之后 iOS 和其他平台用的是完全一样的逻辑，不用再单独区分。
       // 顶层页面发生点击，且落点不在插页广告容器上，说明用户没有跟着广告走，取消待确认
       // 状态。这里特意不用 focus 做取消信号——实测 iOS 上点真实广告跳转时，focus 会抢在
       // visibilitychange 变 hidden 之前触发，会把刚设置好的待确认状态提前误清空，导致
@@ -748,7 +732,12 @@
         },
         true
       );
-      window.addEventListener("visibilitychange", () => {
+      // 注意：visibilitychange 只在 document 上触发，且不会冒泡——挂在 window 上收不到
+      // 这个事件（跟 DOMContentLoaded 一样，必须挂在 document 上），之前这里错误地挂在
+      // window 上，导致新开标签页这条路径从一开始就没生效过。插页广告点击后多数情况下是
+      // 打开新标签页（当前页面本身不会 unload），这条路径失效基本等于点击穿插广告这个
+      // 事件完全报不上来，这是这次零上报问题更可能的根因。
+      document.addEventListener("visibilitychange", () => {
         if (document.visibilityState === "hidden" && window.__pendingVignetteClick) {
           window.__pendingVignetteClick = false;
           // 直接调用 reportInterstitialClickExit，不走 handlePageUnload——新开标签页时
