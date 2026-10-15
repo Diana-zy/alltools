@@ -264,6 +264,33 @@
         });
         googletag.enableServices();
       });
+
+      // "看了几个页内广告"转化事件：用 GPT 自带的 impressionViewable（Google 按行业
+      // Active View 标准判定的真实可见展示，不是广告位滚动进视口就算，比上面 AdmSlot.vue
+      // 里那个用来触发广告加载的 IntersectionObserver 准确得多）。按本次访问累计，去重
+      // 统计有几个不同的页内广告位真正曝光过，达到 2 个时打一次事件，只算 AdmSlot.vue
+      // 渲染的页内广告（容器带 .adm-slot class），插页/锚定/激励广告不是同一类位置，
+      // 不计入。
+      window.__viewedAdSlots = window.__viewedAdSlots || new Set();
+      window.__adViewed2Fired = false;
+      googletag.cmd.push(function () {
+        googletag.pubads().addEventListener("impressionViewable", function (event) {
+          const slotId = event.slot.getSlotElementId();
+          const element = document.getElementById(slotId);
+          if (!element || !element.closest(".adm-slot")) {
+            return;
+          }
+          window.__viewedAdSlots.add(slotId);
+          if (!window.__adViewed2Fired && window.__viewedAdSlots.size >= 2) {
+            window.__adViewed2Fired = true;
+            window.pushAbleEvent("page_ad_viewed_2", {
+              ad_count: window.__viewedAdSlots.size
+            });
+            // 不再映射 Facebook 标准事件（AddToWishlist 已释放给别的转化事件用），
+            // 这个事件只保留 GA4/GTM 这条，当报表观测指标用
+          }
+        });
+      });
     </script>
 
     <!-- Google tag (gtag.js) -->
@@ -493,6 +520,46 @@
         if (/^\/download\/.+/.test(path)) return "download";
         return path.replaceAll("/", "") || "unknown";
       }
+
+      // 两个"浏览满3秒"转化事件，给投放测试用：
+      //   able_non_landing_page_3s：当前页不是本次(当天)落地页，且在这页停留满3秒——
+      //   衡量"用户从落地页往下逛了、还待得住"，映射 CompleteRegistration
+      //   able_download_page_3s：当前页是下载页，且停留满3秒——不管广告是不是直接落地
+      //   到下载页都算，衡量的是"到没到下载页、待没待住"这件事本身，映射 AddToWishlist
+      // 落地页用 1 天 Cookie 记第一次访问的路径当基准，跟 pv_total 是同一套机制。
+      // 3 秒计时器从这段脚本真正跑起来那一刻开始算，不是从用户点击链接那一刻算——
+      // {{ APP }} 的 SSR 内容这时候已经在 DOM 里了，不是空白页；如果网络慢到这段脚本都
+      // 还没执行，计时器也不会提前开始，不会把纯加载时间算进这 3 秒里。到点之后还会看一眼
+      // 页面在不在前台（document.visibilityState），不在前台（切了标签页/App）不算。
+      (function () {
+        let landingPath = getCookie("landing_path");
+        if (!landingPath) {
+          landingPath = window.location.pathname;
+          setCookie("landing_path", landingPath, 1, domain);
+        }
+        const currentPath = window.location.pathname;
+        const pageType = getPageTypeForExit();
+
+        if (currentPath !== landingPath) {
+          setTimeout(() => {
+            if (document.visibilityState !== "visible") return;
+            window.pushAbleEvent("non_landing_page_3s", { page_type: pageType });
+            if (typeof window.fbq === "function") {
+              window.fbq("track", "CompleteRegistration");
+            }
+          }, 3000);
+        }
+
+        if (pageType === "download") {
+          setTimeout(() => {
+            if (document.visibilityState !== "visible") return;
+            window.pushAbleEvent("download_page_3s", { page_type: pageType });
+            if (typeof window.fbq === "function") {
+              window.fbq("track", "AddToWishlist");
+            }
+          }, 3000);
+        }
+      })();
       // 统计口径：有效进入站点后，不到 3 秒就"离开网站"才算跳出——点站内链接切换到本站
       // 别的页面不算（CustomLink 点击时会把 __internalNavClick 置为 true），点浏览器
       // 前进/后退按钮离开的也不算；点广告走的、关标签页/换地址走的、点下载页跳到
@@ -576,21 +643,47 @@
       // 待确认状态还在，就判定为点击穿插触发的离开，复用 handlePageUnload 统一上报（内部
       // isUnloaded 去重，不会跟 beforeunload/pagehide 重复上报）。
       window.__pendingVignetteClick = false;
+      // 真机实测发现：单纯切换浏览器标签页（没点广告）也会被误判成"点击穿插广告"——
+      // 原因是不少富媒体/视频广告的 iframe 加载完会自动抢一下焦点（方便响应键盘控制），
+      // 这时候 activeElement 已经落在广告容器里了，跟用户有没有真的点过它没关系。单纯
+      // 靠 blur 时 activeElement 在哪推断，分不清"自动抢的焦点"和"用户按下广告产生的
+      // 焦点转移"。改成以 pointerdown 捕获阶段的目标元素作为唯一的"武装"信号来源——
+      // 这是用户动作本身触发的原始事件：真正按在插页广告容器上时，这次按下会被解析到
+      // 插页广告自己的 <ins data-vignette-loaded> 容器（跨域 iframe 内部真正的 click
+      // 事件到不了这个文档，但 pointerdown 命中的是容器这个盒子本身，这里能看到）。
+      // blur 不再负责"武装"这个状态，只负责确认/作废。
+      document.addEventListener(
+        "pointerdown",
+        (event) => {
+          window.__pendingVignetteClick = !!(
+            event.target && event.target.closest('ins[data-vignette-loaded="true"]')
+          );
+        },
+        true
+      );
+      // iOS 的焦点模型跟 Android/桌面浏览器不完全一样：简单点一下 iframe 里的非表单控件
+      // 内容（比如插页广告的图片/视频），不一定会像 Android 那样把 document.activeElement
+      // 真的切换进那个 iframe。下面 blur 里"焦点没落在广告容器就作废"这步二次确认，用的
+      // 正是 activeElement，在 iOS 上这个检查本身的可靠性没有把握——这套改动目前只在安卓
+      // 真机验证过，iOS 没法在上线前单独测试，为了不让这层没把握的二次确认在 iOS 上误伤
+      // 真实点击（把真实的点击误判成没点、导致转化漏报，比多算更难发现、代价更大），iOS
+      // 上跳过这一步，只靠 pointerdown 武装的结果，不做基于 activeElement 的二次确认。
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
       window.addEventListener("blur", () => {
-        // 每次新的 blur 先无条件作废上一次待确认状态，焦点已经转移到别的目标了
-        window.__pendingVignetteClick = false;
-        // 注意：这里故意不再判断 window.clickOpen===1——新开标签页跳转广告主落地页时，
-        // Google 的插页广告会在用户点击跳转的几乎同一时刻就发出 adClosed 消息（下面的
-        // message 监听会把 clickOpen 清成 0），这个消息经常抢在 blur 前面先触发，导致这里
-        // 一开始的 clickOpen 判断总是失败、检测形同虚设。改成只靠下面 activeElement 落在插页
-        // 广告自己的容器里这一个信号就够了，足够精确，不会被页面其他广告位误触发
+        if (isIOS) {
+          return;
+        }
         // 插页广告内部可能是多层嵌套 iframe，不管嵌套多深、iframe 叫什么名字，只要判断
         // "聚焦的元素是不是在插页广告自己的 <ins data-vignette-loaded> 容器里面"就行——
-        // 这个选择器已经用来定位 C_AL 了，确认是准的，比猜 iframe 的 name/src 精确得多，
-        // 也不会被页面上其他广告位的 iframe 误触发
+        // 这个选择器已经用来定位 C_AL 了，确认是准的。这里只做确认：如果按下时武装过、
+        // 但焦点最终没有落在广告容器里（比如按下后划走取消了），就作废；武装过且焦点确实
+        // 在广告容器里，维持武装状态不变——不在这里重新武装
+        if (!window.__pendingVignetteClick) {
+          return;
+        }
         const activeElement = document.activeElement;
-        if (activeElement && activeElement.closest('ins[data-vignette-loaded="true"]')) {
-          window.__pendingVignetteClick = true;
+        if (!(activeElement && activeElement.closest('ins[data-vignette-loaded="true"]'))) {
+          window.__pendingVignetteClick = false;
         }
       });
       // 顶层页面发生任何点击，说明用户没有跟着广告走（插页广告内容在跨域 iframe 里，真正
