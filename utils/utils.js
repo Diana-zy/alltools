@@ -140,3 +140,12 @@ export function shuffleArray(array) {
   }
   return array;
 }
+
+// 判断当前访问设备是不是 iOS：详情页/下载页顶部主按钮文案写死的是"Download Latest APK"，
+// APK 是安卓专属的文件格式，iOS 设备看到这个文案会以为跟自己设备不匹配——iOS 上这两个主
+// 按钮改显示通用的"Download Now"，不提 APK 字样；下载页下面那个真正跳 APKPure 直链的
+// "Download APK Now"按钮本身没问题（实测过点击/下载请求都正常，不报错），不用改
+export function isIOS() {
+  if (typeof navigator === "undefined") return false;
+  return /iPad|iPhone|iPod/.test(navigator.userAgent);
+}
