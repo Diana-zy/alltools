@@ -343,9 +343,11 @@ export default {
       };
       trackEvent("download_click", params);
       trackFacebookStandardEvent("InitiateCheckout", params);
-      // 详情页下载按钮也算"详情页内容点击"的一种，额外叠加映射 CompleteRegistration，
-      // 不替换上面的 InitiateCheckout
-      trackFacebookStandardEvent("CompleteRegistration", params);
+      // 不在这里重复打 CompleteRegistration：这个按钮本身是个 CustomLink（见上面模板），
+      // CustomLink.vue 自己的 handleClick 已经会在 page_type 为 app_detail 时打一次
+      // CompleteRegistration 了——@pointerdown.native 和 CustomLink 内部的 @pointerdown
+      // 是绑在同一个元素同一个事件上的两个独立监听器，点一次两个都会触发，这里再打一次
+      // 会导致同一次点击 CompleteRegistration 上报两次（曾经的真实 bug，已修正）
     }
   }
 };
