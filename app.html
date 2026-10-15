@@ -539,10 +539,20 @@
         if (window.isUnloaded) {
           return;
         }
-        if (1 === window.clickOpen) {
-          // 点击穿插广告：插页广告内容在跨域 iframe 里，GTM 的自动链接点击监测看不到
-          // iframe 内部的点击，所以这里不依赖 gtm.linkClick，只要广告正在展示
-          // （clickOpen===1）、页面这时候要离开了，就判定为点击穿插触发的跳转
+        if (window.__pendingVignetteClick) {
+          // 点击穿插广告（同标签页跳转）：插页广告内容在跨域 iframe 里，GTM 的自动链接
+          // 点击监测看不到 iframe 内部的点击，所以这里不依赖 gtm.linkClick。
+          // 原来这里判断的是 window.clickOpen===1（广告是否正在展示），但这个条件太宽——
+          // 广告展示期间，不管用户是不是真点了广告，任何原因导致的离开（按返回键、关标签页、
+          // 换地址栏）都会被一律判定成"点击穿插"，造成大量误报（参考 worldoinfo 对 AdSense
+          // AFS 广告的判断方式：看离开那一刻焦点是否真的落在广告元素上，而不是看广告是否
+          // 还开着）。改成复用下面 blur 监听里维护的 window.__pendingVignetteClick——
+          // 这个标志位只在离开前最后一次 blur 时、焦点确实落在插页广告自己的容器里才会置
+          // true，能排除"广告开着但没点它、只是离开了"这种误判，判断依据从"广告状态"变成
+          // "焦点去向"，更接近真实点击。也不再依赖 window.clickOpen：它可能在 adClosed
+          // 消息里被提前清零（见下面 blur 监听的注释），同标签页这条路径和新开标签页那条
+          // 路径现在共用同一个信号、同一套排除逻辑
+          window.__pendingVignetteClick = false;
           reportInterstitialClickExit();
           return;
         }
@@ -597,10 +607,10 @@
       window.addEventListener("visibilitychange", () => {
         if (document.visibilityState === "hidden" && window.__pendingVignetteClick) {
           window.__pendingVignetteClick = false;
-          // 注意：这里直接调用 reportInterstitialClickExit，不走 handlePageUnload——
-          // handlePageUnload 内部还会再判断一次 window.clickOpen===1，但新开标签页时
-          // clickOpen 可能已经被上面的 adClosed 消息提前清成 0，这里的 activeElement
-          // 信号已经足够确认是点击广告导致的离开，不需要再依赖这个随时可能被提前清零的旗语
+          // 直接调用 reportInterstitialClickExit，不走 handlePageUnload——新开标签页时
+          // beforeunload/pagehide 根本不会触发，handlePageUnload 不会被调用到，这里必须
+          // 独立上报。（handlePageUnload 现在也是靠 __pendingVignetteClick 判断，两条路径
+          // 用的是同一套信号，只是触发时机不同：一个靠页面卸载事件，一个靠 visibilitychange）
           reportInterstitialClickExit();
         }
       });
