@@ -594,8 +594,16 @@ export default {
   .screenshots .swiper-bg {
     padding: 0 vw(46);
   }
+  // 基础规则给 .swiper-slide 和 .img 的高度都加了 !important，覆盖也必须带 !important
+  // 才能生效（原来这里写的是跟基础规则一样的 250px，没加 !important 也"生效"了，只是
+  // 因为数值刚好相同、其实从没真正覆盖过，现在要改小就必须带上）
+  .screenshots .swiper-slide {
+    height: 180px !important;
+    margin-right: 8px;
+  }
   .screenshots .swiper-slide .img {
-    height: 250px;
+    height: 180px !important;
+    max-height: 180px !important;
     border-radius: vw(24);
   }
   .app-header {
