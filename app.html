@@ -620,6 +620,34 @@
       window.addEventListener("beforeunload", reportExitIfNeeded);
       window.addEventListener("pagehide", reportExitIfNeeded);
 
+      // 整站维度的跳出：上面 3s_exit 是按页面统计的（不管逛了多久，只看最后那一页停留
+      // 够不够3秒），这个按会话统计，衡量"用户进站的第一个页面（落地页，用上面
+      // able_non_landing_page_3s 那段逻辑已经写好的 sessionStorage landing_path 判断），
+      // 不到3秒就直接走了，压根没有往下逛"——只在当前页就是本次会话落地页的情况下才可能
+      // 触发，逛到别的页面之后再走不算整站跳出。排除条件跟 3s_exit 一样：点站内链接/
+      // 前进后退不算，点广告/下载按钮离开域名/关标签页/换地址栏都算。
+      let siteExitReported = false;
+      function reportSiteExitIfNeeded() {
+        if (siteExitReported) return;
+        let landingPath = window.location.pathname;
+        try {
+          landingPath = sessionStorage.getItem("landing_path") || landingPath;
+        } catch (e) {
+          // 取不到就当自己是落地页，宁可多报不漏报
+        }
+        if (
+          window.location.pathname === landingPath &&
+          performance.now() - pageLoadTime < 3000 &&
+          window.__internalNavClick !== true &&
+          window.__viaBackForward !== true
+        ) {
+          siteExitReported = true;
+          window.pushAbleEvent("site_3s_exit", { page_type: getPageTypeForExit() });
+        }
+      }
+      window.addEventListener("beforeunload", reportSiteExitIfNeeded);
+      window.addEventListener("pagehide", reportSiteExitIfNeeded);
+
       // 初始化标志变量
       window.isUnloaded = false;
       // 点击插页广告导致的离开（同标签跳转 / 新开标签页）共用这一个上报函数，靠 isUnloaded
