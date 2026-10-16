@@ -607,12 +607,12 @@ export default {
   // 规则一样的 250px，没加 !important 也"生效"了，只是因为数值刚好相同、其实从没真正
   // 覆盖过，现在要改小就必须带上）
   .screenshots .swiper-slide {
-    height: 180px !important;
+    height: 210px !important;
     margin-right: 8px;
   }
   .screenshots .swiper-slide .img {
-    height: 180px !important;
-    max-height: 180px !important;
+    height: 210px !important;
+    max-height: 210px !important;
     border-radius: vw(24);
   }
   .app-header {

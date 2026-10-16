@@ -779,12 +779,12 @@ $table-icon-categories: category, os, size, version, updated, downloads, develop
   // 基础规则给 .swiper-slide 和 .img 的高度都加了 !important，覆盖也必须带 !important
   // 才能生效
   .swiper-slide {
-    height: 180px !important;
+    height: 210px !important;
     margin-right: 8px;
   }
   .swiper-slide .img {
-    height: 180px !important;
-    max-height: 180px !important;
+    height: 210px !important;
+    max-height: 210px !important;
     border-radius: vw(24);
   }
   .platform {
