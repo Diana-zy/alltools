@@ -475,8 +475,11 @@ export default {
 }
 // .primary-download 只是滚动到下面的商店按钮，.download-now-btn 直接链到真实下载地址，
 // 是这个页面上第一个"点了就是真下载"的按钮
+// 下边距改成跟下面 Google Play/App Store 之间的 12px 一样，统一三个下载按钮之间的间距，
+// 不再用跟 .primary-download 共用的 24px
 .download-now-btn {
   margin-top: 24px;
+  margin-bottom: 12px;
 }
 .icon-download-cta {
   @include icon(22px, 22px, "icon-download.png");
@@ -702,11 +705,22 @@ $table-icon-categories: category, os, size, version, updated, downloads, develop
   }
   .primary-download,
   .download-now-btn {
-    margin: 0 vw(46) vw(36);
     width: calc(100% - vw(92));
     height: vw(96);
     border-radius: vw(48);
     font-size: vw(28);
+  }
+  .primary-download {
+    margin: 0 vw(46) vw(36);
+  }
+  // 原来跟 .primary-download 共用 margin: 0 vw(46) vw(36)，上边距是 0，紧贴着上面的
+  // 参数表格（.table-content 底部只有 vw(6)，加起来几乎看不出间距）；下边距 vw(36) 又比
+  // 下面 Google Play/App Store 之间的 12px 大很多，三个按钮间距不统一。改成上边距单独给
+  // vw(36)（跟截图、广告位等其他区块间距一致），下边距改成跟 Google Play/App Store 之间
+  // 一样的固定 12px（那两个用的是没有 vw() 换算的固定值，这里也用固定值，不用 vw()，才能
+  // 在任意屏宽下都保持跟它们相等）
+  .download-now-btn {
+    margin: vw(36) vw(46) 12px;
   }
   .icon-download-cta {
     width: vw(36);
