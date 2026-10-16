@@ -60,6 +60,35 @@
           <i class="icon-download-cta"></i>Download Now
         </div>
 
+        <!-- 截图挪到广告位/参数表格前面：截图比干巴巴的参数列表更有说服力，让更吸引人的
+        内容更早出现，有助于提升往下到真实下载按钮的点击率 -->
+        <section v-if="currentSoftware.banner_list.length > 0" class="screenshots">
+          <h2 class="title-h2">Screenshots</h2>
+          <div class="swiper-bg">
+            <div v-swiper:Swiper="swiperOption" class="swiper-box">
+              <div class="swiper-wrapper">
+                <div v-for="(banner, i) in currentSoftware.banner_list" :key="i" class="swiper-slide">
+                  <NuxtImg
+                    format="auto"
+                    fit="contain"
+                    width="580"
+                    height="288"
+                    :src="banner"
+                    :alt="currentSoftware.name"
+                    :loading="i === 0 ? 'eager' : 'lazy'"
+                    class="img"
+                  />
+                </div>
+              </div>
+              <div class="swiper-tool">
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-next"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <adm-slot
           adm-id="download-mid1"
           adm-unit="/23197833490/alltools1/alltools1_detail_1"
@@ -111,33 +140,6 @@
             <div v-if="currentSoftware.price" class="table-row">
               <div class="table-cell"><i class="icon-price"></i>Price</div>
               <div class="table-cell">{{ currentSoftware.price }}</div>
-            </div>
-          </div>
-        </section>
-
-        <section v-if="currentSoftware.banner_list.length > 0" class="screenshots">
-          <h2 class="title-h2">Screenshots</h2>
-          <div class="swiper-bg">
-            <div v-swiper:Swiper="swiperOption" class="swiper-box">
-              <div class="swiper-wrapper">
-                <div v-for="(banner, i) in currentSoftware.banner_list" :key="i" class="swiper-slide">
-                  <NuxtImg
-                    format="auto"
-                    fit="contain"
-                    width="580"
-                    height="288"
-                    :src="banner"
-                    :alt="currentSoftware.name"
-                    :loading="i === 0 ? 'eager' : 'lazy'"
-                    class="img"
-                  />
-                </div>
-              </div>
-              <div class="swiper-tool">
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-pagination"></div>
-                <div class="swiper-button-next"></div>
-              </div>
             </div>
           </div>
         </section>
