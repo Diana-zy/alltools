@@ -669,29 +669,28 @@
       // 监听页面即将卸载事件：beforeunload 在 iOS Safari / 站内 WebView（Facebook 内置
       // 浏览器等）上触发不可靠，跟 able_3s_exit 一样额外加 pagehide 兜底，两个共用同一个
       // 处理函数，靠 isUnloaded 防止同一次离开重复上报两次。
+      // 真机实测确认：真正点击插页广告内容这个动作，从始至终不会在我们自己的 document 上
+      // 产生任何 pointerdown/click 事件（这种全屏插页格式的广告内容，大概率是浏览器原生
+      // 层面渲染的，不是普通能摸到边界的跨域 iframe），之前试过的"用 pointerdown 武装、
+      // click/blur 做二次确认"这条路从设计思路上就走不通——pointerdown 永远不会武装成
+      // true，所以整条链路恒为 false，这也是点击穿插广告彻底零上报的根本原因。
+      // 改回这次会话之前就用过、也确实报过真实数据的办法：不预先"武装"，在真正要离开的
+      // 那一刻直接查 document.activeElement 有没有落在插页广告的 <ins data-vignette-loaded>
+      // 容器里——cross-origin iframe 内部的点击事件虽然摸不到，但浏览器的焦点模型是跨
+      // frame 共享的，点击会让 document.activeElement 切换到对应的 iframe/容器节点，这个
+      // 焦点变化是可靠的。这个判断本身已经能排除"按返回键离开"（返回键不会把焦点移进广告
+      // 容器）；唯一排除不掉的是"富媒体广告自动抢焦点、用户没点就切标签页"这种情况——这个
+      // 目前没有可靠信号能跟真实点击区分开（pointerdown 这条路已经证明走不通），两害相权，
+      // 比起真实点击彻底报不上来，宁可接受这个较小范围的误报风险。
+      function isVignetteFocused() {
+        const activeElement = document.activeElement;
+        return !!(activeElement && activeElement.closest('ins[data-vignette-loaded="true"]'));
+      }
       function handlePageUnload() {
-        // 临时诊断埋点，排查完之后记得删掉
-        window.pushAbleEvent("dbg_unload", {
-          isUnloaded: window.isUnloaded,
-          pending: window.__pendingVignetteClick
-        });
         if (window.isUnloaded) {
           return;
         }
-        if (window.__pendingVignetteClick) {
-          // 点击穿插广告（同标签页跳转）：插页广告内容在跨域 iframe 里，GTM 的自动链接
-          // 点击监测看不到 iframe 内部的点击，所以这里不依赖 gtm.linkClick。
-          // 原来这里判断的是 window.clickOpen===1（广告是否正在展示），但这个条件太宽——
-          // 广告展示期间，不管用户是不是真点了广告，任何原因导致的离开（按返回键、关标签页、
-          // 换地址栏）都会被一律判定成"点击穿插"，造成大量误报（参考 worldoinfo 对 AdSense
-          // AFS 广告的判断方式：看离开那一刻焦点是否真的落在广告元素上，而不是看广告是否
-          // 还开着）。改成复用下面 blur 监听里维护的 window.__pendingVignetteClick——
-          // 这个标志位只在离开前最后一次 blur 时、焦点确实落在插页广告自己的容器里才会置
-          // true，能排除"广告开着但没点它、只是离开了"这种误判，判断依据从"广告状态"变成
-          // "焦点去向"，更接近真实点击。也不再依赖 window.clickOpen：它可能在 adClosed
-          // 消息里被提前清零（见下面 blur 监听的注释），同标签页这条路径和新开标签页那条
-          // 路径现在共用同一个信号、同一套排除逻辑
-          window.__pendingVignetteClick = false;
+        if (isVignetteFocused()) {
           reportInterstitialClickExit();
           return;
         }
@@ -711,92 +710,16 @@
       window.addEventListener("pagehide", handlePageUnload);
       // beforeunload/pagehide 兜底之外再加一条独立检测路径：新开标签页时当前页根本不会
       // unload（上面两个事件压根不会触发），iOS 上即使是当前页跳转 beforeunload 也可能不
-      // 触发。用 pointerdown 记录"按在插页广告容器上"这个待确认状态，页面变成 hidden 时
-      // 如果待确认状态还在，就判定为点击穿插触发的离开，复用 handlePageUnload 统一上报
-      // （内部 isUnloaded 去重，不会跟 beforeunload/pagehide 重复上报）。
-      window.__pendingVignetteClick = false;
-      // 真机实测发现：单纯切换浏览器标签页（没点广告）也会被误判成"点击穿插广告"——
-      // 原因是不少富媒体/视频广告的 iframe 加载完会自动抢一下焦点（方便响应键盘控制），
-      // 这时候 activeElement 已经落在广告容器里了，跟用户有没有真的点过它没关系。单纯
-      // 靠 blur 时 activeElement 在哪推断，分不清"自动抢的焦点"和"用户按下广告产生的
-      // 焦点转移"。改成以 pointerdown 捕获阶段的目标元素作为唯一的"武装"信号来源——
-      // 这是用户动作本身触发的原始事件：真正按在插页广告容器上时，这次按下会被解析到
-      // 插页广告自己的 <ins data-vignette-loaded> 容器（跨域 iframe 内部真正的 click
-      // 事件到不了这个文档，但 pointerdown 命中的是容器这个盒子本身，这里能看到）。
-      document.addEventListener(
-        "pointerdown",
-        (event) => {
-          window.__pendingVignetteClick = !!(
-            event.target && event.target.closest('ins[data-vignette-loaded="true"]')
-          );
-          // 临时诊断埋点，排查完穿插广告点击链路之后记得删掉：把这次 pointerdown 命中的
-          // 目标标签名、以及武装结果原样推到 dataLayer，用来确认"pointerdown 能不能看到
-          // 广告容器"这个假设到底成不成立
-          window.pushAbleEvent("dbg_pointerdown", {
-            target_tag: event.target && event.target.tagName,
-            armed: window.__pendingVignetteClick
-          });
-        },
-        true
-      );
-      // 原来这里还有一步基于 blur + document.activeElement 的二次确认（武装后，如果焦点
-      // 最终没落在广告容器里就作废），现在去掉了——同标签页跳转这条路径下，blur 和页面
-      // 卸载几乎是同时发生的，document.activeElement 在卸载过程中随时可能已经被重置回
-      // body/null，不代表用户真的没点中；这一步会在用户确实点了广告、页面正在离开的
-      // 节骨眼上把刚武装好的状态错误清空，导致 handlePageUnload 读到 false，真实点击完全
-      // 报不上来（这正是同标签页跳转点击穿插广告零上报的根因）。这步二次确认原本是为了
-      // 防"按下去又划走取消了"这种情况，但这种情况已经有别的机制兜底：按下去没点成，用户
-      // 后续只要点了页面别的地方，下面"点别处就取消待确认"的监听会清空它；就算用户什么
-      // 都没点直接又按了一次别的地方，pointerdown 监听也会用这次按下的目标重新判定。去掉
-      // 这步之后 iOS 和其他平台用的是完全一样的逻辑，不用再单独区分。
-      // 顶层页面发生点击，且落点不在插页广告容器上，说明用户没有跟着广告走，取消待确认
-      // 状态。这里特意不用 focus 做取消信号——实测 iOS 上点真实广告跳转时，focus 会抢在
-      // visibilitychange 变 hidden 之前触发，会把刚设置好的待确认状态提前误清空，导致
-      // 真实点击反而漏报。
-      // 注意：点落在插页广告容器上时必须跳过重置——上面 pointerdown 监听的注释已经
-      // 说明，真正按在广告容器上这次按下能被我们自己的 document 看到（target 落在
-      // <ins data-vignette-loaded> 容器上）；既然 pointerdown 能到这里，同一次手势后面
-      // 跟着的 click 按 DOM 的正常时序，大概率也会跟着到同一个 document、同一个 target
-      // 上来，不是只有跨域 iframe 内部的点击才到不了这里。如果这里不加判断一律清空，
-      // 就会在 pointerdown 刚武装完、blur/visibilitychange 还没来得及确认前，被这条
-      // click 监听立刻撤销，导致真实点击插页广告也被误判成"没点"，这正是购物事件
-      // （点击穿插广告）完全零上报的根因（这步推理没有真机复现验证，上线后仍需要
-      // 盯一下穿插点击的真实上报数据确认）。
-      document.addEventListener(
-        "click",
-        (event) => {
-          // 临时诊断埋点，排查完之后记得删掉：不管这次 click 有没有被跳过重置，都推一份
-          // 出来，确认 click 事件到底会不会到达这里、落点是不是在广告容器上
-          window.pushAbleEvent("dbg_click", {
-            target_tag: event.target && event.target.tagName,
-            in_ins: !!(event.target && event.target.closest('ins[data-vignette-loaded="true"]')),
-            pending_before: window.__pendingVignetteClick
-          });
-          if (event.target && event.target.closest('ins[data-vignette-loaded="true"]')) {
-            return;
-          }
-          window.__pendingVignetteClick = false;
-        },
-        true
-      );
-      // 注意：visibilitychange 只在 document 上触发，且不会冒泡——挂在 window 上收不到
-      // 这个事件（跟 DOMContentLoaded 一样，必须挂在 document 上），之前这里错误地挂在
-      // window 上，导致新开标签页这条路径从一开始就没生效过。插页广告点击后多数情况下是
-      // 打开新标签页（当前页面本身不会 unload），这条路径失效基本等于点击穿插广告这个
-      // 事件完全报不上来，这是这次零上报问题更可能的根因。
+      // 触发。注意：visibilitychange 只在 document 上触发，且不会冒泡，必须挂在 document
+      // 上（挂在 window 上收不到这个事件，跟 DOMContentLoaded 一样）。
       document.addEventListener("visibilitychange", () => {
-        // 临时诊断埋点，排查完之后记得删掉：每次可见性变化都推一份出来，确认新开标签页
-        // 时这个事件到底有没有触发、触发时待确认状态是不是还在
-        window.pushAbleEvent("dbg_visibilitychange", {
-          state: document.visibilityState,
-          pending: window.__pendingVignetteClick
-        });
-        if (document.visibilityState === "hidden" && window.__pendingVignetteClick) {
-          window.__pendingVignetteClick = false;
-          // 直接调用 reportInterstitialClickExit，不走 handlePageUnload——新开标签页时
-          // beforeunload/pagehide 根本不会触发，handlePageUnload 不会被调用到，这里必须
-          // 独立上报。（handlePageUnload 现在也是靠 __pendingVignetteClick 判断，两条路径
-          // 用的是同一套信号，只是触发时机不同：一个靠页面卸载事件，一个靠 visibilitychange）
+        const focused = isVignetteFocused();
+        // 临时诊断埋点，排查完之后记得删掉：确认新机制下，标签页切走那一刻 activeElement
+        // 是不是真的落在了广告容器里
+        if (document.visibilityState === "hidden") {
+          window.pushAbleEvent("dbg_visibilitychange2", { focused: focused });
+        }
+        if (document.visibilityState === "hidden" && focused) {
           reportInterstitialClickExit();
         }
       });
@@ -838,6 +761,15 @@
         } catch (e) {
           return;
         }
+        if (vignetteMessageData && "adClosed" === vignetteMessageData.eventType) {
+          // 临时诊断埋点，排查完之后记得删掉：把 adClosed 消息的完整原始内容打出来，
+          // 看看除了现在用到的 eventType/result.status/googMsgType 这三个字段之外，
+          // 还有没有别的字段能说明广告是怎么关闭的（点击跳转关的，还是返回键/关闭按钮
+          // 关的），用来判断能不能靠这个字段排除"按返回键关广告"这种情况
+          window.pushAbleEvent("dbg_adclosed", {
+            raw: JSON.stringify(vignetteMessageData).slice(0, 500)
+          });
+        }
         if (
           vignetteMessageData &&
           "adClosed" === vignetteMessageData.eventType &&
@@ -846,12 +778,6 @@
           "fullscreen" === vignetteMessageData.googMsgType
         ) {
           window.clickOpen = 0;
-          // 注意：这里故意不再清空 window.__pendingVignetteClick——点击插页广告跳转新开
-          // 标签页时，Google 几乎在用户点击的同一时刻就会发出这条 adClosed 消息，经常抢在
-          // blur/visibilitychange 前面先触发，一旦在这里清空待确认状态，新开标签页的点击就
-          // 永远检测不到了（这正是之前反馈"新开标签页点击穿插广告无法上报"的根因）。
-          // __pendingVignetteClick 自己有别的地方负责清空：每次新的 blur 一开始、以及顶层
-          // 文档任意点击时都会重置，不会因为这里不清空而导致误报堆积
           // 关闭穿插广告
           dataLayer.push({ event: "G_AL" });
         }
