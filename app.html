@@ -713,13 +713,7 @@
       // 触发。注意：visibilitychange 只在 document 上触发，且不会冒泡，必须挂在 document
       // 上（挂在 window 上收不到这个事件，跟 DOMContentLoaded 一样）。
       document.addEventListener("visibilitychange", () => {
-        const focused = isVignetteFocused();
-        // 临时诊断埋点，排查完之后记得删掉：确认新机制下，标签页切走那一刻 activeElement
-        // 是不是真的落在了广告容器里
-        if (document.visibilityState === "hidden") {
-          window.pushAbleEvent("dbg_visibilitychange2", { focused: focused });
-        }
-        if (document.visibilityState === "hidden" && focused) {
+        if (document.visibilityState === "hidden" && isVignetteFocused()) {
           reportInterstitialClickExit();
         }
       });
@@ -760,15 +754,6 @@
           vignetteMessageData = JSON.parse(event.data);
         } catch (e) {
           return;
-        }
-        if (vignetteMessageData && "adClosed" === vignetteMessageData.eventType) {
-          // 临时诊断埋点，排查完之后记得删掉：把 adClosed 消息的完整原始内容打出来，
-          // 看看除了现在用到的 eventType/result.status/googMsgType 这三个字段之外，
-          // 还有没有别的字段能说明广告是怎么关闭的（点击跳转关的，还是返回键/关闭按钮
-          // 关的），用来判断能不能靠这个字段排除"按返回键关广告"这种情况
-          window.pushAbleEvent("dbg_adclosed", {
-            raw: JSON.stringify(vignetteMessageData).slice(0, 500)
-          });
         }
         if (
           vignetteMessageData &&
