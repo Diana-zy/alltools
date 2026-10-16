@@ -302,7 +302,12 @@ export default {
           nextEl: ".swiper-button-next",
           prevEl: ".swiper-button-prev"
         }
-      }
+      },
+      // 这次进入下载页，StartTrial 有没有已经报过——衡量的是"这次下载页访问有没有导致
+      // 一次下载意图"，不是"点了几次按钮"，所以同一次页面访问里，不管用户点了几个不同的
+      // 下载按钮，StartTrial 只报一次。整页跳转架构下，每次重新进入这个页面（哪怕是同一个
+      // 下载页）都是全新加载，这个变量自然会重置，不用额外处理
+      startTrialReported: false
     };
   },
   methods: {
@@ -320,7 +325,10 @@ export default {
       // 复用 InitiateCheckout，那个已经专门用来投首页、对应详情页下载按钮点击这条路径了。
       // 原本用的是 SubmitApplication，但广告账户的购物（Sales）目标下不支持选这个转化事件
       // （只支持潜在客户/互动目标），改成购物目标下可选、且站内其他地方没占用的 StartTrial
-      trackFacebookStandardEvent("StartTrial", params);
+      if (!this.startTrialReported) {
+        this.startTrialReported = true;
+        trackFacebookStandardEvent("StartTrial", params);
+      }
     }
   }
 };
