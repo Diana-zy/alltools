@@ -461,6 +461,9 @@ export default {
   font-size: 17px;
   @include center;
   cursor: pointer;
+  // 上面紧挨着的是第一个页内广告位，原来没设上边距，两者贴在一起，容易在想点广告/
+  // 想点下载按钮的时候互相误触，加一点间距分开
+  margin-top: 24px;
   margin-bottom: 24px;
   animation: breathe 1.8s ease-in-out infinite;
 }
@@ -645,7 +648,7 @@ export default {
     }
   }
   .primary-download {
-    margin: 0 vw(46) vw(36);
+    margin: vw(36) vw(46);
     width: calc(100% - vw(92));
     height: vw(96);
     border-radius: vw(48);
