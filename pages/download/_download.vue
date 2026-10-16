@@ -71,8 +71,8 @@
                   <NuxtImg
                     format="auto"
                     fit="contain"
-                    width="580"
-                    height="288"
+                    width="500"
+                    height="250"
                     :src="banner"
                     :alt="currentSoftware.name"
                     :loading="i === 0 ? 'eager' : 'lazy'"
@@ -566,15 +566,15 @@ $table-icon-categories: category, os, size, version, updated, downloads, develop
 .swiper-slide {
   width: auto !important;
   max-width: 80vw !important;
-  height: 288px !important;
+  height: 250px !important;
   overflow: hidden;
   margin-right: 16px;
   .img {
     display: block;
-    height: 288px !important;
+    height: 250px !important;
     width: auto !important;
     max-width: 80vw !important;
-    max-height: 288px !important;
+    max-height: 250px !important;
     object-fit: contain;
     border-radius: 16px;
     border: 1px solid #eef0f3;
