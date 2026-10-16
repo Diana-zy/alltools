@@ -642,6 +642,11 @@
       // 浏览器等）上触发不可靠，跟 able_3s_exit 一样额外加 pagehide 兜底，两个共用同一个
       // 处理函数，靠 isUnloaded 防止同一次离开重复上报两次。
       function handlePageUnload() {
+        // 临时诊断埋点，排查完之后记得删掉
+        window.pushAbleEvent("dbg_unload", {
+          isUnloaded: window.isUnloaded,
+          pending: window.__pendingVignetteClick
+        });
         if (window.isUnloaded) {
           return;
         }
@@ -696,6 +701,13 @@
           window.__pendingVignetteClick = !!(
             event.target && event.target.closest('ins[data-vignette-loaded="true"]')
           );
+          // 临时诊断埋点，排查完穿插广告点击链路之后记得删掉：把这次 pointerdown 命中的
+          // 目标标签名、以及武装结果原样推到 dataLayer，用来确认"pointerdown 能不能看到
+          // 广告容器"这个假设到底成不成立
+          window.pushAbleEvent("dbg_pointerdown", {
+            target_tag: event.target && event.target.tagName,
+            armed: window.__pendingVignetteClick
+          });
         },
         true
       );
@@ -725,6 +737,13 @@
       document.addEventListener(
         "click",
         (event) => {
+          // 临时诊断埋点，排查完之后记得删掉：不管这次 click 有没有被跳过重置，都推一份
+          // 出来，确认 click 事件到底会不会到达这里、落点是不是在广告容器上
+          window.pushAbleEvent("dbg_click", {
+            target_tag: event.target && event.target.tagName,
+            in_ins: !!(event.target && event.target.closest('ins[data-vignette-loaded="true"]')),
+            pending_before: window.__pendingVignetteClick
+          });
           if (event.target && event.target.closest('ins[data-vignette-loaded="true"]')) {
             return;
           }
@@ -738,6 +757,12 @@
       // 打开新标签页（当前页面本身不会 unload），这条路径失效基本等于点击穿插广告这个
       // 事件完全报不上来，这是这次零上报问题更可能的根因。
       document.addEventListener("visibilitychange", () => {
+        // 临时诊断埋点，排查完之后记得删掉：每次可见性变化都推一份出来，确认新开标签页
+        // 时这个事件到底有没有触发、触发时待确认状态是不是还在
+        window.pushAbleEvent("dbg_visibilitychange", {
+          state: document.visibilityState,
+          pending: window.__pendingVignetteClick
+        });
         if (document.visibilityState === "hidden" && window.__pendingVignetteClick) {
           window.__pendingVignetteClick = false;
           // 直接调用 reportInterstitialClickExit，不走 handlePageUnload——新开标签页时
