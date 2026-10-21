@@ -532,9 +532,9 @@ export default {
 }
 .featured-effects-subtitle {
   margin-top: 2px;
-  color: rgba(255, 255, 255, 0.85);
-  font-family: "seb";
-  font-size: 12px;
+  color: rgba(230, 230, 230, 0.75);
+  font-family: "se";
+  font-size: 11px;
   line-height: 1.3;
 }
 
@@ -671,8 +671,9 @@ export default {
     padding: 0 vw(46);
     margin-top: vw(36);
   }
-  .featured-effects {
-    padding: 0 vw(46);
+  .featured-effects-card {
+    margin: 0 vw(46);
+    width: calc(100% - vw(92));
   }
   .app-header .icon {
     width: 100px;

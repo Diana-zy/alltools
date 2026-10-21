@@ -542,9 +542,9 @@ export default {
 }
 .featured-effects-subtitle {
   margin-top: 2px;
-  color: rgba(255, 255, 255, 0.85);
-  font-family: "seb";
-  font-size: 12px;
+  color: rgba(230, 230, 230, 0.75);
+  font-family: "se";
+  font-size: 11px;
   line-height: 1.3;
 }
 
@@ -685,8 +685,9 @@ export default {
   // 这个页面的其他区块（app-header、stats-row 等）都是各自在移动端单独加左右
   // padding，不是靠外层容器统一留边距，这里也要照样加，不然卡片会贴着屏幕两边、
   // 跟页面其他内容的左右边距不一致
-  .featured-effects {
-    padding: 0 vw(46);
+  .featured-effects-card {
+    margin: 0 vw(46);
+    width: calc(100% - vw(92));
   }
   .app-header .icon {
     width: 100px;
