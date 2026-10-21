@@ -513,7 +513,9 @@ export default {
 }
 
 .featured-effects {
-  margin: 24px 0;
+  // 不设上边距，只靠上面 stats-row 自己的 20px 下边距留间距——之前这里也加了 24px
+  // 上边距，两个margin叠在一起导致间距显得太大
+  margin: 0 0 24px;
 }
 .featured-effects-card {
   display: block;
