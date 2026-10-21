@@ -682,6 +682,12 @@ export default {
     padding: 0 vw(46);
     margin-top: vw(36);
   }
+  // 这个页面的其他区块（app-header、stats-row 等）都是各自在移动端单独加左右
+  // padding，不是靠外层容器统一留边距，这里也要照样加，不然卡片会贴着屏幕两边、
+  // 跟页面其他内容的左右边距不一致
+  .featured-effects {
+    padding: 0 vw(46);
+  }
   .app-header .icon {
     width: 100px;
     height: 100px;

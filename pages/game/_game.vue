@@ -671,6 +671,9 @@ export default {
     padding: 0 vw(46);
     margin-top: vw(36);
   }
+  .featured-effects {
+    padding: 0 vw(46);
+  }
   .app-header .icon {
     width: 100px;
     height: 100px;
