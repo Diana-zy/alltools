@@ -414,7 +414,7 @@ export default {
 .header-download-badge {
   display: inline-flex;
   align-items: center;
-  padding: 3px 14px;
+  padding: 6px 12px;
   background: $color2;
   border-radius: 10px;
   color: #ffffff;
@@ -563,9 +563,10 @@ export default {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  // 原来是半透明白色圆圈，照片底色偏亮的时候跟白色箭头混在一起看不清——改成深色，
-  // 不管图片本身是亮是暗，跟白色箭头的对比度都够
-  background: rgba(0, 0, 0, 0.45);
+  // 箭头落在底部渐变遮罩（.featured-effects-scrim）范围内，这片区域本身就已经被
+  // 一层黑色半透明遮罩压暗了，不受原图明暗影响，所以圆圈用白色半透明、箭头用纯白
+  // 就够清楚，不用再跟着原图调整颜色
+  background: rgba(255, 255, 255, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -727,7 +728,7 @@ export default {
   }
   .header-download-badge {
     font-size: vw(22);
-    padding: vw(6) vw(28);
+    padding: vw(12) vw(22);
     border-radius: vw(20);
   }
   .stats-row {
