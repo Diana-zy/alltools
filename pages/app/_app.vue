@@ -18,11 +18,14 @@
           ></NuxtImg>
           <div class="header-main">
             <div class="name">{{ currentApp.name }}</div>
+            <!-- 原来这里是分类标签（点了跳分类页），统一换成下载按钮，点了直接跳
+            下载页，不管有没有加 Featured Effects 卡片都这样；分类信息不再在这里
+            展示 -->
             <CustomLink
-              v-if="currentApp.category_name"
-              class="category-badge"
-              :to="`/category/${currentApp.category_path}/`"
-              >{{ currentApp.category_name }}</CustomLink
+              class="header-download-badge"
+              :to="`/download/${currentApp.path}/`"
+              @pointerdown.native="trackDownloadClick('header')"
+              >Download</CustomLink
             >
           </div>
         </section>
@@ -65,6 +68,7 @@
               <div class="featured-effects-title">{{ featuredEffect.title }}</div>
               <div class="featured-effects-subtitle">{{ featuredEffect.subtitle }}</div>
             </div>
+            <div class="featured-effects-arrow"><i class="icon-chevron-right"></i></div>
           </CustomLink>
         </section>
 
@@ -407,13 +411,14 @@ export default {
   color: $font1;
   margin-bottom: 8px;
 }
-.category-badge {
+.header-download-badge {
   display: inline-flex;
-  padding: 2px 12px;
+  align-items: center;
+  padding: 6px 16px;
   border: 1px solid $color2;
-  border-radius: 12px;
+  border-radius: 14px;
   color: $color2;
-  font-size: 13px;
+  font-size: 15px;
   font-family: "sesb";
 }
 
@@ -521,6 +526,8 @@ export default {
   display: block;
   position: relative;
   width: 100%;
+  // .title-h2 自己的下边距只有 5px，标题和图片贴得太近，单独再加一点
+  margin-top: 10px;
   aspect-ratio: 312 / 181;
   background-size: cover;
   background-position: center;
@@ -548,6 +555,22 @@ export default {
   font-family: "se";
   font-size: 11px;
   line-height: 1.3;
+}
+.featured-effects-arrow {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.icon-chevron-right {
+  @include icon(14px, 14px, "icon-arrow-right.png");
+  filter: brightness(0) invert(1);
 }
 
 .icon-download-cta {
@@ -688,7 +711,7 @@ export default {
   // padding，不是靠外层容器统一留边距，这里也要照样加，不然卡片会贴着屏幕两边、
   // 跟页面其他内容的左右边距不一致
   .featured-effects-card {
-    margin: 0 vw(46);
+    margin: 10px vw(46) 0;
     width: calc(100% - vw(92));
   }
   .app-header .icon {
@@ -700,10 +723,10 @@ export default {
   .header-main .name {
     font-size: 22px;
   }
-  .category-badge {
-    font-size: vw(22);
-    padding: vw(4) vw(20);
-    border-radius: vw(20);
+  .header-download-badge {
+    font-size: vw(30);
+    padding: vw(12) vw(32);
+    border-radius: vw(28);
   }
   .stats-row {
     margin: vw(32) vw(46);
