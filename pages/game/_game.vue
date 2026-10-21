@@ -404,11 +404,11 @@ export default {
 .header-download-badge {
   display: inline-flex;
   align-items: center;
-  padding: 6px 16px;
-  border: 1px solid $color2;
-  border-radius: 14px;
-  color: $color2;
-  font-size: 15px;
+  padding: 3px 14px;
+  background: $color2;
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 12px;
   font-family: "sesb";
 }
 
@@ -553,7 +553,9 @@ export default {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.25);
+  // 原来是半透明白色圆圈，照片底色偏亮的时候跟白色箭头混在一起看不清——改成深色，
+  // 不管图片本身是亮是暗，跟白色箭头的对比度都够
+  background: rgba(0, 0, 0, 0.45);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -710,9 +712,9 @@ export default {
     font-size: 22px;
   }
   .header-download-badge {
-    font-size: vw(30);
-    padding: vw(12) vw(32);
-    border-radius: vw(28);
+    font-size: vw(22);
+    padding: vw(6) vw(28);
+    border-radius: vw(20);
   }
   .stats-row {
     margin: vw(32) vw(46);
