@@ -50,6 +50,24 @@
           ></div>
         </div>
 
+        <!-- 只在测试子域名 apk1.alltools1.com + 配置过图的产品上显示，其他域名/产品完全
+        看不到这个区块，不影响现有跑量数据，见 utils/featuredEffects.js。放在第一个页内
+        广告上面，让用户在被广告"过滤"注意力之前先看到这个区块 -->
+        <section v-if="featuredEffect" class="featured-effects">
+          <h2 class="title-h2">Featured Effects</h2>
+          <CustomLink
+            class="featured-effects-card"
+            :to="`/download/${currentGame.path}/`"
+            :style="{ backgroundImage: `url(${featuredEffect.image})` }"
+            @pointerdown.native="trackDownloadClick('featured_effect')"
+          >
+            <div class="featured-effects-scrim">
+              <div class="featured-effects-title">{{ featuredEffect.title }}</div>
+              <div class="featured-effects-subtitle">{{ featuredEffect.subtitle }}</div>
+            </div>
+          </CustomLink>
+        </section>
+
         <!-- <GoogleAd ad-slot="7045171250" class="ad-width" /> -->
         <adm-slot
           adm-id="detail-mid1"
@@ -214,6 +232,7 @@
 import { directive } from "vue-awesome-swiper";
 import { shuffleArray } from "~/utils/utils";
 import { trackEvent, trackFacebookStandardEvent } from "~/utils/track";
+import { getFeaturedEffect } from "~/utils/featuredEffects";
 import "swiper/css/swiper.min.css";
 
 export default {
@@ -304,7 +323,11 @@ export default {
           nextEl: ".swiper-button-next",
           prevEl: ".swiper-button-prev"
         }
-      }
+      },
+      // 放在 data + mounted 里赋值，不用 computed 直接读 window.location，避免服务端
+      // 渲染/静态生成阶段跟客户端 hydrate 之后结果不一致（hydration mismatch），见
+      // _app.vue 里同样的处理
+      featuredEffect: null
     };
   },
   head() {
@@ -324,6 +347,7 @@ export default {
       content_type: "game_detail",
       content_name: this.currentGame.name
     });
+    this.featuredEffect = getFeaturedEffect(this.currentGame.path);
   },
   methods: {
     trackDownloadClick(buttonType) {
@@ -477,6 +501,43 @@ export default {
     box-shadow: 0 0 0 10px rgba(253, 107, 33, 0);
   }
 }
+
+.featured-effects {
+  margin: 24px 0;
+}
+.featured-effects-card {
+  display: block;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 312 / 181;
+  background-size: cover;
+  background-position: center;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.featured-effects-scrim {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 32px 16px 14px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0));
+}
+.featured-effects-title {
+  color: #ffffff;
+  font-family: "sesb";
+  font-size: 15px;
+  line-height: 1.3;
+}
+.featured-effects-subtitle {
+  margin-top: 2px;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: "seb";
+  font-size: 12px;
+  line-height: 1.3;
+}
+
 .icon-download-cta {
   @include icon(22px, 22px, "icon-download.png");
   margin-right: 10px;
