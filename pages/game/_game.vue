@@ -562,8 +562,15 @@ export default {
   justify-content: center;
 }
 .icon-chevron-right {
-  @include icon(14px, 14px, "icon-arrow-right.png");
-  filter: brightness(0) invert(1);
+  // 原来用图片素材缩小到这么小的尺寸，浏览器缩放会让边缘发虚，看起来不是纯白——
+  // 改成纯 CSS 画的箭头（跟 .icon-verified 那个对勾是同一个手法：两条边框拼成形状再
+  // 旋转），不管多小都是清晰的纯白色，不依赖图片缩放
+  width: 7px;
+  height: 7px;
+  border-top: 2px solid #ffffff;
+  border-right: 2px solid #ffffff;
+  transform: rotate(45deg);
+  margin-left: -2px;
 }
 
 .icon-download-cta {
