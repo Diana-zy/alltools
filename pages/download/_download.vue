@@ -18,11 +18,15 @@
           />
           <div class="header-main">
             <div class="name">{{ currentSoftware.name }}</div>
-            <CustomLink
-              v-if="currentSoftware.category_name"
-              class="category-badge"
-              :to="`/category/${currentSoftware.category_path}/`"
-              >{{ currentSoftware.category_name }}</CustomLink
+            <!-- 跟详情页统一，原来这里是分类标签，也换成下载按钮；这里已经是下载页本身，
+            点了不跳转/不直接下载，滚动到下面真实下载按钮区域，让用户自己选平台 -->
+            <div
+              class="header-download-badge"
+              @click="
+                $refs.storeButtons.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                trackDownloadClick('header');
+              "
+              >Download</div
             >
           </div>
         </section>
@@ -50,15 +54,21 @@
           ></div>
         </div>
 
-        <div
+        <!-- 有 apkpure_url 就直链下载，真实跳转，能多一次插页广告触发机会；没有配置
+        apkpure_url 的产品兜底滑动到下面的下载模块，保证按钮始终有响应 -->
+        <a
           class="primary-download"
+          :href="currentSoftware.apkpure_url"
+          rel="nofollow noopener"
+          @pointerdown="trackDownloadClick('primary')"
           @click="
-            $refs.storeButtons.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            trackDownloadClick('primary');
+            if (!currentSoftware.apkpure_url) {
+              $refs.storeButtons.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
           "
         >
-          <i class="icon-download-cta"></i>Download Now
-        </div>
+          <i class="icon-download-cta"></i>Download APK Now
+        </a>
 
         <!-- 截图挪到广告位/参数表格前面：截图比干巴巴的参数列表更有说服力，让更吸引人的
         内容更早出现，有助于提升往下到真实下载按钮的点击率 -->
@@ -312,6 +322,17 @@ export default {
       startTrialReported: false
     };
   },
+  mounted() {
+    // 跟详情页的 able_detail_page 对应，衡量"真正打开了下载页"的人数（不像
+    // able_download_page_3s 那样要停留满3秒才算），方便跟详情页人数对比，看每一步
+    // 掉了多少人。自定义事件，trackEvent 本身就会直推给 FB（自定义事件，不映射标准
+    // 事件，只是给后台看数据用）
+    trackEvent("download_page", {
+      page_type: "download",
+      item_id: this.currentSoftware.path,
+      item_name: this.currentSoftware.name
+    });
+  },
   methods: {
     trackDownloadClick(buttonType) {
       const params = {
@@ -369,13 +390,14 @@ export default {
   color: $font1;
   margin-bottom: 8px;
 }
-.category-badge {
+.header-download-badge {
   display: inline-flex;
-  padding: 2px 12px;
-  border: 1px solid $color2;
-  border-radius: 12px;
-  color: $color2;
-  font-size: 13px;
+  align-items: center;
+  padding: 6px 12px;
+  background: $color2;
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 12px;
   font-family: "sesb";
 }
 
@@ -473,8 +495,8 @@ export default {
     box-shadow: 0 0 0 10px rgba(253, 107, 33, 0);
   }
 }
-// .primary-download 只是滚动到下面的商店按钮，.download-now-btn 直接链到真实下载地址，
-// 是这个页面上第一个"点了就是真下载"的按钮
+// .primary-download 现在也直链 apkpure_url 真实下载了（没配置才兜底滚动），跟
+// .download-now-btn 是同一类"点了就是真下载"的按钮。
 // 下边距改成跟下面 Google Play/App Store 之间的 12px 一样，统一三个下载按钮之间的间距，
 // 不再用跟 .primary-download 共用的 24px
 .download-now-btn {
@@ -667,9 +689,9 @@ $table-icon-categories: category, os, size, version, updated, downloads, develop
   .header-main .name {
     font-size: 22px;
   }
-  .category-badge {
+  .header-download-badge {
     font-size: vw(22);
-    padding: vw(4) vw(20);
+    padding: vw(12) vw(22);
     border-radius: vw(20);
   }
   .stats-row {

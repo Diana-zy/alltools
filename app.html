@@ -398,8 +398,47 @@
     <!-- End Google Tag Manager (noscript) -->
     {{ APP }}
     <script>
+      // 落地页（用户从广告点进来的第一页，转化关键页）上不请求插页广告——落地页被插页
+      // 广告打断，用户直接离开站点的概率明显更高（尤其是正要点下载相关按钮的那一下），
+      // 落地页上跳过 googletag.display(interstitialSlot)，这个 slot 不激活，从落地页
+      // 往下跳转的第一次导航就不会触发插页广告；等用户已经往下逛了、进了别的页面，
+      // 后续页面才正常请求插页广告。这个实验只在测试域名 apk2.alltools1.com（及其
+      // 子域名）上生效，不影响其他跑量域名的广告收入——跟 Featured Effects 卡片那个
+      // 实验是两回事，apk2 在卡片这块跟 apk1 表现一致（见 utils/featuredEffects.js），
+      // 单独多加了这一条。
+      const AD_TEST_HOSTNAME = "apk2.alltools1.com";
+      const isAdTestHostname =
+        window.location.hostname === AD_TEST_HOSTNAME ||
+        window.location.hostname.endsWith(`.${AD_TEST_HOSTNAME}`);
+      // 用 sessionStorage 判断是不是落地页，口径跟下面 able_non_landing_page_3s 那段
+      // 一致——这里只读不写 landing_path 本身，真正负责写入的逻辑还是在下面那段，这里
+      // 提前读一次不会有副作用：会话刚开始、sessionStorage 里还没有 landing_path 的
+      // 时候，等效于"当前页就是落地页"。
+      // 只跳过"第一次"：不是"落地页上任何一次访问都跳过"——用户从落地页跳走之后，如果
+      // 又用返回键回到了落地页，这时候再跳转，插页广告要正常请求，不能一直跳过。用
+      // landing_ad_skip_used 这个标记记"这次会话跳过插页广告的名额用过没有"，第一次
+      // 在落地页加载时如果名额还没用过，就标记成用过、这一页跳过；名额已经用过，不管
+      // 是不是落地页都正常请求。
+      let isLandingPageForAd = false;
+      if (isAdTestHostname) {
+        try {
+          const storedLandingPath = sessionStorage.getItem("landing_path");
+          const isLandingPage = !storedLandingPath || storedLandingPath === window.location.pathname;
+          const skipAlreadyUsed = sessionStorage.getItem("landing_ad_skip_used") === "1";
+          if (isLandingPage && !skipAlreadyUsed) {
+            isLandingPageForAd = true;
+            sessionStorage.setItem("landing_ad_skip_used", "1");
+          }
+        } catch (e) {
+          // sessionStorage 不可用时没法记"名额用过没有"，没法保证只跳过一次，保守起见
+          // 不跳过，正常请求插页广告，不要让广告收入因为一个无法验证的判断而损失
+          isLandingPageForAd = false;
+        }
+      }
       googletag.cmd.push(() => {
-        googletag.display(interstitialSlot);
+        if (!isLandingPageForAd) {
+          googletag.display(interstitialSlot);
+        }
         googletag.display(anchorSlot);
       });
 
