@@ -63,6 +63,7 @@
           @pointerdown="trackDownloadClick('primary')"
           @click="
             if (!currentSoftware.apkpure_url) {
+              $event.preventDefault();
               $refs.storeButtons.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
           "
