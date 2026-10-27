@@ -53,9 +53,16 @@
           ></div>
         </div>
 
+        <!-- <GoogleAd ad-slot="7534582229" /> -->
+        <adm-slot
+          adm-id="app-mid1"
+          adm-unit="/23197833490/alltools1/alltools1_detail_1"
+          ads-slot="7534582229"
+        />
+
         <!-- 只在测试子域名 apk1.alltools1.com + 配置过图的产品上显示，其他域名/产品完全
         看不到这个区块，不影响现有跑量数据，见 utils/featuredEffects.js。放在第一个页内
-        广告上面，让用户在被广告"过滤"注意力之前先看到这个区块 -->
+        广告下面，保证广告展示率，用户滑到这里才看到卡片 -->
         <section v-if="featuredEffect" class="featured-effects">
           <h2 class="title-h2">Featured Effects</h2>
           <CustomLink
@@ -71,13 +78,6 @@
             <div class="featured-effects-arrow"><i class="icon-chevron-right"></i></div>
           </CustomLink>
         </section>
-
-        <!-- <GoogleAd ad-slot="7534582229" /> -->
-        <adm-slot
-          adm-id="app-mid1"
-          adm-unit="/23197833490/alltools1/alltools1_detail_1"
-          ads-slot="7534582229"
-        />
 
         <!-- Download 按钮放在第一个广告位下面：顶部如果有锚定广告，展开/折叠会把按钮遮住，
         放在广告下面能避免被挡住 -->
