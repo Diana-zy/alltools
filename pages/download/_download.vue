@@ -690,7 +690,7 @@ $table-icon-categories: category, os, size, version, updated, downloads, develop
   justify-content: center;
   margin: 4px 0 20px;
   font-size: 12px;
-  color: rgba($font1, 0.6);
+  color: #2bb673;
   .icon-verified {
     margin-right: 6px;
     flex-shrink: 0;
