@@ -68,11 +68,43 @@
             }
           "
         >
-          <i class="icon-download-cta"></i>Download APK Now
+          <i class="icon-download-cta"></i>Download APK<span v-if="currentSoftware.version"> (v{{ currentSoftware.version }})</span>
         </a>
 
-        <!-- 截图挪到广告位/参数表格前面：截图比干巴巴的参数列表更有说服力，让更吸引人的
-        内容更早出现，有助于提升往下到真实下载按钮的点击率 -->
+        <!-- Google Play / App Store 入口从页面下方挪到这里，跟上面的 APK 直链按钮放在一起，
+        三个下载入口在首屏就能一次性看完，不用划到页面下半部分才看到；下面不再重复一份 -->
+        <div ref="storeButtons" class="platform">
+          <div class="android" :class="{ 'is-disabled': !currentSoftware.android_web_url }">
+            <i class="icon-android"></i>Get it on Google Play
+            <a
+              v-if="currentSoftware.android_web_url"
+              :href="currentSoftware.android_web_url"
+              rel="noopener"
+              @pointerdown="trackDownloadClick('google_play')"
+            ></a>
+          </div>
+
+          <div class="ios" :class="{ 'is-disabled': !currentSoftware.ios_web_url }">
+            <i class="icon-ios"></i>App Store
+            <a
+              v-if="currentSoftware.ios_web_url"
+              :href="currentSoftware.ios_web_url"
+              rel="noopener"
+              @pointerdown="trackDownloadClick('app_store')"
+            ></a>
+          </div>
+        </div>
+
+        <div class="verified-tip"><i class="icon-verified"></i>Verified safe by Google Play Protect</div>
+
+        <adm-slot
+          adm-id="download-mid1"
+          adm-unit="/23197833490/alltools1/alltools1_detail_1"
+          ads-slot="3297497936"
+          class="ad-width"
+        />
+
+        <!-- 截图和参数表格合并成一块，紧跟在第一个广告位后面 -->
         <section v-if="currentSoftware.banner_list.length > 0" class="screenshots">
           <h2 class="title-h2">Screenshots</h2>
           <div class="swiper-bg">
@@ -99,13 +131,6 @@
             </div>
           </div>
         </section>
-
-        <adm-slot
-          adm-id="download-mid1"
-          adm-unit="/23197833490/alltools1/alltools1_detail_1"
-          ads-slot="3297497936"
-          class="ad-width"
-        />
 
         <section class="table-content">
           <div class="table-info">
@@ -155,37 +180,6 @@
           </div>
         </section>
 
-        <a
-          v-if="currentSoftware.apkpure_url"
-          class="download-now-btn"
-          :href="currentSoftware.apkpure_url"
-          rel="nofollow noopener"
-          @pointerdown="trackDownloadClick('apkpure')"
-        >
-          <i class="icon-download-cta"></i>Download APK Now
-        </a>
-
-        <div ref="storeButtons" class="platform">
-          <div class="android" :class="{ 'is-disabled': !currentSoftware.android_web_url }">
-            <i class="icon-android"></i>Google Play
-            <a
-              v-if="currentSoftware.android_web_url"
-              :href="currentSoftware.android_web_url"
-              rel="noopener"
-              @pointerdown="trackDownloadClick('google_play')"
-            ></a>
-          </div>
-
-          <div class="ios" :class="{ 'is-disabled': !currentSoftware.ios_web_url }">
-            <i class="icon-ios"></i>App Store
-            <a
-              v-if="currentSoftware.ios_web_url"
-              :href="currentSoftware.ios_web_url"
-              rel="noopener"
-              @pointerdown="trackDownloadClick('app_store')"
-            ></a>
-          </div>
-        </div>
         <!-- <GoogleAd ad-slot="2955836717" class="ad-width" /> -->
         <adm-slot
           adm-id="download-mid2"
@@ -193,6 +187,18 @@
           ads-slot="2955836717"
           class="ad-width"
         />
+
+        <section class="faq">
+          <h2 class="title-h2">Frequently asked questions</h2>
+          <details v-for="(item, index) in faqList" :key="index" class="faq-item">
+            <summary class="faq-question">
+              <span class="faq-number">{{ String(index + 1).padStart(2, "0") }}</span>
+              <span class="faq-text">{{ item.q }}</span>
+              <i class="faq-toggle"></i>
+            </summary>
+            <div class="faq-answer">{{ item.a }}</div>
+          </details>
+        </section>
 
         <h2 class="title-h2">Related {{ isApp ? "Apps" : "Games" }}</h2>
         <section class="box-common">
@@ -320,7 +326,22 @@ export default {
       // 一次下载意图"，不是"点了几次按钮"，所以同一次页面访问里，不管用户点了几个不同的
       // 下载按钮，StartTrial 只报一次。整页跳转架构下，每次重新进入这个页面（哪怕是同一个
       // 下载页）都是全新加载，这个变量自然会重置，不用额外处理
-      startTrialReported: false
+      startTrialReported: false,
+      // 通用文案，不区分具体产品，放在第二个页内广告后面、Related 前面
+      faqList: [
+        {
+          q: "How do I install this app after downloading it?",
+          a: "After the APK file finishes downloading, open it from your notification bar or file manager. If this is your first time installing an app from outside Google Play, your phone will ask you to allow installs from this source — turn that on once, then tap Install and follow the on-screen steps."
+        },
+        {
+          q: "Is this app safe to use?",
+          a: "Yes. Every APK on this page is sourced from the official developer or Google Play and checked before being published here. We don't repackage or modify app files."
+        },
+        {
+          q: "Is this app free to download?",
+          a: "Yes, downloading from this page is completely free and doesn't require creating an account."
+        }
+      ]
     };
   },
   mounted() {
@@ -470,8 +491,9 @@ export default {
   }
 }
 
-.primary-download,
-.download-now-btn {
+// 下边距改成 12px，跟下面紧跟着的 Google Play/App Store 按钮之间的间距一致，三个
+// 下载入口现在挨在一起，统一成相同的 12px 间隔
+.primary-download {
   width: 100%;
   height: 56px;
   border-radius: 32px;
@@ -481,10 +503,7 @@ export default {
   font-size: 17px;
   @include center;
   cursor: pointer;
-  margin-bottom: 24px;
-}
-.primary-download,
-.download-now-btn {
+  margin-bottom: 12px;
   animation: breathe 1.8s ease-in-out infinite;
 }
 
@@ -496,14 +515,6 @@ export default {
   50% {
     box-shadow: 0 0 0 10px rgba(253, 107, 33, 0);
   }
-}
-// .primary-download 现在也直链 apkpure_url 真实下载了（没配置才兜底滚动），跟
-// .download-now-btn 是同一类"点了就是真下载"的按钮。
-// 下边距改成跟下面 Google Play/App Store 之间的 12px 一样，统一三个下载按钮之间的间距，
-// 不再用跟 .primary-download 共用的 24px
-.download-now-btn {
-  margin-top: 24px;
-  margin-bottom: 12px;
 }
 .icon-download-cta {
   @include icon(22px, 22px, "icon-download.png");
@@ -645,8 +656,12 @@ $table-icon-categories: category, os, size, version, updated, downloads, develop
     margin: 0 0 12px;
   }
 }
+// 白底描边，跟上面实心橙色的 .primary-download 拉开视觉权重差异，一眼能看出
+// 哪个是首选下载方式、哪个是备选入口
 .platform .android:not(.is-disabled) {
-  background: #4b9df6;
+  background: #ffffff;
+  color: $font1;
+  border: 1px solid rgba($font1, 0.16);
   box-shadow: none;
 }
 .platform .ios:not(.is-disabled) {
@@ -666,6 +681,94 @@ $table-icon-categories: category, os, size, version, updated, downloads, develop
 .platform .is-disabled .icon-android,
 .platform .is-disabled .icon-ios {
   filter: grayscale(1) opacity(0.5);
+}
+
+// 点击下载前最后一眼的信任背书，顺带也让下面广告位跟上面三个按钮之间多一点间距
+.verified-tip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 4px 0 20px;
+  font-size: 12px;
+  color: rgba($font1, 0.6);
+  .icon-verified {
+    margin-right: 6px;
+    flex-shrink: 0;
+  }
+}
+
+.faq {
+  margin: 32px 0;
+}
+.faq-item {
+  background: #f5f6f8;
+  border-radius: 12px;
+  padding: 16px 44px 16px 16px;
+  margin-bottom: 10px;
+  position: relative;
+  // details/summary 原生的展开箭头去掉，用自己画的加号代替
+  summary {
+    list-style: none;
+    cursor: pointer;
+    &::-webkit-details-marker {
+      display: none;
+    }
+  }
+}
+.faq-question {
+  display: flex;
+  align-items: baseline;
+}
+.faq-number {
+  color: $color2;
+  font-family: "sesb";
+  font-size: 13px;
+  margin-right: 14px;
+  flex-shrink: 0;
+}
+.faq-text {
+  color: $color2;
+  font-family: "sesb";
+  font-size: 14px;
+  line-height: 1.4;
+}
+.faq-toggle {
+  position: absolute;
+  top: 18px;
+  right: 16px;
+  width: 14px;
+  height: 14px;
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    background: $color2;
+    border-radius: 1px;
+  }
+  // 加号的横竖两条杠
+  &::before {
+    top: 6px;
+    left: 0;
+    width: 14px;
+    height: 2px;
+  }
+  &::after {
+    top: 0;
+    left: 6px;
+    width: 2px;
+    height: 14px;
+    // 展开时竖杠收起来，加号变减号，不用额外画一个叉号图标
+    transition: transform 0.15s ease;
+  }
+}
+.faq-item[open] .faq-toggle::after {
+  transform: scaleY(0);
+}
+.faq-answer {
+  margin-top: 10px;
+  color: rgba($font1, 0.65);
+  font-size: 13px;
+  line-height: 1.6;
 }
 
 @media screen and (max-width: 879px) {
@@ -727,24 +830,17 @@ $table-icon-categories: category, os, size, version, updated, downloads, develop
       height: vw(8);
     }
   }
-  .primary-download,
-  .download-now-btn {
+  .primary-download {
     width: calc(100% - vw(92));
     height: vw(96);
     border-radius: vw(48);
     font-size: vw(28);
   }
+  // 下边距改成跟 Google Play/App Store 之间一样的固定 12px（那两个用的是没有 vw() 换算
+  // 的固定值，这里也用固定值，不用 vw()，才能在任意屏宽下都保持跟它们相等），三个下载
+  // 入口现在挨在一起，间距统一
   .primary-download {
-    margin: 0 vw(46) vw(36);
-  }
-  // 原来跟 .primary-download 共用 margin: 0 vw(46) vw(36)，上边距是 0，紧贴着上面的
-  // 参数表格（.table-content 底部只有 vw(6)，加起来几乎看不出间距）；下边距 vw(36) 又比
-  // 下面 Google Play/App Store 之间的 12px 大很多，三个按钮间距不统一。改成上边距单独给
-  // vw(36)（跟截图、广告位等其他区块间距一致），下边距改成跟 Google Play/App Store 之间
-  // 一样的固定 12px（那两个用的是没有 vw() 换算的固定值，这里也用固定值，不用 vw()，才能
-  // 在任意屏宽下都保持跟它们相等）
-  .download-now-btn {
-    margin: vw(36) vw(46) 12px;
+    margin: 0 vw(46) 12px;
   }
   .icon-download-cta {
     width: vw(36);
