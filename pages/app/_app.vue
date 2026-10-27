@@ -64,7 +64,7 @@
         看不到这个区块，不影响现有跑量数据，见 utils/featuredEffects.js。放在第一个页内
         广告下面，保证广告展示率，用户滑到这里才看到卡片 -->
         <section v-if="featuredEffect" class="featured-effects">
-          <h2 class="title-h2">Featured Effects</h2>
+          <h2 class="title-h2">What's New</h2>
           <CustomLink
             class="featured-effects-card"
             :to="`/download/${currentApp.path}/`"

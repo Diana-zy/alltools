@@ -57,7 +57,7 @@
         看不到这个区块，不影响现有跑量数据，见 utils/featuredEffects.js。放在第一个页内
         广告上面，让用户在被广告"过滤"注意力之前先看到这个区块 -->
         <section v-if="featuredEffect" class="featured-effects">
-          <h2 class="title-h2">Featured Effects</h2>
+          <h2 class="title-h2">What's New</h2>
           <CustomLink
             class="featured-effects-card"
             :to="`/download/${currentGame.path}/`"
