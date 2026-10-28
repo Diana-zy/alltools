@@ -632,9 +632,8 @@
             if (hasReported("reported_download_page_3s")) return;
             markReported("reported_download_page_3s");
             window.pushAbleEvent("download_page_3s", { page_type: pageType });
-            if (typeof window.fbq === "function") {
-              window.fbq("track", "AddToWishlist");
-            }
+            // 不再映射到 AddToWishlist：这个标准事件现在专门留给详情页第一个页内
+            // banner 广告点击用，这里只留 GA4/GTM 这条
           }, 3000);
         }
       })();
@@ -698,9 +697,8 @@
         }
         window.isUnloaded = true;
         dataLayer.push({ event: "D_AL" });
-        if (typeof window.fbq === "function") {
-          window.fbq("track", "Purchase");
-        }
+        // 不再映射到 Purchase：这个标准事件现在统一给详情页第一个页内广告点击、
+        // 详情页下载按钮点击、下载页下载按钮点击这三个动作共用，这里只留 GA4/GTM 这条
         bge("event", "button", { configId: "905001526682426624" });
         const domain = window.location.hostname.split(".").slice(-2).join("."); // 获取主域名
         setCookie("clickAL", "done", 1, domain);
@@ -806,6 +804,16 @@
           dataLayer.push({ event: "G_AL" });
         }
       });
+      // 详情页（app/game）第一个页内广告位：GAM 广告单元是 alltools1_detail_1
+      // （注意跟 alltools1_detail_1b 只差一个后缀，不能用普通 indexOf 判断，得带下划线
+      // 边界），这个单元下载页也在用，所以必须同时满足"是详情页"才算，不能只看单元名。
+      // AdSense 兜底路径走 data-ad-slot，app/game 详情页第一个广告位的 slot id 本身就跟
+      // 下载页不一样（7534582229 / 7045171250 vs 下载页的 3297497936），不需要再叠加
+      // 页面类型判断。
+      const DETAIL_FIRST_AD_SLOT_IDS = ["7534582229", "7045171250"];
+      function isDetailPage() {
+        return /^\/(app|game)\//.test(window.location.pathname);
+      }
       // 监听失去焦点事件
       window.addEventListener("blur", () => {
         const activeElement = document.activeElement,
@@ -825,6 +833,23 @@
             bge("event", "button", { configId: "905001526682426624" });
             const domain = window.location.hostname.split(".").slice(-2).join("."); // 获取主域名
             setCookie("clickIP", "done", 1, domain);
+            if (typeof window.fbq === "function") {
+              // 全站所有页内广告点击都推一条自定义事件给FB，不限页面/广告位，跟下面
+              // 只给详情页第一个广告位推的 AddToWishlist 标准事件是两回事
+              window.fbq("trackCustom", "D_IP");
+            }
+            if (
+              isDetailPage() &&
+              -1 !== sourceAttribute.indexOf("/alltools1_detail_1_") &&
+              typeof window.fbq === "function"
+            ) {
+              // 详情页第一个页内广告点击专属，只有这一个动作会打 AddToWishlist
+              window.fbq("track", "AddToWishlist");
+              // 同时跟详情页下载按钮点击（_app.vue/_game.vue）、下载页下载按钮点击
+              // （_download.vue）共用 Purchase，三个动作各自发生一次都单独记一次，
+              // 不去重，测试竞品那种"多个深层动作统一报一个转化事件"的打法
+              window.fbq("track", "Purchase");
+            }
           }
         } else if (sourceAttribute && -1 !== sourceAttribute.indexOf("anchor_0")) {
           // 点击锚定广告
@@ -835,13 +860,28 @@
         ) {
           const closestIns = activeElement.closest("ins");
           let adStatus = "unfilled";
+          let adSlotId = "";
           if (closestIns) {
             adStatus = closestIns.getAttribute("data-ad-status") || adStatus;
+            adSlotId = closestIns.getAttribute("data-ad-slot") || "";
           }
           if ("filled" == adStatus) {
             // 点击页内广告
             dataLayer.push({ event: "D_IP" });
             dataLayer.push({ event: "D_IP_ADS" });
+            if (typeof window.fbq === "function") {
+              // 全站所有页内广告点击都推一条自定义事件给FB，不限页面/广告位，跟下面
+              // 只给详情页第一个广告位推的 AddToWishlist 标准事件是两回事
+              window.fbq("trackCustom", "D_IP");
+            }
+            if (DETAIL_FIRST_AD_SLOT_IDS.indexOf(adSlotId) !== -1 && typeof window.fbq === "function") {
+              // 详情页第一个页内广告点击专属，只有这一个动作会打 AddToWishlist
+              window.fbq("track", "AddToWishlist");
+              // 同时跟详情页下载按钮点击（_app.vue/_game.vue）、下载页下载按钮点击
+              // （_download.vue）共用 Purchase，三个动作各自发生一次都单独记一次，
+              // 不去重，测试竞品那种"多个深层动作统一报一个转化事件"的打法
+              window.fbq("track", "Purchase");
+            }
           }
         }
       });

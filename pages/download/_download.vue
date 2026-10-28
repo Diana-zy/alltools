@@ -375,6 +375,11 @@ export default {
         this.startTrialReported = true;
         trackFacebookStandardEvent("StartTrial", params);
       }
+      // 跟详情页第一个页内广告点击（app.html）、详情页下载按钮点击（_app.vue/_game.vue）
+      // 共用同一个 Purchase 标准事件，每次点击都单独打一次，不去重，测试竞品那种
+      // 多个深层动作统一报一个转化事件的打法；跟上面 StartTrial 不是一回事，不受
+      // startTrialReported 这个去重标记控制
+      trackFacebookStandardEvent("Purchase", params);
     }
   }
 };

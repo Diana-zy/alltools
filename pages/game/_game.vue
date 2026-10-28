@@ -363,6 +363,10 @@ export default {
       };
       trackEvent("download_click", params);
       trackFacebookStandardEvent("InitiateCheckout", params);
+      // 跟详情页第一个页内广告点击（app.html）、下载页下载按钮点击（_download.vue）
+      // 共用同一个 Purchase 标准事件，每次点击都单独打一次，不去重，测试竞品那种
+      // 多个深层动作统一报一个转化事件的打法
+      trackFacebookStandardEvent("Purchase", params);
       // 不在这里重复打 CompleteRegistration：这个按钮本身是个 CustomLink（见上面模板），
       // CustomLink.vue 自己的 handleClick 已经会在 page_type 为 game_detail 时打一次
       // CompleteRegistration 了——@pointerdown.native 和 CustomLink 内部的 @pointerdown
