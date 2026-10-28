@@ -864,6 +864,19 @@
           // 跟着报不出来，这是之前banner广告点击测试全军覆没的根因之一，不是检测逻辑
           // 设计本身的问题
           sourceAttributeSrc = activeElement.getAttribute("src");
+        // 临时调试日志，定位完问题就删：直接把每次检测到的关键信息打印出来，不用再靠
+        // 猜时序/猜DOM结构，点一次广告切回来直接看Console就知道实际发生了什么
+        console.log("[adck-debug]", {
+          triggeredBy: document.visibilityState === "hidden" ? "visibilitychange" : "blur",
+          activeElementTag: activeElement && activeElement.tagName,
+          name: sourceAttribute,
+          src: sourceAttributeSrc,
+          dataLoadComplete: activeElement && activeElement.getAttribute("data-load-complete"),
+          closestInsAdStatus:
+            activeElement && activeElement.closest && activeElement.closest("ins")
+              ? activeElement.closest("ins").getAttribute("data-ad-status")
+              : null
+        });
         if (
           sourceAttribute &&
           -1 !== sourceAttribute.indexOf("google_ads_iframe_/23197833490") &&
