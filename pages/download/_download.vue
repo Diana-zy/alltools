@@ -327,6 +327,9 @@ export default {
       // 下载按钮，StartTrial 只报一次。整页跳转架构下，每次重新进入这个页面（哪怕是同一个
       // 下载页）都是全新加载，这个变量自然会重置，不用额外处理
       startTrialReported: false,
+      // 跟上面 startTrialReported 同样的"本次页面访问只报一次"逻辑，但专门控制
+      // ViewContent 这个共用事件，不跟 StartTrial 的去重状态混用
+      viewContentDownloadReported: false,
       // 通用文案，不区分具体产品，放在第二个页内广告后面、Related 前面
       faqList: [
         {
@@ -376,10 +379,13 @@ export default {
         trackFacebookStandardEvent("StartTrial", params);
       }
       // 跟详情页第一个页内广告点击（app.html）、详情页下载按钮点击（_app.vue/_game.vue）
-      // 共用同一个 Purchase 标准事件，每次点击都单独打一次，不去重，测试竞品那种
-      // 多个深层动作统一报一个转化事件的打法；跟上面 StartTrial 不是一回事，不受
-      // startTrialReported 这个去重标记控制
-      trackFacebookStandardEvent("Purchase", params);
+      // 共用同一个 ViewContent 标准事件（原来是Purchase，换成刚从首页浏览释放出来、
+      // 相对干净的ViewContent）；本次下载页停留只报一次，不管点了几次/点的哪个按钮，
+      // 跟上面 StartTrial 不是一回事，用的是独立的 viewContentDownloadReported 标记
+      if (!this.viewContentDownloadReported) {
+        this.viewContentDownloadReported = true;
+        trackFacebookStandardEvent("ViewContent", params);
+      }
     }
   }
 };

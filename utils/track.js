@@ -20,18 +20,23 @@ export function trackEvent(name, params = {}) {
 
 // 额外映射到 Facebook 标准事件（跟上面的自定义事件直推是两回事，标准事件是 Facebook
 // 投放优化算法直接认的，自定义事件只是给后台看数据用）：
-//   首页浏览 -> ViewContent
-//   详情页浏览 -> Lead
 //   全站有效内容点击 -> AddToCart
 //   详情页下载按钮点击 -> InitiateCheckout
 //   下载页下载按钮点击 -> StartTrial
-//   非落地页停留3秒 -> CompleteRegistration（app.html 里单独直接调 fbq，不走这个函数）
-//   插页广告变为可见 -> AddPaymentInfo（app.html 里单独直接调 fbq，不走这个函数）
 //   详情页第一个页内 banner 广告点击 -> AddToWishlist（app.html 里单独直接调 fbq，
-//     不走这个函数；这个动作专属，不跟别的动作共用）
+//     不走这个函数；这个动作专属，不跟别的动作共用）。本次详情页停留只报一次，
+//     离开详情页又回来才会再报，去重状态靠_app.vue/_game.vue的mounted()重置
 //   详情页第一个页内banner广告点击 + 详情页下载按钮点击 + 下载页下载按钮点击
-//     -> 统一共用 Purchase，三个动作各自发生一次都单独记一次，不去重（测试竞品那种
-//     "多个深层动作统一报一个转化事件"的打法；插页广告点击本身已不再映射 Purchase）
+//     -> 统一共用 ViewContent（原来是Purchase，Purchase历史上1000+条插页点击数据
+//     怕污染新campaign的受众建模，换成刚从首页浏览释放出来、相对干净的ViewContent；
+//     首页浏览现在不再映射任何标准事件）。三个动作各自独立去重：同一次详情页/下载页
+//     停留内，不管点了几次/点的是哪个按钮，每个动作只报一次，离开页面又重新进入
+//     才会再报一次（详情页banner点击去重状态在app.html，靠_app.vue/_game.vue的
+//     mounted()重置；两处下载按钮点击去重状态分别是各自Vue组件的data字段，组件
+//     重新mounted自然重置，测试竞品那种"多个深层动作统一报一个转化事件"的打法）
+//   以下四个标准事件现在空出来、没有映射任何动作：Purchase（原插页点击，已撤销）、
+//   CompleteRegistration（原非落地页停留3秒，已撤销）、AddPaymentInfo（原插页广告
+//   变为可见，已撤销）、Lead（原详情页浏览，已撤销）
 export function trackFacebookStandardEvent(eventName, params = {}) {
   if (typeof window === "undefined" || typeof window.fbq !== "function") return;
   window.fbq("track", eventName, params);

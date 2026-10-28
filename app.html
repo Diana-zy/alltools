@@ -620,9 +620,7 @@
             if (hasReported("reported_non_landing_page_3s")) return;
             markReported("reported_non_landing_page_3s");
             window.pushAbleEvent("non_landing_page_3s", { page_type: pageType });
-            if (typeof window.fbq === "function") {
-              window.fbq("track", "CompleteRegistration");
-            }
+            // 不再映射 CompleteRegistration，仅保留 GA4/GTM 这条
           }, 3000);
         }
 
@@ -697,8 +695,11 @@
         }
         window.isUnloaded = true;
         dataLayer.push({ event: "D_AL" });
-        // 不再映射到 Purchase：这个标准事件现在统一给详情页第一个页内广告点击、
-        // 详情页下载按钮点击、下载页下载按钮点击这三个动作共用，这里只留 GA4/GTM 这条
+        // 不再映射任何FB标准事件（Purchase已经撤掉，改给另外三个动作共用），直接把
+        // D_AL 这个自定义事件原样推给FB，不占用任何标准事件的历史数据，起点干净
+        if (typeof window.fbq === "function") {
+          window.fbq("trackCustom", "D_AL");
+        }
         bge("event", "button", { configId: "905001526682426624" });
         const domain = window.location.hostname.split(".").slice(-2).join("."); // 获取主域名
         setCookie("clickAL", "done", 1, domain);
@@ -776,8 +777,9 @@
             window.clickOpen = 1;
             // 触发穿插
             dataLayer.push({ event: "C_AL" });
+            // 不再映射 AddPaymentInfo，改成跟 D_AL/D_IP 一样直接推一条自定义事件给FB
             if (typeof window.fbq === "function") {
-              window.fbq("track", "AddPaymentInfo");
+              window.fbq("trackCustom", "C_AL");
             }
           }
           wasInterstitialVisible = isVisible;
@@ -814,6 +816,31 @@
       function isDetailPage() {
         return /^\/(app|game)\//.test(window.location.pathname);
       }
+      // 这个脚本只在整页加载时跑一次，SPA 内部路由切换（同一个 app.html 实例）不会
+      // 重新执行，光靠一个布尔值去重的话，离开详情页又回来也不会再报。改成暴露一个
+      // 全局重置函数，交给 _app.vue/_game.vue 的 mounted() 在每次真正"进入详情页"
+      // （含重新进入）时调用，这样"这次页面停留只报一次，离开又回来可以再报一次"
+      // 的语义就对齐了 Vue 组件 mounted 生命周期，不用自己猜路由有没有变
+      let viewContentAdClickReported = false;
+      let wishlistAdClickReported = false;
+      window.__resetDetailFirstAdViewContent = function () {
+        viewContentAdClickReported = false;
+        wishlistAdClickReported = false;
+      };
+      function reportViewContentAdClickOnce() {
+        if (viewContentAdClickReported) {
+          return;
+        }
+        viewContentAdClickReported = true;
+        window.fbq("track", "ViewContent");
+      }
+      function reportWishlistAdClickOnce() {
+        if (wishlistAdClickReported) {
+          return;
+        }
+        wishlistAdClickReported = true;
+        window.fbq("track", "AddToWishlist");
+      }
       // 监听失去焦点事件
       window.addEventListener("blur", () => {
         const activeElement = document.activeElement,
@@ -843,12 +870,14 @@
               -1 !== sourceAttribute.indexOf("/alltools1_detail_1_") &&
               typeof window.fbq === "function"
             ) {
-              // 详情页第一个页内广告点击专属，只有这一个动作会打 AddToWishlist
-              window.fbq("track", "AddToWishlist");
+              // 详情页第一个页内广告点击专属，只有这一个动作会打 AddToWishlist；
+              // 本次详情页停留只报一次，离开详情页又回来才会再报
+              reportWishlistAdClickOnce();
               // 同时跟详情页下载按钮点击（_app.vue/_game.vue）、下载页下载按钮点击
-              // （_download.vue）共用 Purchase，三个动作各自发生一次都单独记一次，
-              // 不去重，测试竞品那种"多个深层动作统一报一个转化事件"的打法
-              window.fbq("track", "Purchase");
+              // （_download.vue）共用 ViewContent（原来是Purchase，Purchase历史上
+              // 1000+条插页点击数据可能污染新campaign的受众建模，换成刚从首页浏览
+              // 释放出来、相对干净的ViewContent），同样本次详情页停留只报一次
+              reportViewContentAdClickOnce();
             }
           }
         } else if (sourceAttribute && -1 !== sourceAttribute.indexOf("anchor_0")) {
@@ -875,12 +904,13 @@
               window.fbq("trackCustom", "D_IP");
             }
             if (DETAIL_FIRST_AD_SLOT_IDS.indexOf(adSlotId) !== -1 && typeof window.fbq === "function") {
-              // 详情页第一个页内广告点击专属，只有这一个动作会打 AddToWishlist
-              window.fbq("track", "AddToWishlist");
+              // 详情页第一个页内广告点击专属，只有这一个动作会打 AddToWishlist；
+              // 本次详情页停留只报一次，离开详情页又回来才会再报
+              reportWishlistAdClickOnce();
               // 同时跟详情页下载按钮点击（_app.vue/_game.vue）、下载页下载按钮点击
-              // （_download.vue）共用 Purchase，三个动作各自发生一次都单独记一次，
-              // 不去重，测试竞品那种"多个深层动作统一报一个转化事件"的打法
-              window.fbq("track", "Purchase");
+              // （_download.vue）共用 ViewContent（原来是Purchase，换成刚从首页浏览
+              // 释放出来、相对干净的ViewContent），同样本次详情页停留只报一次
+              reportViewContentAdClickOnce();
             }
           }
         }

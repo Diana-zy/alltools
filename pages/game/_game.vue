@@ -331,7 +331,10 @@ export default {
       // 放在 data + mounted 里赋值，不用 computed 直接读 window.location，避免服务端
       // 渲染/静态生成阶段跟客户端 hydrate 之后结果不一致（hydration mismatch），见
       // _app.vue 里同样的处理
-      featuredEffect: null
+      featuredEffect: null,
+      // 详情页下载按钮点击的 ViewContent 本次页面停留只报一次（不管点了几次、点的
+      // 是哪个下载按钮），组件重新 mounted（离开详情页又回来）会重置
+      viewContentDownloadReported: false
     };
   },
   head() {
@@ -347,10 +350,13 @@ export default {
       item_id: this.currentGame.path,
       item_name: this.currentGame.name
     });
-    trackFacebookStandardEvent("Lead", {
-      content_type: "game_detail",
-      content_name: this.currentGame.name
-    });
+    // 不再映射 Lead，仅保留上面 trackEvent 的 GA4/GTM 这条
+    // 每次真正进入详情页（含离开又回来）都重置 app.html 里"详情页第一个banner广告
+    // 点击 -> ViewContent"的页面级去重状态，跟这里自己的 viewContentDownloadReported
+    // 不是一回事
+    if (typeof window !== "undefined" && typeof window.__resetDetailFirstAdViewContent === "function") {
+      window.__resetDetailFirstAdViewContent();
+    }
     this.featuredEffect = getFeaturedEffect(this.currentGame.path);
   },
   methods: {
@@ -364,9 +370,13 @@ export default {
       trackEvent("download_click", params);
       trackFacebookStandardEvent("InitiateCheckout", params);
       // 跟详情页第一个页内广告点击（app.html）、下载页下载按钮点击（_download.vue）
-      // 共用同一个 Purchase 标准事件，每次点击都单独打一次，不去重，测试竞品那种
-      // 多个深层动作统一报一个转化事件的打法
-      trackFacebookStandardEvent("Purchase", params);
+      // 共用同一个 ViewContent 标准事件（原来是Purchase，换成刚从首页浏览释放出来、
+      // 相对干净的ViewContent）；本次详情页停留只报一次，不管点了几次/点的哪个按钮，
+      // 离开详情页又回来（组件重新mounted）才会再报一次
+      if (!this.viewContentDownloadReported) {
+        this.viewContentDownloadReported = true;
+        trackFacebookStandardEvent("ViewContent", params);
+      }
       // 不在这里重复打 CompleteRegistration：这个按钮本身是个 CustomLink（见上面模板），
       // CustomLink.vue 自己的 handleClick 已经会在 page_type 为 game_detail 时打一次
       // CompleteRegistration 了——@pointerdown.native 和 CustomLink 内部的 @pointerdown

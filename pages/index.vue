@@ -359,7 +359,8 @@ export default {
       }
     }
     trackEvent("home_page", { view_source: viewSource });
-    trackFacebookStandardEvent("ViewContent", { content_name: "home" });
+    // ViewContent 不再给首页浏览用，让给详情页第一个banner广告点击/详情页下载按钮点击/
+    // 下载页下载按钮点击这三个动作共用，这里只留 GA4/GTM 这条
   },
   computed: {
     // 推荐位：BI 后台「站点管理/模块游戏推荐」配置了 mod_id 就用配置的，没配就 fallback 到 ranking 数据
