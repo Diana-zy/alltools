@@ -20,14 +20,7 @@
             <div class="name">{{ currentSoftware.name }}</div>
             <!-- 跟详情页统一，原来这里是分类标签，也换成下载按钮；这里已经是下载页本身，
             点了不跳转/不直接下载，改成刷新本页（相当于重新进入一次下载页） -->
-            <div
-              class="header-download-badge"
-              @click="
-                trackDownloadClick('header');
-                window.location.reload();
-              "
-              >Download</div
-            >
+            <div class="header-download-badge" @click="handleHeaderDownloadClick">Download</div>
           </div>
         </section>
 
@@ -359,6 +352,15 @@ export default {
     });
   },
   methods: {
+    // header位置的Download按钮点击：先打点，再刷新本页。window引用必须放在
+    // methods里的真实函数体里，不能写在模板的内联@click表达式里——Vue2模板编译器
+    // 会把内联表达式里的裸标识符当成this.xxx处理，window/document不在它的全局白名单
+    // 里（Math/Date/JSON这些常见对象才在），结果被编译成this.window（undefined），
+    // 导致之前这个按钮点了完全没反应，排查了很久才定位到
+    handleHeaderDownloadClick() {
+      this.trackDownloadClick("header");
+      window.location.reload();
+    },
     trackDownloadClick(buttonType) {
       const params = {
         page_type: "download",
@@ -433,6 +435,8 @@ export default {
   color: #ffffff;
   font-size: 12px;
   font-family: "sesb";
+  cursor: pointer;
+  user-select: none;
 }
 
 .stats-row {
