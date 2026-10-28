@@ -24,6 +24,11 @@ const FEATURED_EFFECTS_CONFIG = {
     image: "/images/featured-faceapp-aging.jpg",
     title: "AI Time Travel: Meet Your Future Self",
     subtitle: "Will you look like your parents? Find out now!"
+  },
+  "remini-ai-photo-enhancer-105205": {
+    image: "/images/featured-remini-restore.jpg",
+    title: "Restore Old Photos to Life",
+    subtitle: "Turn faded memories into vivid moments. Try it now!"
   }
 };
 
