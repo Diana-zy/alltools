@@ -852,25 +852,7 @@
       // 回到页面（window 重新 focus）就重置，允许下一次点击再检测
       let pageAdClickHandled = false;
       window.addEventListener("focus", () => {
-        console.log("[adck-debug] raw focus event, resetting pageAdClickHandled");
         pageAdClickHandled = false;
-      });
-      // 临时调试：不受任何判断影响的原始事件自定义事件，直接推给FB，用Events
-      // Manager/测试事件工具看，不用开DevTools——用来确认 blur/visibilitychange 这两个
-      // 浏览器事件本身到底有没有触发。如果连这条都没出现，说明问题在更底层（这次操作
-      // 压根没让页面失焦/隐藏），不用再往下查匹配逻辑
-      window.addEventListener("blur", () => {
-        if (typeof window.fbq === "function") {
-          window.fbq("trackCustom", "adck_debug_raw", { source: "blur" });
-        }
-      });
-      document.addEventListener("visibilitychange", () => {
-        if (typeof window.fbq === "function") {
-          window.fbq("trackCustom", "adck_debug_raw", {
-            source: "visibilitychange",
-            state: document.visibilityState
-          });
-        }
       });
       function checkPageAdClickFocus() {
         const activeElement = document.activeElement,
@@ -880,23 +862,9 @@
           isAdIframeClick = !!(activeElement && activeElement.tagName === "IFRAME" && adSlotEl),
           admId = (adSlotEl && adSlotEl.id) || "none",
           sourceAttribute = activeElement && activeElement.getAttribute("name");
-        // 临时调试自定义事件，定位完问题就删：直接把每次检测到的关键信息推给FB，在
-        // Events Manager/测试事件工具里看，不用靠DevTools猜时序。故意放在
-        // pageAdClickHandled 判断之前，这样哪怕被去重跳过了也能看到当时的真实状态
-        if (typeof window.fbq === "function") {
-          window.fbq("trackCustom", "adck_debug", {
-            page_ad_click_handled: String(pageAdClickHandled),
-            triggered_by: document.visibilityState === "hidden" ? "visibilitychange" : "blur",
-            pathname: window.location.pathname,
-            is_detail_page: String(isDetailPage()),
-            active_element_tag: (activeElement && activeElement.tagName) || "none",
-            is_ad_iframe_click: String(isAdIframeClick),
-            adm_id: admId
-          });
-        }
         if (pageAdClickHandled) {
-          // 已经处理过（blur/visibilitychange另一边先命中过了），上面的日志已经打印，
-          // 这里不重复推送，避免同一次点击算两次
+          // 已经处理过（blur/visibilitychange另一边先命中过了），不重复推送，
+          // 避免同一次点击算两次
           return;
         }
         if (isAdIframeClick) {
