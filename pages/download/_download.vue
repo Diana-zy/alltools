@@ -19,12 +19,12 @@
           <div class="header-main">
             <div class="name">{{ currentSoftware.name }}</div>
             <!-- 跟详情页统一，原来这里是分类标签，也换成下载按钮；这里已经是下载页本身，
-            点了不跳转/不直接下载，滚动到下面真实下载按钮区域，让用户自己选平台 -->
+            点了不跳转/不直接下载，改成刷新本页（相当于重新进入一次下载页） -->
             <div
               class="header-download-badge"
               @click="
-                $refs.storeButtons.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 trackDownloadClick('header');
+                window.location.reload();
               "
               >Download</div
             >
