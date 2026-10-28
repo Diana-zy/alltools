@@ -841,10 +841,29 @@
         wishlistAdClickReported = true;
         window.fbq("track", "AddToWishlist");
       }
-      // 监听失去焦点事件
-      window.addEventListener("blur", () => {
+      // 同一个浏览器窗口内新开标签页（比如点广告target=_blank），不一定会触发
+      // window.blur——那是对应"整个浏览器窗口"失去操作系统级焦点的，不是标签页切换；
+      // 标签页切换/隐藏可靠的信号是 visibilitychange，插页广告点击检测那边已经踩过这个
+      // 坑、加了 visibilitychange 兜底（见下面 reportInterstitialClickExit 那块）。这里
+      // 照抄同样的办法：把检测逻辑抽成一个函数，blur 和 visibilitychange(hidden) 都挂上，
+      // 哪个先触发哪个生效。用 pageAdClickHandled 防止两边前后都命中、同一次点击报两次，
+      // 回到页面（window 重新 focus）就重置，允许下一次点击再检测
+      let pageAdClickHandled = false;
+      window.addEventListener("focus", () => {
+        pageAdClickHandled = false;
+      });
+      function checkPageAdClickFocus() {
+        if (pageAdClickHandled) {
+          return;
+        }
         const activeElement = document.activeElement,
-          sourceAttribute = activeElement.getAttribute("name");
+          sourceAttribute = activeElement.getAttribute("name"),
+          // 这个变量之前一直没声明，下面 else if 分支引用它会直接抛 ReferenceError，
+          // 导致只要第一个分支（GAM iframe name 匹配）没命中，整个检测函数当场
+          // 中断——AdSense 兜底分支永远跑不到，D_IP/AddToWishlist/ViewContent 全部
+          // 跟着报不出来，这是之前banner广告点击测试全军覆没的根因之一，不是检测逻辑
+          // 设计本身的问题
+          sourceAttributeSrc = activeElement.getAttribute("src");
         if (
           sourceAttribute &&
           -1 !== sourceAttribute.indexOf("google_ads_iframe_/23197833490") &&
@@ -856,6 +875,7 @@
           }
           if ("true" == adStatus) {
             // 点击页内广告
+            pageAdClickHandled = true;
             dataLayer.push({ event: "D_IP" });
             bge("event", "button", { configId: "905001526682426624" });
             const domain = window.location.hostname.split(".").slice(-2).join("."); // 获取主域名
@@ -896,6 +916,7 @@
           }
           if ("filled" == adStatus) {
             // 点击页内广告
+            pageAdClickHandled = true;
             dataLayer.push({ event: "D_IP" });
             dataLayer.push({ event: "D_IP_ADS" });
             if (typeof window.fbq === "function") {
@@ -913,6 +934,12 @@
               reportViewContentAdClickOnce();
             }
           }
+        }
+      }
+      window.addEventListener("blur", checkPageAdClickFocus);
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "hidden") {
+          checkPageAdClickFocus();
         }
       });
     </script>
